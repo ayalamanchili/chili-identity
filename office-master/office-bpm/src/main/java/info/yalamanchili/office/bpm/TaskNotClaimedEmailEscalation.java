@@ -41,7 +41,28 @@ public class TaskNotClaimedEmailEscalation implements JavaDelegate {
                 email.setHtml(Boolean.TRUE);
                 email.setRichText(Boolean.TRUE);
                 email.setSubject("Task not claimed escalation email");
-                String messageText = "<b>Task is not claimed. Please claim.</br></br><i> Task Details: </br></br> Name</i></b>: " + task.getName() + " </br><b><i> Description:</i></b>" + task.getDescription();
+                String messageText = "<b>Task is not claimed. Please claim.</b> </br></br> <b> Name: </b>" + task.getName() + " </br><b> Description:</b>";
+                String description = task.getDescription();
+                String[] descA = description.split("\n");
+                messageText = messageText.concat(descA[0] + "<br/> <br/> <b> <u> Details: </u> </b> <br/><html><body><table>");
+                for (int i = 1; i < descA.length - 1; i++) {
+                    if (descA[i].contains(":")) {
+                        String descArrayLeft = descA[i].substring(0, descA[i].indexOf(":"));
+                        String descArrayRight = descA[i].substring(descA[i].indexOf(":") + 1, descA[i].length());
+                        messageText = messageText.concat("<tr> <td> <b>" + descArrayLeft.trim() + "</b> </td>");
+                        messageText = messageText.concat("<td> :" + descArrayRight + "</td> </tr>");
+                    } else {
+                        messageText = messageText.concat("<br/>" + descA[i]);
+                    }
+                }
+                if (descA[descA.length - 1].contains("instructions") || descA[descA.length - 1].contains("http")) {
+                    messageText = messageText.concat("</table></body></html> " + descA[descA.length - 1]);
+                } else {
+                    String descArrayLeft = descA[descA.length - 1].substring(0, descA[descA.length - 1].indexOf(":"));
+                    String descArrayRight = descA[descA.length - 1].substring(descA[descA.length - 1].indexOf(":") + 1, descA[descA.length - 1].length());
+                    messageText = messageText.concat("<tr> <td> <b>" + descArrayLeft.trim() + "</b> </td>");
+                    messageText = messageText.concat("<td> :" + descArrayRight + "</td> </tr></table></body></html>");
+                }
                 email.setBody(messageText);
                 messagingService.sendEmail(email);
             }
