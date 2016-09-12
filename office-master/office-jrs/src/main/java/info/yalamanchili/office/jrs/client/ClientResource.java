@@ -30,6 +30,7 @@ import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.dto.profile.ContactDto.ContactDtoTable;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.invoice.GenericsDatesDto;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.client.ProjectResource.ProjectTable;
@@ -510,6 +511,24 @@ public class ClientResource extends CRUDResource<Client> {
             String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Clients In State  " + dto.getState(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
             MessagingService.instance().emailReport(fileName, emp.getPrimaryEmail().getEmail());
         }
+    }
+
+    @PUT
+    @Path("/msa-valid-reports")
+    public void generateMSAValidReport(GenericsDatesDto dto) {
+        List<Client> list = clientDao.getReport(dto.getStartDate(), dto.getEndDate(), 0, 10000);
+        if (list.size() > 0) {
+            String reportName = "MSA Report";
+            ClientService.instance().generateSearchDatesReport(list, OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail(), reportName);
+        } else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "DateInvalid", "No Results");
+        }
+    }
+
+    @PUT
+    @Path("/msa-valid-search/{start}/{limit}")
+    public List<Client> searchForMSADate(GenericsDatesDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
+        return clientDao.getReport(dto.getStartDate(), dto.getEndDate(), start, limit);
     }
 
     @XmlRootElement

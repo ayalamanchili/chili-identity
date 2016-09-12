@@ -15,10 +15,13 @@ import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
+import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,4 +77,36 @@ public class ClientDao extends CRUDDao<Client> {
         return findAllQuery.getResultList();
 
     }
+    
+    public List<Client> getReport(Date startDate, Date endDate, int start, int limit) {
+        String queryStr = getReportQueryString(startDate, endDate);
+        TypedQuery<Client> query = getEntityManager().createQuery(queryStr, Client.class);
+        query = (TypedQuery<Client>) getReportQueryWithParams(queryStr, query, startDate, endDate);
+        query.setFirstResult(start);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+    
+        protected Query getReportQueryWithParams(String qryStr, Query query, Date startDate, Date endDate) {
+        if (qryStr.contains("startDateParam")) {
+            query.setParameter("startDateParam", startDate, TemporalType.DATE);
+        }
+        if (qryStr.contains("endDateParam")) {
+            query.setParameter("endDateParam", endDate, TemporalType.DATE);
+        }
+        return query;
+    }
+
+    protected String getReportQueryString(Date startDate, Date endDate) {
+        StringBuilder reportQueryBuilder = new StringBuilder();
+        reportQueryBuilder.append("from ").append(Client.class.getCanonicalName()).append(" where ");
+        if (startDate != null) {
+            reportQueryBuilder.append("( msaValDate BETWEEN :startDateParam AND :endDateParam");
+        }
+        if (endDate != null) {
+            reportQueryBuilder.append(" or msaExpDate BETWEEN :startDateParam AND :endDateParam)");
+        }
+        return reportQueryBuilder.toString();
+    }
+        
 }

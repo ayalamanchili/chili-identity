@@ -203,6 +203,16 @@ public class ClientService {
         return dto;
     }
 
+    @Async
+    @Transactional
+    public void generateSearchDatesReport(List<Client> cli, String email, String reportName) {
+        String[] columnOrder;
+        String fileName;
+        columnOrder = new String[]{"name", "website", "msaValDate", "msaExpDate"};
+        fileName = ReportGenerator.generateExcelOrderedReport(cli, "MSA Validity Date Report For Client", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, email);
+    }
+
     public static ClientService instance() {
         return SpringContext.getBean(ClientService.class);
     }
