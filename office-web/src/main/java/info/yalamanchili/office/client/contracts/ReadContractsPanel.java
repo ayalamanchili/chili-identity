@@ -131,8 +131,8 @@ public class ReadContractsPanel extends TReadComposite {
         assignFieldValueFromEntity("company", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("employeeCompany", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("client", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("clientFeeApplicable", entity, DataType.BOOLEAN_FIELD);
-        assignFieldValueFromEntity("directClient", entity, DataType.BOOLEAN_FIELD);        
+//        assignFieldValueFromEntity("clientFeeApplicable", entity, DataType.BOOLEAN_FIELD);
+//        assignFieldValueFromEntity("directClient", entity, DataType.BOOLEAN_FIELD);        
         assignFieldValueFromEntity("clientLocation", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientContact", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("clientAPContact", entity, DataType.RICH_TEXT_AREA);
@@ -238,8 +238,8 @@ public class ReadContractsPanel extends TReadComposite {
         addField("vendor", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 11, 1);
         addField("vendorAPContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 12, 1);
         addField("client", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 13, 1);
-        addField("clientFeeApplicable", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL, 13, 2);
-        addField("directClient", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL, 14, 1);        
+//        addField("clientFeeApplicable", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL, 13, 2);
+//        addField("directClient", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL, 14, 1);        
         addField("clientLocation", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 14, 2);
         addField("clientAPContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 15, 1);
         addField("clientContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 15, 2);
