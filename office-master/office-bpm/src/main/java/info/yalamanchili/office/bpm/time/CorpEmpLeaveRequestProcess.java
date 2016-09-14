@@ -174,6 +174,7 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
         sendNotifyEmplyeeNotification(status, task);
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Email email = new Email();
+        email.setRichText(Boolean.TRUE);
         if (status.equals(SUBMITTED_STATUS) || status.equals(UPDATED_STATUS)) {
             email.setTos(BPMUtils.getCandidateEmails(task));
         }
@@ -181,19 +182,42 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
         String summary = "Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName();
         email.setSubject(summary);
         StringBuilder messageBuilder = new StringBuilder();
-        messageBuilder.append("Summary: ").append(summary).append("\n");
+        messageBuilder.append("<b>Summary: </b>").append(summary).append("<br/>");
         String taskNotes = (String) task.getVariable("leaveRequestApprovalTaskNotes");
         if (taskNotes != null && !taskNotes.isEmpty()) {
-            messageBuilder.append("Notes: ").append(taskNotes).append("\n");
+            messageBuilder.append("<b>Notes: </b> ").append(taskNotes).append("<br/>");
         }
         Employee taskActionUser = (Employee) task.getExecution().getVariable("taskActionUser");
         if (taskActionUser != null) {
-            messageBuilder.append("Task Updated By : ").append(taskActionUser.getFirstName()).append(" ").append(taskActionUser.getLastName()).append("\n");
+            messageBuilder.append("<b>Task Updated By :</b> ").append(taskActionUser.getFirstName()).append(" ").append(taskActionUser.getLastName()).append("<br/>");
         }
-        messageBuilder.append("Task  Details: \n Name: ").append(task.getName()).append("\n");
-        messageBuilder.append("Description: ").append(task.getDescription()).append("\n");
+        messageBuilder.append("<b>Name:</b> ").append(task.getName()).append("<br/>");
+        //messageBuilder.append("Description: ").append(task.getDescription()).append("\n");
+        
+        String description = task.getDescription();
+        String[] descA = description.split("\n");
+        messageBuilder = messageBuilder.append(descA[0] + "<br/> <br/> <b> <u> Details: </u> </b> <br/><html><body><table>");
+        for (int i = 1; i < descA.length - 1; i++) {
+            if (descA[i].contains(":")) {
+                String descArrayLeft = descA[i].substring(0, descA[i].indexOf(":"));
+                String descArrayRight = descA[i].substring(descA[i].indexOf(":") + 1, descA[i].length());
+                messageBuilder = messageBuilder.append("<tr> <td> <b>" + descArrayLeft.trim() + "</b> </td>");
+                messageBuilder = messageBuilder.append("<td> :" + descArrayRight + "</td> </tr>");
+            } else {
+                messageBuilder = messageBuilder.append("<br/>"  + descA[i]);
+            }
+        }
+        if (descA[descA.length - 1].contains("instructions") || descA[descA.length - 1].contains("http")) {
+            messageBuilder = messageBuilder.append("</table></body></html> " + descA[descA.length - 1]);
+        } else {
+            String descArrayLeft = descA[descA.length - 1].substring(0, descA[descA.length - 1].indexOf(":"));
+            String descArrayRight = descA[descA.length - 1].substring(descA[descA.length - 1].indexOf(":") + 1, descA[descA.length - 1].length());
+            messageBuilder = messageBuilder.append("<tr> <td> <b>" + descArrayLeft.trim() + "</b> </td>");
+            messageBuilder = messageBuilder.append("<td> :" + descArrayRight + "</td> </tr></table></body></html>");
+        }
+        
         if (!email.getTos().equals(emp)) {
-            messageBuilder.append("\n\n\t Please click on the below link to complete the task: \n\t " + getTaskLink(task));
+            messageBuilder.append("<br/><br/><b>Please click on the below link to complete the task </b> : <br/> " + getTaskLink(task));
             email.getHeaders().put("task-id", task.getId());
         }
         email.setBody(messageBuilder.toString());
