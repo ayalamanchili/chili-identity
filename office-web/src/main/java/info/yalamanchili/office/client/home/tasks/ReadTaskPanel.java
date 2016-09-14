@@ -40,6 +40,7 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
     protected JSONObject task;
     protected String taskId;
     protected boolean completedTask;
+    public FlowPanel tablePanel;
     //Panels and widgets
     protected CaptionPanel captionPanel = new CaptionPanel();
     protected FlowPanel panel = new FlowPanel();
@@ -63,6 +64,18 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
         this.task = task;
         this.taskId = JSONUtils.toString(task, "id");
         this.completedTask = completedTask;
+        init(captionPanel);
+        populateValuesAndRenderButtons();
+        if (!completedTask) {
+            populateTaskForm();
+        }
+    }
+
+    public ReadTaskPanel(JSONObject task, boolean completedTask, FlowPanel tabPanel) {
+        this.task = task;
+        this.taskId = JSONUtils.toString(task, "id");
+        this.completedTask = completedTask;
+        tablePanel = tabPanel;
         init(captionPanel);
         populateValuesAndRenderButtons();
         if (!completedTask) {
@@ -101,7 +114,11 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
 
     protected void renderTaskFormPanel(String result) {
         if (result != null && !result.trim().toString().equals("null")) {
-            panel.add(new GenericBPMTaskFormPanel("Fill_the_form_and_complete_the_task", taskId, JSONUtils.convertFormProperties(result)));
+            if (tablePanel != null) {
+                panel.add(new GenericBPMTaskFormPanel("Fill_the_form_and_complete_the_task", taskId, JSONUtils.convertFormProperties(result), tablePanel));
+            } else {
+                panel.add(new GenericBPMTaskFormPanel("Fill_the_form_and_complete_the_task", taskId, JSONUtils.convertFormProperties(result)));
+            }
             completeB.setVisible(false);
             resolveB.setVisible(false);
         }
@@ -179,8 +196,11 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
                     @Override
                     public void onResponse(String result) {
                         new ResponseStatusWidget().show("Task Acquired");
+                        if (tablePanel != null) {
+                            tablePanel.clear();
+                        }
                         TabPanel.instance().getHomePanel().entityPanel.clear();
-                       TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
+                        TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
                     }
                 });
     }
@@ -191,6 +211,9 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
                     @Override
                     public void onResponse(String result) {
                         new ResponseStatusWidget().show("Task Released");
+                        if (tablePanel != null) {
+                            tablePanel.clear();
+                        }
                         TabPanel.instance().getHomePanel().entityPanel.clear();
                         TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
                     }
@@ -203,6 +226,9 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
                     @Override
                     public void onResponse(String result) {
                         new ResponseStatusWidget().show("Task Resolved");
+                        if (tablePanel != null) {
+                            tablePanel.clear();
+                        }
                         TabPanel.instance().getHomePanel().entityPanel.clear();
                         TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
                     }
@@ -215,6 +241,9 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
                     @Override
                     public void onResponse(String result) {
                         new ResponseStatusWidget().show("Task Completed");
+                        if (tablePanel != null) {
+                            tablePanel.clear();
+                        }
                         TabPanel.instance().getHomePanel().entityPanel.clear();
                         TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
                     }
@@ -227,6 +256,9 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
                     @Override
                     public void onResponse(String result) {
                         new ResponseStatusWidget().show("Task Deleted");
+                        if (tablePanel != null) {
+                            tablePanel.clear();
+                        }
                         TabPanel.instance().getHomePanel().entityPanel.clear();
                         TabPanel.instance().getHomePanel().entityPanel.add(new ReadAllTasks());
                     }
