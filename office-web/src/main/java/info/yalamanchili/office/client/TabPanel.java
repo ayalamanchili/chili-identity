@@ -58,7 +58,7 @@ import info.yalamanchili.office.client.time.corp.ReadCurrentCorpLeavesPanel;
 public class TabPanel extends Composite implements SelectionHandler<Integer> {
 
     private static Logger logger = Logger.getLogger(TabPanel.class.getName());
-    protected TabLayoutPanel tabPanel = new TabLayoutPanel(1.5, Unit.EM);
+    public TabLayoutPanel tabPanel = new TabLayoutPanel(1.5, Unit.EM);
     public EntityLayout homePanel = new EntityLayout();
     public EntityLayout myOfficePanel = new EntityLayout();
     public EntityLayout timePanel = new EntityLayout();

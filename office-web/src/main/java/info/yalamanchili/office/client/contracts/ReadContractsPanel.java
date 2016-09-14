@@ -23,6 +23,7 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.invoice.ReadAllInvoicePanel;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
@@ -99,19 +100,19 @@ public class ReadContractsPanel extends TReadComposite {
                     @Override
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
-                        Boolean isClientFeeApplicable=false;
+                        Boolean isClientFeeApplicable = false;
                         addWidgets();
-                        if (entity.containsKey("clientFeeApplicable"))
+                        if (entity.containsKey("clientFeeApplicable")) {
                             isClientFeeApplicable = JSONUtils.toBoolean(entity, "clientFeeApplicable");
-                        if(isClientFeeApplicable && entity.containsKey("clientFees")) {
+                        }
+                        if (isClientFeeApplicable && entity.containsKey("clientFees")) {
                             addField("finalBillingRate", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 3, 1);
                             addField("clientFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 3, 2);
                             assignFieldValueFromEntity("finalBillingRate", entity, DataType.FLOAT_FIELD);
                             assignFieldValueFromEntity("clientFees", entity, DataType.FLOAT_FIELD);
-                            alignFields(); 
-                        }
-                        else if (entity.containsKey("vendorFees")) {
-                            /*vendorFees*/                 
+                            alignFields();
+                        } else if (entity.containsKey("vendorFees")) {
+                            /*vendorFees*/
                             addField("finalBillingRate", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 3, 1);
                             addField("vendorFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 3, 2);
                             assignFieldValueFromEntity("finalBillingRate", entity, DataType.FLOAT_FIELD);
@@ -131,8 +132,8 @@ public class ReadContractsPanel extends TReadComposite {
         assignFieldValueFromEntity("company", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("employeeCompany", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("client", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("clientFeeApplicable", entity, DataType.BOOLEAN_FIELD);
-        assignFieldValueFromEntity("directClient", entity, DataType.BOOLEAN_FIELD);        
+//        assignFieldValueFromEntity("clientFeeApplicable", entity, DataType.BOOLEAN_FIELD);
+//        assignFieldValueFromEntity("directClient", entity, DataType.BOOLEAN_FIELD);        
         assignFieldValueFromEntity("clientLocation", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("clientContact", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("clientAPContact", entity, DataType.RICH_TEXT_AREA);
@@ -238,8 +239,8 @@ public class ReadContractsPanel extends TReadComposite {
         addField("vendor", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 11, 1);
         addField("vendorAPContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 12, 1);
         addField("client", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 13, 1);
-        addField("clientFeeApplicable", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL, 13, 2);
-        addField("directClient", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL, 14, 1);        
+//        addField("clientFeeApplicable", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL, 13, 2);
+//        addField("directClient", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL, 14, 1);        
         addField("clientLocation", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 14, 2);
         addField("clientAPContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 15, 1);
         addField("clientContact", true, false, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL, 15, 2);
@@ -315,13 +316,13 @@ public class ReadContractsPanel extends TReadComposite {
 
     @Override
     protected boolean enableViewTasks() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN);
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS_ADMIN);
     }
 
     @Override
     protected void displayTasks() {
         String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/process/";
-        tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
+        tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", false, TabPanel.instance().getReportingPanel()));
     }
 
     @Override

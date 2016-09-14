@@ -118,8 +118,8 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("clientContact", entity);
         assignEntityValueFromField("clientAPContacts", entity);
         assignEntityValueFromField("clientPaymentTerms", entity);
-        assignEntityValueFromField("clientFeeApplicable", entity);
-        assignEntityValueFromField("directClient", entity);
+//        assignEntityValueFromField("clientFeeApplicable", entity);
+//        assignEntityValueFromField("directClient", entity);
         assignEntityValueFromField("vendor", entity);
         assignEntityValueFromField("vendorAPContacts", entity);
         assignEntityValueFromField("vendorRecruiters", entity);
@@ -222,11 +222,11 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("company", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("client", entity, null);
-        assignFieldValueFromEntity("directClient", entity, DataType.BOOLEAN_FIELD);
+//        assignFieldValueFromEntity("directClient", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("clientLocation", entity, null);
         assignFieldValueFromEntity("clientContact", entity, null);
         assignFieldValueFromEntity("clientAPContacts", entity, null);
-        assignFieldValueFromEntity("clientFeeApplicable", entity, DataType.BOOLEAN_FIELD);
+//        assignFieldValueFromEntity("clientFeeApplicable", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("clientPaymentTerms", entity, DataType.TEXT_AREA_FIELD);
         assignFieldValueFromEntity("vendor", entity, null);
         assignFieldValueFromEntity("vendorAPContacts", entity, null);
@@ -331,7 +331,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addEnumField("company", false, true, ClientInformationCompany.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
         addDropDown("client", selectClientWidgetF);
-        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+//        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addDropDown("clientLocation", new SelectClientLocationWidget(false, false, Alignment.HORIZONTAL));
         addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
         selectClientAcctPayContact = new SelectClientAcctPayContact(false, false, Alignment.HORIZONTAL) {
@@ -341,7 +341,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             }
         };
         addDropDown("clientAPContacts", selectClientAcctPayContact);
-        addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+//        addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         if (!Auth.isAdmin() && cistatus.equals("COMPLETED")) {
             selectVendorWidgetF.setReadOnly(true);
@@ -605,8 +605,8 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                         JSONObject client = (JSONObject) JSONParser.parseLenient(response);
                         TextAreaField payTermF = (TextAreaField) fields.get("clientPaymentTerms");
                         payTermF.setValue(JSONUtils.toString(client, "paymentTerms"));
-                        BooleanField directClientB = (BooleanField) fields.get("directClient");
-                        directClientB.setValue(JSONUtils.toBoolean(client, "directClient"));
+//                        BooleanField directClientB = (BooleanField) fields.get("directClient");
+//                        directClientB.setValue(JSONUtils.toBoolean(client, "directClient"));
                     }
                 });
     }

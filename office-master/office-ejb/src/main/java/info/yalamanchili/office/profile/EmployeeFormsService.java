@@ -16,6 +16,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
+import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
@@ -297,7 +298,15 @@ public class EmployeeFormsService {
             }
         }
 
-        byte[] pdf = PDFUtils.generatePdf(data);
+        String empCompanyLogo = "";
+        if (emp.getCompany() != null) {
+            empCompanyLogo = emp.getCompany().getLogoURL().replace("entityId", emp.getCompany().getId().toString());
+        } else {
+            Company company = CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC);
+            empCompanyLogo = company.getLogoURL().replace("entityId", company.getId().toString());
+        }
+        byte[] pdf = PDFUtils.generatePdf(data, empCompanyLogo);
+
         return Response.ok(pdf)
                 .header("content-disposition", "filename = Joining-form-fillable.pdf")
                 .header("Content-Length", pdf.length)
@@ -367,7 +376,14 @@ public class EmployeeFormsService {
         data.getData().put("Name", emp.getFirstName() + " " + emp.getLastName());
 
         //TODO fill ach with emp and bank account details
-        byte[] pdf = PDFUtils.generatePdf(data);
+        String empCompanyLogo = "";
+        if (emp.getCompany() != null) {
+            empCompanyLogo = emp.getCompany().getLogoURL().replace("entityId", emp.getCompany().getId().toString());
+        } else {
+            Company company = CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC);
+            empCompanyLogo = company.getLogoURL().replace("entityId", company.getId().toString());
+        }
+        byte[] pdf = PDFUtils.generatePdf(data, empCompanyLogo);
 
         return Response.ok(pdf)
                 .header("content-disposition", "filename = ach-direct-deposit-form.pdf")
