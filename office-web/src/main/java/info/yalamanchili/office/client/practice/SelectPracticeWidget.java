@@ -20,11 +20,11 @@ import info.chili.gwt.utils.Alignment;
 public class SelectPracticeWidget extends SelectComposite {
 
     public SelectPracticeWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "Practice", readOnly, isRequired);
+        super(OfficeWelcome.constants2, "Practice", readOnly, isRequired);
     }
 
     public SelectPracticeWidget(Boolean readOnly, Boolean isRequired, Alignment alignment) {
-        super(OfficeWelcome.constants, "Practice", readOnly, isRequired, alignment);
+        super(OfficeWelcome.constants2, "Practice", readOnly, isRequired, alignment);
     }
 
     @Override
