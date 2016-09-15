@@ -9,11 +9,7 @@ package info.yalamanchili.office.client.admin.vendorlocation;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.data.CountryFactory;
@@ -28,6 +24,7 @@ import info.chili.gwt.data.IndiaStatesFactory;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.admin.vendor.TreeVendorsPanel;
 import info.yalamanchili.office.client.profile.address.AddressByZipService;
 import java.util.logging.Logger;
@@ -109,21 +106,21 @@ public class UpdateVendorLocationsPanel extends UpdateComposite implements Chang
 
     @Override
     protected void addWidgets() {
-        addField("street1", false, true, DataType.STRING_FIELD);
-        addField("street2", false, false, DataType.STRING_FIELD);
-        addField("zip", false, false, DataType.STRING_FIELD);
-        addField("city", false, true, DataType.STRING_FIELD);
+        addField("street1", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("zip", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("city", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         JSONValue service = entity.get("country");
-        addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]));
+        addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
         switch (service.isString().stringValue()) {
             case "USA":
-                addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]));
+                addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
                 break;
             case "INDIA":
-                addEnumField("state", false, true, IndiaStatesFactory.getStates().toArray(new String[0]));
+                addEnumField("state", false, true, IndiaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
                 break;
             case "CANADA":
-                addEnumField("state", false, true, CanadaStatesFactory.getStates().toArray(new String[0]));
+                addEnumField("state", false, true, CanadaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
                 break;
         }
         addField("state", false, true, DataType.ENUM_FIELD);
@@ -158,6 +155,37 @@ public class UpdateVendorLocationsPanel extends UpdateComposite implements Chang
         if (event.getSource().equals(zipField.getTextbox())) {
             AddressByZipService.getZipInformationService(zipField.getValue(), cityField, statesF, countriesF);                        
         }    
+    }
+    
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
+        StringField street1F = (StringField) fields.get("street1");
+        if (street1F.getValue() == null || "".equals(street1F.getValue())) {
+            street1F.setMessage("Please enter the street");
+            valid = false;
+        }
+        StringField cityF = (StringField) fields.get("city");
+        if (cityF.getValue() == null || "".equals(cityF.getValue())) {
+            cityF.setMessage("Please enter the city");
+            valid = false;
+        }
+        StringField zipF = (StringField) fields.get("zip");
+        if (zipF.getValue() == null || "".equals(zipF.getValue())) {
+            zipF.setMessage("Please enter the zip code");
+            valid = false;
+        }
+        EnumField stateF = (EnumField) fields.get("state");
+        if (stateF.getValue() == null || "".equals(stateF.getValue())) {
+            stateF.setMessage("Please select the state");
+            valid = false;
+        }
+        EnumField countryF = (EnumField) fields.get("country");
+        if (countryF.getValue() == null || "".equals(countryF.getValue())) {
+            countryF.setMessage("Please select the country");
+            valid = false;
+        }
+        return valid;
     }
 }
 
