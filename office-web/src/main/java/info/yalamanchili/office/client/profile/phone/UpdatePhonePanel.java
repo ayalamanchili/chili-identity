@@ -21,6 +21,8 @@ import info.chili.gwt.utils.Alignment;
 public class UpdatePhonePanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdatePhonePanel.class.getName());
+    public SelectPhoneTypeWidget phoneTypeW = new SelectPhoneTypeWidget(false, false, Alignment.HORIZONTAL);
+
 
     public UpdatePhonePanel(JSONObject entity) {
         initUpdateComposite(entity, "Phone", OfficeWelcome.constants);
@@ -40,16 +42,16 @@ public class UpdatePhonePanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
 
     }
 
@@ -81,10 +83,11 @@ public class UpdatePhonePanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
+        addDropDown("phoneType", phoneTypeW);
         addField("countryCode", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("phoneNumber", false, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addField("extension", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
-        addDropDown("phoneType", new SelectPhoneTypeWidget(false, false, Alignment.HORIZONTAL));
+        
     }
 
     @Override
