@@ -49,15 +49,15 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class ImmigrationCheckRequisitionService {
-    
+
     @Autowired
     protected ImmigrationCheckRequisitionDao immigrationCheckRequisitionDao;
     @Autowired
     protected CheckRequisitionItemDao checkRequisitionItemDao;
-    
+
     @Autowired
     protected Mapper mapper;
-    
+
     public void checkVoidRequest(Long id) {
         ImmigrationCheckRequisition icr = ImmigrationCheckRequisitionDao.instance().findById(id);
         Map<String, Object> vars = new HashMap<>();
@@ -69,7 +69,7 @@ public class ImmigrationCheckRequisitionService {
         icr.setBpmProcessId(OfficeBPMService.instance().startProcess("immigration_check_requisition_void_request", vars));
         immigrationCheckRequisitionDao.save(icr);
     }
-    
+
     public void submitImmigrationCheckRequisition(ImmigrationCheckRequisitionSaveDto dto) {
         ImmigrationCheckRequisition entity = mapper.map(dto, ImmigrationCheckRequisition.class);
         entity.setSubmittedBy(OfficeSecurityService.instance().getCurrentUserName());
@@ -96,7 +96,7 @@ public class ImmigrationCheckRequisitionService {
         entity.setBpmProcessId(startExpenseReportProcess(entity));
         entity = immigrationCheckRequisitionDao.save(entity);
     }
-    
+
     protected String startExpenseReportProcess(ImmigrationCheckRequisition entity) {
         if (entity.getBpmProcessId() != null) {
             OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
@@ -112,7 +112,7 @@ public class ImmigrationCheckRequisitionService {
         vars.put("entityId", entity.getId());
         return OfficeBPMService.instance().startProcess("immigration_check_requisition_process", vars);
     }
-    
+
     public void saveImmigrationCheckRequisition(ImmigrationCheckRequisitionSaveDto dto) {
         ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.save(dto);
         //add/update items
@@ -122,7 +122,7 @@ public class ImmigrationCheckRequisitionService {
             Company company = CompanyDao.instance().findById(dto.getCompany().getId());
             entity.setCompanyName(company.getName());
         }
-        
+
         for (CheckRequisitionItem item : dto.getItems()) {
             if (item.getId() != null) {
                 checkRequisitionItemDao.save(item);
@@ -134,13 +134,13 @@ public class ImmigrationCheckRequisitionService {
         }
         immigrationCheckRequisitionDao.getEntityManager().merge(entity);
     }
-    
+
     public void delete(Long id) {
         ImmigrationCheckRequisition ticket = immigrationCheckRequisitionDao.findById(id);
         OfficeBPMTaskService.instance().deleteAllTasksForProcessId(ticket.getBpmProcessId(), true);
         immigrationCheckRequisitionDao.delete(id);
     }
-    
+
     public ImmigrationCheckRequisitionSaveDto read(Long id) {
         ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.findById(id);
         ImmigrationCheckRequisitionSaveDto res = (ImmigrationCheckRequisitionSaveDto) BeanMapper.clone(entity, ImmigrationCheckRequisitionSaveDto.class);
@@ -155,7 +155,7 @@ public class ImmigrationCheckRequisitionService {
         res.setStatus(entity.getStatus());
         return res;
     }
-    
+
     public ImmigrationCheckRequisitionSaveDto clone(Long id) {
         ImmigrationCheckRequisition entity = immigrationCheckRequisitionDao.clone(id, "amount", "submittedBy", "employeeName", "requestedDate", "approvedBy", "approvedDate", "accountedBy", "checkIssuedDate", "accountDeptReceivedDate", "status", "bpmProcessId", "employee");
         ImmigrationCheckRequisitionSaveDto res = mapper.map(entity, ImmigrationCheckRequisitionSaveDto.class);
@@ -165,21 +165,11 @@ public class ImmigrationCheckRequisitionService {
         }
         return res;
     }
-    
+
     public Response getReport(ImmigrationCheckRequisition entity) {
         PdfDocumentData data = new PdfDocumentData();
         Employee emp = entity.getEmployee();
-        if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.CGS_INC)) {
-            data.setTemplateUrl("/templates/pdf/check-request-cgs-template.pdf");
-        } else if (emp == null && Company.CGS_INC.equals(entity.getCompanyName())) {
-            data.setTemplateUrl("/templates/pdf/check-request-cgs-template.pdf");
-        } else if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.TECHPILLARS)) {
-            data.setTemplateUrl("/templates/pdf/check-request-tp-template.pdf");
-        } else if (emp == null && Company.TECHPILLARS.equals(entity.getCompanyName())) {
-            data.setTemplateUrl("/templates/pdf/check-request-tp-template.pdf");
-        } else {
-            data.setTemplateUrl("/templates/pdf/check-request-template.pdf");
-        }
+        data.setTemplateUrl("/templates/pdf/check-request-template.pdf");
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
         Employee preparedBy = EmployeeDao.instance().findEmployeWithEmpId(entity.getSubmittedBy());
@@ -244,14 +234,31 @@ public class ImmigrationCheckRequisitionService {
             allComment = allComment + ". " + comment.getComment();
         }
         data.getData().put("comment", allComment);
-        byte[] pdf = PDFUtils.generatePdf(data);
+        String empCompanyLogo = "";
+        if (emp != null) {
+            if (emp.getCompany() == null && emp.getCompany().getLogoURL() == null) {
+                Company company = CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC);
+                empCompanyLogo = company.getLogoURL().replace("entityId", company.getId().toString());
+            } else {
+                empCompanyLogo = emp.getCompany().getLogoURL().replace("entityId", emp.getCompany().getId().toString());
+            }
+        } else if (emp == null) {
+            if (entity.getCompanyName() != null) {
+                Company company = CompanyDao.instance().findByCompanyName(entity.getCompanyName());
+                empCompanyLogo = company.getLogoURL().replace("entityId", company.getId().toString());
+            } else {
+                Company company = CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC);
+                empCompanyLogo = company.getLogoURL().replace("entityId", company.getId().toString());
+            }
+        }
+        byte[] pdf = PDFUtils.generatePdf(data, empCompanyLogo);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = check-requisition.pdf")
                 .header("Content-Length", pdf.length)
                 .build();
-        
+
     }
-    
+
     public static ImmigrationCheckRequisitionService instance() {
         return SpringContext.getBean(ImmigrationCheckRequisitionService.class);
     }

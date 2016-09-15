@@ -407,6 +407,8 @@ public class EmployeeFormsService {
             additionalDetails.setReferredBy("Unknown");
             additionalDetails.setEthnicity(Ethnicity.Unspecified);
             additionalDetails.setMaritalStatus(MaritalStatus.Unknown);
+            additionalDetails.setTargetEntityId(emp.getId());
+            additionalDetails.setTargetEntityName(EmployeeAdditionalDetails.class.getCanonicalName());
             additionalDetails.setRolesAndResponsibilities(details.getRolesAndResponsibilities());
             EmployeeAdditionalDetailsDao.instance().save(additionalDetails, emp);
         }
