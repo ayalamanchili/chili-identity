@@ -10,6 +10,7 @@ package info.yalamanchili.office.profile;
 
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
+import static info.chili.commons.pdf.PDFUtils.generatePdf;
 import info.chili.commons.pdf.PdfDocumentData;
 import info.chili.security.Signature;
 import info.chili.spring.SpringContext;
@@ -321,7 +322,6 @@ public class EmployeeFormsService {
         data.setTemplateUrl("/templates/pdf/ach-direct-deposit-form-template.pdf");
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
 
-        //print ACH Form with the employee and bank details. @radhika
         data.getData().put("employeeName", emp.getLastName() + " , " + emp.getFirstName());
         emp.getAddresss().stream().forEach((address) -> {
             String street2 = address.getStreet2();
@@ -343,7 +343,6 @@ public class EmployeeFormsService {
         data.getData().put("routingNumber", ba.getBankRoutingNumber());
 
         data.getData().put("bankName", ba.getBankName());
-        //TODO no need address1 and address2
 
         data.getData().put("bankAccountAddress1", ba.getBankAddress1());
         if (!"".equals(ba.getBankAddress2()) || ba.getBankAddress2() != null) {
@@ -375,7 +374,6 @@ public class EmployeeFormsService {
         }
         data.getData().put("Name", emp.getFirstName() + " " + emp.getLastName());
 
-        //TODO fill ach with emp and bank account details
         String empCompanyLogo = "";
         if (emp.getCompany() != null) {
             empCompanyLogo = emp.getCompany().getLogoURL().replace("entityId", emp.getCompany().getId().toString());
@@ -415,5 +413,53 @@ public class EmployeeFormsService {
         EmployeeAdditionalDetailsDto dto = EmployeeAdditionalDetailsDto.map(mapper, additionalDetails);
         dto.setEmployee(emp);
         return dto;
+    }
+
+    public Response printRolesAndRespForm(Employee emp) {
+        PdfDocumentData data = new PdfDocumentData();
+        OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
+        data.setTemplateUrl("/templates/pdf/emp-roles-responsibilities-template.pdf");
+        data.setKeyStoreName(securityConfiguration.getKeyStoreName());
+
+        //print ACH Form with the employee and bank details. @radhika
+        data.getData().put("employee", emp.getLastName() + " , " + emp.getFirstName());
+        if (emp.getBranch() != null) {
+            data.getData().put("branch", emp.getBranch().name());
+        }
+        if (emp.getJobTitle() != null) {
+            data.getData().put("jobtitle", emp.getJobTitle());
+        }
+        if (emp.getStartDate() != null) {
+            data.getData().put("startDate", new SimpleDateFormat("MM/dd/yyyy").format(emp.getStartDate()));
+        }
+        if (CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To") != null) {
+            Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
+            data.getData().put("reporsToMgr", reportsToEmp.getFirstName() + " , " + reportsToEmp.getLastName());
+        }
+        if (CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Perf_Eval_Manager") != null) {
+            Employee manager = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Perf_Eval_Manager");
+            if (manager.getId() != null) {
+                data.getData().put("perfEvolMgr", manager.getFirstName() + " , " + manager.getLastName());
+            }
+        }
+        EmployeeAdditionalDetails empAddnlDetails = EmployeeAdditionalDetailsDao.instance().find(emp);
+        if (empAddnlDetails != null) {
+            String[] rolesArray = empAddnlDetails.getRolesAndResponsibilities().split("\n");
+            for (int i = 0; i < rolesArray.length; i = i + 2) {
+                data.getData().put("role" + i, rolesArray[i].replaceAll("\\<.*?\\>", ""));
+            }
+        }
+        String empCompanyLogo = "";
+        if (emp.getCompany() != null) {
+            empCompanyLogo = emp.getCompany().getLogoURL().replace("entityId", emp.getCompany().getId().toString());
+        } else {
+            Company company = CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC);
+            empCompanyLogo = company.getLogoURL().replace("entityId", company.getId().toString());
+        }
+        byte[] pdf = generatePdf(data, empCompanyLogo);
+        return Response.ok(pdf)
+                .header("content-disposition", "filename = emp-roles-responsibilities.pdf")
+                .header("Content-Length", pdf.length)
+                .build();
     }
 }
