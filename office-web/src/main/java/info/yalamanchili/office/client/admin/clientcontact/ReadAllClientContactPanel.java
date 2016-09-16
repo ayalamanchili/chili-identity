@@ -141,7 +141,7 @@ public class ReadAllClientContactPanel extends CRUDReadAllComposite {
     @Override
     protected void configureCreateButton() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING)) {
-            createButton.setText("Add Client Contact");
+            createButton.setText("Add Recruiter Contact");
             createButton.setVisible(true);
         } else {
             createButton.setVisible(false);
