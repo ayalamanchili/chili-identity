@@ -41,7 +41,7 @@ public class ClientSidePanel extends ALComposite implements ClickHandler, OpenHa
 
     private static Logger logger = Logger.getLogger(ClientSidePanel.class.getName());
     public FlowPanel clientsidepanel = new FlowPanel();
-    protected DisclosurePanel msaValidReportL = new DisclosurePanel("MSA Validity Date Report");    
+//    protected DisclosurePanel msaValidReportL = new DisclosurePanel("MSA Validity Date Report");    
     ClickableLink clientSummaryReportL = new ClickableLink("Client Summary Report");
     ClickableLink activeClientsReportL = new ClickableLink("Active Clients Report");
     FlowPanel msaValidReportsPanel = new FlowPanel();
@@ -62,7 +62,7 @@ public class ClientSidePanel extends ALComposite implements ClickHandler, OpenHa
     protected void addListeners() {
         clientSummaryReportL.addClickHandler(this);
         activeClientsReportL.addClickHandler(this);
-        msaValidReportL.addOpenHandler(this);
+//        msaValidReportL.addOpenHandler(this);
         viewReportsB.addClickHandler(this);
         clearFields.addClickHandler(this);
         reportsB.addClickHandler(this);        
@@ -76,9 +76,9 @@ public class ClientSidePanel extends ALComposite implements ClickHandler, OpenHa
     @Override
     protected void addWidgets() {
         clientsidepanel.add(new SearchClientpanel());
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
-            clientsidepanel.add(msaValidReportL);
-        }        
+//        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
+//            clientsidepanel.add(msaValidReportL);
+//        }        
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             clientsidepanel.add(clientSummaryReportL);
             clientsidepanel.add(activeClientsReportL);
@@ -204,17 +204,17 @@ public class ClientSidePanel extends ALComposite implements ClickHandler, OpenHa
     @Override
     public void onOpen(OpenEvent event) {
 
-        if (event.getSource().equals(msaValidReportL)) {
-            TabPanel.instance().adminPanel.sidePanelTop.setHeight("100%");
-            clearReportsField();
-            startDateF.setLabelText("MSA Valid From Date*");
-            endDateF.setLabelText("MSA Valid To Date*");
-            msaValidReportsPanel.add(startDateF);
-            msaValidReportsPanel.add(endDateF);
-            msaValidReportsPanel.add(viewReportsB);
-            msaValidReportsPanel.add(reportsB);
-            msaValidReportsPanel.add(clearFields);
-            msaValidReportL.setContent(msaValidReportsPanel);
-        }
+//        if (event.getSource().equals(msaValidReportL)) {
+//            TabPanel.instance().adminPanel.sidePanelTop.setHeight("100%");
+//            clearReportsField();
+//            startDateF.setLabelText("MSA Valid From Date*");
+//            endDateF.setLabelText("MSA Valid To Date*");
+//            msaValidReportsPanel.add(startDateF);
+//            msaValidReportsPanel.add(endDateF);
+//            msaValidReportsPanel.add(viewReportsB);
+//            msaValidReportsPanel.add(reportsB);
+//            msaValidReportsPanel.add(clearFields);
+//            msaValidReportL.setContent(msaValidReportsPanel);
+//        }
     }    
 }
