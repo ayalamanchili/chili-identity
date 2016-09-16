@@ -162,7 +162,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
         new ResponseStatusWidget().show("Successfully Deleted Client Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId(), active));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
+//        TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
     }
 
     @Override

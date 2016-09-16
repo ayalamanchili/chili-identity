@@ -214,7 +214,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         new ResponseStatusWidget().show("Successfully Updated Client Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId(), active));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
+//        TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
     }
 
     @Override
