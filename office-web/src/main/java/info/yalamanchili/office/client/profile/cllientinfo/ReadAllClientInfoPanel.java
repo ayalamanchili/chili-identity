@@ -89,10 +89,14 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
             table.setText(0, 3, getKeyValue("ItemNo"));
             table.setText(0, 4, getKeyValue("BillRate"));
             table.setText(0, 5, getKeyValue("Frequency"));
+            table.setText(0, 6, getKeyValue("StartDate"));
+            table.setText(0, 7, getKeyValue("EndDate"));
+            table.setText(0, 8, getKeyValue("Status"));
+        } else {
+            table.setText(0, 3, getKeyValue("StartDate"));
+            table.setText(0, 4, getKeyValue("EndDate"));
+            table.setText(0, 5, getKeyValue("Status"));
         }
-        table.setText(0, 6, getKeyValue("StartDate"));
-        table.setText(0, 7, getKeyValue("EndDate"));
-        table.setText(0, 8, getKeyValue("Status"));
     }
 
     @Override
@@ -186,10 +190,15 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
                 table.setText(i, 3, JSONUtils.toString(entity, "itemNumber"));
                 table.setText(i, 4, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
                 setEnumColumn(i, 5, entity, InvoiceFrequency.class.getSimpleName(), "invoiceFrequency");
+                table.setText(i, 6, DateUtils.formatDate(JSONUtils.toString(entity, "startDate")));
+                table.setText(i, 7, DateUtils.formatDate(JSONUtils.toString(entity, "endDate")));
+                setEnumColumn(i, 8, entity, ClientInformationStatus.class.getSimpleName(), "status");
+            } else {
+                table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "startDate")));
+                table.setText(i, 4, DateUtils.formatDate(JSONUtils.toString(entity, "endDate")));
+                setEnumColumn(i, 5, entity, ClientInformationStatus.class.getSimpleName(), "status");
             }
-            table.setText(i, 6, DateUtils.formatDate(JSONUtils.toString(entity, "startDate")));
-            table.setText(i, 7, DateUtils.formatDate(JSONUtils.toString(entity, "endDate")));
-            setEnumColumn(i, 8, entity, ClientInformationStatus.class.getSimpleName(), "status");
+
         }
     }
 
