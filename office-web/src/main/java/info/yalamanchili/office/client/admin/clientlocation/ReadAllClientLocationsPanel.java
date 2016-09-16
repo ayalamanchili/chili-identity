@@ -133,7 +133,7 @@ public class ReadAllClientLocationsPanel extends CRUDReadAllComposite {
     @Override
     protected void configureCreateButton() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING)) {
-            createButton.setText("Add Client Location");
+            createButton.setText("Add Location");
             createButton.setVisible(true);
         } else {
             createButton.setVisible(false);
