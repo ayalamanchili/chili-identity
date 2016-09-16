@@ -132,7 +132,7 @@ public class ReadAllVendorLocationPanel extends CRUDReadAllComposite {
     @Override
     protected void configureCreateButton() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING)) {
-            createButton.setText("Add Vendor Location");
+            createButton.setText("Add Location");
             createButton.setVisible(true);
         } else {
             createButton.setVisible(false);
