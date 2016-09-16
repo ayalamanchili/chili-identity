@@ -42,7 +42,7 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler, OpenH
     private static Logger logger = Logger.getLogger(VendorsSidePanel.class.getName());
     public FlowPanel vendorsidepanel = new FlowPanel();
     protected DisclosurePanel coiEndDateReportsL = new DisclosurePanel("COI End Date Report");
-    protected DisclosurePanel msaValidReportL = new DisclosurePanel("MSA Validity Date Report");
+//    protected DisclosurePanel msaValidReportL = new DisclosurePanel("MSA Validity Date Report");
     ClickableLink vendorSummaryReportL = new ClickableLink("Vendor Summary Report");
     ClickableLink activeVendorsReportL = new ClickableLink("Active Vendors Report");
     FlowPanel coiReportsPanel = new FlowPanel();
@@ -65,7 +65,7 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler, OpenH
         vendorSummaryReportL.addClickHandler(this);
         activeVendorsReportL.addClickHandler(this);
         coiEndDateReportsL.addOpenHandler(this);
-        msaValidReportL.addOpenHandler(this);
+//        msaValidReportL.addOpenHandler(this);
         viewReportsB.addClickHandler(this);
         clearFields.addClickHandler(this);
         reportsB.addClickHandler(this);
@@ -80,9 +80,9 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler, OpenH
     protected void addWidgets() {
         vendorsidepanel.add(new SearchVendorPanel());
         vendorsidepanel.add(coiEndDateReportsL);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
-            vendorsidepanel.add(msaValidReportL);
-        }
+//        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
+//            vendorsidepanel.add(msaValidReportL);
+//        }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CEO, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             vendorsidepanel.add(vendorSummaryReportL);
             vendorsidepanel.add(activeVendorsReportL);
@@ -258,7 +258,7 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler, OpenH
     @Override
     public void onOpen(OpenEvent event) {
         if (event.getSource().equals(coiEndDateReportsL)) {
-            msaValidReportL.setOpen(false);
+//            msaValidReportL.setOpen(false);
             TabPanel.instance().adminPanel.sidePanelTop.setHeight("100%");
             clearReportsField();
             startDateF.setLabelText("COI From End Date*");
@@ -270,18 +270,18 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler, OpenH
             coiReportsPanel.add(clearFields);
             coiEndDateReportsL.setContent(coiReportsPanel);
         }
-        if (event.getSource().equals(msaValidReportL)) {
-            coiEndDateReportsL.setOpen(false);
-            TabPanel.instance().adminPanel.sidePanelTop.setHeight("100%");
-            clearReportsField();
-            startDateF.setLabelText("MSA Valid From Date*");
-            endDateF.setLabelText("MSA Valid To Date*");
-            msaValidReportsPanel.add(startDateF);
-            msaValidReportsPanel.add(endDateF);
-            msaValidReportsPanel.add(viewReportsB);
-            msaValidReportsPanel.add(reportsB);
-            msaValidReportsPanel.add(clearFields);
-            msaValidReportL.setContent(msaValidReportsPanel);
-        }
+//        if (event.getSource().equals(msaValidReportL)) {
+//            coiEndDateReportsL.setOpen(false);
+//            TabPanel.instance().adminPanel.sidePanelTop.setHeight("100%");
+//            clearReportsField();
+//            startDateF.setLabelText("MSA Valid From Date*");
+//            endDateF.setLabelText("MSA Valid To Date*");
+//            msaValidReportsPanel.add(startDateF);
+//            msaValidReportsPanel.add(endDateF);
+//            msaValidReportsPanel.add(viewReportsB);
+//            msaValidReportsPanel.add(reportsB);
+//            msaValidReportsPanel.add(clearFields);
+//            msaValidReportL.setContent(msaValidReportsPanel);
+//        }
     }
 }
