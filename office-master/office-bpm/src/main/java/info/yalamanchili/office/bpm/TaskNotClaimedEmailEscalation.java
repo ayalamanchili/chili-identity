@@ -52,7 +52,7 @@ public class TaskNotClaimedEmailEscalation implements JavaDelegate {
                         messageText = messageText.concat("<tr> <td> <b>" + descArrayLeft.trim() + "</b> </td>");
                         messageText = messageText.concat("<td> :" + descArrayRight + "</td> </tr>");
                     } else {
-                        messageText = messageText.concat("<br/>" + descA[i]);
+                        messageText = messageText.concat("<tr> <td> </td> <td> " + descA[i] + "</td></tr>");
                     }
                 }
                 if (descA[descA.length - 1].contains("instructions") || descA[descA.length - 1].contains("http")) {
