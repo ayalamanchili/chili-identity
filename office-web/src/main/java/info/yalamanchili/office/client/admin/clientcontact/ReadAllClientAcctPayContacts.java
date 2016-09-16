@@ -63,7 +63,7 @@ public class ReadAllClientAcctPayContacts extends ReadAllContactsPanel {
     @Override
     protected void configureCreateButton() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING)) {
-            createButton.setText("Add Client Accounts Payable Contact");
+            createButton.setText("Add Accounts Payable Contact");
             createButton.setVisible(true);
         } else {
             createButton.setVisible(false);
