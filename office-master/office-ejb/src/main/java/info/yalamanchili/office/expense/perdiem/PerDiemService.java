@@ -17,7 +17,9 @@ import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.perdiem.PerDiemDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
+import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.expense.Perdiem.PerDiem;
 import info.yalamanchili.office.entity.expense.Perdiem.PerDiemStatus;
 import info.yalamanchili.office.entity.profile.Address;
@@ -138,8 +140,14 @@ public class PerDiemService {
         data.getData().put("currentDate", sdf.format(submittedDate));
         Signature signature = new Signature(entity.getEmployee().getEmployeeId(), entity.getEmployee().getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(submittedDate), entity.getEmployee().getPrimaryEmail().getEmail(), null);
         data.getSignatures().add(signature);
-
-        byte[] pdf = PDFUtils.generatePdf(data);
+        String empCompanyLogo = "";
+        if (preparedBy.getCompany() != null) {
+            empCompanyLogo = preparedBy.getCompany().getLogoURL().replace("entityId", preparedBy.getCompany().getId().toString());
+        } else {
+            Company company = CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC);
+            empCompanyLogo = company.getLogoURL().replace("entityId", company.getId().toString());
+        }
+        byte[] pdf = PDFUtils.generatePdf(data, empCompanyLogo);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = perdiem-requisition.pdf")
                 .header("Content-Length", pdf.length)

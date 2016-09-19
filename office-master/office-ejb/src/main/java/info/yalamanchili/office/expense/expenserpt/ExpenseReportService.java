@@ -50,7 +50,6 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dozer.Mapper;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -253,22 +252,10 @@ public class ExpenseReportService {
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
         Employee emp = entity.getEmployee();
         if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("GENERAL_EXPENSE")) {
-            if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.CGS_INC)) {
-                data.setTemplateUrl("/templates/pdf/expense-report-cgs-template.pdf");
-            } else if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.TECHPILLARS)) {
-                data.setTemplateUrl("/templates/pdf/expense-report-tp-template.pdf");
-            } else {
-                data.setTemplateUrl("/templates/pdf/expense-report-template.pdf");
-            }
+            data.setTemplateUrl("/templates/pdf/expense-report-template.pdf");
         }
         if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("TRAVEL_EXPENSE")) {
-            if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.CGS_INC)) {
-                data.setTemplateUrl("/templates/pdf/travel-expenses-cgs-template.pdf");
-            } else if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.TECHPILLARS)) {
-                data.setTemplateUrl("/templates/pdf/travel-expenses-tp-template.pdf");
-            } else {
-                data.setTemplateUrl("/templates/pdf/travel-expenses-form.pdf");
-            }
+            data.setTemplateUrl("/templates/pdf/travel-expenses-form.pdf");
         }
 
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
@@ -424,7 +411,14 @@ public class ExpenseReportService {
 
         }
         data.getData().put("comment", allComment);
-        byte[] pdf = PDFUtils.generatePdf(data);
+        String empCompanyLogo = "";
+        if (emp.getCompany() != null) {
+            empCompanyLogo = emp.getCompany().getLogoURL().replace("entityId", emp.getCompany().getId().toString());
+        } else {
+            Company company = CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC);
+            empCompanyLogo = company.getLogoURL().replace("entityId", company.getId().toString());
+        }
+        byte[] pdf = PDFUtils.generatePdf(data, empCompanyLogo);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = Expense-Report.pdf")
                 .header("Content-Length", pdf.length)
