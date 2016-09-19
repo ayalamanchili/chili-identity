@@ -86,7 +86,7 @@ public class AdvanceRequisitionService {
         EmployeeDao employeeDao = EmployeeDao.instance();
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
-        Employee preparedBy = entity.getEmployee();
+        Employee preparedBy = employeeDao.findById(entity.getEmployee().getId());
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
         data.getData().put("employeeName", prepareByStr);
         data.getData().put("dateRequested", new SimpleDateFormat("MM-dd-yyyy").format(entity.getDateRequested()));
