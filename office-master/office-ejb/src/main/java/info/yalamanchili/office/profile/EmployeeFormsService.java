@@ -287,11 +287,11 @@ public class EmployeeFormsService {
             String nameOfCompany = company.getName();
             if (nameOfCompany.contains("LLC")) {
                 data.getData().put("companyLLC", "true");
-            } else if (nameOfCompany.contains("INC")) {
+            } else if (nameOfCompany.contains("System Soft Technologies INC")) {
                 data.getData().put("companyINC", "true");
-            } else if (nameOfCompany.contains("Tech Pillars")) {
+            } else if (nameOfCompany.contains("TechPillars")) {
                 data.getData().put("companyTP", "true");
-            } else if (nameOfCompany.contains("CGS")) {
+            } else if (nameOfCompany.contains("CGS INC")) {
                 data.getData().put("companyCGS", "true");
             }
             if (emp.getCompany().getAbbreviation() != null) {
