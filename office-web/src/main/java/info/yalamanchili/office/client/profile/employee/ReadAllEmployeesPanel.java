@@ -110,21 +110,21 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
                 table.setText(i, 4, JSONUtils.toString(entity, "jobTitle"));
                 table.setWidget(i, 5, new ImageField("Picture", JSONUtils.toString(entity, "imageURL"), JSONUtils.toString(entity, "id"), 50, 50, false));
             }
-            Boolean status = JSONUtils.toBoolean(entity,"status");
-            if(!status){
-                if(Auth.isEmployee(entity) || Auth.isCorporateEmployee(entity) || Auth.isInternEmployee(entity)){
+            Boolean status = JSONUtils.toBoolean(entity, "status");
+            if (!status) {
+                if (Auth.isEmployee(entity) || Auth.isCorporateEmployee(entity) || Auth.isInternEmployee(entity)) {
                     HTMLTable.RowFormatter rf = table.getRowFormatter();
                     rf.addStyleName(i, "y-gwt-ReadAllComposite-DeactiveRow");
                 }
             }
         }
     }
-    
+
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.isAdmin()) {
             createOptionsWidget(OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
-        } else if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_CONSULTANT_TIME_ADMIN)) {
+        } else if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_CONSULTANT_TIME_ADMIN, ROLE.ROLE_ON_BOARDING_MGR)) {
             createOptionsWidget(OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
         } else {
             createOptionsWidget(OptionsType.READ, row, JSONUtils.toString(entity, "id"));
@@ -196,7 +196,7 @@ public class ReadAllEmployeesPanel extends CRUDReadAllComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_SYSTEM_AND_NETWORK_ADMIN, ROLE.ROLE_CONTRACTS_ADMIN)) {
             createButton.setText("Create Employee");
             createButton.setVisible(true);
-        }else{
+        } else {
             createButton.setVisible(false);
         }
     }
