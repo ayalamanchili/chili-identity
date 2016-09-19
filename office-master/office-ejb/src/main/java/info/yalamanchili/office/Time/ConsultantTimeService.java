@@ -20,6 +20,7 @@ import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.ConsultantTimeSheetDao;
@@ -166,13 +167,7 @@ public class ConsultantTimeService {
     public Response getReport(ConsultantTimeSheet entity) {
         PdfDocumentData data = new PdfDocumentData();
         Employee emp = entity.getEmployee();
-        if (emp.getCompany() != null && emp.getCompany().getName().equals(Company.TECHPILLARS)) {
-            data.setTemplateUrl("/templates/pdf/assoc-ts-template-techp.pdf");
-        } else if (emp.getCompany() != null && emp.getCompany().getName().equals(Company.CGS_INC)) {
-            data.setTemplateUrl("/templates/pdf/assoc-ts-template-cgs.pdf");
-        } else {
-            data.setTemplateUrl("templates/pdf/assoc-ts-template.pdf");
-        }
+        data.setTemplateUrl("templates/pdf/assoc-ts-template.pdf");
         EmployeeDao employeeDao = EmployeeDao.instance();
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
@@ -195,7 +190,15 @@ public class ConsultantTimeService {
             Signature approvedBysignature = new Signature(approver.getEmployeeId(), approver.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "approverSignature", DateUtils.dateToCalendar(entity.getApprovedDate()), employeeDao.getPrimaryEmail(approver), null);
             data.getSignatures().add(approvedBysignature);
         }
-        byte[] pdf = PDFUtils.generatePdf(data);
+        String empCompanyLogo = "";
+        if (emp.getCompany() != null) {
+            empCompanyLogo = emp.getCompany().getLogoURL().replace("entityId", emp.getCompany().getId().toString());
+        } else {
+            Company company = CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC);
+            empCompanyLogo = company.getLogoURL().replace("entityId", company.getId().toString());
+        }
+        byte[] pdf = PDFUtils.generatePdf(data, empCompanyLogo);
+
         return Response.ok(pdf)
                 .header("content-disposition", "filename = leave-request.pdf")
                 .header("Content-Length", pdf.length)
