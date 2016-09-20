@@ -187,7 +187,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         addField("consultantJobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("employeeType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("company", true, true, ClientInformationCompany.names(), Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
+        entityFieldsPanel.add(getLineSeperatorTag("Client Information"));
         addDropDown("client", new SelectClientWidget(true, false, Alignment.HORIZONTAL));
 //        addField("directClient", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addDropDown("clientLocation", new SelectClientLocationWidget(true, false, Alignment.HORIZONTAL));
@@ -201,6 +201,9 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         addDropDown("clientAPContacts", selectClientAcctPayContact);
 //        addField("clientFeeApplicable", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("clientPaymentTerms", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Middle Vendor Information"));
+        addDropDown("middleVendor", new SelectMiddleVendorWidget(true, false, Alignment.HORIZONTAL));
+        entityFieldsPanel.add(getLineSeperatorTag("Vendor Information"));
         addDropDown("vendor", new SelectVendorWidget(true, true, Alignment.HORIZONTAL));
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, true, Alignment.HORIZONTAL));
         selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL) {
@@ -218,7 +221,6 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         };
         addDropDown("vendorAPContacts", selectVendorAPContactsW);
         addField("vendorPaymentTerms", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addDropDown("middleVendor", new SelectMiddleVendorWidget(true, false, Alignment.HORIZONTAL));
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("isEndDateConfirmed", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
