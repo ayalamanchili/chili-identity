@@ -44,6 +44,7 @@ public class EmployeeOnBoarding extends AbstractEntity {
      */
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(message = "{startDate.not.empty.msg}")
+    @org.hibernate.annotations.Index(name = "EMP_ONB_STRT_DT")
     protected Date startedDate;
 
     /**
