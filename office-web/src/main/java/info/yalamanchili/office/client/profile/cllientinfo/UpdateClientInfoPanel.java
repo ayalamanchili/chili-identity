@@ -329,7 +329,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("employeeType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("company", false, true, ClientInformationCompany.names(), Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
+        entityFieldsPanel.add(getLineSeperatorTag("Client Information"));
         addDropDown("client", selectClientWidgetF);
 //        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addDropDown("clientLocation", new SelectClientLocationWidget(false, false, Alignment.HORIZONTAL));
@@ -345,6 +345,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         if (!Auth.isAdmin() && cistatus.equals("COMPLETED")) {
             selectVendorWidgetF.setReadOnly(true);
+            entityFieldsPanel.add(getLineSeperatorTag("Vendor Information"));
             addDropDown("vendor", selectVendorWidgetF);
             addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, true, Alignment.HORIZONTAL));
             selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(true, false, Alignment.HORIZONTAL) {
@@ -365,6 +366,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             addDropDown("middleVendor", new SelectMiddleVendorWidget(true, false, Alignment.HORIZONTAL));
         } else {
             selectVendorWidgetF.setReadOnly(false);
+            entityFieldsPanel.add(getLineSeperatorTag("Vendor Information"));
             addDropDown("vendor", selectVendorWidgetF);
             addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true, Alignment.HORIZONTAL));
             selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL) {
