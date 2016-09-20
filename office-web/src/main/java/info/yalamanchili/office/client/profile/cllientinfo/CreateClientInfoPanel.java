@@ -262,7 +262,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("employeeType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("company", false, true, ClientInformationCompany.names(), Alignment.HORIZONTAL);
-        entityFieldsPanel.add(getLineSeperatorTag("Client & Vendor Information"));
+        entityFieldsPanel.add(getLineSeperatorTag("Client Information"));
         addDropDown("client", selectClientWidgetF);
         entityFieldsPanel.add(addClientL);
 //        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
@@ -281,6 +281,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 //        clientFee = (FloatField) fields.get("clientFee");
 //        clientFee.setVisible(false);
         addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Middle Vendor Information"));
+        addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
+        entityFieldsPanel.add(getLineSeperatorTag("Vendor Information"));
         addDropDown("vendor", selectVendorWidgetF);
         entityFieldsPanel.add(addVendorL);
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true, Alignment.HORIZONTAL));
@@ -299,7 +302,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         };
         addDropDown("vendorAPContacts", selectVendorAPContactsW);
         addField("vendorPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
         entityFieldsPanel.add(getLineSeperatorTag("Project Details"));
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
