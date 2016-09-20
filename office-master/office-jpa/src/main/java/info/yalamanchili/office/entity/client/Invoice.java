@@ -58,6 +58,7 @@ public class Invoice extends AbstractEntity {
     protected Date endDate;
     
     @Temporal(javax.persistence.TemporalType.DATE)
+    @org.hibernate.annotations.Index(name = "INVOICE_DT")
     protected Date invoiceDate;
 
     @Temporal(javax.persistence.TemporalType.DATE)
