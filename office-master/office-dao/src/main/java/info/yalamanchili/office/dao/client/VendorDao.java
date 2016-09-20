@@ -132,12 +132,7 @@ public class VendorDao extends CRUDDao<Vendor> {
     protected String getReportQueryString(Date startDate, Date endDate) {
         StringBuilder reportQueryBuilder = new StringBuilder();
         reportQueryBuilder.append("from ").append(Vendor.class.getCanonicalName()).append(" where ");
-        if (startDate != null) {
-            reportQueryBuilder.append("( msaValDate BETWEEN :startDateParam AND :endDateParam");
-        }
-        if (endDate != null) {
-            reportQueryBuilder.append(" or msaExpDate BETWEEN :startDateParam AND :endDateParam)");
-        }
+        reportQueryBuilder.append("msaExpDate BETWEEN :startDateParam AND :endDateParam");
         return reportQueryBuilder.toString();
     }
 }

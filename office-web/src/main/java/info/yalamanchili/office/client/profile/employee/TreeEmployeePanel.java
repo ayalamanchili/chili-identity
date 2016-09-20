@@ -142,7 +142,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (CLIENT_INFO_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(getEntityId(), active));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
+//            TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
         }
         if (PRIVACY_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();

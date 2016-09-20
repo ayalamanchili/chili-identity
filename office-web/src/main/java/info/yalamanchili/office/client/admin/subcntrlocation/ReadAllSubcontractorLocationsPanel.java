@@ -130,7 +130,7 @@ public class ReadAllSubcontractorLocationsPanel extends CRUDReadAllComposite {
     @Override
     protected void configureCreateButton() {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
-            createButton.setText("Add Subcontractor Location");
+            createButton.setText("Add Location");
             createButton.setVisible(true);
         } else {
             createButton.setVisible(false);

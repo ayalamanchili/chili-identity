@@ -152,7 +152,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             }
         }
         assignEntityValueFromField("terminationNotice", clientInfo);
-        assignEntityValueFromField("Comments", clientInfo);
+        assignEntityValueFromField("notes", clientInfo);
         assignEntityValueFromField("visaStatus", clientInfo);
         assignEntityValueFromField("practice", clientInfo);
         assignEntityValueFromField("sectorsAndBUs", clientInfo);
@@ -212,7 +212,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         new ResponseStatusWidget().show("Successfully Added Client Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId(), active));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
+//        TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
     }
 
     @Override
@@ -237,8 +237,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected void configure() {
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
             endPreviousProjectFlagField.setValue(Boolean.TRUE);
-            entityFieldsPanel.insert(previousProjectEndDate, 21);
-            entityFieldsPanel.insert(reason, 22);
+            entityFieldsPanel.insert(previousProjectEndDate, 22);
+            entityFieldsPanel.insert(reason, 23);
             previousProjectEndDate.setVisible(Boolean.TRUE);
             reason.setVisible(Boolean.TRUE);
             populateEndDate();
@@ -341,7 +341,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             }
         }
         entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
-        addField("visaStatus", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("visaStatus", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addDropDown("practice", selectPractiseWidgetF);
         if (TreeEmployeePanel.instance().getEntity().get("workStatus") != null) {
@@ -357,7 +357,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             employeeTypeF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
         }
         addEnumField("sectorsAndBUs", false, true, ConsultingServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("Comments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         sectorsF = (EnumField) fields.get("sectorsAndBUs");
         endDateF = (DateField) fields.get("endDate");
         isEndDateConfirmedF = (BooleanField) fields.get("isEndDateConfirmed");

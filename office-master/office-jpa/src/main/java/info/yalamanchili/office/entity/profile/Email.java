@@ -66,6 +66,7 @@ public class Email extends AbstractEntity {
      */
     @NotNull
     @Field(index = Index.UN_TOKENIZED)
+    @org.hibernate.annotations.Index(name = "EMAIL_PRI_IDX")
     protected Boolean primaryEmail;
     /**
      * @generated

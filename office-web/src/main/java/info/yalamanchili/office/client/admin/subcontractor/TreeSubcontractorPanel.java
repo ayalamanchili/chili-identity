@@ -60,7 +60,7 @@ public class TreeSubcontractorPanel extends TreePanelComposite {
     @Override
     protected void addWidgets() {
         addFirstChildLink("Locations", SUBCONTRACTOR_LOCATION_NODE);
-        addFirstChildLink("Contacts", SUBCONTRACTOR_CONTACTS_NODE);
+        addFirstChildLink("Recruiter Contacts", SUBCONTRACTOR_CONTACTS_NODE);
     }
 
     @Override

@@ -42,7 +42,7 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler, OpenH
     private static Logger logger = Logger.getLogger(VendorsSidePanel.class.getName());
     public FlowPanel vendorsidepanel = new FlowPanel();
     protected DisclosurePanel coiEndDateReportsL = new DisclosurePanel("COI End Date Report");
-    protected DisclosurePanel msaValidReportL = new DisclosurePanel("MSA Validity Date Report");
+    protected DisclosurePanel msaValidReportL = new DisclosurePanel("MSA Validity Exp Date Report");
     ClickableLink vendorSummaryReportL = new ClickableLink("Vendor Summary Report");
     ClickableLink activeVendorsReportL = new ClickableLink("Active Vendors Report");
     FlowPanel coiReportsPanel = new FlowPanel();
@@ -274,8 +274,8 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler, OpenH
             coiEndDateReportsL.setOpen(false);
             TabPanel.instance().adminPanel.sidePanelTop.setHeight("100%");
             clearReportsField();
-            startDateF.setLabelText("MSA Valid From Date*");
-            endDateF.setLabelText("MSA Valid To Date*");
+            startDateF.setLabelText("MSA Valid Exp From Date*");
+            endDateF.setLabelText("MSA Valid Exp To Date*");
             msaValidReportsPanel.add(startDateF);
             msaValidReportsPanel.add(endDateF);
             msaValidReportsPanel.add(viewReportsB);

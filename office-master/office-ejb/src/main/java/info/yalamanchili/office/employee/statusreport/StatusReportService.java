@@ -19,6 +19,7 @@ import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.chili.bpm.types.Task;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.employee.statusreport.StatusReportDao;
+import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.Company;
@@ -114,13 +115,7 @@ public class StatusReportService {
         Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "preparedBySignature", DateUtils.dateToCalendar(entity.getSubmittedDate()), employeeDao.getPrimaryEmail(preparedBy), null);
         data.getSignatures().add(preparedBysignature);
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
-        if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals(Company.TECHPILLARS)) {
-            data.setTemplateUrl("/templates/pdf/status-report-techp-template.pdf");
-        } else if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals(Company.CGS_INC)) {
-            data.setTemplateUrl("/templates/pdf/status-report-cgs-template.pdf");
-        } else {
-            data.setTemplateUrl("/templates/pdf/status-report-template.pdf");
-        }
+        data.setTemplateUrl("/templates/pdf/status-report-template.pdf");
         if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals(Company.TECHPILLARS)) {
             data.getData().put("title", "Monthly Task Report by " + prepareByStr + " (for Tech Pillars) ");
         } else if (preparedBy.getCompany() != null && preparedBy.getCompany().getName().equals(Company.CGS_INC)) {
@@ -165,7 +160,15 @@ public class StatusReportService {
         data.getData().put("scheduledActivities", reportDocument.getScheduledActivities());
         data.getData().put("preparedBy", prepareByStr);
 
-        byte[] pdf = PDFUtils.generatePdf(data);
+        String empCompanyLogo = "";
+        if (preparedBy.getCompany() != null) {
+            empCompanyLogo = preparedBy.getCompany().getLogoURL().replace("entityId", preparedBy.getCompany().getId().toString());
+        } else {
+            Company company = CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC);
+            empCompanyLogo = company.getLogoURL().replace("entityId", company.getId().toString());
+        }
+        byte[] pdf = PDFUtils.generatePdf(data, empCompanyLogo);
+
         return Response.ok(pdf)
                 .header("content-disposition", "filename = status-report.pdf")
                 .header("Content-Length", pdf.length)

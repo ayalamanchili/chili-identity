@@ -19,6 +19,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
+import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.admin.vendor.TreeVendorsPanel;
 
@@ -54,13 +55,13 @@ public class CreateVendorLocationsPanel extends CreateAddressPanel implements Ch
 
     @Override
     protected void addWidgets() {
-        addField("street1", false, true, DataType.STRING_FIELD);
-        addField("street2", false, false, DataType.STRING_FIELD);
-        addField("zip", false, false, DataType.STRING_FIELD);
-        addField("city", false, true, DataType.STRING_FIELD);
-        addField("state", false, true, DataType.ENUM_FIELD);
-        addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]));
-        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]));
+        addField("street1", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("zip", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("city", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("state", false, true, DataType.ENUM_FIELD, Alignment.HORIZONTAL);
+        addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addEnumField("state", false, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
         super.countriesF = (EnumField) fields.get("country");
         super.statesF = (EnumField) fields.get("state");
         super.zipField = (StringField) fields.get("zip");
@@ -81,5 +82,36 @@ public class CreateVendorLocationsPanel extends CreateAddressPanel implements Ch
     public void onChange(ChangeEvent event) {
 
         super.onChange(event);
+    }
+    
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
+        StringField street1F = (StringField) fields.get("street1");
+        if (street1F.getValue() == null || "".equals(street1F.getValue())) {
+            street1F.setMessage("Please enter the street");
+            valid = false;
+        }
+        StringField cityF = (StringField) fields.get("city");
+        if (cityF.getValue() == null || "".equals(cityF.getValue())) {
+            cityF.setMessage("Please enter the city");
+            valid = false;
+        }
+        StringField zipF = (StringField) fields.get("zip");
+        if (zipF.getValue() == null || "".equals(zipF.getValue())) {
+            zipF.setMessage("Please enter the zip code");
+            valid = false;
+        }
+        EnumField stateF = (EnumField) fields.get("state");
+        if (stateF.getValue() == null || "".equals(stateF.getValue())) {
+            stateF.setMessage("Please select the state");
+            valid = false;
+        }
+        EnumField countryF = (EnumField) fields.get("country");
+        if (countryF.getValue() == null || "".equals(countryF.getValue())) {
+            countryF.setMessage("Please select the country");
+            valid = false;
+        }
+        return valid;
     }
 }

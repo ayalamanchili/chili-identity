@@ -48,6 +48,7 @@ public class Prospect extends AbstractEntity {
     protected Contact contact;
 
     @Temporal(javax.persistence.TemporalType.DATE)
+    @org.hibernate.annotations.Index(name = "PRSPCT_STRT_DT")
     protected Date startDate;
 
     protected String screenedBy;

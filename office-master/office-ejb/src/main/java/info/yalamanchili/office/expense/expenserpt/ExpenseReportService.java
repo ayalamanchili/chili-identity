@@ -9,9 +9,16 @@
 package info.yalamanchili.office.expense.expenserpt;
 
 import com.google.common.base.Strings;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 import info.chili.commons.BeanMapper;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
+import static info.chili.commons.pdf.PDFUtils.generatePdf;
 import info.chili.commons.pdf.PdfDocumentData;
 import info.chili.jpa.QueryUtils;
 import info.chili.security.Signature;
@@ -38,6 +45,8 @@ import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReport;
 import info.yalamanchili.office.entity.expense.expenserpt.ExpenseReportStatus;
 import info.yalamanchili.office.entity.ext.Comment;
 import info.yalamanchili.office.entity.profile.Employee;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -50,7 +59,6 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dozer.Mapper;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -253,22 +261,10 @@ public class ExpenseReportService {
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
         Employee emp = entity.getEmployee();
         if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("GENERAL_EXPENSE")) {
-            if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.CGS_INC)) {
-                data.setTemplateUrl("/templates/pdf/expense-report-cgs-template.pdf");
-            } else if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.TECHPILLARS)) {
-                data.setTemplateUrl("/templates/pdf/expense-report-tp-template.pdf");
-            } else {
-                data.setTemplateUrl("/templates/pdf/expense-report-template.pdf");
-            }
+            data.setTemplateUrl("/templates/pdf/expense-report-template.pdf");
         }
         if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("TRAVEL_EXPENSE")) {
-            if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.CGS_INC)) {
-                data.setTemplateUrl("/templates/pdf/travel-expenses-cgs-template.pdf");
-            } else if (emp != null && emp.getCompany() != null && emp.getCompany().getName().equals(Company.TECHPILLARS)) {
-                data.setTemplateUrl("/templates/pdf/travel-expenses-tp-template.pdf");
-            } else {
-                data.setTemplateUrl("/templates/pdf/travel-expenses-form.pdf");
-            }
+            data.setTemplateUrl("/templates/pdf/travel-expenses-form.pdf");
         }
 
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
@@ -424,11 +420,52 @@ public class ExpenseReportService {
 
         }
         data.getData().put("comment", allComment);
-        byte[] pdf = PDFUtils.generatePdf(data);
-        return Response.ok(pdf)
-                .header("content-disposition", "filename = Expense-Report.pdf")
-                .header("Content-Length", pdf.length)
-                .build();
+        String empCompanyLogo = "";
+        if (emp.getCompany() != null) {
+            empCompanyLogo = emp.getCompany().getLogoURL().replace("entityId", emp.getCompany().getId().toString());
+        } else {
+            Company company = CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC);
+            empCompanyLogo = company.getLogoURL().replace("entityId", company.getId().toString());
+        }
+
+        if ((entity.getExpenseFormType()) != null && entity.getExpenseFormType().name().equals("TRAVEL_EXPENSE")) {
+            byte[] pdf = generatePdf(data);
+            ByteArrayOutputStream pdfOut = new ByteArrayOutputStream();
+            try {
+                PdfReader pdfReader = new PdfReader(pdf);
+                PdfStamper pdfStamper = new PdfStamper(pdfReader,
+                        pdfOut);
+
+                Image image = Image.getInstance("C:\\content-management\\office\\" + empCompanyLogo);
+                Rectangle pagesize;
+                for (int j = 1; j <= pdfReader.getNumberOfPages(); j++) {
+                    PdfContentByte content = pdfStamper.getOverContent(i);
+                    pagesize = pdfReader.getPageSize(j);
+                    float x = pagesize.getLeft() + 20;
+                    float y = pagesize.getTop() - 30;
+                    image.setAbsolutePosition(x, y);
+                    image.scaleAbsoluteHeight(25);
+                    image.scaleAbsoluteWidth(image.getWidth() / 3);
+                    content.addImage(image);
+                    content.addImage(image);
+                }
+                pdfStamper.close();
+                pdfReader.close();
+            } catch (IOException | DocumentException e) {
+                throw new RuntimeException(e);
+            }
+            byte[] toPdf = pdfOut.toByteArray();
+            return Response.ok(toPdf)
+                    .header("content-disposition", "filename = Expense-Report.pdf")
+                    .header("Content-Length", toPdf.length)
+                    .build();
+        } else {
+            byte[] pdf = PDFUtils.generatePdf(data, empCompanyLogo);
+            return Response.ok(pdf)
+                    .header("content-disposition", "filename = Expense-Report.pdf")
+                    .header("Content-Length", pdf.length)
+                    .build();
+        }
     }
 
     public static ExpenseReportService instance() {

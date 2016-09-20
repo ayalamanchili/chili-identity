@@ -41,8 +41,8 @@ public class GenericBPMTaskFormPanel extends GenericBPMFormPanel {
                 });
     }
 
-    public GenericBPMTaskFormPanel(final String taskName, final String taskId, JSONArray array, FlowPanel tabPanel) {
-        tablePanel = tabPanel;
+    public GenericBPMTaskFormPanel(final String taskName, final String taskId, JSONArray array, FlowPanel tablePanel) {
+        this.tablePanel = tablePanel;
         initCreateComposite(taskName, OfficeWelcome.constants2);
         HttpService.HttpServiceAsync.instance().doGet(getTaskFormPropertiesURL(taskId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {

@@ -79,7 +79,7 @@ public class CreateProjectOffBoardingPanel extends CreateComposite {
         new ResponseStatusWidget().show("Successfully Added Project End Details");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId()));
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
+//        TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
 
     }
 

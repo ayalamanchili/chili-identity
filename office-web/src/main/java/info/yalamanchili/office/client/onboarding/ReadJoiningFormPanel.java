@@ -13,9 +13,11 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.BaseField;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.data.CountryFactory;
@@ -41,7 +43,7 @@ public class ReadJoiningFormPanel extends ReadComposite implements ClickHandler 
     private static Logger logger = Logger.getLogger(ReadJoiningFormPanel.class.getName());
     protected List<ReadDependentsPanel> readItemsPanels = new ArrayList<ReadDependentsPanel>();
     ClickableImage rolesIcn = new ClickableImage("update", ChiliImages.INSTANCE.updateIcon_16_16());
-
+    ClickableImage printIcn = new ClickableImage("print", ChiliImages.INSTANCE.printIcon_16_16());
     HTML emptyLine = new HTML("<br/>");
 
     public ReadJoiningFormPanel(JSONObject entity) {
@@ -102,6 +104,7 @@ public class ReadJoiningFormPanel extends ReadComposite implements ClickHandler 
     @Override
     protected void addListeners() {
         rolesIcn.addClickHandler(this);
+        printIcn.addClickHandler(this);
     }
 
     @Override
@@ -128,14 +131,20 @@ public class ReadJoiningFormPanel extends ReadComposite implements ClickHandler 
         addEnumField("ethnicity", true, true, Ethnicity.names(), Alignment.HORIZONTAL);
         addField("rolesAndResponsibilities", true, true, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
         renderRolesLink();
+        renderPrintRolesLink();
         entityFieldsPanel.add(getLineSeperatorTag("Dependent's Information"));
         entityFieldsPanel.add(emptyLine);
         alignFields();
     }
-    
+
     protected void renderRolesLink() {
         BaseField rolesField = fields.get("rolesAndResponsibilities");
         rolesField.addWidgetToFieldPanel(rolesIcn);
+    }
+
+    protected void renderPrintRolesLink() {
+        BaseField rolesField = fields.get("rolesAndResponsibilities");
+        rolesField.addWidgetToFieldPanel(printIcn);
     }
 
     @Override
@@ -149,19 +158,22 @@ public class ReadJoiningFormPanel extends ReadComposite implements ClickHandler 
     }
 
     @Override
-   protected boolean enableBack() {
-       return true;
-   }
-   
+    protected boolean enableBack() {
+        return true;
+    }
+
     @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllEmployeeOnBoardingPanel.instance;
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
-        if(event.getSource().equals(rolesIcn)){
-           new GenericPopup(new CreateRolesAndResponsibilitiesPanel(entity)).show();
+        if (event.getSource().equals(rolesIcn)) {
+            new GenericPopup(new CreateRolesAndResponsibilitiesPanel(entity)).show();
+        }
+        if (event.getSource().equals(printIcn)) {
+            Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + "employee-forms/roles-responsibilities" + "&passthrough=true" + "&id=" + entityId, "_blank", "");
         }
     }
 }

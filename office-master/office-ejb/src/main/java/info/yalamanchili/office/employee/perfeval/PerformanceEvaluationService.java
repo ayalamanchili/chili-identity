@@ -26,6 +26,7 @@ import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.employee.PerformanceEvaluationDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.ext.QuestionDao;
+import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.employee.PerformanceEvaluationSaveDto;
@@ -366,7 +367,15 @@ public class PerformanceEvaluationService {
             data.getSignatures().add(employeeSignature);
         }
         data.getData().put("employeeTitle", employee.getJobTitle());
-        byte[] pdf = PDFUtils.generatePdf(data);
+        String empCompanyLogo = "";
+        if (employee.getCompany() != null) {
+            empCompanyLogo = employee.getCompany().getLogoURL().replace("entityId", employee.getCompany().getId().toString());
+        } else {
+            Company company = CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC);
+            empCompanyLogo = company.getLogoURL().replace("entityId", company.getId().toString());
+        }
+        byte[] pdf = PDFUtils.generatePdf(data, empCompanyLogo);
+
         return Response.ok(pdf)
                 .header("content-disposition", "filename = manager-review.pdf")
                 .header("Content-Length", pdf.length)
@@ -381,13 +390,7 @@ public class PerformanceEvaluationService {
         Employee employee = evaluation.getEmployee();
         performanceEvaluationDao.acceccCheck(employee);
         PdfDocumentData data = new PdfDocumentData();
-        if (employee.getCompany() != null && employee.getCompany().getName().equals(Company.TECHPILLARS)) {
-            data.setTemplateUrl("/templates/pdf/self-review-techp-template.pdf");
-        } else if (employee.getCompany() != null && employee.getCompany().getName().equals(Company.CGS_INC)) {
-            data.setTemplateUrl("/templates/pdf/self-review-cgs-template.pdf");
-        } else {
-            data.setTemplateUrl("/templates/pdf/self-review-template.pdf");
-        }
+        data.setTemplateUrl("/templates/pdf/self-review-template.pdf");
         data.getData().put("fyYear", evaluation.getEvaluationFYYear());
         data.getData().put("nextFYYear", Integer.toString(Integer.valueOf(evaluation.getEvaluationFYYear()) + 1));
         data.getData().put("submittedDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationDate()));
@@ -402,7 +405,15 @@ public class PerformanceEvaluationService {
             data.getData().put("answer" + i, qc.getComment());
             i++;
         }
-        byte[] pdf = PDFUtils.generatePdf(data);
+        String empCompanyLogo = "";
+        if (employee.getCompany() != null) {
+            empCompanyLogo = employee.getCompany().getLogoURL().replace("entityId", employee.getCompany().getId().toString());
+        } else {
+            Company company = CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC);
+            empCompanyLogo = company.getLogoURL().replace("entityId", company.getId().toString());
+        }
+        byte[] pdf = PDFUtils.generatePdf(data, empCompanyLogo);
+
         return Response.ok(pdf)
                 .header("content-disposition", "filename = self-review.pdf")
                 .header("Content-Length", pdf.length)

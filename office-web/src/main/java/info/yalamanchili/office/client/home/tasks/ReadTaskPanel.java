@@ -71,11 +71,11 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
         }
     }
 
-    public ReadTaskPanel(JSONObject task, boolean completedTask, FlowPanel tabPanel) {
+    public ReadTaskPanel(JSONObject task, boolean completedTask, FlowPanel tablePanel) {
         this.task = task;
         this.taskId = JSONUtils.toString(task, "id");
         this.completedTask = completedTask;
-        tablePanel = tabPanel;
+        this.tablePanel = tablePanel;
         init(captionPanel);
         populateValuesAndRenderButtons();
         if (!completedTask) {

@@ -28,7 +28,7 @@ public class AddressOptionsPanel extends ALComposite implements ClickHandler {
     protected ClickableLink manageHomeAddressL = new ClickableLink("");
     protected static HTML addressUpdateInstructions = new HTML("<ul>\n"
             + "<li><span style=\"font-size:14px;\">Please make sure your current Home/Primary Address is reflected in Portal<b>&nbsp;</b>as this will be used by all departments and systems.</span></li>\n"
-            + "<li><span style=\"font-size:14px;\">When changing your Home/Primary Address in portal please select the<strong> Notify Change</strong> check box to notify the apprioriate departments.</span></li>\n"
+            + "<li><span style=\"font-size:14px;\">When changing your Home/Primary Address in Portal please select the<strong> Notify Change</strong> check box to notify the appropriate departments.</span></li>\n"
             + "</ul>");
 
     protected String employeeId;

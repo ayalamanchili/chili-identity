@@ -78,11 +78,11 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getReadAllURL(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override
@@ -98,10 +98,15 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
             table.setText(0, 4, getKeyValue("SubConPay"));
             table.setText(0, 5, getKeyValue("SubConOTPay"));
             table.setText(0, 6, getKeyValue("SubConPattern"));
+            table.setText(0, 7, getKeyValue("EffectiveDate"));
+            table.setText(0, 8, getKeyValue("UpdatedBy"));
+            table.setText(0, 9, getKeyValue("UpdatedAt"));
+        } else {
+            table.setText(0, 4, getKeyValue("EffectiveDate"));
+            table.setText(0, 5, getKeyValue("UpdatedBy"));
+            table.setText(0, 6, getKeyValue("UpdatedAt"));
         }
-        table.setText(0, 7, getKeyValue("EffectiveDate"));
-        table.setText(0, 8, getKeyValue("UpdatedBy"));
-        table.setText(0, 9, getKeyValue("UpdatedAt"));
+
     }
 
     @Override
@@ -120,10 +125,13 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
                 table.setText(i, 5, JSONUtils.toString(entity, "subContractorOverTimePayRate"));
                 //table.setText(i, 6, JSONUtils.toString(entity, "subContractorInvoiceFrequency"));
                 setEnumColumn(i, 6, entity, InvoiceFrequency.class.getSimpleName(), "subContractorInvoiceFrequency");
+                table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "effectiveDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+                table.setText(i, 8, JSONUtils.toString(entity, "updatedBy"));
+                table.setText(i, 9, DateUtils.getFormatedDate(JSONUtils.toString(entity, "updatedTs"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
             }
-            table.setText(i, 7, DateUtils.getFormatedDate(JSONUtils.toString(entity, "effectiveDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            table.setText(i, 8, JSONUtils.toString(entity, "updatedBy"));
-            table.setText(i, 9, DateUtils.getFormatedDate(JSONUtils.toString(entity, "updatedTs"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "effectiveDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 5, JSONUtils.toString(entity, "updatedBy"));
+            table.setText(i, 6, DateUtils.getFormatedDate(JSONUtils.toString(entity, "updatedTs"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
         }
     }
 

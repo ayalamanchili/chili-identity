@@ -21,8 +21,10 @@ import info.yalamanchili.office.dao.expense.advreq.AdvanceRequisitionDao;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.expense.CheckDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
+import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.expense.AdvanceRequisition;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.expense.Check;
@@ -84,7 +86,7 @@ public class AdvanceRequisitionService {
         EmployeeDao employeeDao = EmployeeDao.instance();
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
-        Employee preparedBy = entity.getEmployee();
+        Employee preparedBy = employeeDao.findById(entity.getEmployee().getId());
         String prepareByStr = preparedBy.getLastName() + ", " + preparedBy.getFirstName();
         data.getData().put("employeeName", prepareByStr);
         data.getData().put("dateRequested", new SimpleDateFormat("MM-dd-yyyy").format(entity.getDateRequested()));
@@ -134,7 +136,14 @@ public class AdvanceRequisitionService {
                 data.getData().put("approvedAmount", entity.getAmount().setScale(2, BigDecimal.ROUND_UP).toString());
             }
         }
-        byte[] pdf = PDFUtils.generatePdf(data);
+        String empCompanyLogo = "";
+        if (preparedBy.getCompany() != null) {
+            empCompanyLogo = preparedBy.getCompany().getLogoURL().replace("entityId", preparedBy.getCompany().getId().toString());
+        } else {
+            Company company = CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC);
+            empCompanyLogo = company.getLogoURL().replace("entityId", company.getId().toString());
+        }
+        byte[] pdf = PDFUtils.generatePdf(data, empCompanyLogo);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = advance-requisition.pdf")
                 .header("Content-Length", pdf.length)
