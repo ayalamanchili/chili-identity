@@ -39,12 +39,12 @@ public class InitiateOnBoardingPanel extends CreateComposite {
     public InitiateOnBoardingPanel(JSONObject prospect) {
         super(CreateCompositeType.CREATE);
         this.prospect = prospect;
-        initCreateComposite("InitiateOnBoarding", OfficeWelcome.constants);
+        initCreateComposite("InitiateOnBoarding", OfficeWelcome.constants2);
     }
 
     public InitiateOnBoardingPanel() {
         super(CreateCompositeType.CREATE);
-        initCreateComposite("InitiateOnBoarding", OfficeWelcome.constants);
+        initCreateComposite("InitiateOnBoarding", OfficeWelcome.constants2);
     }
 
     @Override
