@@ -22,12 +22,12 @@ import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 public class SelectClientContactWidget extends SelectComposite implements GenericListener {
 
     public SelectClientContactWidget(Boolean readOnly, Boolean isRequired,Alignment alignement) {
-        super(OfficeWelcome.constants, "ClientContact", readOnly, isRequired,alignement);
+        super(OfficeWelcome.constants2, "ClientContact", readOnly, isRequired,alignement);
         SelectClientWidget.instance().addListner(this);
     }
 
     public SelectClientContactWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "ClientContact", readOnly, isRequired);
+        super(OfficeWelcome.constants2, "ClientContact", readOnly, isRequired);
         SelectClientWidget.instance().addListner(this);
     }
 
