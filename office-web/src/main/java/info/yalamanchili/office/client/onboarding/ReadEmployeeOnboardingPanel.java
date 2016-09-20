@@ -48,11 +48,11 @@ class ReadEmployeeOnboardingPanel extends ReadComposite {
 
     public ReadEmployeeOnboardingPanel(JSONObject entity) {
         instance = this;
-        initReadComposite(entity, "InitiateOnBoarding", OfficeWelcome.constants);
+        initReadComposite(entity, "InitiateOnBoarding", OfficeWelcome.constants2);
     }
 
     public ReadEmployeeOnboardingPanel(String id) {
-        initReadComposite(id, "InitiateOnBoarding", OfficeWelcome.constants);
+        initReadComposite(id, "InitiateOnBoarding", OfficeWelcome.constants2);
     }
 
     @Override
@@ -62,7 +62,6 @@ class ReadEmployeeOnboardingPanel extends ReadComposite {
             @Override
             public void onResponse(String response) {
                 entity = (JSONObject) JSONParser.parseLenient(response);
-                logger.info("dddddddddd" + entity.toString());
                 populateFieldsFromEntity(entity);
                 populateComments();
             }
