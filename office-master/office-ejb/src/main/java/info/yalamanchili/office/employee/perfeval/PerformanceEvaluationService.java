@@ -267,18 +267,10 @@ public class PerformanceEvaluationService {
         }
         Employee employee = evaluation.getEmployee();
         performanceEvaluationDao.acceccCheck(employee);
-        OfficeServiceConfiguration serviceConfig = OfficeServiceConfiguration.instance();
         OfficeSecurityConfiguration securityConfig = OfficeSecurityConfiguration.instance();
         PdfDocumentData data = new PdfDocumentData();
         data.setKeyStoreName(securityConfig.getKeyStoreName());
-        if (employee.getCompany() != null && employee.getCompany().getName().equals(Company.TECHPILLARS)) {
-            data.setTemplateUrl("/templates/pdf/manger-review-techp-template.pdf");
-        } else if (employee.getCompany() != null && employee.getCompany().getName().equals(Company.CGS_INC)) {
-            data.setTemplateUrl("/templates/pdf/manger-review-cgs-template.pdf");
-        } else {
-            data.setTemplateUrl("/templates/pdf/manger-review-template.pdf");
-        }
-
+        data.setTemplateUrl("/templates/pdf/manger-review-template.pdf");
         data.getData().put("fyYear", evaluation.getEvaluationFYYear());
         data.getData().put("nextFYYear", Integer.toString(Integer.valueOf(evaluation.getEvaluationFYYear()) + 1));
         data.getData().put("evaluationDate", new SimpleDateFormat("MM-dd-yyyy").format(evaluation.getEvaluationDate()));
