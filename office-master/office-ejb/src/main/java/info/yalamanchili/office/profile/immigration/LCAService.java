@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class LCAService {
-
+    
     @PersistenceContext
     protected EntityManager em;
     @Autowired
@@ -47,7 +47,7 @@ public class LCAService {
     protected EmployeeDao employeeDao;
     @Autowired
     protected CompanyDao companyDao;
-
+    
     public LCA saveLCA(LCADto dto) {
         LCA lca = mapper.map(dto, LCA.class);
         if (lca.getStatus() == null) {
@@ -69,12 +69,14 @@ public class LCAService {
                 Employee employee = employeeDao.findById(emp.getId());
                 lcaLink.setFirstName(employee.getFirstName());
                 lcaLink.setLastName(employee.getLastName());
+                lcaLink.setTargetEntityId(emp.getId());
+                lcaLink.setTargetEntityName(Employee.class.getCanonicalName());
                 lcaLinkDao.save(lcaLink, lca, employee);
             }
         }
         return lca;
     }
-
+    
     public LCA updateLCA(LCADto dto) {
         LCA lca = mapper.map(dto, LCA.class);
         if (lca.getStatus() == null) {
@@ -108,5 +110,5 @@ public class LCAService {
         }
         return lca;
     }
-
+    
 }
