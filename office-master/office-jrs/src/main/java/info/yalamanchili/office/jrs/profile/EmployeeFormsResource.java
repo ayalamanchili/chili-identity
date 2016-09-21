@@ -174,7 +174,7 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
 
     @GET
     @Path("/joining-form/{id}")
-    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE.ROLE_ON_BOARDING_MGR", "ROLE_HR_ADMINSTRATION", "ROLE_PAYROLL_AND_BENIFITS"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
+    @AccessCheck(companyContacts = {"Reports_To"}, roles = {"ROLE_ON_BOARDING_MGR", "ROLE_HR_ADMINSTRATION", "ROLE_PAYROLL_AND_BENIFITS"}, strictOrderCheck = false, checkOnReturnObj = true, employeePropertyName = "employee")
     public JoiningFormsDto getJoiningForm(@PathParam("id") Long employeeId) {
         Employee emp = EmployeeDao.instance().findById(employeeId);
         return employeeFormsService.getJoiningForm(emp);
