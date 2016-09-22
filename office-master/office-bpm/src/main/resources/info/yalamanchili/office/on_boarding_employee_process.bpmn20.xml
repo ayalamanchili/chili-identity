@@ -273,7 +273,7 @@
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
                 <activiti:formProperty id="reportsToManager" 
-                                       name="Reports_To Manager (please provide reports_to manager id)"
+                                       name="Reports To Manager (please provide reporting manager id)"
                                        required="true" 
                                        type="string" />
                 
@@ -291,7 +291,7 @@
         <serviceTask id="SetupManagerTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
         <sequenceFlow sourceRef="SetupManagerTask" targetRef="NewEmployeeManagerTask" />
         
-        <!-- Create Manager Task For Reports_To To give requiremnts to network department  -->
+        <!-- Create Manager Task For ReportingManager To give requiremnts to network department  -->
         <userTask id="NewEmployeeManagerTask" 
                   name="New Employee Manager Task for ${employee.firstName} ${employee.lastName}">
             <documentation>
