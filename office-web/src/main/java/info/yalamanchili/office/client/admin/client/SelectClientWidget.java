@@ -26,12 +26,12 @@ public class SelectClientWidget extends SelectComposite {
     }
 
     public SelectClientWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "Client", readOnly, isRequired);
+        super(OfficeWelcome.constants2, "Client", readOnly, isRequired);
         instance = this;
     }
 
     public SelectClientWidget(Boolean readOnly, Boolean isRequired, Alignment alignemnt) {
-        super(OfficeWelcome.constants, "Client", readOnly, isRequired, alignemnt);
+        super(OfficeWelcome.constants2, "Client", readOnly, isRequired, alignemnt);
         instance = this;
     }
 
