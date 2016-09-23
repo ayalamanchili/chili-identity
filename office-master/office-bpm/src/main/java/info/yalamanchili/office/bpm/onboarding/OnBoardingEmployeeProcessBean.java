@@ -59,7 +59,9 @@ public class OnBoardingEmployeeProcessBean {
         email.addTo(emp.getPrimaryEmail().getEmail());
         email.setSubject("SST New Employee Orientation");
         String messageText = "Hi " + "<b>" + emp.getFirstName() + "</b>" + " " + "<b>" + emp.getLastName() + "</b>" + " \n \n";
-        messageText = messageText.concat("<br>Thank you for completing your Orientation with SST. If you have any questions and need help with anything at all, just let me know thats what I am here for.</br> \n <br> Have an awesome first week! You will receive your SST Portal and ADP credentials to log in your hours by the end of this week.</br> \n <br>Remember we will need a screen shot or something of your approved timesheet from client sent to tms@sstech.us weekly.</br> \n <br>You are all good to go. Let me know if you have any questions!</br>");
+        messageText = messageText.concat("<br>Thank you for completing your Orientation. If you have any questions and need help with anything at all, please reach out to HR and we are glad to help for any clarifications."
+                    + "</br> \n <br> Have an awesome first week! You will receive your paylocity credentials to log in your hours by the end of this week.</br>" 
+                    + "\n <br>Remember we will need a screen shot or something of your approved timesheet from client sent to tms@sstech.us weekly.</br> \n <br>You are all good to go. Let me know if you have any questions!</br>");
         //String messageTxt = messageText.replaceAll("[^a-zA-Z0-9\\.;:_ ,]+", " ");
         email.setBody(messageText);
         for (String fileName : EMPLOYEE_ORIENTATION_FORMS_LIST) {
