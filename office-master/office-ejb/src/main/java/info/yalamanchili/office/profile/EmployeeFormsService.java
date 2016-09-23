@@ -38,6 +38,7 @@ import info.yalamanchili.office.entity.profile.ext.MaritalStatus;
 import info.yalamanchili.office.entity.profile.ext.Relationship;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
@@ -85,10 +86,10 @@ public class EmployeeFormsService {
 
         //print joining form @radhika
         String empMiddleInitial = emp.getMiddleInitial();
-        if (empMiddleInitial == null) {
-            data.getData().put("fmName", emp.getFirstName());
-        } else {
-            data.getData().put("fmName", emp.getFirstName() + " " + empMiddleInitial);
+
+        data.getData().put("fmName", emp.getFirstName());
+        if (empMiddleInitial != null) {
+            data.getData().put("middleName", empMiddleInitial);
         }
 
         data.getData().put("lastName", emp.getLastName());
@@ -121,6 +122,9 @@ public class EmployeeFormsService {
                         break;
                     case White:
                         data.getData().put("white", "true");
+                        break;
+                    case Unspecified:
+                        data.getData().put("other", "true");
                         break;
                 }
             }
@@ -166,40 +170,9 @@ public class EmployeeFormsService {
         });
         //section 2: Dependents
         int counter = 0;
-        Dependent dependent1 = new Dependent();
-        Dependent dependent2 = new Dependent();
-        if (dto.getDependent() != null && dto.getDependent().size() > 0) {
-            for (Dependent dependent : dto.getDependent()) {
-                if (dependent.getRelationship().equals(Relationship.Child)) {
-                    counter++;
-                }
-                if (counter == 1) {
-                    dependent1 = dependent;
-                }
-                if (counter > 1) {
-                    dependent2 = dependent;
-                }
-            }
-        }
-        if (dependent1.getDfirstName() != null) {
-            Date depDateOfBirth = dependent1.getDdateOfBirth();
-            data.getData().put("childName1", dependent1.getDfirstName());
-            String depLastName = dependent1.getDlastName();
-            if (depLastName != null || !"".equals(depLastName)) {
-                data.getData().put("childName1", dependent1.getDfirstName() + " , " + depLastName);
-            }
-            data.getData().put("childDOB1", sdf.format(depDateOfBirth));
-        }
-        if (dependent2.getDfirstName() != null) {
-            Date depDateOfBirth = dependent2.getDdateOfBirth();
-            data.getData().put("childName2", dependent2.getDfirstName());
-            String depLastName = dependent2.getDlastName();
-            if (depLastName != null || !"".equals(depLastName)) {
-                data.getData().put("childName2", dependent2.getDfirstName() + " , " + depLastName);
-            }
-            data.getData().put("childDOB2", sdf.format(depDateOfBirth));
-        }
-        for (Dependent dep : dto.getDependent()) {
+        List<Dependent> dependents = dto.getDependent();
+        List<Dependent> childDep = new ArrayList();
+        for (Dependent dep : dependents) {
             if (dep.getRelationship().equals(Relationship.Spouse)) {
                 Date depDateOfBirth = dep.getDdateOfBirth();
                 data.getData().put("spouseName", dep.getDfirstName());
@@ -209,7 +182,26 @@ public class EmployeeFormsService {
                 }
                 data.getData().put("spouseDOB", sdf.format(depDateOfBirth));
             }
+            if (dep.getRelationship().equals(Relationship.Child)) {
+                childDep.add(dep);
+                counter++;
+            }
         }
+        if (childDep.size() > 0) {
+            for (int i = 0; i < childDep.size(); i++) {
+                Dependent dep = childDep.get(i);
+                if (dep.getRelationship().equals(Relationship.Child)) {
+                    Date depDateOfBirth = dep.getDdateOfBirth();
+                    data.getData().put("childName" + i, dep.getDfirstName());
+                    String depLastName = dep.getDlastName();
+                    if (depLastName != null || !"".equals(depLastName)) {
+                        data.getData().put("childName" + i, dep.getDfirstName() + " , " + depLastName);
+                    }
+                    data.getData().put("CDOB" + i, sdf.format(depDateOfBirth));
+                }
+            }
+        }
+
         data.getData().put("numberOfChildren", String.valueOf(counter));
 
         //section 3 : Project Details
@@ -299,6 +291,10 @@ public class EmployeeFormsService {
             }
         }
 
+        if (emp.getBranch() != null) {
+            data.getData().put("departmentName", emp.getBranch().name());
+        }
+
         String empCompanyLogo = "";
         if (emp.getCompany() != null) {
             empCompanyLogo = emp.getCompany().getLogoURL().replace("entityId", emp.getCompany().getId().toString());
@@ -315,7 +311,7 @@ public class EmployeeFormsService {
     }
 
     public Response printACHForm(Employee emp) {
-        BankAccount ba = BankAccountDao.instance().find(emp);
+        List<BankAccount> bankAccountList = BankAccountDao.instance().findAll(emp);
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
 
         PdfDocumentData data = new PdfDocumentData();
@@ -339,30 +335,35 @@ public class EmployeeFormsService {
                 data.getData().put("address2", address.getCity() + " , " + address.getState() + " , " + address.getCountry() + " ," + zip);
             }
         });
-        data.getData().put("accountNumber", ba.getBankAccountNumber());
-        data.getData().put("routingNumber", ba.getBankRoutingNumber());
 
-        data.getData().put("bankName", ba.getBankName());
-
-        data.getData().put("bankAccountAddress1", ba.getBankAddress1());
-        if (!"".equals(ba.getBankAddress2()) || ba.getBankAddress2() != null) {
-            data.getData().put("bankAccountAddress2", ba.getBankAddress2());
+        if (emp.getPhones() != null && emp.getPhones().size() > 0) {
+            for (int i = 0; i < emp.getPhones().size(); i++) {
+                data.getData().put("phoneNumber" + i, emp.getPhones().get(i).getPhoneNumber());
+            }
         }
 
-        if (!ba.getAccountType().equals(AccountType.CHECKING)) {
-            data.getData().put("savingsAccountType", "true");
-        } else {
-            data.getData().put("checkingAccountType", "true");
+        if (bankAccountList != null && bankAccountList.size() > 0) {
+            for (int i = 0; i < bankAccountList.size(); i++) {
+                BankAccount ba = bankAccountList.get(i);
+                data.getData().put("accountNumber" + i, ba.getBankAccountNumber());
+                data.getData().put("routingNumber" + i, ba.getBankRoutingNumber());
+                data.getData().put("bankName" + i, ba.getBankName());
+                data.getData().put("bankAccountAddress1" + i, ba.getBankAddress1());
+                if (!"".equals(ba.getBankAddress2()) || ba.getBankAddress2() != null) {
+                    data.getData().put("bankAccountAddress2" + i, ba.getBankAddress2());
+                }
+                if (!ba.getAccountType().equals(AccountType.CHECKING)) {
+                    data.getData().put("savingsAccountType" + i, "true");
+                } else {
+                    data.getData().put("checkingAccountType" + i, "true");
+                }
+                if (ba.getAchBlocked() == false) {
+                    data.getData().put("achReversalBlockNo" + i, "true");
+                } else if (ba.getAchBlocked() == true) {
+                    data.getData().put("achReversalBlockYes" + i, "true");
+                }
+            }
         }
-
-        if (ba.getAchBlocked() == false) {
-            data.getData().put("achReversalBlockNo", "true");
-        } else if (ba.getAchBlocked() == true) {
-            data.getData().put("achReversalBlockYes", "true");
-        }
-        emp.getPhones().stream().filter((phone) -> (phone.getPhoneNumber() != null)).forEach((_item) -> {
-            data.getData().put("phoneNumber", emp.getPhones().get(0).getPhoneNumber());
-        });
         EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findByEmployeeId(emp.getId());
         Date onboardingDate = null;
         if (onboarding != null) {
@@ -370,6 +371,12 @@ public class EmployeeFormsService {
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
             data.getData().put("Date", sdf.format(onboardingDate));
             Signature signature = new Signature(emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "Signature", DateUtils.dateToCalendar(onboardingDate), onboarding.getEmail(), null);
+            data.getSignatures().add(signature);
+        } else {
+            onboardingDate = emp.getStartDate();
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            data.getData().put("Date", sdf.format(onboardingDate));
+            Signature signature = new Signature(emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "Signature", DateUtils.dateToCalendar(onboardingDate), emp.getPrimaryEmail().getEmail(), null);
             data.getSignatures().add(signature);
         }
         data.getData().put("Name", emp.getFirstName() + " " + emp.getLastName());
