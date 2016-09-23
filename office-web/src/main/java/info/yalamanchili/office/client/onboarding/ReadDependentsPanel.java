@@ -24,6 +24,7 @@ public class ReadDependentsPanel extends ReadComposite {
 
     private static ReadDependentsPanel instance;
     private static Logger logger = Logger.getLogger(ReadDependentsPanel.class.getName());
+    protected boolean enableBackB = true;
 
     public static ReadDependentsPanel instance() {
         return instance;
@@ -31,6 +32,12 @@ public class ReadDependentsPanel extends ReadComposite {
 
     public ReadDependentsPanel(JSONObject entity) {
         instance = this;
+        initReadComposite(entity, "Dependent", OfficeWelcome.constants);
+    }
+
+    public ReadDependentsPanel(JSONObject entity, boolean enableBackB) {
+        instance = this;
+        this.enableBackB = enableBackB;
         initReadComposite(entity, "Dependent", OfficeWelcome.constants);
     }
 
@@ -75,14 +82,18 @@ public class ReadDependentsPanel extends ReadComposite {
     protected String getURI() {
         return "";
     }
-    
+
     @Override
-   protected boolean enableBack() {
-       return true;
-   }
-    
+    protected boolean enableBack() {
+        if (enableBackB == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
-     protected ReadAllComposite getReadAllPanel() {
+    protected ReadAllComposite getReadAllPanel() {
         return ReadAllEmployeeOnBoardingPanel.instance;
-     }    
+    }
 }
