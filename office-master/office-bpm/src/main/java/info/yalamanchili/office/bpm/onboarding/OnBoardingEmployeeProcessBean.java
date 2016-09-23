@@ -11,6 +11,7 @@ import info.chili.email.Email;
 import info.chili.security.domain.CUser;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
+import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
 import info.yalamanchili.office.email.MailUtils;
@@ -35,6 +36,10 @@ public class OnBoardingEmployeeProcessBean {
 
     @Autowired
     protected MailUtils mailUtils;
+    @Autowired
+    FileDao fileDao;
+
+    protected final String[] EMPLOYEE_ORIENTATION_FORMS_LIST = {"CorporatePoliciesHandbook", "FamilyAndMedicalLeave", "HolidaySchedule", "SSTOrientationCorporateEmployee", "WorkFromHomePolicy"};
 
     public void sendEmployeeOnBoardingProcessStartEmail(Employee emp) {
         Email email = new Email();
@@ -47,7 +52,24 @@ public class OnBoardingEmployeeProcessBean {
         email.setBody(messageTextforuser);
         MessagingService.instance().sendEmail(email);
     }
+    public void sendEmployeeOnBoardingProcessCompleteEmail(Employee emp) {
+        Email email = new Email();
+        email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
+        email.addTo(emp.getPrimaryEmail().getEmail());
+        email.setSubject("SST New Employee Orientation");
+        String messageText = "Hi " + "<b>" + emp.getFirstName() + "</b>" + " " + "<b>" + emp.getLastName() + "</b>" + " \n \n";
+        messageText = messageText.concat("<br>Thank you for completing your Orientation with SST. If you have any questions and need help with anything at all, just let me know thats what I am here for.</br> \n <br> Have an awesome first week! You will receive your SST Portal and ADP credentials to log in your hours by the end of this week.</br> \n <br>Remember we will need a screen shot or something of your approved timesheet from client sent to tms@sstech.us weekly.</br> \n <br>You are all good to go. Let me know if you have any questions!</br>");
+        //String messageTxt = messageText.replaceAll("[^a-zA-Z0-9\\.;:_ ,]+", " ");
+        email.setBody(messageText);
+        for (String fileName : EMPLOYEE_ORIENTATION_FORMS_LIST) {
+            if (fileDao.getFilePath(fileName) != null) {
+                email.getAttachments().add(fileDao.getFilePath(fileName));
+            }
+        }        
+        MessagingService.instance().sendEmail(email);
 
+    }
     public void deleteEmployee(Employee emp) {
         emp.setEndDate(new Date());
         emp = EmployeeDao.instance().getEntityManager().merge(emp);
