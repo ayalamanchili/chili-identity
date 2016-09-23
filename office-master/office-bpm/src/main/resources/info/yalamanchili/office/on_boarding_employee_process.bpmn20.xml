@@ -62,7 +62,12 @@
                   name="On Boarding Forms and Data Validation task for ${employee.firstName} ${employee.lastName}" 
                   activiti:candidateGroups="ROLE_ON_BOARDING_MGR">
             <documentation>
-                On Boarding Forms and Data Validation Task For #{employee.firstName} #{employee.lastName}
+                Please complete On Boarding Forms and Data Validation Task for new employee #{employee.firstName} #{employee.lastName} as part of On Boarding Process
+                Please login and verify onboarding details and documents submitted by #{employee.firstName} #{employee.lastName} 
+                Myoffice--Employee Search--Forms Docs--Documents
+                Please write Comments for any missing information or for any additional information by following below path in portal.
+                My Office--Onboarding--View Icon for Employee--Add Comment
+                
                 Employee Name       : #{employee.firstName} #{employee.lastName}
                 Employee Type       : #{employee.employeeType.name}
                 Gender              : #{employee.sex}
@@ -126,7 +131,9 @@
                   name="E Verify Task for ${employee.firstName} ${employee.lastName}" 
                   activiti:candidateGroups="ROLE_E_VERIFY_MGR">
             <documentation>
-                E Verify Task for #{employee.firstName} #{employee.lastName}
+                Please complete E Verify Task for new employee #{employee.firstName} #{employee.lastName} as part of On Boarding process
+                Please write Comments for any missing information or for any additional information by following below path in portal.
+                My Office--Onboarding--View Icon for Employee--Add Comment     
                 Employee Name       : #{employee.firstName} #{employee.lastName}
                 Employee Type       : #{employee.employeeType.name}
                 Gender              : #{employee.sex}
@@ -186,7 +193,11 @@
                   name="BackGround And Drug Screening Test Task  for ${employee.firstName} ${employee.lastName}" 
                   activiti:candidateGroups="ROLE_BACKGROUND_SCREENING_MGR">
             <documentation>
-                BackGround And Drug Screening Task for #{employee.firstName} #{employee.lastName}
+                Please complete BackGround And Drug Screening Task for new employee #{employee.firstName} #{employee.lastName} as part of On Boarding process
+                Please conduct BackGround Verification and Drug Screening for #{employee.firstName} #{employee.lastName}.
+                Please write Comments for any missing information or for any additional information in performing this task by following below path in portal.
+                My Office--Onboarding--View Icon for Employee--Add Comment
+                
                 Employee Name       : #{employee.firstName} #{employee.lastName}
                 Employee Type       : #{employee.employeeType.name}
                 Gender              : #{employee.sex}
@@ -240,8 +251,8 @@
                   name="Setup Manager Task for ${employee.firstName} ${employee.lastName}" 
                   activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
             <documentation>
-                Setup Manager Task for #{employee.firstName} #{employee.lastName}
-                Please Add Reports_To manager. 
+                Please complete Setup Manager Task for new employee #{employee.firstName} #{employee.lastName} as part of On Boarding process
+                Please Add Reporting Manager(Reports To) for #{employee.firstName} #{employee.lastName} who will be supervising his/her activities.
                 
                 Employee Name       : #{employee.firstName} #{employee.lastName}
                 Employee Type       : #{employee.employeeType.name}
@@ -260,7 +271,7 @@
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
                 <activiti:formProperty id="reportsToManager" 
-                                       name="Reports_To Manager (please provide reports_to manager id)"
+                                       name="Reports To Manager (please provide reporting manager id)"
                                        required="true" 
                                        type="string" />
                 
@@ -278,14 +289,14 @@
         <serviceTask id="SetupManagerTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
         <sequenceFlow sourceRef="SetupManagerTask" targetRef="NewEmployeeManagerTask" />
         
-        <!-- Create Manager Task For Reports_To To give requiremnts to network department  -->
+        <!-- Create Manager Task For Reports To To give requiremnts to network department  -->
         <userTask id="NewEmployeeManagerTask" 
                   name="New Employee Manager Task for ${employee.firstName} ${employee.lastName}">
             <documentation>
-                New Employee #{employee.firstName} #{employee.lastName} 
-                who will be reporting to you is being on boarded. 
-                Please assign roles and responsibilities to the employee.
-                And enter the requirements from a network perspective so the necessary will be arranged by the networking team. 
+                Please complete New Employee Manager Task for new employee #{employee.firstName} #{employee.lastName} 
+                #{employee.firstName} #{employee.lastName} will be reporting to you and is being on boarded. 
+                Please assign roles and responsibilities to the employee in the allocated fields in the task.
+                Please enter the requirements from a network perspective so the necessary will be arranged by the networking team. 
                 Eg: Developer Laptop, MS word, Team Viewer, Access to IT Projects folder etc...
             </documentation>
             <extensionElements>
@@ -318,8 +329,10 @@
                   name="Network Department Task for ${employee.firstName} ${employee.lastName}" 
                   activiti:candidateGroups="ROLE_SYSTEM_AND_NETWORK_ADMIN">
             <documentation>
-                Network Department Task for #{employee.firstName} #{employee.lastName}
-                Please provide network related support to this employee and complete the task.
+                Please complete Network Department Task for new employee #{employee.firstName} #{employee.lastName} as part of On Boarding process.
+                Please provide network related support to fulfill all the given network requirements for #{employee.firstName} #{employee.lastName} 
+                Please write Comments for any missing information or for any additional information in performing this task by following below path in portal.
+                My Office--Onboarding--View Icon for Employee--Add Comment  
                 
                 Employee Name       : #{employee.firstName} #{employee.lastName}
                 Employee Type       : #{employee.employeeType.name}
@@ -361,7 +374,10 @@
                   name="Final Validation Task for ${employee.firstName} ${employee.lastName}" 
                   activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
             <documentation>
-                Final Validation Task For #{employee.firstName} #{employee.lastName}
+                Please complete Final Validation Task For new employee #{employee.firstName} #{employee.lastName} as part of On Boarding process
+                Please review all the comments and  make sure all the prior tasks are completed and approve the final validation.
+                Please write Comments for any missing information or for any additional information in performing this task by following below path in portal.
+                My Office--Onboarding--View Icon for Employee--Add Comment
                 
                 Employee Name       : #{employee.firstName} #{employee.lastName}
                 Employee Type       : #{employee.employeeType.name}
@@ -396,7 +412,11 @@
                   name="Payroll Registration Task for ${employee.firstName} ${employee.lastName}" 
                   activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
             <documentation>
-                Payroll Registration Task for #{employee.firstName} #{employee.lastName}
+                Please complete Payroll Registration Task for new employee #{employee.firstName} #{employee.lastName} as part of On Boarding process
+                Please initiate payroll for #{employee.firstName} #{employee.lastName} and complete the task.
+                Please write Comments for any missing information or for any additional information in performing this task by following below path in portal.
+                My Office--Onboarding--View Icon for Employee--Add Comment
+                
                 Employee Name       : #{employee.firstName} #{employee.lastName}
                 Employee Type       : #{employee.employeeType.name}
                 Gender              : #{employee.sex}
@@ -432,7 +452,7 @@
                   name="Employee Orientation Task for ${employee.firstName} ${employee.lastName}" 
                   activiti:candidateGroups="ROLE_ON_BOARDING_MGR">
             <documentation>
-                Employee Orientation Task For #{employee.firstName} #{employee.lastName}
+                Please complete Employee Orientation Task For new employee #{employee.firstName} #{employee.lastName} as part of On Boarding process
                 Please inform company standards, policies and his/her work related activities to the employee and complete this task.
                 
                 Employee Name       : #{employee.firstName} #{employee.lastName}
@@ -461,9 +481,12 @@
         <sequenceFlow sourceRef="EmployeeOrientationTaskEscalationTimer" 
                       targetRef="EmployeeOrientationTaskEscalation" />
         <serviceTask id="EmployeeOrientationTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
-        <sequenceFlow sourceRef="employeeOrientationTask"
-                      targetRef="onBoardingEmployeeProcessEnd" />
+        <sequenceFlow sourceRef="employeeOrientationTask" targetRef="sendEmployeeOnBoardingProcessCompleteEmail" />
+        <serviceTask id="sendEmployeeOnBoardingProcessCompleteEmail" 
+                     name="Send On Boarding Complete Email to Employee Task" 
+                     activiti:expression="#{onBoardingEmployeeProcessBean.sendEmployeeOnBoardingProcessCompleteEmail(employee)}" />  
         
+        <sequenceFlow sourceRef="sendEmployeeOnBoardingProcessCompleteEmail" targetRef="onBoardingEmployeeProcessEnd" />      
         <exclusiveGateway id="deactivationGateway"/>
         <sequenceFlow sourceRef="deactivationGateway" 
                       targetRef="deleteEmployee">

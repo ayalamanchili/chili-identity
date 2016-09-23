@@ -48,6 +48,7 @@ import info.yalamanchili.office.client.expense.bnkacct.AccountType;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -351,10 +352,16 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
 
     @Override
     protected Map<String, BaseField> getChildWidget(int childIndexWidget) {
-        Map<String, BaseField> emergContactFields = ((CRUDComposite) emergencyContactsPanels.get(childIndexWidget)).fields;
-        Map<String, BaseField> dependentFields = ((CRUDComposite) dependentsPanels.get(childIndexWidget)).fields;
-        for (String key : dependentFields.keySet()) {
-            emergContactFields.put(key, dependentFields.get(key));
+        Map<String, BaseField> emergContactFields = new HashMap<>();
+        if (dependentsPanels.size() > 0) {
+            Map<String, BaseField> dependentFields = ((CRUDComposite) dependentsPanels.get(childIndexWidget)).fields;
+            for (String key : dependentFields.keySet()) {
+                emergContactFields.put(key, dependentFields.get(key));
+            }
+        }
+        Map<String, BaseField> emergContactFields1 = ((CRUDComposite) emergencyContactsPanels.get(childIndexWidget)).fields;
+        for (String key : emergContactFields1.keySet()) {
+            emergContactFields.put(key, emergContactFields1.get(key));
         }
         return emergContactFields;
     }

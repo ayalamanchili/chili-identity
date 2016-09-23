@@ -12,11 +12,13 @@ import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.EmployeeTypeDao;
 import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
 import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingSearchDto;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.onboarding.InitiateOnBoardingDto;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import info.yalamanchili.office.invoice.GenericsDatesDto;
@@ -77,12 +79,17 @@ public class EmployeeOnBoardingResource {
     @PreAuthorize("hasAnyRole('ROLE_ON_BOARDING_MGR','ROLE_HR_ADMINSTRATION','ROLE_PROSPECTS_MANAGER')")
     @Validate
     public void initiateOnBoarding(InitiateOnBoardingDto dto) {
-        EmployeeType type = EmployeeTypeDao.instance().findById(dto.getEmployeeType().getId());
-        if (EmployeeType.SUBCONTRACTOR.equals(type.getName()) || EmployeeType.W2_CONTRACTOR.equals(type.getName()) || EmployeeType._1099_CONTRACTOR.equals(type.getName())) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "onboarding.not.valid", "Onboarding is not valid for " + type.getName());
+        Employee emp = EmployeeDao.instance().findByEmail(dto.getEmail());
+        if (emp != null) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "contact.already.exist", "Contact Already Exist With The Same Email");
+        } else {
+            EmployeeType type = EmployeeTypeDao.instance().findById(dto.getEmployeeType().getId());
+            if (EmployeeType.SUBCONTRACTOR.equals(type.getName()) || EmployeeType.W2_CONTRACTOR.equals(type.getName()) || EmployeeType._1099_CONTRACTOR.equals(type.getName())) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "onboarding.not.valid", "Onboarding is not valid for " + type.getName());
+            }
+            EmployeeOnBoardingService employeeOnBoardingService = (EmployeeOnBoardingService) SpringContext.getBean("employeeOnBoardingService");
+            employeeOnBoardingService.initiateOnBoarding(dto);
         }
-        EmployeeOnBoardingService employeeOnBoardingService = (EmployeeOnBoardingService) SpringContext.getBean("employeeOnBoardingService");
-        employeeOnBoardingService.initiateOnBoarding(dto);
     }
 
     @GET

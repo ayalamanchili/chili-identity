@@ -94,7 +94,7 @@ public class ReadJoiningFormPanel extends ReadComposite implements ClickHandler 
     protected void populateDependents(JSONArray items) {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).isObject() != null) {
-                ReadDependentsPanel panel = new ReadDependentsPanel(items.get(i).isObject());
+                ReadDependentsPanel panel = new ReadDependentsPanel(items.get(i).isObject(), false);
                 readItemsPanels.add(panel);
                 entityFieldsPanel.add(panel);
             }
