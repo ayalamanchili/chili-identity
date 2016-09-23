@@ -68,6 +68,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     HTML fileUploadNotes1 = new HTML("<b> Note: </b> Please upload pdf formats only");
     HTML fileUploadNotes2 = new HTML("<b> Note: </b> Original copy of I-9 Form should be sent to Tampa office by Mail.");
     HTML emerContactNotes = new HTML("<b> Note: </b> Primary Emergency Contact should be local and Secondary Emergency Contact can be non local.");
+    HTML dependentNotes = new HTML("<b> Note: </b> If you have no dependents, please select this checkbox.");
     protected CheckBox noDependentsCB = new CheckBox("I have No Dependents", false);
 
     protected static HTML formsInfo = new HTML("\n"
@@ -91,12 +92,6 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     protected static HTML depsInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
             + "<strong style=\"color:#555555\">Dependents Information</strong></p>\n"
-            + "\n"
-            + "<ul>\n"
-            + "</ul>");
-    protected static HTML noDepsInfo = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
-            + "<strong style=\"color:#555555\">If You Have No Dependents, Please Select This CheckBox</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");
@@ -258,7 +253,6 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         additionalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         formsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         depsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-        noDepsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         emerInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         update.setText("Submit");
     }
@@ -306,7 +300,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         entityFieldsPanel.add(fileUploadNotes1);
         entityFieldsPanel.add(fileUploadNotes2);
         entityFieldsPanel.add(depsInfo);
-        entityFieldsPanel.add(noDepsInfo);
+        entityFieldsPanel.add(dependentNotes);
         entityFieldsPanel.add(noDependentsCB);
         entityFieldsPanel.add(addDependentsL);
         entityFieldsPanel.add(emerInfo);
