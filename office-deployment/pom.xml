@@ -1,95 +1,64 @@
-
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>info.yalamanchili.office</groupId>
     <artifactId>office-deployment</artifactId>
     <version>1.2-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>office-deployment</name>
-    <url>http://maven.apache.org</url>
+    <packaging>jar</packaging>
     <dependencies>
         <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>1.8</version>
+        </dependency>
+        <dependency>
             <groupId>info.yalamanchili.office</groupId>
-            <artifactId>office-jrs</artifactId>
-            <version>1.2-SNAPSHOT</version>
-            <type>war</type>
+            <artifactId>office-ejb</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>1.22.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-sqladmin</artifactId>
+            <version>v1beta4-rev29-1.22.0</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>1.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.3.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>4.3.0.RELEASE</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.cargo</groupId>
-                <artifactId>cargo-maven2-plugin</artifactId>
-                <version>1.3.2</version>
-                <configuration>
-                    <!-- Container configuration -->
-                    <container>
-                        <containerId>tomcat6x</containerId>
-                        <type>remote</type>
-                    </container>
-                    <!-- Configuration to use with the container -->
-                    <configuration>
-                        <type>runtime</type>
-                        <properties>
-                            <cargo.hostname>localhost</cargo.hostname>
-                            <cargo.servlet.port>9080</cargo.servlet.port>
-                            <cargo.remote.username>admin</cargo.remote.username>
-                            <cargo.remote.password>ypatel</cargo.remote.password>
-                        </properties>
-                    </configuration>
- 
-                    <!-- Deployer configuration -->
-                    <deployer>
-                        <type>remote</type>
-                    </deployer>
- 
-                    <!-- Deployables configuration -->
-                    <deployables>
-                        <deployable>
-                            <groupId>info.yalamanchili.office</groupId>
-                            <artifactId>office-jrs</artifactId>
-                            <type>war</type>
-                            <properties>
-                                <context>office</context>
-                            </properties>
-                        </deployable>
-                    </deployables>
- 
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-    <!-- download artifacts from this repo -->
-    <repositories>
-        <repository>
-            <id>yalamanchili.info</id>
-            <name>yalamanchili.info</name>
-            <url>http://yalamanchili.info/nexus/content/groups/public</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-    </repositories>
-    <!-- download plugins from this repo -->
-    <pluginRepositories>
-        <pluginRepository>
-            <id>yalamanchili.info</id>
-            <name>yalamanchili.info</name>
-            <url>http://yalamanchili.info/nexus/content/groups/public</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
     <properties>
-      
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 </project>
