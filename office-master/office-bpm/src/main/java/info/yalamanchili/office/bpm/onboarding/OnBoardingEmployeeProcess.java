@@ -8,12 +8,15 @@
  */
 package info.yalamanchili.office.bpm.onboarding;
 
+import info.chili.email.Email;
 import info.chili.service.jrs.exception.ServiceException;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.company.CompanyContactTypeDao;
+import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
@@ -27,8 +30,13 @@ import info.yalamanchili.office.entity.profile.ext.Ethnicity;
 import info.yalamanchili.office.entity.profile.ext.MaritalStatus;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
+import info.yalamanchili.office.jms.MessagingService;
+import java.util.HashSet;
+import java.util.Set;
 import org.activiti.engine.delegate.DelegateTask;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +49,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
 
+    @Autowired
+    protected MessagingService messagingService;
+    
     @Override
     public void processTask(DelegateTask task) {
         if ("create".equals(task.getEventName()) || "assignment".equals(task.getEventName())) {
@@ -144,7 +155,7 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         if (employeeManager == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.manager.id", "Invalid Manager Id");
         } else if (!EmployeeType.CORPORATE_EMPLOYEE.equals(employeeManager.getEmployeeType().getName())) {
-            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "only.corporate.empId.allowed", "Only Corporate Employees can be Reports_To Manager");
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "only.corporate.empId.allowed", "Only Corporate Employees can be Reporting Managers");
         }
         CompanyContact contact = new CompanyContact();
         CompanyContactType type = CompanyContactTypeDao.instance().findById(CompanyContactTypeDao.instance().getCompanyContactId("Reports_To"));
@@ -211,7 +222,7 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         new GenericTaskCompleteNotification().notify(dt);
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
     }
-
+    
     protected EmployeeOnBoarding getRequestFromTask(DelegateTask task) {
         Long entityId = (Long) task.getExecution().getVariable("entityId");
         EmployeeOnBoarding entity = EmployeeOnBoardingDao.instance().findById(entityId);
