@@ -59,7 +59,7 @@ public class ReadAllBankAcctWidget extends CRUDReadAllComposite {
                         postFetchTable(result);
                         if (result != null) {
                             JSONObject table = (JSONObject) JSONParser.parseLenient(result);
-                            if ("0".equals(table.get("size").isString().stringValue())) {
+                            if ("0".equals(table.get("size").isString().stringValue()) || "1".equals(table.get("size").isString().stringValue())) {
                                 createButton.setVisible(true);
                             } else {
                                 createButton.setVisible(false);
