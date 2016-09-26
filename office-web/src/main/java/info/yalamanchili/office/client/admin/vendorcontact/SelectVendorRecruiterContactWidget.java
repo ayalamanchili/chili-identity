@@ -25,12 +25,12 @@ public class SelectVendorRecruiterContactWidget extends SelectComposite implemen
     private static Logger logger = Logger.getLogger(SelectVendorRecruiterContactWidget.class.getName());
 
     public SelectVendorRecruiterContactWidget(Boolean readOnly, Boolean isRequired, Alignment alignment) {
-        super(OfficeWelcome.constants, "VendorRecruiter", readOnly, isRequired, alignment);
+        super(OfficeWelcome.constants2, "VendorRecruiter", readOnly, isRequired, alignment);
         SelectVendorWidget.instance().addListner(this);
     }
 
     public SelectVendorRecruiterContactWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "VendorRecruiter", readOnly, isRequired);
+        super(OfficeWelcome.constants2, "VendorRecruiter", readOnly, isRequired);
         SelectVendorWidget.instance().addListner(this);
     }
 
