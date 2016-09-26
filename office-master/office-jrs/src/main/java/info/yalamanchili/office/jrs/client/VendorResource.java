@@ -14,6 +14,7 @@ import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.client.ClientService;
 import info.yalamanchili.office.client.VendorService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.InvoiceScheduleDao;
@@ -38,6 +39,8 @@ import info.yalamanchili.office.profile.ContactService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -120,6 +123,7 @@ public class VendorResource extends CRUDResource<Vendor> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     @CacheEvict(value = OfficeCacheKeys.VENDOR, allEntries = true)
     public void delete(@PathParam("id") Long id) {
+        Vendor vn = vendorDao.findById(id);
         List<InvoiceSchedule> schedules = InvoiceScheduleDao.instance().findAll(id, "info.yalamanchili.office.entity.client.Vendor");
         if (schedules.size() > 0) {
             for (InvoiceSchedule invschedule : schedules) {
@@ -127,6 +131,13 @@ public class VendorResource extends CRUDResource<Vendor> {
             }
         }
         super.delete(id);
+        try {
+            super.delete(id);
+
+            ClientService.sendNotification(vn);
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(VendorResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @GET
