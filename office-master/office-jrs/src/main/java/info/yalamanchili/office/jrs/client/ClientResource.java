@@ -39,6 +39,7 @@ import info.yalamanchili.office.mapper.profile.ContactMapper;
 import info.yalamanchili.office.profile.ContactService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -136,7 +137,13 @@ public class ClientResource extends CRUDResource<Client> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     @CacheEvict(value = OfficeCacheKeys.CLIENT, allEntries = true)
     public void delete(@PathParam("id") Long id) {
+        Client clnt = ClientDao.instance().findById(id);
         super.delete(id);
+        try {
+            ClientService.sendNotification(clnt);
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(VendorResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @GET

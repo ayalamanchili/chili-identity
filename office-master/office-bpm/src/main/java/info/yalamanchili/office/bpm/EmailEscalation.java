@@ -50,16 +50,20 @@ public class EmailEscalation implements JavaDelegate {
                     messageText = messageText.concat("<tr> <td> <b>" + descArrayLeft.trim() + "</b> </td>");
                     messageText = messageText.concat("<td> :" + descArrayRight + "</td> </tr>");
                 } else {
-                    messageText = messageText.concat("<tr> <td> </td> <td> " + descA[i] + "</td></tr>");
+                    messageText = messageText.concat("<tr> <td colspan=" + 2 + ">" + descA[i] + "</td></tr>");
                 }
             }
             if (descA[descA.length - 1].contains("instructions") || descA[descA.length - 1].contains("http")) {
                 messageText = messageText.concat("</table></body></html> " + descA[descA.length - 1]);
             } else {
-                String descArrayLeft = descA[descA.length - 1].substring(0, descA[descA.length - 1].indexOf(":"));
-                String descArrayRight = descA[descA.length - 1].substring(descA[descA.length - 1].indexOf(":") + 1, descA[descA.length - 1].length());
-                messageText = messageText.concat("<tr> <td> <b>" + descArrayLeft.trim() + "</b> </td>");
-                messageText = messageText.concat("<td> :" + descArrayRight + "</td> </tr></table></body></html>");
+                if (descA[descA.length - 1].contains(":")) {
+                    String descArrayLeft = descA[descA.length - 1].substring(0, descA[descA.length - 1].indexOf(":"));
+                    String descArrayRight = descA[descA.length - 1].substring(descA[descA.length - 1].indexOf(":") + 1, descA[descA.length - 1].length());
+                    messageText = messageText.concat("<tr> <td> <b>" + descArrayLeft.trim() + "</b> </td>");
+                    messageText = messageText.concat("<td> :" + descArrayRight + "</td> </tr></table></body></html>");
+                } else {
+                    messageText = messageText.concat("<tr> <td colspan=" + 2 + ">" + descA[descA.length - 1] + "</td></tr>");
+                }
             }
             email.setBody(messageText);
             messagingService.sendEmail(email);

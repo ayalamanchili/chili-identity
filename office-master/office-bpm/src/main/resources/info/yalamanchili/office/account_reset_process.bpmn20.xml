@@ -19,12 +19,14 @@
                   activiti:candidateGroups="ROLE_RELATIONSHIP,ROLE_SYSTEM_AND_NETWORK_ADMIN">
             <documentation>
                 Account Reset Task for
-                FirstName= ${account.firstName} 
-                LastName= ${account.lastName} 
-                Email= ${account.email} 
-                Phone= ${account.phoneNumber} 
-                Date of Birth= ${account.dateOfBirth} 
-                Start Date=${account.startDate}
+                
+                FirstName : ${account.firstName} 
+                LastName  :  ${account.lastName} 
+                Email     :  ${account.email} 
+                Phone     :  ${account.phoneNumber} 
+                Date of Birth : ${account.dateOfBirth} 
+                Start Date    : ${account.startDate}
+                                
                 Please verify if the account exists for this user by a search under My Office Tab and note the Username/EmployeeId
                 if exists reject the task by entering the Username/ EmployeeId 
                 if it does not exist please create the account and approve the task by entering the Username/EmployeeId 

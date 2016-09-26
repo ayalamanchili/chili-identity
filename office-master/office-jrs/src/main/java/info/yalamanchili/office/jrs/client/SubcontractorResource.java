@@ -13,6 +13,7 @@ import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.client.ClientService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.SubcontractorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
@@ -32,6 +33,8 @@ import info.yalamanchili.office.profile.ContactService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
@@ -119,7 +122,13 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     @CacheEvict(value = OfficeCacheKeys.SUB_CONTRACTOR, allEntries = true)
     public void delete(@PathParam("id") Long id) {
+        Subcontractor sub = subcontractorDao.findById(id);
         super.delete(id);
+        try {
+            ClientService.sendNotification(sub);
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(VendorResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @GET
