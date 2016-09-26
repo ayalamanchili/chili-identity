@@ -341,7 +341,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             }
         }
         entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
-        addField("visaStatus", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("visaStatus", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addDropDown("practice", selectPractiseWidgetF);
         if (TreeEmployeePanel.instance().getEntity().get("workStatus") != null) {
@@ -563,6 +563,13 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 valid = false;
             }
         }
+        
+        StringField visaStatusF = (StringField) fields.get("visaStatus");
+        if (visaStatusF.getValue() == null || "".equals(visaStatusF.getValue())) {
+            visaStatusF.setMessage("Visa status cannot be empty");
+            valid = false;
+        }
+        
         return valid;
     }
 
