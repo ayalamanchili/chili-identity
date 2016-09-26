@@ -14,12 +14,14 @@ import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
+import static info.chili.gwt.date.DateUtils.toDate;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
+import java.util.Date;
 import java.util.logging.Logger;
 
 /**
@@ -76,7 +78,7 @@ public class ReadAllCommentsPanel extends CRUDReadAllComposite {
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "comment"));
             table.setText(i, 2, JSONUtils.toString(entity, "updatedBy"));
-            table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "updatedTS")));
+            table.setText(i, 3, formatDateWithTime(JSONUtils.toString(entity, "updatedTS")));
         }
     }
 
@@ -129,4 +131,11 @@ public class ReadAllCommentsPanel extends CRUDReadAllComposite {
     protected String getDeleteURL(String entityId) {
         return OfficeWelcome.instance().constants.root_url() + "comment/delete/" + entityId;
     }
+    
+    public static String formatDateWithTime(String dateString) {
+            Date date = toDate(dateString);
+            String formatteddate = DateUtils.formatDate(dateString);
+            String[] times = date.toString().split(" ");
+            return formatteddate.concat(" "+times[3]);
+        }
 }
