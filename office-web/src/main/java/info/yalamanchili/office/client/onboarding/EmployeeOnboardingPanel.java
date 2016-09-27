@@ -102,7 +102,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             + "<ul>\n"
             + "</ul>");
 
-    IntegerField countryCodeF = new IntegerField(OfficeWelcome.constants, "countryCode", "Phone", false, false, Alignment.HORIZONTAL);
+    IntegerField countryCodeF = new IntegerField(OfficeWelcome.constants, "countryCoe", "Phone", false, false, Alignment.HORIZONTAL);
     StringField phoneNumberF = new StringField(OfficeWelcome.constants, "phoneNumber", "Phone", false, true, Alignment.HORIZONTAL);
 
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants, "EmployeeDocument", "", "EmployeeDocument/fileURL", false, true) {
@@ -417,7 +417,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             assignFieldValueFromEntity("accountLastName", account, DataType.STRING_FIELD);
         }
         if (entity.containsKey("countryCode")) {
-            countryCodeF.setValue(entity.get("countryCode").isNumber().toString());
+            countryCodeF.setValue(entity.get("countryCode").isString().stringValue());
         }
         if (entity.containsKey("phoneNumber")) {
             phoneNumberF.setValue(entity.get("phoneNumber").isString().stringValue());
