@@ -438,18 +438,18 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
 
             if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
-                addDropDown("subcontractor", new SelectSubcontractorWidget(false, false, Alignment.HORIZONTAL));
-                addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, false, Alignment.HORIZONTAL));
+                addDropDown("subcontractor", new SelectSubcontractorWidget(false, true, Alignment.HORIZONTAL));
+                addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, true, Alignment.HORIZONTAL));
                 if (cistatus.equals("PENDING_CONTRACTS_SUBMIT")) {
-                    addField("subcontractorPayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-                    addField("subcontractorOvertimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-                    addEnumField("subcontractorinvoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+                    addField("subcontractorPayRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+                    addField("subcontractorOvertimePayRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+                    addEnumField("subcontractorinvoiceFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
                 } else {
-                    addField("subcontractorPayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-                    addField("subcontractorOvertimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-                    addEnumField("subcontractorinvoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+                    addField("subcontractorPayRate", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+                    addField("subcontractorOvertimePayRate", true, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+                    addEnumField("subcontractorinvoiceFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
                 }
-                addField("subcontractorpaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+                addField("subcontractorpaymentTerms", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
                 addField("subcontractorw4Filled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
                 addField("subcontractCOI", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
                 isSub = true;
