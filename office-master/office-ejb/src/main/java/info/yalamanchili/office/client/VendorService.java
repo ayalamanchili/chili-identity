@@ -8,12 +8,15 @@
  */
 package info.yalamanchili.office.client;
 
+import info.chili.email.Email;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.client.VendorMasterReportDto;
+import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.ClientInformation;
@@ -22,6 +25,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.jms.MessagingService;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -221,6 +225,23 @@ public class VendorService {
             fileName = ReportGenerator.generateExcelOrderedReport(ven, "MSA Validity Date Report For Vendor", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         }
         MessagingService.instance().emailReport(fileName, email);
+    }
+
+    @Async
+    @Transactional
+    public void sendVendorDeleteNotification(Vendor vn) {
+        Email email = new Email();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+        email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_CONTRACTS.name(), OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name(), OfficeRoles.OfficeRole.ROLE_ACCOUNTS_RECEIVABLE.name()));
+        email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
+        email.setSubject("Vendor Has Been Deleted.");
+        String messageText = " <b><u>System Soft Tech Vendor Notification :</b></u> </br> ";
+        messageText = messageText.concat("</br> <b>Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :</b> " + vn.getName());
+        messageText = messageText.concat("</br> <b>Description &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; :</b> Vendor has been deleted.");
+        messageText = messageText.concat("</br> <b>Date of Deletion  &nbsp; :</b> " + sdf.format(new Date()));
+        email.setBody(messageText);
+        MessagingService.instance().sendEmail(email);
     }
 
     public static VendorService instance() {

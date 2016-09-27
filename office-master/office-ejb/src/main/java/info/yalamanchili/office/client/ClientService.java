@@ -25,7 +25,6 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.jms.MessagingService;
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -224,19 +223,16 @@ public class ClientService {
 
     @Async
     @Transactional
-    public static <T> void sendNotification(T a) throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
-        Field field = a.getClass().getDeclaredField("name");
-        field.setAccessible(true);
-        Object value = field.get(a);
+    public void sendClientDeleteNotification(Client clnt) {
         Email email = new Email();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYY");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
         email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_CONTRACTS.name(), OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name(), OfficeRoles.OfficeRole.ROLE_ACCOUNTS_RECEIVABLE.name()));
         email.setHtml(Boolean.TRUE);
         email.setRichText(Boolean.TRUE);
-        email.setSubject(a.getClass().getSimpleName() + " Has Been Deleted.");
-        String messageText = " <b><u>System Soft Tech " + a.getClass().getSimpleName() + " Notification :</b></u> </br> ";
-        messageText = messageText.concat("</br> <b>Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :</b> " + value);
-        messageText = messageText.concat("</br> <b>Description &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; :</b> " + a.getClass().getSimpleName() + " has been deleted.");
+        email.setSubject("Client Has Been Deleted.");
+        String messageText = " <b><u>System Soft Tech Client Notification :</b></u> </br> ";
+        messageText = messageText.concat("</br> <b>Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :</b> " + clnt.getName());
+        messageText = messageText.concat("</br> <b>Description &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; :</b> Client has been deleted.");
         messageText = messageText.concat("</br> <b>Date of Deletion  &nbsp; :</b> " + sdf.format(new Date()));
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);
