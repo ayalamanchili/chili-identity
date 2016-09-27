@@ -249,12 +249,14 @@ public class ClientInformation extends AbstractEntity {
      */
     @ManyToOne
     @ForeignKey(name = "FK_SubCntr_ClientInformations")
+    @NotNull(groups = SubcontractorChecks.class)
     protected Subcontractor subcontractor;
     /**
      * subcontractorContact;
      */
     @ManyToOne
     @ForeignKey(name = "FK_SubCntrContact_ClientInformations")
+    @NotNull(groups = SubcontractorChecks.class)
     protected Contact subcontractorContact;
     /**
      * subcontractor Address
@@ -269,16 +271,19 @@ public class ClientInformation extends AbstractEntity {
     /**
      * subcontractorOvertimePayRate
      */
+    @NotNull(groups = SubcontractorChecks.class)
     protected BigDecimal subcontractorOvertimePayRate;
     /**
      * subcontractor Invoice Frequency
      */
     @Enumerated(EnumType.STRING)
     @org.hibernate.annotations.Index(name = "CI_INVC_FQ")
+    @NotNull(groups = SubcontractorChecks.class)
     protected InvoiceFrequency subcontractorinvoiceFrequency;
     /**
      * subcontractor PaymentTerms
      */
+    @NotNull(groups = SubcontractorChecks.class)
     protected String subcontractorpaymentTerms;
     /**
      * subcontractor W4Filled
@@ -1041,5 +1046,9 @@ public class ClientInformation extends AbstractEntity {
 
     public interface SubmitChecks {
 
+    }
+    
+    public interface SubcontractorChecks {
+        
     }
 }
