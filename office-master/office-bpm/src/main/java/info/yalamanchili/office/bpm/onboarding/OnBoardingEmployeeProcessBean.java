@@ -15,6 +15,7 @@ import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
 import info.yalamanchili.office.email.MailUtils;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
@@ -39,7 +40,9 @@ public class OnBoardingEmployeeProcessBean {
     @Autowired
     FileDao fileDao;
 
-    protected final String[] EMPLOYEE_ORIENTATION_FORMS_LIST = {"CorporatePoliciesHandbook", "FamilyAndMedicalLeave", "HolidaySchedule", "SSTOrientationCorporateEmployee", "WorkFromHomePolicy"};
+    protected final String[] EMPLOYEE_ORIENTATION_FORMS_LIST_SSTECH = {"CorporatePoliciesHandbook", "FamilyAndMedicalLeave", "HolidaySchedule", "SSTOrientationCorporateEmployee", "WorkFromHomePolicy"};
+    protected final String[] EMPLOYEE_ORIENTATION_FORMS_LIST_CGS = {"CorporatePoliciesHandbook", "FamilyAndMedicalLeave", "HolidaySchedule", "CGSOrientationCorporateEmployee", "WorkFromHomePolicy"};
+    protected final String[] EMPLOYEE_ORIENTATION_FORMS_LIST_TECHPILLARS = {"CorporatePoliciesHandbook", "FamilyAndMedicalLeave", "HolidaySchedule", "TechpillarsOrientationCorporateEmployee", "WorkFromHomePolicy"};
 
     public void sendEmployeeOnBoardingProcessStartEmail(Employee emp) {
         Email email = new Email();
@@ -54,10 +57,26 @@ public class OnBoardingEmployeeProcessBean {
     }
     public void sendEmployeeOnBoardingProcessCompleteEmail(Employee emp) {
         Email email = new Email();
+        String strSubject = "";
+        String[] EMPLOYEE_ORIENTATION_FORMS_LIST = null;
         email.setHtml(Boolean.TRUE);
         email.setRichText(Boolean.TRUE);
+        if(emp.getCompany().getName().equalsIgnoreCase(Company.CGS_INC)) {
+            EMPLOYEE_ORIENTATION_FORMS_LIST = EMPLOYEE_ORIENTATION_FORMS_LIST_CGS;
+            strSubject = "CGS INC New Employee Orientation";
+        }
+        else if(emp.getCompany().getName().equalsIgnoreCase(Company.TECHPILLARS)) {
+            EMPLOYEE_ORIENTATION_FORMS_LIST = EMPLOYEE_ORIENTATION_FORMS_LIST_TECHPILLARS;
+            strSubject = "TechPillars New Employee Orientation";
+        }
+        else {
+            EMPLOYEE_ORIENTATION_FORMS_LIST = EMPLOYEE_ORIENTATION_FORMS_LIST_SSTECH;
+            strSubject = "SSTech New Employee Orientation";
+        }
+        
+        
         email.addTo(emp.getPrimaryEmail().getEmail());
-        email.setSubject("SST New Employee Orientation");
+        email.setSubject(strSubject);
         String messageText = "Hi " + "<b>" + emp.getFirstName() + "</b>" + " " + "<b>" + emp.getLastName() + "</b>" + " \n \n";
         messageText = messageText.concat("<br>Thank you for completing your Orientation. If you have any questions and need help with anything at all, please reach out to HR and we are glad to help for any clarifications."
                     + "</br> \n <br> Have an awesome first week! You will receive your paylocity credentials to log in your hours by the end of this week.</br>" 
