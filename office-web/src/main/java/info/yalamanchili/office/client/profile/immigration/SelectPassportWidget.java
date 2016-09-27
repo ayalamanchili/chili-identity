@@ -51,7 +51,7 @@ public class SelectPassportWidget extends SelectComposite {
 
     @Override
     protected String getDropDownURL(Integer start, Integer limit, String... columns) {
-        logger.info("here" + super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "passport/dropdown", start, limit, columns));
+        logger.info("here" + super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "passport/passport-dropdown", start, limit, columns));
         return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "passport/dropdown", start, limit, columns);
     }
 

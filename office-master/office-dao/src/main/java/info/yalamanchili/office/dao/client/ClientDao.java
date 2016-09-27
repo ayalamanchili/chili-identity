@@ -100,12 +100,7 @@ public class ClientDao extends CRUDDao<Client> {
     protected String getReportQueryString(Date startDate, Date endDate) {
         StringBuilder reportQueryBuilder = new StringBuilder();
         reportQueryBuilder.append("from ").append(Client.class.getCanonicalName()).append(" where ");
-        if (startDate != null) {
-            reportQueryBuilder.append("( msaValDate BETWEEN :startDateParam AND :endDateParam");
-        }
-        if (endDate != null) {
-            reportQueryBuilder.append(" or msaExpDate BETWEEN :startDateParam AND :endDateParam)");
-        }
+        reportQueryBuilder.append("msaExpDate BETWEEN :startDateParam AND :endDateParam)");
         return reportQueryBuilder.toString();
     }
         

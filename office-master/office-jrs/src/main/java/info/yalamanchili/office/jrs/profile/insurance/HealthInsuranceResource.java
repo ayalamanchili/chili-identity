@@ -188,7 +188,7 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
         List<HealthInsuranceReportDto> report = new ArrayList<>();
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         report = healthInsuranceService.getHealthInsuranceReport(year);
-        String[] columnOrder = new String[]{"employee", "year", "startDate", "enrolled"};
+        String[] columnOrder = new String[]{"employee", "employeeType", "company", "startDate", "waiver", "health", "dental", "phoneNumber", "email", "year", "enrolled"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(report, " HealthInsurance-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), emp.getPrimaryEmail().getEmail());
         return report;
     }
@@ -203,6 +203,43 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
     @Path("/get/not-submitted-reminder")
     public void notSubmittedRemainder(HealthInsuranceReportDto dto) {
         healthInsuranceService.notSubmittedEmailNotification(dto);
+    }
+
+    @GET
+    @Path("/insurance-report-dates")
+    public void employeeHealthInsuranceDatesReport(@QueryParam("createdDateFrom") Date startDate, @QueryParam("createdDateTo") Date endDate) {
+        HealthInsuranceResource.HealthInsuranceTable table = healthInsuranceReport(startDate, endDate);
+        if (table.getSize() != null) {
+            String reportName = "Health Insurance Report";
+            List<HealthInsurance> list = new ArrayList();
+            list.addAll(table.getEntities());
+            List<HealthInsuranceReportDto> healthInsuranceDatesReport = HealthInsuranceService.instance().getHealthInsuranceDatesReport(list, OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail(), reportName);
+            String[] columnOrder = new String[]{"employee", "employeeType", "company", "startDate", "waiver", "health", "dental", "phoneNumber", "email", "year", "enrolled"};
+            String fileName = ReportGenerator.generateExcelOrderedReport(healthInsuranceDatesReport, "Health Insurance Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+            MessagingService.instance().emailReport(fileName, OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
+        } else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "DateInvalid", "No Results");
+        }
+    }
+
+    private HealthInsuranceTable healthInsuranceReport(Date startDate, Date endDate) {
+        HealthInsuranceResource.HealthInsuranceTable table = table(0, 10000);
+        HealthInsuranceResource.HealthInsuranceTable resulttable = new HealthInsuranceResource.HealthInsuranceTable();
+        List<HealthInsurance> list = new ArrayList();
+        List<HealthInsurance> finallist = new ArrayList();
+        list.addAll(table.getEntities());
+        for (HealthInsurance ins : list) {
+            if (ins.getDateRequested() != null) {
+                if (ins.getDateRequested().after(startDate) && ins.getDateRequested().before(endDate)) {
+                    finallist.add(ins);
+                }
+            }
+        }
+        if (finallist.size() > 0) {
+            resulttable.setEntities(finallist);
+            resulttable.setSize(Long.valueOf(finallist.size()));
+        }
+        return resulttable;
     }
 
     @XmlRootElement
@@ -229,5 +266,4 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
             this.entities = entities;
         }
     }
-
 }
