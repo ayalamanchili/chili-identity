@@ -215,6 +215,7 @@ public class ProspectDao extends CRUDDao<Prospect> {
     public Prospect findById(Long id) {
         Prospect find = (Prospect) getEntityManager().find(entityCls, id);
         Hibernate.initialize(find.getContact().getPhones());
+        Hibernate.initialize(find.getContact().getEmails());
         return find;
     }
 
