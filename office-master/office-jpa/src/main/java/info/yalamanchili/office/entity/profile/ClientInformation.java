@@ -249,14 +249,14 @@ public class ClientInformation extends AbstractEntity {
      */
     @ManyToOne
     @ForeignKey(name = "FK_SubCntr_ClientInformations")
-    @NotNull(groups = SubcontractorChecks.class)
+    @NotNull(groups = SubcontractorChecks.class, message = "{subcontractor.not.empty.msg}")
     protected Subcontractor subcontractor;
     /**
      * subcontractorContact;
      */
     @ManyToOne
     @ForeignKey(name = "FK_SubCntrContact_ClientInformations")
-    @NotNull(groups = SubcontractorChecks.class)
+    @NotNull(groups = SubcontractorChecks.class, message = "{subcontractorContact.not.empty.msg}")
     protected Contact subcontractorContact;
     /**
      * subcontractor Address
@@ -271,19 +271,19 @@ public class ClientInformation extends AbstractEntity {
     /**
      * subcontractorOvertimePayRate
      */
-    @NotNull(groups = SubcontractorChecks.class)
+    @NotNull(groups = SubcontractorChecks.class, message = "{subcontractorOvertimePayRate.not.empty.msg}")
     protected BigDecimal subcontractorOvertimePayRate;
     /**
      * subcontractor Invoice Frequency
      */
     @Enumerated(EnumType.STRING)
     @org.hibernate.annotations.Index(name = "CI_INVC_FQ")
-    @NotNull(groups = SubcontractorChecks.class)
+    @NotNull(groups = SubcontractorChecks.class, message = "{subcontractorinvoiceFrequency.not.empty.msg}")
     protected InvoiceFrequency subcontractorinvoiceFrequency;
     /**
      * subcontractor PaymentTerms
      */
-    @NotNull(groups = SubcontractorChecks.class)
+    @NotNull(groups = SubcontractorChecks.class, message = "{subcontractorpaymentTerms.not.empty.msg}")
     protected String subcontractorpaymentTerms;
     /**
      * subcontractor W4Filled
