@@ -81,7 +81,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         super(type);
         initCreateComposite("ClientInfo", OfficeWelcome.constants2);
     }
-    
+
     public CreateClientInfoPanel(CreateCompositeType type, boolean active) {
         super(type);
         this.active = active;
@@ -105,7 +105,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         assignEntityValueFromField("company", clientInfo);
         assignEntityValueFromField("client", clientInfo);
 //        assignEntityValueFromField("clientFeeApplicable", clientInfo);
-        assignEntityValueFromField("clientFee", clientInfo);        
+        assignEntityValueFromField("clientFee", clientInfo);
 //        assignEntityValueFromField("directClient", clientInfo);        
         assignEntityValueFromField("clientContact", clientInfo);
         assignEntityValueFromField("clientAPContacts", clientInfo);
@@ -262,6 +262,38 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("employeeType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("company", false, true, ClientInformationCompany.names(), Alignment.HORIZONTAL);
+        if (TreeEmployeePanel.instance().getEntity().get("company").isObject() != null) {
+            String employeeCompany = TreeEmployeePanel.instance().getEntity().get("company").isObject().get("name").isString().stringValue();
+            EnumField company = (EnumField) fields.get("company");
+            switch (employeeCompany) {
+                case "System Soft Technologies LLC":
+                    company.selectValue(ClientInformationCompany.SSTECH_LLC.name());
+                    break;
+                case "TechPillars":
+                    company.selectValue(ClientInformationCompany.Techpillars.name());
+                    break;
+                case "System Soft Technologies INC":
+                    company.selectValue(ClientInformationCompany.SSTECH_INC.name());
+                    break;
+                case "CGS INC":
+                    company.selectValue(ClientInformationCompany.CGS_INC.name());
+                    break;
+                case "SST Canada":
+                    company.selectValue(ClientInformationCompany.SST_Canada.name());
+                    break;
+                case "SST PVT":
+                    company.selectValue(ClientInformationCompany.SST_PVT.name());
+                    break;
+                case "CapMark solutions":
+                    company.selectValue(ClientInformationCompany.CapMark_Solutions.name());
+                    break;
+                case "ACO360":
+                    company.selectValue(ClientInformationCompany.ACO360.name());
+                    break;
+                default: break;
+            }
+            
+        }
         entityFieldsPanel.add(getLineSeperatorTag("Client Information"));
         addDropDown("client", selectClientWidgetF);
         entityFieldsPanel.add(addClientL);
@@ -367,7 +399,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         entityActionsPanel.add(submitForApprovalF);
         submitForApprovalF.setValue(true);
         alignFields();
-       
+
     }
 
     @Override
@@ -379,9 +411,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addClientL)) {
             if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
-                new GenericPopup(new CreateClientPanel(CreateCompositeType.CREATE),350,10).show();
+                new GenericPopup(new CreateClientPanel(CreateCompositeType.CREATE), 350, 10).show();
             } else {
-                new GenericPopup(new GenericBPMStartFormPanel("AddNewClientRequest", "add_new_client_request_1"),350,10).show();
+                new GenericPopup(new GenericBPMStartFormPanel("AddNewClientRequest", "add_new_client_request_1"), 350, 10).show();
             }
         }
 //        if (event.getSource().equals(isClientFeeApplicable.getBox()) && isClientFeeApplicable.getValue()) {
@@ -391,9 +423,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 //        }
         if (event.getSource().equals(addVendorL)) {
             if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
-                new GenericPopup(new CreateVendorPanel(CreateCompositeType.CREATE),350,10).show();
+                new GenericPopup(new CreateVendorPanel(CreateCompositeType.CREATE), 350, 10).show();
             } else {
-                new GenericPopup(new GenericBPMStartFormPanel("AddNewVendorRequest", "add_new_vendor_request_1"),350,10).show();
+                new GenericPopup(new GenericBPMStartFormPanel("AddNewVendorRequest", "add_new_vendor_request_1"), 350, 10).show();
             }
         }
 
@@ -465,7 +497,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 //                        directClientB.setValue(JSONUtils.toBoolean(client, "directClient"));
 //                        FloatField clientFee=(FloatField) fields.get("clientFee");
 //                        clientFee.setValue(JSONUtils.toString(client, "clientFee"));
-                        
+
                     }
                 });
     }
@@ -563,13 +595,13 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 valid = false;
             }
         }
-        
+
         StringField visaStatusF = (StringField) fields.get("visaStatus");
         if (visaStatusF.getValue() == null || "".equals(visaStatusF.getValue())) {
             visaStatusF.setMessage("Visa status cannot be empty");
             valid = false;
         }
-        
+
         return valid;
     }
 
