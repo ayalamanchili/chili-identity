@@ -170,6 +170,7 @@ public class InvoiceResource extends CRUDResource<Invoice> {
                 inv.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
                 inv.setItemNumber(ci.getItemNumber());
                 inv.setInvoiceFrequency(ci.getInvoiceFrequency());
+                inv.setInvoiceDate(new Date());
                 inv.setBillingRate(item.getBillingRate());
                 inv.setOverTimeBillingRate(item.getOverTimeBillingRate());
                 inv.setHours(item.getHours());
