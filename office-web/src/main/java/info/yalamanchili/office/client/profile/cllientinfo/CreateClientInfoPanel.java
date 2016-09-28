@@ -237,8 +237,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected void configure() {
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
             endPreviousProjectFlagField.setValue(Boolean.TRUE);
-            entityFieldsPanel.insert(previousProjectEndDate, 22);
-            entityFieldsPanel.insert(reason, 23);
+            entityFieldsPanel.insert(previousProjectEndDate, entityFieldsPanel.getWidgetIndex(endPreviousProjectFlagField)+1);
+            entityFieldsPanel.insert(reason, entityFieldsPanel.getWidgetIndex(previousProjectEndDate)+1);
             previousProjectEndDate.setVisible(Boolean.TRUE);
             reason.setVisible(Boolean.TRUE);
             populateEndDate();
