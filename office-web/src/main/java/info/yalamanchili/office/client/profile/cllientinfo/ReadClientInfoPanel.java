@@ -221,6 +221,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         };
         addDropDown("vendorAPContacts", selectVendorAPContactsW);
         addField("vendorPaymentTerms", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(getLineSeperatorTag("Project Details"));
         addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("isEndDateConfirmed", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
