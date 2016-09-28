@@ -151,6 +151,45 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     }
 
     @PUT
+    @Validate
+    @Path("/update-multiple-Invoice/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_INVOICE_MANAGER')")
+    public List<Invoice> submitMultipleInvoice(@PathParam("id") Long id, MultipleInvoicesDto invoice) {
+        ClientInformation ci = ClientInformationDao.instance().findById(id);
+        List<Invoice> listInvoices = new ArrayList();
+        if (invoice.getInvoiceItems() != null && invoice.getInvoiceItems().size() > 0) {
+            for (InvoiceItemDto item : invoice.getInvoiceItems()) {
+                Invoice inv = new Invoice();
+                if (item.getStartDate() != null && item.getEndDate() != null) {
+                    if (item.getEndDate().before(item.getStartDate())) {
+                        throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invoicePeriodTo.not.before.invoicePeriodFrom", "InvoicePeriod EndDate should not be prior to InvoicePeriod StartDate");
+                    } else if (item.getStartDate().before(ci.getStartDate()) || (ci.getEndDate() != null && item.getEndDate().after(DateUtils.addDays(ci.getEndDate(), 8)))) {
+                        throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invoicePeriod.should.matchwith.projectperiod", "InvoicePeriod should be in between Project StartDate and Project EndDate");
+                    }
+                }
+                inv.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
+                inv.setItemNumber(ci.getItemNumber());
+                inv.setInvoiceFrequency(ci.getInvoiceFrequency());
+                inv.setInvoiceDate(new Date());
+                inv.setBillingRate(item.getBillingRate());
+                inv.setOverTimeBillingRate(item.getOverTimeBillingRate());
+                inv.setHours(item.getHours());
+                inv.setStartDate(item.getStartDate());
+                inv.setEndDate(item.getEndDate());
+                inv.setInvoiceStatus(item.getInvoiceStatus());
+                inv.setTimeSheetStatus(item.getTimeSheetStatus());
+                inv.setInvoiceNumber(item.getInvoiceNumber());
+                inv.setNotes(item.getNotes());
+                inv.setClientInformation(ci);
+                ClientInformationDao.instance().save(ci);
+                InvoiceDao.instance().save(inv);
+                listInvoices.add(inv);
+            }
+        }
+        return listInvoices;
+    }
+
+    @PUT
     @Path("/submit-invoice/{id}")
     @PreAuthorize("hasAnyRole('ROLE_INVOICE_MANAGER')")
     public Invoice submit(@PathParam("id") Long id, Invoice invoice) {

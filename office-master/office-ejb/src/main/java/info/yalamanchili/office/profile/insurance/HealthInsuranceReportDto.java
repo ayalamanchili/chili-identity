@@ -29,6 +29,20 @@ public class HealthInsuranceReportDto implements Serializable {
 
     protected Date startDate;
 
+    protected String company;
+
+    protected String employeeType;
+
+    protected String phoneNumber;
+
+    protected String email;
+
+    protected String waiver;
+
+    protected String health;
+
+    protected String dental;
+
     public Date getStartDate() {
         return startDate;
     }
@@ -79,4 +93,59 @@ public class HealthInsuranceReportDto implements Serializable {
         this.enrolled = enrolled;
     }
 
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getEmployeeType() {
+        return employeeType;
+    }
+
+    public void setEmployeeType(String employeeType) {
+        this.employeeType = employeeType;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getWaiver() {
+        return waiver;
+    }
+
+    public void setWaiver(String waiver) {
+        this.waiver = waiver;
+    }
+
+    public String getHealth() {
+        return health;
+    }
+
+    public void setHealth(String health) {
+        this.health = health;
+    }
+
+    public String getDental() {
+        return dental;
+    }
+
+    public void setDental(String dental) {
+        this.dental = dental;
+    }
 }

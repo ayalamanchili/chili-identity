@@ -24,7 +24,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.admin.invoice.UpdateInvoicePanel;
+import info.yalamanchili.office.client.admin.invoice.UpdateInvoicesPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import java.util.logging.Logger;
 
@@ -153,7 +153,7 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
 
     protected void getInvoice(String entityId) {
         if (!entityId.isEmpty()) {
-            new GenericPopup(new UpdateInvoicePanel(entityId, false), 0, Window.getClientHeight() / 5).show();
+            new GenericPopup(new UpdateInvoicesPanel(entityId, false), 0, Window.getClientHeight() / 5).show();
         }
     }
 

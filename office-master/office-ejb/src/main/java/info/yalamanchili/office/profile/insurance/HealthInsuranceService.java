@@ -33,6 +33,7 @@ import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverag
 import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.Medicare;
 import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.Tricare;
 import info.yalamanchili.office.entity.profile.insurance.InsuranceEnrollment;
+import info.yalamanchili.office.entity.profile.insurance.InsuranceType;
 import info.yalamanchili.office.jms.MessagingService;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.ws.rs.core.Response;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -54,6 +56,8 @@ public class HealthInsuranceService {
 
     @Autowired
     protected HealthInsuranceDao healthInsuranceDao;
+    @Autowired
+    protected Mapper mapper;
 
     public Response getReport(HealthInsurance entity) {
         PdfDocumentData data = new PdfDocumentData();
@@ -130,7 +134,7 @@ public class HealthInsuranceService {
                 }
             }
         }
-        String empCompanyLogo = "";
+         String empCompanyLogo = "";
         if (preparedBy.getCompany() != null) {
             empCompanyLogo = preparedBy.getCompany().getLogoURL().replace("entityId", preparedBy.getCompany().getId().toString());
         } else {
@@ -153,31 +157,70 @@ public class HealthInsuranceService {
             List<HealthInsurance> insurances = healthInsuranceDao.queryForEmployee(emp.getId(), 0, 50);
             if (insurances != null && insurances.size() > 0) {
                 for (HealthInsurance insurance : insurances) {
-                    HealthInsuranceReportDto dto = new HealthInsuranceReportDto();
                     if (insurance.getInsuranceEnrollment() != null && year.equals(insurance.getInsuranceEnrollment().getYear())) {
-                        dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
-                        if (insurance.getEnrolled()) {
-                            dto.setEnrolled("Enrolled");
-                        } else {
-                            dto.setEnrolled("Not Enrolled");
-                        }
-                        dto.setYear(insurance.getInsuranceEnrollment().getYear());
-                        report.add(dto);
+                        report.add(populateHealthInsuranceEnrollmentInfo(insurance, emp));
                     } else if (insurance.getInsuranceEnrollment() == null) {
-                        dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
-                        if (insurance.getEnrolled()) {
-                            dto.setEnrolled("Enrolled");
-                        } else {
-                            dto.setEnrolled("Not Enrolled");
-                        }
-                        dto.setStartDate(insurance.getHealthInsuranceWaiver().getSubmittedDate());
-                        dto.setYear(new SimpleDateFormat("MM/dd/yyyy").format(new Date()).split("/")[2]);
-                        report.add(dto);
+                        report.add(populateHealthInsuranceWaiverInfo(insurance, emp));
                     }
                 }
             }
         }
         return report;
+    }
+
+    public HealthInsuranceReportDto populateHealthInsuranceEnrollmentInfo(HealthInsurance ins, Employee emp) {
+        HealthInsuranceReportDto dto = new HealthInsuranceReportDto();
+        dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
+        if (emp.getCompany() != null) {
+            dto.setCompany(emp.getCompany().getName());
+        }
+        dto.setEmployeeType(emp.getEmployeeType().getName());
+        dto.setStartDate(emp.getStartDate());
+        if (emp.getPhones().size() > 0) {
+            dto.setPhoneNumber(emp.getPhones().get(0).getPhoneNumber());
+        }
+        dto.setEmail(emp.getPrimaryEmail().getEmail());
+        InsuranceEnrollment enrollment = ins.getInsuranceEnrollment();
+        if (enrollment.getInsuranceType() != null && enrollment.getInsuranceType().equals(InsuranceType.Health)) {
+            dto.setHealth("yes");
+            dto.setDental("no");
+        } else if (enrollment.getInsuranceType() != null && enrollment.getInsuranceType().equals(InsuranceType.Dental)) {
+            dto.setDental("yes");
+            dto.setHealth("no");
+        }
+        if (ins.getEnrolled()) {
+            dto.setEnrolled("Enrolled");
+            dto.setWaiver("n/a");
+        } else {
+            dto.setEnrolled("Not Enrolled");
+        }
+        dto.setYear(ins.getInsuranceEnrollment().getYear());
+        return dto;
+    }
+
+    public HealthInsuranceReportDto populateHealthInsuranceWaiverInfo(HealthInsurance ins, Employee emp) {
+        HealthInsuranceReportDto dto = new HealthInsuranceReportDto();
+        dto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
+        if (emp.getCompany() != null) {
+            dto.setCompany(emp.getCompany().getName());
+        }
+        dto.setEmployeeType(emp.getEmployeeType().getName());
+        dto.setStartDate(emp.getStartDate());
+        if (emp.getPhones().size() > 0) {
+            dto.setPhoneNumber(emp.getPhones().get(0).getPhoneNumber());
+        }
+        dto.setEmail(emp.getPrimaryEmail().getEmail());
+        dto.setHealth("n/a");
+        dto.setDental("n/a");
+        dto.setWaiver("yes");
+        dto.setYear(ins.getHealthInsuranceWaiver().getWaiverYear());
+        if (ins.getEnrolled()) {
+            dto.setEnrolled("Enrolled");
+        } else {
+            dto.setEnrolled("Not Enrolled");
+        }
+        return dto;
+
     }
 
     public void notSubmittedEmailNotification(HealthInsuranceReportDto dto) {
@@ -268,5 +311,17 @@ public class HealthInsuranceService {
 
     public static HealthInsuranceService instance() {
         return SpringContext.getBean(HealthInsuranceService.class);
+    }
+
+    public List<HealthInsuranceReportDto> getHealthInsuranceDatesReport(List<HealthInsurance> ins, String email, String reportName) {
+        List<HealthInsuranceReportDto> report = new ArrayList<>();
+        for (HealthInsurance insurance : ins) {
+            if (insurance.getInsuranceEnrollment() != null) {
+                report.add(populateHealthInsuranceEnrollmentInfo(insurance, insurance.getEmployee()));
+            } else if (insurance.getInsuranceEnrollment() == null) {
+                report.add(populateHealthInsuranceWaiverInfo(insurance, insurance.getEmployee()));
+            }
+        }
+        return report;
     }
 }

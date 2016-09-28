@@ -8,12 +8,13 @@
 package info.yalamanchili.office.jrs.client;
 
 import info.chili.dao.CRUDDao;
+import info.chili.email.Email;
 import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
-import info.yalamanchili.office.client.ClientService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.SubcontractorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
@@ -21,6 +22,7 @@ import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ContactDto;
 import info.yalamanchili.office.dto.profile.SubcontractorDto;
+import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
@@ -30,11 +32,10 @@ import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource;
 import info.yalamanchili.office.mapper.profile.ContactMapper;
 import info.yalamanchili.office.profile.ContactService;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
@@ -50,6 +51,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -124,11 +126,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
     public void delete(@PathParam("id") Long id) {
         Subcontractor sub = subcontractorDao.findById(id);
         super.delete(id);
-        try {
-            ClientService.sendNotification(sub);
-        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(VendorResource.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        sendSubDeleteNotification(sub);
     }
 
     @GET
@@ -355,6 +353,23 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
         public void setEntities(List<Subcontractor> entities) {
             this.entities = entities;
         }
+    }
+
+    @Async
+    @Transactional
+    public void sendSubDeleteNotification(Subcontractor sub) {
+        Email email = new Email();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+        email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_CONTRACTS.name(), OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name(), OfficeRoles.OfficeRole.ROLE_ACCOUNTS_RECEIVABLE.name()));
+        email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
+        email.setSubject("Subcontractor Has Been Deleted.");
+        String messageText = " <b><u>System Soft Tech Subcontractor Notification :</b></u> </br> ";
+        messageText = messageText.concat("</br> <b>Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :</b> " + sub.getName());
+        messageText = messageText.concat("</br> <b>Description &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; :</b> Subcontractor has been deleted.");
+        messageText = messageText.concat("</br> <b>Date of Deletion  &nbsp; :</b> " + sdf.format(new Date()));
+        email.setBody(messageText);
+        MessagingService.instance().sendEmail(email);
     }
 
 }

@@ -10,8 +10,10 @@ package info.yalamanchili.office.client.onboarding;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -114,6 +116,10 @@ public class InitiateOnBoardingPanel extends CreateComposite {
         if (prospect != null) {
             StringField emailF = (StringField) fields.get("email");
             emailF.setValue(JSONUtils.toString(prospect, "email"));
+            SelectComposite selectComposite = (SelectComposite) fields.get("company");
+            if (prospect.get("company").isObject() != null) {
+                selectComposite.setSelectedValue(prospect.get("company").isObject());
+            }
         }
     }
 

@@ -6,6 +6,7 @@ package info.yalamanchili.office.client.profile.reports;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -15,9 +16,13 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
+import info.chili.gwt.date.DateUtils;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.utils.Utils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
@@ -52,6 +57,10 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
     ClickableLink reminderB = new ClickableLink("Send Reminder");
 
+    DateField startDateF = new DateField(OfficeWelcome.constants, "CreatedDateFrom", "InsuranceEnrollment", false, false, Alignment.VERTICAL);
+    DateField endDateF = new DateField(OfficeWelcome.constants, "CreatedDateTo", "InsuranceEnrollment", false, false, Alignment.VERTICAL);
+    Button reportB = new Button("Report");
+
     public RetirementPlanOptInSidePanal() {
         init(panel);
     }
@@ -62,6 +71,7 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
         generateRepB.addClickHandler(this);
         viewRepB.addClickHandler(this);
         reminderB.addClickHandler(this);
+        reportB.addClickHandler(this);
     }
 
     @Override
@@ -93,6 +103,11 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
             panel.add(viewRepB);
             panel.add(new HTML("<hr>"));
             panel.add(reminderB);
+            panel.add(Utils.getLineSeperatorTag("Health Insurance Reports"));
+            panel.add(startDateF);
+            panel.add(endDateF);
+            panel.add(reportB);
+
         }
     }
 
@@ -105,6 +120,29 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
             entity.put("year", new JSONString(yearsF.getValue()));
         }
         return entity;
+    }
+
+    public JSONObject getObject() {
+        JSONObject search = new JSONObject();
+        if (startDateF.getDate() == null) {
+            startDateF.setMessage("required");
+            return null;
+        }
+        if (endDateF.getDate() == null) {
+            endDateF.setMessage("required");
+            return null;
+        }
+        if (startDateF.getDate() != null && endDateF.getDate() != null && startDateF.getDate().after(endDateF.getDate())) {
+            endDateF.setMessage("End Date must be after Start Date");
+            return null;
+        }
+        if (startDateF.getDate() != null) {
+            search.put("startDate", new JSONString(DateUtils.toDateString(startDateF.getDate())));
+        }
+        if (endDateF.getDate() != null) {
+            search.put("endDate", new JSONString(DateUtils.toDateString(endDateF.getDate())));
+        }
+        return search;
     }
 
     @Override
@@ -121,16 +159,35 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
         if (event.getSource().equals(reminderB)) {
             sendRemainder();
         }
+        if (event.getSource().equals(reportB)) {
+            if (reportB.getParent().equals(panel)) {
+                JSONObject search = getObject();
+                if (search != null) {
+                    TabPanel.instance().getReportingPanel().entityPanel.clear();
+                    DateTimeFormat sdf = DateTimeFormat.getFormat("MM/dd/yyyy");
+                    String reportUrl = OfficeWelcome.instance().constants.root_url() + "insurance-enrollment/insurance-report-dates";
+                    reportUrl = reportUrl.concat("?createdDateFrom=" + sdf.format(startDateF.getDate()));
+                    reportUrl = reportUrl.concat("&createdDateTo=" + sdf.format(endDateF.getDate()));
+                    HttpService.HttpServiceAsync.instance().doGet(URL.encode(reportUrl), OfficeWelcome.instance().getHeaders(), true,
+                            new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String result) {
+                            new ResponseStatusWidget().show("Report Will Be Emailed To Your Primary Email");
+                        }
+                    });
+                }
+            }
+        }
     }
 
     protected void sendRemainder() {
         HttpService.HttpServiceAsync.instance().doPut(sendRemainderUrl(), populateEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        new ResponseStatusWidget().show("Remainder Email Sent");
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                new ResponseStatusWidget().show("Remainder Email Sent");
+            }
+        });
     }
 
     protected String sendRemainderUrl() {
@@ -140,11 +197,11 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
     protected void generateRetirementPlanReport() {
         HttpService.HttpServiceAsync.instance().doGet(getRetirementplanInfoReportUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        new ResponseStatusWidget().show("Report will be emailed to your primary email");
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                new ResponseStatusWidget().show("Report will be emailed to your primary email");
+            }
+        });
 
     }
 
@@ -155,34 +212,34 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
     protected void generateHealthInsuranceReport() {
         HttpService.HttpServiceAsync.instance().doGet(getHealthInsuranceReportUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                            new ResponseStatusWidget().show("No Results");
-                        } else {
-                            new ResponseStatusWidget().show("Report will be emailed to your primary email");
-                        }
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                    new ResponseStatusWidget().show("No Results");
+                } else {
+                    new ResponseStatusWidget().show("Report will be emailed to your primary email");
+                }
+            }
+        });
     }
 
     protected void viewHealthInsuranceReport() {
         HttpService.HttpServiceAsync.instance().doGet(getHealthInsuranceReportViewUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                            new ResponseStatusWidget().show("No Results");
-                        } else {
-                            TabPanel.instance().reportingPanel.entityPanel.clear();
-                            JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                            String key = (String) resObj.keySet().toArray()[0];
-                            JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                            TabPanel.instance().reportingPanel.entityPanel.clear();
-                            TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllHealthInsuranceReportPanel(results));
-                        }
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                    new ResponseStatusWidget().show("No Results");
+                } else {
+                    TabPanel.instance().reportingPanel.entityPanel.clear();
+                    JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                    String key = (String) resObj.keySet().toArray()[0];
+                    JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                    TabPanel.instance().reportingPanel.entityPanel.clear();
+                    TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllHealthInsuranceReportPanel(results));
+                }
+            }
+        });
     }
 
     private String getHealthInsuranceReportUrl() {

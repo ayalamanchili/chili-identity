@@ -42,7 +42,6 @@ import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.service.ServiceInterceptor;
-import java.math.BigDecimal;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -86,19 +85,20 @@ public class ClientInformationService {
 
     public ClientInformationDto addClientInformation(Long empId, ClientInformationDto ciDto, Boolean submitForApproval) {
         ClientInformation ci = mapper.map(ciDto, ClientInformation.class);
-        validate(ci, submitForApproval);
+
         Client client = null;
         Vendor vendor = null;
         Vendor middleVendor = null;
         Project project = new Project();
         Employee emp = (Employee) em.find(Employee.class, empId);
+        validate(ci, emp, submitForApproval);
         String abbreviation = getCompanyAbbreviation(ciDto.getCompany());
         if (abbreviation == null || abbreviation.isEmpty()) {
             abbreviation = "SSTL";
         }
         client = clientDao.findById(ci.getClient().getId());
         ci.setClient(client);
-        
+
         if (ci.getClientContact() != null) {
             ci.setClientContact(ContactDao.instance().findById(ci.getClientContact().getId()));
         }
@@ -379,7 +379,7 @@ public class ClientInformationService {
 
             }
         }
-        validate(ci, submitForApproval);
+        validate(ci, ci.getEmployee(), submitForApproval);
         BeanMapper.merge(ci, ciEntity);
         Project project = ProjectDao.instance().findById(ci.getClientProject().getId());
         Client client;
@@ -523,7 +523,10 @@ public class ClientInformationService {
 
     }
 
-    protected void validate(ClientInformation ci, Boolean submitForApproval) {
+    protected void validate(ClientInformation ci, Employee emp, Boolean submitForApproval) {
+        if (emp.getEmployeeType().getName().equals(EmployeeType.SUBCONTRACTOR)) {
+            ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubcontractorChecks.class);
+        }
         if (submitForApproval) {
             ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class
             );
