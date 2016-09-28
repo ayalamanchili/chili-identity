@@ -345,6 +345,8 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         if (!Auth.isAdmin() && cistatus.equals("COMPLETED")) {
             selectVendorWidgetF.setReadOnly(true);
+            entityFieldsPanel.add(getLineSeperatorTag("Middle Vendor Information"));
+            addDropDown("middleVendor", new SelectMiddleVendorWidget(true, false, Alignment.HORIZONTAL));
             entityFieldsPanel.add(getLineSeperatorTag("Vendor Information"));
             addDropDown("vendor", selectVendorWidgetF);
             addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, true, Alignment.HORIZONTAL));
@@ -363,9 +365,10 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             };
             addDropDown("vendorAPContacts", selectVendorAPContactsW);
             addField("vendorPaymentTerms", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-            addDropDown("middleVendor", new SelectMiddleVendorWidget(true, false, Alignment.HORIZONTAL));
         } else {
             selectVendorWidgetF.setReadOnly(false);
+            entityFieldsPanel.add(getLineSeperatorTag("Middle Vendor Information"));
+            addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
             entityFieldsPanel.add(getLineSeperatorTag("Vendor Information"));
             addDropDown("vendor", selectVendorWidgetF);
             addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true, Alignment.HORIZONTAL));
@@ -384,7 +387,6 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             };
             addDropDown("vendorAPContacts", selectVendorAPContactsW);
             addField("vendorPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-            addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
         }
         entityFieldsPanel.add(getLineSeperatorTag("Project Details"));
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
