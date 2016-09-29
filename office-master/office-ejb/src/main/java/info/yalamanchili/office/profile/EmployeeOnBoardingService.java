@@ -93,6 +93,7 @@ public class EmployeeOnBoardingService {
             onboarding.setStartedBy(OfficeSecurityService.instance().getCurrentUserName());
             onboarding.setStartedDate(dto.getStartDate());
             onboarding.setStatus(OnBoardingStatus.Pending_Initial_Document_Submission);
+            onboarding.setEmpName(dto.getFirstName()+" "+dto.getLastName());
             onboarding = em.merge(onboarding);
             InviteCodeGeneratorService.instance().sendInviteCodeEmail(code);
             EmployeeOnBoardingDao.instance().save(onboarding);
@@ -132,7 +133,7 @@ public class EmployeeOnBoardingService {
             account.setAccountFirstName(cnt.getFirstName());
             account.setAccountLastName(cnt.getLastName());
             res.setBankAccount(account);
-        }
+        } 
         return res;
     }
 
