@@ -132,7 +132,7 @@ public class CreateVendorPanel extends CreateComposite {
         addField("paymentTerms", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorinvFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addEnumField("vendorinvDeliveryMethod", false, true, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
-        addField("vendorFees", false, true, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("vendorFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("maxFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("minFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("msaValDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -185,11 +185,6 @@ public class CreateVendorPanel extends CreateComposite {
         EnumField vendorinvDeliveryMethodF = (EnumField) fields.get("vendorinvDeliveryMethod");
         if (vendorinvDeliveryMethodF.getValue() == null || "".equals(vendorinvDeliveryMethodF.getValue())) {
             vendorinvDeliveryMethodF.setMessage("Please enter Invoice Delivery Method ");
-            valid = false;
-        }
-        FloatField vendorFeesF = (FloatField) fields.get("vendorFees");
-        if (vendorFeesF.getValue() == null || "".equals(vendorFeesF.getValue())) {
-            vendorFeesF.setMessage("Please enter Vendor Fees");
             valid = false;
         }
         StringField street1F = (StringField) createAddressWidget.fields.get("street1");
