@@ -207,8 +207,8 @@ public class ClientSidePanel extends ALComposite implements ClickHandler, OpenHa
         if (event.getSource().equals(msaValidReportL)) {
             TabPanel.instance().adminPanel.sidePanelTop.setHeight("100%");
             clearReportsField();
-            startDateF.setLabelText("MSA Valid From Date*");
-            endDateF.setLabelText("MSA Valid To Date*");
+            startDateF.setLabelText("MSA Exp From Date*");
+            endDateF.setLabelText("MSA Exp To Date*");
             msaValidReportsPanel.add(startDateF);
             msaValidReportsPanel.add(endDateF);
             msaValidReportsPanel.add(viewReportsB);
