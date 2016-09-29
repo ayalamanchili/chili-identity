@@ -317,6 +317,7 @@ public class ClientInformationDto implements Serializable {
     /**
      *
      */
+    @NotNull
     protected Set<Contact> vendorRecruiters;
     /**
      *
