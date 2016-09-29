@@ -34,7 +34,7 @@ public class UpdateClientPanel extends UpdateComposite {
     protected BooleanField isDirectClient;
     HTML directClientNote = new HTML("<h4 style=\"color:#427fed\">" + "For a  Direct "
             + "Client: Payment Terms, Invoice Frequency, Invoice Delivery Method"
-            + "</br> Client Fee, MSA Validity Period From & To and "
+            + "</br>MSA Validity Period From & To and "
             + "Termination Notice Period are also required!</h4>");
 
     public UpdateClientPanel(JSONObject entity) {
@@ -170,11 +170,11 @@ public class UpdateClientPanel extends UpdateComposite {
             invoiceDeliveryMentod.setMessage("Please select Invoice Delivery Method");
             valid = false;
         }
-        FloatField clientFee = (FloatField) fields.get("clientFee");
-        if (clientFee.getValue() == null || "".equals(clientFee.getValue())) {
-            clientFee.setMessage("Please enter the Client Fee");
-            valid = false;
-        }
+//        FloatField clientFee = (FloatField) fields.get("clientFee");
+//        if (clientFee.getValue() == null || "".equals(clientFee.getValue())) {
+//            clientFee.setMessage("Please enter the Client Fee");
+//            valid = false;
+//        }
         DateField msaValDate = (DateField) fields.get("msaValDate");
         if (msaValDate.getDate() == null || "".equals(msaValDate.getDate())) {
             msaValDate.setMessage("MSA Period From cannot be Empty");
