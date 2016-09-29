@@ -128,7 +128,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
         entityFieldsPanel.add(submitForUpdateF);
         addEnumField("vendorinvDeliveryMethod", false, true, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(submitForUpdateD);
-        addField("vendorFees", false, true, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("vendorFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("maxFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("minFees", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("msaValDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -192,11 +192,6 @@ public class UpdateVendorsPanel extends UpdateComposite {
         EnumField vendorinvDeliveryMethodF = (EnumField) fields.get("vendorinvDeliveryMethod");
         if (vendorinvDeliveryMethodF.getValue() == null || "".equals(vendorinvDeliveryMethodF.getValue())) {
             vendorinvDeliveryMethodF.setMessage("Please enter Invoice Delivery Method ");
-            valid = false;
-        }
-        FloatField vendorFeesF = (FloatField) fields.get("vendorFees");
-        if (vendorFeesF.getValue() == null || "".equals(vendorFeesF.getValue())) {
-            vendorFeesF.setMessage("Please enter Vendor Fees");
             valid = false;
         }
         return valid;
