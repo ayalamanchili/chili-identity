@@ -51,7 +51,7 @@ public class CreateClientPanel extends CreateComposite {
     CreateContactWidget createContactWidget2 = new CreateContactWidget(CreateClientContactPanel.CreateCompositeType.ADD);
     HTML directClientNote = new HTML("<h4 style=\"color:#427fed\">" + "For a  Direct "
             + "Client: Payment Terms, Invoice Frequency, Invoice Delivery Method"
-            + "</br> Client Fee, MSA Validity Period From & To and "
+            + "</br>MSA Validity Period From & To and "
             + "Termination Notice Period are also required!</h4>");
     HTML primaryLocation = new HTML("<h4 style=\"color:#427fed\">" + "Client Primary Address </h4>");
     HTML recruiterContact = new HTML("<h4 style=\"color:#427fed\">" + "Recruiter Contact Information </h4>");
@@ -307,11 +307,11 @@ public class CreateClientPanel extends CreateComposite {
             invoiceDeliveryMentod.setMessage("Please select Invoice Delivery Method");
             valid = false;
         }
-        FloatField clientFee = (FloatField) fields.get("clientFee");
-        if (clientFee.getValue() == null || "".equals(clientFee.getValue())) {
-            clientFee.setMessage("Please enter the Client Fee");
-            valid = false;
-        }
+//        FloatField clientFee = (FloatField) fields.get("clientFee");
+//        if (clientFee.getValue() == null || "".equals(clientFee.getValue())) {
+//            clientFee.setMessage("Please enter the Client Fee");
+//            valid = false;
+//        }
         DateField msaValDate = (DateField) fields.get("msaValDate");
         if (msaValDate.getDate() == null || "".equals(msaValDate.getDate())) {
             msaValDate.setMessage("MSA Period From cannot be Empty");
