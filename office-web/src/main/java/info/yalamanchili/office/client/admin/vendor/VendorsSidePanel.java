@@ -274,8 +274,8 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler, OpenH
             coiEndDateReportsL.setOpen(false);
             TabPanel.instance().adminPanel.sidePanelTop.setHeight("100%");
             clearReportsField();
-            startDateF.setLabelText("MSA Valid Exp From Date*");
-            endDateF.setLabelText("MSA Valid Exp To Date*");
+            startDateF.setLabelText("MSA Exp From Date*");
+            endDateF.setLabelText("MSA Exp To Date*");
             msaValidReportsPanel.add(startDateF);
             msaValidReportsPanel.add(endDateF);
             msaValidReportsPanel.add(viewReportsB);
