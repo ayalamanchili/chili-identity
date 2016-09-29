@@ -88,7 +88,7 @@ public class ReadVendorsPanel extends ReadComposite {
         addField("paymentTerms", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("vendorinvFrequency", true, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
         addEnumField("vendorinvDeliveryMethod", true, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
-        addField("vendorFees", true, true, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addField("vendorFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("maxFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("minFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("msaValDate", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
