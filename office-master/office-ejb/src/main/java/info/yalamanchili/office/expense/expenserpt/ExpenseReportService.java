@@ -447,7 +447,6 @@ public class ExpenseReportService {
                     image.scaleAbsoluteHeight(25);
                     image.scaleAbsoluteWidth(image.getWidth() / 3);
                     content.addImage(image);
-                    content.addImage(image);
                 }
                 pdfStamper.close();
                 pdfReader.close();

@@ -34,16 +34,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("prototype")
 @Transactional
 public class OnBoardingEmployeeProcessBean {
-
+    
     @Autowired
     protected MailUtils mailUtils;
     @Autowired
     FileDao fileDao;
-
+    
     protected final String[] EMPLOYEE_ORIENTATION_FORMS_LIST_SSTECH = {"CorporatePoliciesHandbook", "FamilyAndMedicalLeave", "HolidaySchedule", "SSTOrientationCorporateEmployee", "WorkFromHomePolicy"};
     protected final String[] EMPLOYEE_ORIENTATION_FORMS_LIST_CGS = {"CorporatePoliciesHandbook", "FamilyAndMedicalLeave", "HolidaySchedule", "CGSOrientationCorporateEmployee", "WorkFromHomePolicy"};
     protected final String[] EMPLOYEE_ORIENTATION_FORMS_LIST_TECHPILLARS = {"CorporatePoliciesHandbook", "FamilyAndMedicalLeave", "HolidaySchedule", "TechpillarsOrientationCorporateEmployee", "WorkFromHomePolicy"};
-
+    
     public void sendEmployeeOnBoardingProcessStartEmail(Employee emp) {
         Email email = new Email();
         email.setHtml(Boolean.TRUE);
@@ -55,32 +55,30 @@ public class OnBoardingEmployeeProcessBean {
         email.setBody(messageTextforuser);
         MessagingService.instance().sendEmail(email);
     }
+
     public void sendEmployeeOnBoardingProcessCompleteEmail(Employee emp) {
         Email email = new Email();
         String strSubject = "";
         String[] EMPLOYEE_ORIENTATION_FORMS_LIST = null;
         email.setHtml(Boolean.TRUE);
         email.setRichText(Boolean.TRUE);
-        if(emp.getCompany().getName().equalsIgnoreCase(Company.CGS_INC)) {
+        if (emp.getCompany().getName().equalsIgnoreCase(Company.CGS_INC)) {
             EMPLOYEE_ORIENTATION_FORMS_LIST = EMPLOYEE_ORIENTATION_FORMS_LIST_CGS;
             strSubject = "CGS INC New Employee Orientation";
-        }
-        else if(emp.getCompany().getName().equalsIgnoreCase(Company.TECHPILLARS)) {
+        } else if (emp.getCompany().getName().equalsIgnoreCase(Company.TECHPILLARS)) {
             EMPLOYEE_ORIENTATION_FORMS_LIST = EMPLOYEE_ORIENTATION_FORMS_LIST_TECHPILLARS;
             strSubject = "TechPillars New Employee Orientation";
-        }
-        else {
+        } else {
             EMPLOYEE_ORIENTATION_FORMS_LIST = EMPLOYEE_ORIENTATION_FORMS_LIST_SSTECH;
             strSubject = "SSTech New Employee Orientation";
         }
-        
         
         email.addTo(emp.getPrimaryEmail().getEmail());
         email.setSubject(strSubject);
         String messageText = "Hi " + "<b>" + emp.getFirstName() + "</b>" + " " + "<b>" + emp.getLastName() + "</b>" + " \n \n";
         messageText = messageText.concat("<br>Thank you for completing your Orientation. If you have any questions and need help with anything at all, please reach out to HR and we are glad to help for any clarifications."
-                    + "</br> \n <br> Have an awesome first week! You will receive your paylocity credentials to log in your hours by the end of this week.</br>" 
-                    + "\n <br>Remember we will need a screen shot or something of your approved timesheet from client sent to tms@sstech.us weekly.</br> \n <br>You are all good to go. Let me know if you have any questions!</br>");
+                + "</br> \n <br> Have an awesome first week! You will receive your paylocity credentials to log in your hours by the end of this week.</br>"
+                + "\n <br>Remember we will need a screen shot or something of your approved timesheet from client sent to tms@sstech.us weekly.</br> \n <br>You are all good to go. Let me know if you have any questions!</br>");
         //String messageTxt = messageText.replaceAll("[^a-zA-Z0-9\\.;:_ ,]+", " ");
         email.setBody(messageText);
         for (String fileName : EMPLOYEE_ORIENTATION_FORMS_LIST) {
@@ -89,8 +87,9 @@ public class OnBoardingEmployeeProcessBean {
             }
         }        
         MessagingService.instance().sendEmail(email);
-
+        
     }
+
     public void deleteEmployee(Employee emp) {
         emp.setEndDate(new Date());
         emp = EmployeeDao.instance().getEntityManager().merge(emp);
@@ -98,6 +97,7 @@ public class OnBoardingEmployeeProcessBean {
         empOnBoarding.setStatus(OnBoardingStatus.Rejected);
         CUser user1 = emp.getUser();
         user1.setEnabled(false);
+        emp.setUser(user1);
         OfficeBPMTaskService.instance().deleteAllTasksForProcessId(empOnBoarding.getBpmProcessId(), false);
         //TODO this should be only done in case of a corporate employee since for others bpm user is not created.
         OfficeBPMIdentityService.instance().deleteUser(emp.getUser().getUsername());

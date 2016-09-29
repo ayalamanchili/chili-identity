@@ -275,20 +275,10 @@ public class EmployeeFormsService {
             }
         }
         if (emp.getCompany() != null) {
-            Company company = emp.getCompany();
-            String nameOfCompany = company.getName();
-            if (nameOfCompany.contains("LLC")) {
-                data.getData().put("companyLLC", "true");
-            } else if (nameOfCompany.contains("System Soft Technologies INC")) {
-                data.getData().put("companyINC", "true");
-            } else if (nameOfCompany.contains("TechPillars")) {
-                data.getData().put("companyTP", "true");
-            } else if (nameOfCompany.contains("CGS INC")) {
-                data.getData().put("companyCGS", "true");
-            }
+            data.getData().put("companyName", emp.getCompany().getName());
             if (emp.getCompany().getAbbreviation() != null) {
                 data.getData().put("companyCode", emp.getCompany().getAbbreviation());
-            }
+            }           
         }
 
         if (emp.getBranch() != null) {
