@@ -350,7 +350,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             entityFieldsPanel.add(getLineSeperatorTag("Vendor Information"));
             addDropDown("vendor", selectVendorWidgetF);
             addDropDown("vendorLocation", new SelectVendorLocationsWidget(true, true, Alignment.HORIZONTAL));
-            selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(true, false, Alignment.HORIZONTAL) {
+            selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(true, true, Alignment.HORIZONTAL) {
                 @Override
                 public boolean enableMultiSelect() {
                     return true;
@@ -364,7 +364,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 }
             };
             addDropDown("vendorAPContacts", selectVendorAPContactsW);
-            addField("vendorPaymentTerms", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+            addField("vendorPaymentTerms", true, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         } else {
             selectVendorWidgetF.setReadOnly(false);
             entityFieldsPanel.add(getLineSeperatorTag("Middle Vendor Information"));
@@ -372,7 +372,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             entityFieldsPanel.add(getLineSeperatorTag("Vendor Information"));
             addDropDown("vendor", selectVendorWidgetF);
             addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true, Alignment.HORIZONTAL));
-            selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL) {
+            selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(false, true, Alignment.HORIZONTAL) {
                 @Override
                 public boolean enableMultiSelect() {
                     return true;
@@ -386,7 +386,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 }
             };
             addDropDown("vendorAPContacts", selectVendorAPContactsW);
-            addField("vendorPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+            addField("vendorPaymentTerms", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         }
         entityFieldsPanel.add(getLineSeperatorTag("Project Details"));
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);

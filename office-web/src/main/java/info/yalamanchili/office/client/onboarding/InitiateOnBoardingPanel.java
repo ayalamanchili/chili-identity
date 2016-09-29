@@ -13,7 +13,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.composite.SelectComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -52,6 +51,9 @@ public class InitiateOnBoardingPanel extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
+        assignEntityValueFromField("firstName", entity);
+        assignEntityValueFromField("middleInitial", entity);
+        assignEntityValueFromField("lastName", entity);
         assignEntityValueFromField("email", entity);
         assignEntityValueFromField("employeeType", entity);
         assignEntityValueFromField("company", entity);
@@ -104,6 +106,9 @@ public class InitiateOnBoardingPanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
+        addField("firstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("middleInitial", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("email", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addDropDown("employeeType", new SelectEmployeeTypeWidget(false, true));
         addDropDown("company", new SelectCompanyWidget(false, true, Alignment.HORIZONTAL));
@@ -111,7 +116,6 @@ public class InitiateOnBoardingPanel extends CreateComposite {
         addEnumField("branch", false, false, Branch.names(), Alignment.HORIZONTAL);
         addEnumField("workStatus", false, true, WorkStatus.names(), Alignment.HORIZONTAL);
         addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-
         alignFields();
         if (prospect != null) {
             StringField emailF = (StringField) fields.get("email");
@@ -120,6 +124,12 @@ public class InitiateOnBoardingPanel extends CreateComposite {
             if (prospect.get("company").isObject() != null) {
                 selectComposite.setSelectedValue(prospect.get("company").isObject());
             }
+            StringField firstNameF = (StringField) fields.get("firstName");
+            firstNameF.setValue(JSONUtils.toString(prospect, "firstName"));
+            StringField middleInitialF = (StringField) fields.get("middleInitial");
+            middleInitialF.setValue(JSONUtils.toString(prospect, "middleInitial"));
+            StringField lastNameF = (StringField) fields.get("lastName");
+            lastNameF.setValue(JSONUtils.toString(prospect, "lastName"));
         }
     }
 
@@ -130,5 +140,21 @@ public class InitiateOnBoardingPanel extends CreateComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "on-board-employee/initiate-onboarding";
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
+        StringField firstNameF = (StringField) fields.get("firstName");
+        StringField lastNameF = (StringField) fields.get("lastName");
+        if(firstNameF.getValue()== null || firstNameF.getValue().isEmpty()){
+            fields.get("firstName").setMessage("First Name can not be empty");
+            valid = false;
+        }
+        if(lastNameF.getValue()== null || lastNameF.getValue().isEmpty()){
+            fields.get("lastName").setMessage("Last Name can not be empty");
+            valid = false;
+        }
+        return valid;
     }
 }

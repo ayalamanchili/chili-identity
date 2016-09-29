@@ -82,6 +82,8 @@ public class EmployeeOnBoarding extends AbstractEntity {
      */
     protected String startedBy;
     
+    protected String empName;
+    
     /**
      * Getters and Setters
      */
@@ -133,6 +135,14 @@ public class EmployeeOnBoarding extends AbstractEntity {
         this.startedBy = startedBy;
     }
 
+    public String getEmpName() {
+        return empName;
+    }
+
+    public void setEmpName(String empName) {
+        this.empName = empName;
+    }
+    
     @Override
     public String toString() {
         return "EmployeeOnBoarding{" + "startedDate=" + startedDate + ", status=" + status + ", employee=" + employee + ", bpmProcessId=" + bpmProcessId + ", startedBy=" + startedBy  +'}';

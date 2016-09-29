@@ -347,6 +347,7 @@ public class ClientInformation extends AbstractEntity {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "clientinformation_vendor_recruiters")
     @ForeignKey(name = "FK_VendorRecruiters_ClientInformations")
+    @NotNull(groups = SubmitChecks.class)
     protected Set<Contact> vendorRecruiters;
 
     @ManyToOne
@@ -355,6 +356,7 @@ public class ClientInformation extends AbstractEntity {
 
     protected String timeSheetRequirement;
 
+    @NotNull(groups = SubmitChecks.class)
     protected String vendorPaymentTerms;
 
     protected String clientPaymentTerms;

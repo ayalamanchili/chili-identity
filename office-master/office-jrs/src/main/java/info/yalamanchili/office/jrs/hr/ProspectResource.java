@@ -236,6 +236,9 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         }
         dto.setFirstName(p.getContact().getFirstName());
         dto.setLastName(p.getContact().getLastName());
+        if(p.getContact().getMiddleInitial()!=null){
+            dto.setMiddleInitial(p.getContact().getMiddleInitial());
+        }
         dto.setScreenedBy(p.getScreenedBy());
         dto.setPhoneNumber(p.getContact().getPhones().get(0).getPhoneNumber());
         if (p.getContact().getEmails() != null && p.getContact().getEmails().size() > 0) {
