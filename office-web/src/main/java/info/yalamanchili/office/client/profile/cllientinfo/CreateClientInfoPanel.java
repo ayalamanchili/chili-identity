@@ -319,7 +319,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addDropDown("vendor", selectVendorWidgetF);
         entityFieldsPanel.add(addVendorL);
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true, Alignment.HORIZONTAL));
-        selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(false, false, Alignment.HORIZONTAL) {
+        selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(false, true, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
                 return true;
@@ -333,7 +333,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             }
         };
         addDropDown("vendorAPContacts", selectVendorAPContactsW);
-        addField("vendorPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        addField("vendorPaymentTerms", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Project Details"));
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
