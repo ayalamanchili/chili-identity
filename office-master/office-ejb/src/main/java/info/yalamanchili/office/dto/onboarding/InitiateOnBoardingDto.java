@@ -8,16 +8,24 @@
  */
 package info.yalamanchili.office.dto.onboarding;
 
+import info.chili.document.dao.SerializedEntityDao;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Branch;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.WorkStatus;
+import info.yalamanchili.office.entity.profile.invite.InvitationType;
+import info.yalamanchili.office.entity.profile.invite.InviteCode;
+import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
+import info.yalamanchili.office.profile.invite.InviteCodeService;
+import info.yalamanchili.office.profile.invite.InviteCodeService.InviteCodeDto;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.dozer.Mapper;
 import org.hibernate.validator.constraints.Email;
 
 /**
@@ -61,11 +69,15 @@ public class InitiateOnBoardingDto implements Serializable {
     protected OnBoardingStatus status;
 
     protected String comment;
-    
+
     @NotNull(message = "{jobTitle.not.empty.msg}")
     protected String jobTitle;
 
     protected String bpmProcessId;
+
+    protected String firstName;
+    protected String middleInitial;
+    protected String lastName;
 
     public String getBpmProcessId() {
         return bpmProcessId;
@@ -147,4 +159,27 @@ public class InitiateOnBoardingDto implements Serializable {
         this.status = status;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getMiddleInitial() {
+        return middleInitial;
+    }
+
+    public void setMiddleInitial(String middleInitial) {
+        this.middleInitial = middleInitial;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 }
