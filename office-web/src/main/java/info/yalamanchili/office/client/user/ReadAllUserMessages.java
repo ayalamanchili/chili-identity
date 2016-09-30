@@ -48,9 +48,9 @@ public class ReadAllUserMessages extends CRUDReadAllComposite {
 
     @Override
     public void createTableHeader() {
-        table.setText(0, 0, getKeyValue("summary"));
-        table.setText(0, 1, getKeyValue("createdDate"));
-        table.setText(0, 2, getKeyValue("Details"));
+        table.setText(0, 0, getKeyValue("Summary"));
+        table.setText(0, 1, getKeyValue("Details"));
+        table.setText(0, 2, getKeyValue("User Guide"));
         table.setText(0, 3, getKeyValue("Action"));
     }
 
@@ -59,7 +59,7 @@ public class ReadAllUserMessages extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             table.setText(i, 0, JSONUtils.toString(entity, "summary"));
-            table.setText(i, 1, DateUtils.getFormatedDate(JSONUtils.toString(entity, "createdDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            table.setText(i, 1, JSONUtils.toString(entity, "details"));
             ClickableLink invoiceLink = new ClickableLink("Acknowledge");
             invoiceLink.setTitle(JSONUtils.toString(entity, "id"));
             invoiceLink.addClickHandler((ClickEvent event) -> {
@@ -67,7 +67,7 @@ public class ReadAllUserMessages extends CRUDReadAllComposite {
             });
             table.setWidget(i, 3, invoiceLink);
             if (entity.containsKey("moreDetailsLink")) {
-                ClickableLink detailsL = new ClickableLink("Details");
+                ClickableLink detailsL = new ClickableLink("User Guide");
                 detailsL.addClickHandler((ClickEvent event) -> {
                     Window.open(JSONUtils.toString(entity, "moreDetailsLink"), "_blank", "");
                 });
