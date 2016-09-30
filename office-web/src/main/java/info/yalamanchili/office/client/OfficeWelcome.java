@@ -103,7 +103,7 @@ public class OfficeWelcome implements EntryPoint {
                 Timer timer = new Timer() {
                     @Override
                     public void run() {
-//                        showMessages();
+                        showMessages();
                     }
                 };
                 timer.schedule(2000);
