@@ -37,11 +37,13 @@ import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.DocumentType;
 import info.yalamanchili.office.entity.profile.Email;
+import info.yalamanchili.office.entity.profile.EmailType;
 import info.yalamanchili.office.entity.profile.EmergencyContact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeDocument;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Phone;
+import info.yalamanchili.office.entity.profile.PhoneType;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import info.yalamanchili.office.entity.profile.invite.InvitationType;
@@ -58,6 +60,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import org.apache.commons.lang.time.DateUtils;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -168,12 +171,16 @@ public class EmployeeOnBoardingService {
             if (dto.getCountryCode() != null) {
                 empPhone.setCountryCode(dto.getCountryCode());
             }
+            empPhone.setPhoneType(getCellPhoneType());
             emp.getPhones().add(empPhone);
             empPhone.setContact(emp);
         }
         emp = employeeService.createCUser(emp);
         //Create employee with basic information
         emp = employeeService.createEmailAndOtherDefaults(emp, initiateDto.getEmail());
+        Email email = emp.getEmails().get(0);
+        email.setEmailType(getPersonalEmailType());
+        em.merge(emp);
         //Create BPM User
         if (emp.getEmployeeType().getName().equalsIgnoreCase(EmployeeType.CORPORATE_EMPLOYEE)) {
             employeeService.createBPMUser(emp, false);
@@ -324,5 +331,31 @@ public class EmployeeOnBoardingService {
         }
         String[] columnOrder = new String[]{"employee", "employeeType", "startDate", "email", "company", "branch"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(resultDtos, "Onboarding Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+    }
+    
+    private EmailType getPersonalEmailType() {
+        Query getEmailType = em.createQuery("from " + EmailType.class.getCanonicalName()
+                + " where emailType=:emailTypeParam");
+        getEmailType.setParameter("emailTypeParam", "Personal");
+        if (getEmailType.getResultList().size() > 0) {
+            return (EmailType) getEmailType.getResultList().get(0);
+        } else {
+            EmailType homeEmailType = new EmailType();
+            homeEmailType.setEmailType("Personal");
+            return em.merge(homeEmailType);
+        }
+    }
+    
+    private PhoneType getCellPhoneType() {
+        Query getCellPhoneType = em.createQuery("from " + PhoneType.class.getCanonicalName()
+                + " where phoneType=:phoneTypeParam");
+        getCellPhoneType.setParameter("phoneTypeParam", "Cell");
+        if (getCellPhoneType.getResultList().size() > 0) {
+            return (PhoneType) getCellPhoneType.getResultList().get(0);
+        } else {
+            PhoneType cellPhoneType = new PhoneType();
+            cellPhoneType.setPhoneType("Cell");
+            return em.merge(cellPhoneType);
+        }
     }
 }
