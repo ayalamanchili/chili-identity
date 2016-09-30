@@ -9,8 +9,8 @@ package info.yalamanchili.office.bpm.onboarding;
 
 import info.chili.email.Email;
 import info.chili.security.domain.CUser;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
-import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
@@ -34,16 +34,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope("prototype")
 @Transactional
 public class OnBoardingEmployeeProcessBean {
-    
+
     @Autowired
     protected MailUtils mailUtils;
     @Autowired
     FileDao fileDao;
-    
+
     protected final String[] EMPLOYEE_ORIENTATION_FORMS_LIST_SSTECH = {"CorporatePoliciesHandbook", "FamilyAndMedicalLeave", "HolidaySchedule", "SSTOrientationCorporateEmployee", "WorkFromHomePolicy"};
     protected final String[] EMPLOYEE_ORIENTATION_FORMS_LIST_CGS = {"CorporatePoliciesHandbook", "FamilyAndMedicalLeave", "HolidaySchedule", "CGSOrientationCorporateEmployee", "WorkFromHomePolicy"};
     protected final String[] EMPLOYEE_ORIENTATION_FORMS_LIST_TECHPILLARS = {"CorporatePoliciesHandbook", "FamilyAndMedicalLeave", "HolidaySchedule", "TechpillarsOrientationCorporateEmployee", "WorkFromHomePolicy"};
-    
+
     public void sendEmployeeOnBoardingProcessStartEmail(Employee emp) {
         Email email = new Email();
         email.setHtml(Boolean.TRUE);
@@ -72,7 +72,7 @@ public class OnBoardingEmployeeProcessBean {
             EMPLOYEE_ORIENTATION_FORMS_LIST = EMPLOYEE_ORIENTATION_FORMS_LIST_SSTECH;
             strSubject = "SSTech New Employee Orientation";
         }
-        
+
         email.addTo(emp.getPrimaryEmail().getEmail());
         email.setSubject(strSubject);
         String messageText = "Hi " + "<b>" + emp.getFirstName() + "</b>" + " " + "<b>" + emp.getLastName() + "</b>" + " \n \n";
@@ -85,9 +85,9 @@ public class OnBoardingEmployeeProcessBean {
             if (fileDao.getFilePath(fileName) != null) {
                 email.getAttachments().add(fileDao.getFilePath(fileName));
             }
-        }        
+        }
         MessagingService.instance().sendEmail(email);
-        
+
     }
 
     public void deleteEmployee(Employee emp) {
@@ -98,8 +98,26 @@ public class OnBoardingEmployeeProcessBean {
         CUser user1 = emp.getUser();
         user1.setEnabled(false);
         emp.setUser(user1);
-        OfficeBPMTaskService.instance().deleteAllTasksForProcessId(empOnBoarding.getBpmProcessId(), false);
+        //OfficeBPMTaskService.instance().deleteAllTasksForProcessId(empOnBoarding.getBpmProcessId(), false);
         //TODO this should be only done in case of a corporate employee since for others bpm user is not created.
         OfficeBPMIdentityService.instance().deleteUser(emp.getUser().getUsername());
+    }
+
+    public void notifyBackgroundCheckTeam(EmployeeOnBoarding onboarding) {
+        Email email = new Email();
+        email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
+        String[] empDetails = onboarding.getEmpName().split("-");
+        email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_BACKGROUND_SCREENING_MGR.name()));
+        email.setSubject("New Employee Onboarding initiated please start Background Screening for" + empDetails[0]);
+        String messageText = "New Hire Onboarding process started. Please initiate background check for the employee";
+        messageText = messageText.concat("<table border='1'>");
+        messageText = messageText.concat("<tr><td><b>Employee </b></td> <td>" + empDetails[0] + "</td></tr>");
+        messageText = messageText.concat("<tr><td><b>Employee Type </b></td> <td>" + empDetails[1] + "</td></tr>");
+        messageText = messageText.concat("<tr><td><b>Job Title <b></td> <td>" + empDetails[2] + "</td></tr>");
+        messageText = messageText.concat("<tr><td><b>Email </b> </td> <td>" + onboarding.getEmail() + "</td></tr>");
+        messageText = messageText.concat("<tr><td><b>Start Date </b> </td> <td>" + onboarding.getStartedDate() + "</td></tr>");
+        email.setBody(messageText);
+        MessagingService.instance().sendEmail(email);
     }
 }
