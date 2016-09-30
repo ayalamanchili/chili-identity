@@ -14,6 +14,7 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMIdentityService;
 import info.yalamanchili.office.bpm.OfficeBPMService;
+import info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcessBean;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
@@ -21,6 +22,7 @@ import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.EmployeeDocumentDao;
+import info.yalamanchili.office.dao.profile.EmployeeTypeDao;
 import info.yalamanchili.office.dao.profile.ext.DependentDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
 import info.yalamanchili.office.dao.profile.onboarding.EmployeeOnBoardingDao;
@@ -80,6 +82,8 @@ public class EmployeeOnBoardingService {
     protected EmployeeService employeeService;
     @Autowired
     protected Mapper mapper;
+    @Autowired
+    protected OnBoardingEmployeeProcessBean processBean;
 
     public void initiateOnBoarding(InitiateOnBoardingDto dto) {
         EmployeeOnBoarding eo = EmployeeOnBoardingDao.instance().findByEmail(dto.getEmail());
@@ -93,14 +97,15 @@ public class EmployeeOnBoardingService {
             onboarding.setStartedBy(OfficeSecurityService.instance().getCurrentUserName());
             onboarding.setStartedDate(dto.getStartDate());
             onboarding.setStatus(OnBoardingStatus.Pending_Initial_Document_Submission);
-            onboarding.setEmpName(dto.getFirstName()+" "+dto.getLastName());
+            onboarding.setEmpName(dto.getFirstName()+" "+dto.getLastName()+" - "+EmployeeTypeDao.instance().findById(dto.getEmployeeType().getId()).getName().trim()+" - "+dto.getJobTitle().trim());
             onboarding = em.merge(onboarding);
             InviteCodeGeneratorService.instance().sendInviteCodeEmail(code);
-            EmployeeOnBoardingDao.instance().save(onboarding);
+            processBean.notifyBackgroundCheckTeam(EmployeeOnBoardingDao.instance().save(onboarding));
             if (dto.getComment() != null) {
                 CommentDao.instance().addComment(dto.getComment(), onboarding);
             }
         }
+        
     }
 
     public OnBoardingEmployeeDto getOnboardingInfo(String invitationCode) {
