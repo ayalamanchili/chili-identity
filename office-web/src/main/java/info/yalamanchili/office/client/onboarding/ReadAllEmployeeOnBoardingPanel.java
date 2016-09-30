@@ -78,11 +78,13 @@ public class ReadAllEmployeeOnBoardingPanel extends CRUDReadAllComposite {
             JSONObject empType = (JSONObject) emp.get("employeeType");
             if (entity.containsKey("employee")) {
                 table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            } else if(entity.containsKey("empName")){
-                table.setText(i, 1, JSONUtils.toString(entity, "empName"));
+                table.setText(i, 3, JSONUtils.toString(empType, "name"));
+            } else if (entity.containsKey("empName")) {
+                String[] empDetails = entity.get("empName").isString().stringValue().split("-");
+                table.setText(i, 1, empDetails[0]);
+                table.setText(i, 3, empDetails[1]);
             }
             table.setText(i, 2, DateUtils.formatDate(JSONUtils.toString(entity, "startedDate")));
-            table.setText(i, 3, JSONUtils.toString(empType, "name"));
             table.setText(i, 4, JSONUtils.toString(emp, "branch"));
             table.setText(i, 5, JSONUtils.toString(entity, "email"));
             setEnumColumn(i, 6, entity, OnBoardingStatus.class.getSimpleName(), "status");
