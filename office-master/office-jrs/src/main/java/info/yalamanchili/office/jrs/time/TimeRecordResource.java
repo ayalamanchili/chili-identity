@@ -15,6 +15,8 @@ import info.yalamanchili.office.dao.time.TimeRecordDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.model.time.TimeRecord;
 import info.yalamanchili.office.model.time.TimeRecord.TimeRecordsTable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -76,5 +78,25 @@ public class TimeRecordResource {
     @PreAuthorize("hasAnyRole('ROLE_HR_ADMINSTRATION')")
     public void report(TimeRecordDao.TimeRecordSearchDto dto) {
         TimeRecordService.instance().getAllEmployeesSummaryReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail(), dto);
+    }
+
+    @GET
+    @Path("/employee-report/{empId}")
+    @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")
+    public void getTimeRecordsReportForEmployee(@PathParam("empId") Long empId) {
+        TimeRecord.TimeRecordsTable table = getTimeRecordsForEmployee(empId, 0, 1000);
+        Employee emp = EmployeeDao.instance().findById(empId);
+        if (table.getSize() != null) {
+            List<TimeRecord> list = new ArrayList();
+            list.addAll(table.getEntities());
+            TimeRecordService.instance().generateEmpAttendenceReport(list, OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail(), emp);
+        }
+    }
+
+    @GET
+    @Path("/employee-branch-report/{branch}")
+    @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")
+    public void getTimeRecordsReportForBranch(@PathParam("branch") String branch) {
+        TimeRecordService.instance().generateBranchAttendenceReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail(), branch);
     }
 }
