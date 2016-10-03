@@ -29,6 +29,7 @@ How To Onboard An Employee:
 - Upon Payroll Task Complete, record status is **Pending_Employee_Orientation**
 - Onboarding Manager will get **Employee Orientation Task**.
 - After the Orientation task complete, onboarding process will complete and record status should changed to **Complete**
+- After the Orientation task completed, employee will get a notification email with the attachments.
 
 Employee onboarding Process:
 ------
@@ -42,7 +43,7 @@ Prospect Manager will navigate to My Office -> Prospect
 ----
  ![alt text](../../images/onboarding/initiate-onboarding-from-prospect.png "Employee Onboarding")
 
-Fill The Required Fields And Initiate Onboarding:
+Fields like First Name , Last Name , Email and Company will pre-populate,fill the required fields and Initiate Onboarding:
 ------
  ![alt text](../../images/onboarding/fill-initiate-onboarding-panel.png "Employee Onboarding")
  ![alt text](../../images/onboarding/pending-initial-documents-submission.png "Employee Onboarding")
@@ -186,3 +187,7 @@ Employee orientation Task complete email:
 Onboarding process Complete
 -----
 ![alt text](../../images/onboarding/onboarding-complete.png "Employee Onboarding")
+
+Notification Email to the employee regarding process complete.
+-----
+![alt text](../../images/onboarding/oreintation-mail.png "Employee Orentation")
