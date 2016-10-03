@@ -47,7 +47,11 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler {
     CaptionPanel timesheetsForEmpCaptionPanel = new CaptionPanel();
     FlowPanel timesheetsForEmpPanel = new FlowPanel();
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
+    String[] branch = {"Hyderabad"};
+    EnumField branchField = new EnumField(OfficeWelcome.constants, "Branch", "CorporateTimeSheet",
+            false, false, branch, Alignment.VERTICAL);
     Button showTimeSheetsForEmpB = new Button("View");
+    Button timeSheetsreportForEmpB = new Button("Report");
     //Reports
     CaptionPanel reportsCaptionPanel = new CaptionPanel();
     FlowPanel reportsPanel = new FlowPanel();
@@ -74,6 +78,7 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler {
         showTimeSheetsForEmpB.addClickHandler(this);
         reportsB.addClickHandler(this);
         employeeSB.addDomHandler(new Handler(), KeyPressEvent.getType());
+        timeSheetsreportForEmpB.addClickHandler(this);
     }
     final class Handler implements KeyPressHandler{
         @Override
@@ -107,7 +112,9 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler {
         if (Auth.isCorporateEmployee()) {
             //time sheets for emp panel
             timesheetsForEmpPanel.add(employeeSB);
+            timesheetsForEmpPanel.add(branchField);
             timesheetsForEmpPanel.add(showTimeSheetsForEmpB);
+            timesheetsForEmpPanel.add(timeSheetsreportForEmpB);
             timesheetsForEmpCaptionPanel.setContentWidget(timesheetsForEmpPanel);
             timeSheetSidePanel.add(timesheetsForEmpCaptionPanel);
         }
@@ -128,6 +135,31 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler {
         if (employeeSB.getSelectedObject() != null && event.getSource().equals(showTimeSheetsForEmpB)) {
             TabPanel.instance().getTimePanel().entityPanel.clear();
             TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllTimeRecordsPanel(employeeSB.getKey()));
+            clearReportsField();
+        }
+        if (employeeSB.getSelectedObject() != null && event.getSource().equals(timeSheetsreportForEmpB)) {
+            TabPanel.instance().getTimePanel().entityPanel.clear();
+            String reportUrl = OfficeWelcome.constants.root_url() + "timerecord/employee-report/" + employeeSB.getSelectedObject().get("id").isString().stringValue();
+            HttpService.HttpServiceAsync.instance().doGet(reportUrl, OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String result) {
+                            new ResponseStatusWidget().show("Report will be emailed to your primary Email");
+                        }
+                    });
+            clearReportsField();
+        }
+        if (branchField.getValue() != null && event.getSource().equals(timeSheetsreportForEmpB)) {
+            TabPanel.instance().getTimePanel().entityPanel.clear();
+            String reportUrl = OfficeWelcome.constants.root_url() + "timerecord/employee-branch-report/" + branchField.getValue();
+            HttpService.HttpServiceAsync.instance().doGet(reportUrl, OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String result) {
+                            new ResponseStatusWidget().show("Report will be emailed to your primary Email");
+                        }
+                    });
+            clearReportsField();
         }
         if (event.getSource().equals(reportsB)) {
             generateReport();
@@ -136,6 +168,11 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler {
 
     private String getEmployeeIdsDropDownUrl() {
         return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee");
+    }
+    
+    protected void clearReportsField() {
+        employeeSB.clearText();
+        branchField.listBox.setSelectedIndex(0);
     }
 
     protected void generateReport() {
