@@ -46,11 +46,11 @@ public class CorporateTimeAccuralService {
         CorporateTimeSheetDao dao = CorporateTimeSheetDao.instance();
         Date today = new Date();
         loop1:
-        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 5000, OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
+        for (Employee emp : OfficeSecurityService.instance().getUsersWithRoles(0, 10000, OfficeRoles.OfficeRole.ROLE_CORPORATE_EMPLOYEE.name())) {
             if (ng != null) {
                 for (Employee deactivateEmp : ng.getEmployees()) {
                     if (deactivateEmp.equals(emp)) {
-                        break loop1;
+                        continue loop1;
                     }
                 }
             }
@@ -176,6 +176,5 @@ public class CorporateTimeAccuralService {
     }
 
     public void runYearlyEarnedIndiaTimeSheets() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
