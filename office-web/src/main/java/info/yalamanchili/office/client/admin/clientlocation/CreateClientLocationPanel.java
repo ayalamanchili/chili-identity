@@ -20,6 +20,7 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.admin.client.TreeClientPanel;
 
@@ -32,9 +33,15 @@ public class CreateClientLocationPanel extends CreateAddressPanel implements Cha
     public CreateClientLocationPanel(CreateComposite.CreateCompositeType type) {
         super(CreateAddressPanelType.ALL);
     }
+    String clientId;
+
+    public CreateClientLocationPanel(String clientId, CreateComposite.CreateCompositeType type) {
+        super(CreateAddressPanelType.ALL);
+        this.clientId = clientId;
+    }
 
     @Override
-     protected JSONObject populateEntityFromFields() { 
+    protected JSONObject populateEntityFromFields() {
         //TODO is thid needed
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("street1", entity);
@@ -48,6 +55,10 @@ public class CreateClientLocationPanel extends CreateAddressPanel implements Cha
 
     @Override
     protected void postCreateSuccess(String result) {
+        if (SelectClientLocationWidget.instance() != null) {
+            SelectClientLocationWidget.instance().fireEvent();
+        }
+        GenericPopup.hideIfOpen();
         new ResponseStatusWidget().show("Successfully Added Client Location");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllClientLocationsPanel(TreeClientPanel.instance().getEntityId()));
@@ -57,7 +68,7 @@ public class CreateClientLocationPanel extends CreateAddressPanel implements Cha
     protected void addWidgets() {
         addField("street1", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("street2", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("zip", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);        
+        addField("zip", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("city", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("state", false, true, DataType.ENUM_FIELD, Alignment.HORIZONTAL);
         addEnumField("country", false, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
@@ -65,26 +76,30 @@ public class CreateClientLocationPanel extends CreateAddressPanel implements Cha
         super.countriesF = (EnumField) fields.get("country");
         super.statesF = (EnumField) fields.get("state");
         super.zipField = (StringField) fields.get("zip");
-        super.cityField = (StringField) fields.get("city");        
- 
+        super.cityField = (StringField) fields.get("city");
+
     }
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "client/clientlocation/" + TreeClientPanel.instance().getEntityId();
+        if (clientId != null) {
+            return OfficeWelcome.constants.root_url() + "client/clientlocation/" + clientId;
+        } else {
+            return OfficeWelcome.constants.root_url() + "client/clientlocation/" + TreeClientPanel.instance().getEntityId();
+        }
     }
 
     @Override
     protected void addListeners() {
         super.addListeners();
-       
+
     }
 
     @Override
-    public void onChange(ChangeEvent event) {     
-       super.onChange(event);
+    public void onChange(ChangeEvent event) {
+        super.onChange(event);
     }
-    
+
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         boolean valid = true;
@@ -115,6 +130,5 @@ public class CreateClientLocationPanel extends CreateAddressPanel implements Cha
         }
         return valid;
     }
-    
-    
+
 }

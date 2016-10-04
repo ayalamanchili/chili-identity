@@ -54,6 +54,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
+import info.yalamanchili.office.client.admin.clientlocation.CreateClientLocationPanel;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 import java.util.Date;
@@ -62,6 +63,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
     private static Logger logger = Logger.getLogger(CreateClientInfoPanel.class.getName());
     protected Anchor addClientL = new Anchor("Client not present? submit request");
+    protected Anchor addClientLocation = new Anchor("Worksite Location not present? submit request");
     protected Anchor addVendorL = new Anchor("Vendor not present? submit request");
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
     SelectVendorWidget selectVendorWidgetF = new SelectVendorWidget(false, true, Alignment.HORIZONTAL);
@@ -218,6 +220,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     @Override
     protected void addListeners() {
         addClientL.addClickHandler(this);
+        addClientLocation.addClickHandler(this);
         addVendorL.addClickHandler(this);
         submitForApprovalF.getBox().addClickHandler(this);
         selectVendorWidgetF.getListBox().addChangeHandler(this);
@@ -237,8 +240,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected void configure() {
         if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
             endPreviousProjectFlagField.setValue(Boolean.TRUE);
-            entityFieldsPanel.insert(previousProjectEndDate, entityFieldsPanel.getWidgetIndex(endPreviousProjectFlagField)+1);
-            entityFieldsPanel.insert(reason, entityFieldsPanel.getWidgetIndex(previousProjectEndDate)+1);
+            entityFieldsPanel.insert(previousProjectEndDate, entityFieldsPanel.getWidgetIndex(endPreviousProjectFlagField) + 1);
+            entityFieldsPanel.insert(reason, entityFieldsPanel.getWidgetIndex(previousProjectEndDate) + 1);
             previousProjectEndDate.setVisible(Boolean.TRUE);
             reason.setVisible(Boolean.TRUE);
             populateEndDate();
@@ -290,15 +293,18 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 case "ACO360":
                     company.selectValue(ClientInformationCompany.ACO360.name());
                     break;
-                default: break;
+                default:
+                    break;
             }
-            
+
         }
         entityFieldsPanel.add(getLineSeperatorTag("Client Information"));
         addDropDown("client", selectClientWidgetF);
         entityFieldsPanel.add(addClientL);
+
 //        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addDropDown("clientLocation", new SelectClientLocationWidget(false, true, Alignment.HORIZONTAL));
+        entityFieldsPanel.add(addClientLocation);
         addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
         selectClientAcctPayContact = new SelectClientAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
@@ -414,6 +420,11 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 new GenericPopup(new CreateClientPanel(CreateCompositeType.CREATE), 350, 10).show();
             } else {
                 new GenericPopup(new GenericBPMStartFormPanel("AddNewClientRequest", "add_new_client_request_1"), 350, 10).show();
+            }
+        }
+        if (event.getSource().equals(addClientLocation)) {
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
+                new GenericPopup(new CreateClientLocationPanel(selectClientWidgetF.getSelectedObjectId(), CreateCompositeType.CREATE), 400, 100).show();
             }
         }
 //        if (event.getSource().equals(isClientFeeApplicable.getBox()) && isClientFeeApplicable.getValue()) {

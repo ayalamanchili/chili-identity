@@ -51,8 +51,11 @@
                       targetRef="eVerifyTask">
         </sequenceFlow>
         <sequenceFlow sourceRef="fork3" 
-                      targetRef="backGroundAndDrugScreeningTestTask">
+                      targetRef="backGroundScreeningTestTask">
             </sequenceFlow>
+        <sequenceFlow sourceRef="fork3" 
+                      targetRef="drugScreeningTestTask">
+            </sequenceFlow>            
         <sequenceFlow sourceRef="fork3" 
                       targetRef="SetupManagerTask">
             </sequenceFlow>
@@ -188,13 +191,13 @@
             </conditionExpression>
         </sequenceFlow>
         
-        <!--         BackGround And Drug Screening Test Task : ROLE_BACKGROUND_SCREENING_MGR-->
-        <userTask id="backGroundAndDrugScreeningTestTask" 
-                  name="BackGround And Drug Screening Test Task  for ${employee.firstName} ${employee.lastName}" 
+        <!--         BackGround creening Test Task : ROLE_BACKGROUND_SCREENING_MGR-->
+        <userTask id="backGroundScreeningTestTask" 
+                  name="BackGround Screening Test Task  for ${employee.firstName} ${employee.lastName}" 
                   activiti:candidateGroups="ROLE_BACKGROUND_SCREENING_MGR">
             <documentation>
-                Please complete BackGround And Drug Screening Task for new employee #{employee.firstName} #{employee.lastName} as part of On Boarding process
-                Please conduct BackGround Verification and Drug Screening for #{employee.firstName} #{employee.lastName}.
+                Please complete BackGround Screening Task for new employee #{employee.firstName} #{employee.lastName} as part of On Boarding process
+                Please conduct BackGround Verification for #{employee.firstName} #{employee.lastName}.
                 Please write Comments for any missing information or for any additional information in performing this task by following below path in portal.
                 My Office--Onboarding--View Icon for Employee--Add Comment
                 
@@ -222,24 +225,82 @@
                                        type="string" />
             </extensionElements> 
         </userTask>
-        <!--          BackGround And Drug Screening Test Task : Task escalation email after 48 hours-->
-        <boundaryEvent id="backGroundAndDrugScreeningTestTaskEscalationTimer"
+        <!--          BackGround Screening Test Task : Task escalation email after 48 hours-->
+        <boundaryEvent id="backGroundScreeningTestTaskEscalationTimer"
                        cancelActivity="false" 
-                       attachedToRef="backGroundAndDrugScreeningTestTask">
+                       attachedToRef="backGroundScreeningTestTask">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
         </boundaryEvent>
-        <sequenceFlow sourceRef="backGroundAndDrugScreeningTestTaskEscalationTimer" 
-                      targetRef="backGroundAndDrugScreeningTestTaskEscalation" />
-        <serviceTask id="backGroundAndDrugScreeningTestTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
-        <!--          BackGround And Drug Screening Test Task : Decision -->
-        <sequenceFlow sourceRef="backGroundAndDrugScreeningTestTask" targetRef="join3">
+        <sequenceFlow sourceRef="backGroundScreeningTestTaskEscalationTimer" 
+                      targetRef="backGroundScreeningTestTaskEscalation" />
+        <serviceTask id="backGroundScreeningTestTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!--          BackGround Screening Test Task : Decision -->
+        <sequenceFlow sourceRef="backGroundScreeningTestTask" targetRef="join3">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'approved'}
             </conditionExpression>
         </sequenceFlow>
-        <sequenceFlow sourceRef="backGroundAndDrugScreeningTestTask" 
+        <sequenceFlow sourceRef="backGroundScreeningTestTask" 
+                      targetRef="deactivationGateway">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        
+        <!-- Drug Screening Test Task : ROLE_BACKGROUND_SCREENING_MGR-->
+        <userTask id="drugScreeningTestTask" 
+                  name="Drug Screening Test Task  for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_BACKGROUND_SCREENING_MGR">
+            <documentation>
+                Please complete Drug Screening Task for new employee #{employee.firstName} #{employee.lastName} as part of On Boarding process
+                Please conduct Drug Screening for #{employee.firstName} #{employee.lastName}.
+                Please write Comments for any missing information or for any additional information in performing this task by following below path in portal.
+                My Office--Onboarding--View Icon for Employee--Add Comment
+                
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!--          Drug Screening Test Task : Task escalation email after 48 hours-->
+        <boundaryEvent id="drugScreeningTestTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="drugScreeningTestTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="drugScreeningTestTaskEscalationTimer" 
+                      targetRef="drugScreeningTestTaskEscalation" />
+        <serviceTask id="drugScreeningTestTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!--          Drug Screening Test Task : Decision -->
+        <sequenceFlow sourceRef="drugScreeningTestTask" targetRef="join3">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="drugScreeningTestTask" 
                       targetRef="deactivationGateway">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'rejected'}
