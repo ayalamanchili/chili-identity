@@ -83,7 +83,10 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
             case "onBoardingFormsAndDataValidationTask":
                 onBoardingFormsAndDataValidationTaskCompleted(entity, dt);
                 break;
-            case "backGroundAndDrugScreeningTestTask":
+            case "backGroundScreeningTestTask":
+                backgroundAndDrugScreeningTaskCompleted(entity, dt);
+                break;
+            case "drugScreeningTestTask":
                 backgroundAndDrugScreeningTaskCompleted(entity, dt);
                 break;
             case "eVerifyTask":
