@@ -129,6 +129,7 @@ public class OfficeWelcome implements EntryPoint {
                         protected void configure() {
                             setAutoHideEnabled(true);
                             this.getElement().getStyle().setProperty("width", "100%");
+                            this.getElement().getStyle().setProperty("height", "100%");
                             this.addStyleName("genericPopup");
                             rootLayout.setVisible(false);
                         }

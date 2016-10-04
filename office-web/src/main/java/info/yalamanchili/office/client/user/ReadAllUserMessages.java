@@ -6,22 +6,22 @@
 package info.yalamanchili.office.client.user;
 
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
-import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
-import info.chili.gwt.widgets.DocumentationWidget;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -32,6 +32,7 @@ public class ReadAllUserMessages extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllEmailsPanel.class.getName());
     public static ReadAllUserMessages instance;
+    protected Map<String, Integer> rowsIdMap = new HashMap();
 
     public ReadAllUserMessages(JSONArray msgs) {
         instance = this;
@@ -56,16 +57,17 @@ public class ReadAllUserMessages extends CRUDReadAllComposite {
 
     @Override
     public void fillData(JSONArray entities) {
-        for (int i = 1; i <= entities.size(); i++) {
+        for (Integer i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             table.setText(i, 0, JSONUtils.toString(entity, "summary"));
-            table.setText(i, 1, JSONUtils.toString(entity, "details"));
-            ClickableLink invoiceLink = new ClickableLink("Acknowledge");
-            invoiceLink.setTitle(JSONUtils.toString(entity, "id"));
-            invoiceLink.addClickHandler((ClickEvent event) -> {
-                acknowledge(((ClickableLink) event.getSource()).getTitle(), JSONUtils.toString(entity, "source"), invoiceLink);
+            table.setWidget(i, 1, new HTMLPanel(JSONUtils.toString(entity, "details")));
+            ClickableLink ackLink = new ClickableLink("Acknowledge");
+            ackLink.setTitle(JSONUtils.toString(entity, "id"));
+            ackLink.addClickHandler((ClickEvent event) -> {
+                acknowledge(((ClickableLink) event.getSource()).getTitle(), JSONUtils.toString(entity, "source"), ackLink);
             });
-            table.setWidget(i, 3, invoiceLink);
+            table.setWidget(i, 3, ackLink);
+            rowsIdMap.put(ackLink.getTitle(), i);
             if (entity.containsKey("moreDetailsLink")) {
                 ClickableLink detailsL = new ClickableLink("User Guide");
                 detailsL.addClickHandler((ClickEvent event) -> {
@@ -83,6 +85,11 @@ public class ReadAllUserMessages extends CRUDReadAllComposite {
             public void onResponse(String result) {
                 new ResponseStatusWidget().show("Message Acknowledged");
                 invoiceLink.setVisible(false);
+                ReadAllUserMessages.instance.table.removeRow(rowsIdMap.get(id));
+                if (ReadAllUserMessages.instance.table.getRowCount() < 2) {
+                    GenericPopup.hideIfOpen();
+                    OfficeWelcome.instance().rootLayout.setVisible(true);
+                }
             }
         });
     }
