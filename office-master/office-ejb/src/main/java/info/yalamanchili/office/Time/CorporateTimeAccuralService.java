@@ -175,6 +175,4 @@ public class CorporateTimeAccuralService {
         return SpringContext.getBean(CorporateTimeAccuralService.class);
     }
 
-    public void runYearlyEarnedIndiaTimeSheets() {
-    }
 }
