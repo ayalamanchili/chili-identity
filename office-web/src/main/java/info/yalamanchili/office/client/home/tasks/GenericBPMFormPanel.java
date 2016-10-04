@@ -24,6 +24,7 @@ import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.LongField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -103,16 +104,16 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
         GenericPopup.hideIfOpen();
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -140,11 +141,9 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
         for (int i = 0; i < formProperties.size(); i++) {
             JSONObject formProperty = formProperties.get(i).isObject();
             boolean isRequired;
-            if (JSONUtils.toString(formProperty, "required").equals("true")) {
-                isRequired = true;
-            } else {
-                isRequired = false;
-            }
+            boolean isWritable;
+            isRequired = JSONUtils.toString(formProperty, "required").equals("true");
+            isWritable = JSONUtils.toString(formProperty, "writable").equals("true");
             if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("string")) {
                 addField(JSONUtils.toString(formProperty, "id"), false, isRequired, DataType.TEXT_AREA_FIELD);
                 TextAreaField taf = (TextAreaField) fields.get(JSONUtils.toString(formProperty, "id"));
@@ -171,7 +170,14 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
                     JSONObject enm = enumArray.get(y).isObject();
                     enumVals.put(JSONUtils.toString(enm, "id"), JSONUtils.toString(enm, "value"));
                 }
-                addEnumField(JSONUtils.toString(formProperty, "id"), false, isRequired, enumVals);
+                if (isWritable) {
+                    EnumField enumField = new EnumField(constants, JSONUtils.toString(formProperty, "id"), entityName,
+                            readOnly, isRequired, true, (String[]) enumVals.keySet().toArray(), Alignment.HORIZONTAL);
+                    fields.put(JSONUtils.toString(formProperty, "id"), enumField);
+                    entityFieldsPanel.add(enumField);
+                } else {
+                    addEnumField(JSONUtils.toString(formProperty, "id"), false, isRequired, enumVals);
+                }
             }
         }
         for (String str : fields.keySet()) {
