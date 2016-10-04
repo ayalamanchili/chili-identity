@@ -275,6 +275,7 @@ public class EmployeeFormsService {
             }
         }
         if (emp.getCompany() != null) {
+            data.getData().put("companyCB", "true");
             data.getData().put("companyName", emp.getCompany().getName());
             if (emp.getCompany().getAbbreviation() != null) {
                 data.getData().put("companyCode", emp.getCompany().getAbbreviation());

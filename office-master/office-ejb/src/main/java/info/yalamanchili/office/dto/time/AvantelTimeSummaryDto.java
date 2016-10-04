@@ -25,6 +25,9 @@ public class AvantelTimeSummaryDto {
     private BigDecimal secondFloorHours;
     private BigDecimal cubicalHours;
     private BigDecimal availablePaidTimeOffHours;
+    private BigDecimal timeIn;
+    private BigDecimal timeOut;
+    private String status;
 //  protected BigDecimal monthlyAccuredHours;
 //  protected BigDecimal totalavailablePTOHours;
 //  protected BigDecimal usedPTOHours;
@@ -85,6 +88,30 @@ public class AvantelTimeSummaryDto {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public BigDecimal getTimeIn() {
+        return timeIn;
+    }
+
+    public void setTimeIn(BigDecimal timeIn) {
+        this.timeIn = timeIn;
+    }
+
+    public BigDecimal getTimeOut() {
+        return timeOut;
+    }
+
+    public void setTimeOut(BigDecimal timeOut) {
+        this.timeOut = timeOut;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
     
     public AvantelTimeSummaryDto() {
