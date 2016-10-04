@@ -59,7 +59,7 @@ class UpdateReleaseNotesPanel extends UpdateComposite {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("summary", entity, DataType.TEXT_AREA_FIELD);
-        assignFieldValueFromEntity("details", entity, DataType.TEXT_AREA_FIELD);
+        assignFieldValueFromEntity("details", entity, DataType.RICH_TEXT_AREA);
         assignFieldValueFromEntity("effectiveDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("userIds", entity, DataType.TEXT_AREA_FIELD);
@@ -85,7 +85,7 @@ class UpdateReleaseNotesPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("summary", false, true, DataType.TEXT_AREA_FIELD);
-        addField("details", false, true, DataType.TEXT_AREA_FIELD);
+        addField("details", false, true, DataType.RICH_TEXT_AREA);
         addField("effectiveDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("userIds", false, false, DataType.TEXT_AREA_FIELD);

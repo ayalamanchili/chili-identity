@@ -84,7 +84,7 @@ public class CreateReleaseNotesPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("summary", false, true, DataType.TEXT_AREA_FIELD);
-        addField("details", false, true, DataType.TEXT_AREA_FIELD);
+        addField("details", false, true, DataType.RICH_TEXT_AREA);
         addField("effectiveDate", false, true, DataType.DATE_FIELD);
         addField("endDate", false, true, DataType.DATE_FIELD);
         addField("userIds", false, false, DataType.TEXT_AREA_FIELD);
