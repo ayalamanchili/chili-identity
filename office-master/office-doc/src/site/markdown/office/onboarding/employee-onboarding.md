@@ -1,4 +1,4 @@
-How To Onboard An Employee:
+  How To Onboard An Employee:
 ----
 - [Login to Portal](../../office/forgot-password.html "Login").
 - Only **OnBoarding Manager** can initiate OnBoarding by navigating through **My Office** -> **OnBoarding** -> **Employee Onboarding**.
@@ -12,8 +12,9 @@ How To Onboard An Employee:
     - The OnBoarding record status is **Pending_Document_Verification**
     - If the onboarding employee is **Corporate Employee**, parallelly,
         - **OnBoarding Manager** will get **Forms And Data Validation Task**
-        - **Background Screening Manager** will get **Background And Drug Screening Task**
         - **E-Verify Manager** will get **E-Verify Task**
+        - **Background Screening Manager** will get **Background Verify Task**
+        - **Drug Screening Manager** will get **Drug Screening Task**
         - **HR Admin** will get **Setup Manager Task**
         - If **Setup Manager Task** completes, Employee manager will get **New Employee manager task**.
         - Employee **Reports_To** manager will provide **Roles and Responsibilities** and **Requirements** (**For Network Department sake**) and complete the task.

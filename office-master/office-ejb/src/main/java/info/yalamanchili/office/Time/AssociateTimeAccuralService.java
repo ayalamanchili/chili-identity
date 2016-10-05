@@ -43,7 +43,7 @@ public class AssociateTimeAccuralService {
             if (ng != null) {
                 for (Employee deactivateEmp : ng.getEmployees()) {
                     if (deactivateEmp.equals(emp)) {
-                        break loop1;
+                        continue loop1;
                     }
                 }
             }

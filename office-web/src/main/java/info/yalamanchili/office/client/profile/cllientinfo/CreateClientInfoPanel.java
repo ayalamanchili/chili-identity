@@ -52,6 +52,8 @@ import info.chili.gwt.fields.FloatField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
+import info.yalamanchili.office.client.admin.clientcontact.CreateClientAcctPayCntPanel;
+import info.yalamanchili.office.client.admin.clientcontact.CreateClientContactPanel;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.CreateClientLocationPanel;
@@ -64,6 +66,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     private static Logger logger = Logger.getLogger(CreateClientInfoPanel.class.getName());
     protected Anchor addClientL = new Anchor("Client not present? submit request");
     protected Anchor addClientLocation = new Anchor("Worksite Location not present? submit request");
+    protected Anchor addClientRecruiter = new Anchor("Client Recruiter Contact not present? submit request");
+    protected Anchor addClientAcctPayContact = new Anchor("Client Account Payable Contact not present? submit request");
     protected Anchor addVendorL = new Anchor("Vendor not present? submit request");
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
     SelectVendorWidget selectVendorWidgetF = new SelectVendorWidget(false, true, Alignment.HORIZONTAL);
@@ -221,6 +225,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected void addListeners() {
         addClientL.addClickHandler(this);
         addClientLocation.addClickHandler(this);
+        addClientRecruiter.addClickHandler(this);
+        addClientAcctPayContact.addClickHandler(this);
         addVendorL.addClickHandler(this);
         submitForApprovalF.getBox().addClickHandler(this);
         selectVendorWidgetF.getListBox().addChangeHandler(this);
@@ -306,6 +312,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addDropDown("clientLocation", new SelectClientLocationWidget(false, true, Alignment.HORIZONTAL));
         entityFieldsPanel.add(addClientLocation);
         addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
+        entityFieldsPanel.add(addClientRecruiter);
         selectClientAcctPayContact = new SelectClientAcctPayContact(false, false, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
@@ -313,6 +320,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             }
         };
         addDropDown("clientAPContacts", selectClientAcctPayContact);
+        entityFieldsPanel.add(addClientAcctPayContact);
 //        addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
 //        isClientFeeApplicable = (BooleanField) fields.get("clientFeeApplicable");
 //        addField("clientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL); 
@@ -425,6 +433,16 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         if (event.getSource().equals(addClientLocation)) {
             if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
                 new GenericPopup(new CreateClientLocationPanel(selectClientWidgetF.getSelectedObjectId(), CreateCompositeType.CREATE), 400, 100).show();
+            }
+        }
+        if (event.getSource().equals(addClientRecruiter)) {
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
+                new GenericPopup(new CreateClientContactPanel(selectClientWidgetF.getSelectedObjectId(), CreateCompositeType.ADD), 400, 100).show();
+            }
+        }
+        if (event.getSource().equals(addClientAcctPayContact)) {
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
+                new GenericPopup(new CreateClientAcctPayCntPanel(selectClientWidgetF.getSelectedObjectId(), CreateCompositeType.ADD), 400, 100).show();
             }
         }
 //        if (event.getSource().equals(isClientFeeApplicable.getBox()) && isClientFeeApplicable.getValue()) {
