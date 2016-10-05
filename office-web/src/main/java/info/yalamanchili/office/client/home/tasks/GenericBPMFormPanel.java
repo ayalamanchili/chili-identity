@@ -104,16 +104,16 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
         GenericPopup.hideIfOpen();
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -140,12 +140,7 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
         }
         for (int i = 0; i < formProperties.size(); i++) {
             JSONObject formProperty = formProperties.get(i).isObject();
-            boolean isRequired;
-            boolean isWritable = false;
-            isRequired = JSONUtils.toString(formProperty, "required").equals("true");
-            if (formProperty.containsKey("writable")) {
-                isWritable = JSONUtils.toString(formProperty, "writable").equals("true");
-            }
+            boolean isRequired = JSONUtils.toString(formProperty, "required").equals("true");
             if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("string")) {
                 addField(JSONUtils.toString(formProperty, "id"), false, isRequired, DataType.TEXT_AREA_FIELD);
                 TextAreaField taf = (TextAreaField) fields.get(JSONUtils.toString(formProperty, "id"));
@@ -172,18 +167,24 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
                     JSONObject enm = enumArray.get(y).isObject();
                     enumVals.put(JSONUtils.toString(enm, "id"), JSONUtils.toString(enm, "value"));
                 }
-                if (isWritable) {
-                    String[] enumValsArray = new String[enumVals.keySet().toArray().length];
-                    for (int idx = 0; idx < enumVals.keySet().toArray().length; idx++) {
-                        enumValsArray[idx] = enumVals.keySet().toArray()[idx].toString();
-                    }
-                    EnumField enumField = new EnumField(constants, JSONUtils.toString(formProperty, "id"), entityName,
-                            readOnly, isRequired, true, enumValsArray, Alignment.VERTICAL);
-                    fields.put(JSONUtils.toString(formProperty, "id"), enumField);
-                    entityFieldsPanel.add(enumField);
-                } else {
-                    addEnumField(JSONUtils.toString(formProperty, "id"), false, isRequired, enumVals);
+                addEnumField(JSONUtils.toString(formProperty, "id"), false, isRequired, enumVals);
+            }
+            if (JSONUtils.toString(formProperty.get("type").isObject(), "name").equals("multiSelect")) {
+                JSONObject type = formProperty.get("type").isObject();
+                JSONArray enumArray = JSONUtils.toJSONArray(type.get("values"));
+                HashMap<String, String> enumVals = new HashMap<String, String>();
+                for (int y = 0; y < enumArray.size(); y++) {
+                    JSONObject enm = enumArray.get(y).isObject();
+                    enumVals.put(JSONUtils.toString(enm, "id"), JSONUtils.toString(enm, "value"));
                 }
+                String[] enumValsArray = new String[enumVals.keySet().toArray().length];
+                for (int idx = 0; idx < enumVals.keySet().toArray().length; idx++) {
+                    enumValsArray[idx] = enumVals.keySet().toArray()[idx].toString();
+                }
+                EnumField enumField = new EnumField(constants, JSONUtils.toString(formProperty, "id"), entityName,
+                        readOnly, isRequired, true, enumValsArray, Alignment.VERTICAL);
+                fields.put(JSONUtils.toString(formProperty, "id"), enumField);
+                entityFieldsPanel.add(enumField);
             }
         }
         for (String str : fields.keySet()) {
