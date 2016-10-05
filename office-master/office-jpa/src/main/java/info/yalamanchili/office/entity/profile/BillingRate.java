@@ -18,6 +18,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.ForeignKey;
@@ -45,6 +46,7 @@ public class BillingRate extends AbstractEntity {
      * BillingRate
      */
     //@NotNull(message = "{billingRate.not.empty.msg}")
+    @Digits(integer=10, fraction=2, message = "{billingRate.not.valid.msg}")
     protected BigDecimal billingRate;
     /**
      * OverTime PayRate
