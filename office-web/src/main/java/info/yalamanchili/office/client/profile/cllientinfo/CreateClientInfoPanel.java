@@ -57,6 +57,7 @@ import info.yalamanchili.office.client.admin.clientcontact.CreateClientContactPa
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.CreateClientLocationPanel;
+import info.yalamanchili.office.client.admin.vendorlocation.CreateVendorLocationsPanel;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
 import java.util.Date;
@@ -69,6 +70,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected Anchor addClientRecruiter = new Anchor("Client Recruiter Contact not present? submit request");
     protected Anchor addClientAcctPayContact = new Anchor("Client Account Payable Contact not present? submit request");
     protected Anchor addVendorL = new Anchor("Vendor not present? submit request");
+    protected Anchor addVendorLocation = new Anchor("Vendor Location not present? submit request");
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
     SelectVendorWidget selectVendorWidgetF = new SelectVendorWidget(false, true, Alignment.HORIZONTAL);
     SelectClientWidget selectClientWidgetF = new SelectClientWidget(false, true, Alignment.HORIZONTAL);
@@ -228,6 +230,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addClientRecruiter.addClickHandler(this);
         addClientAcctPayContact.addClickHandler(this);
         addVendorL.addClickHandler(this);
+        addVendorLocation.addClickHandler(this);
         submitForApprovalF.getBox().addClickHandler(this);
         selectVendorWidgetF.getListBox().addChangeHandler(this);
         selectClientWidgetF.getListBox().addChangeHandler(this);
@@ -333,6 +336,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addDropDown("vendor", selectVendorWidgetF);
         entityFieldsPanel.add(addVendorL);
         addDropDown("vendorLocation", new SelectVendorLocationsWidget(false, true, Alignment.HORIZONTAL));
+        entityFieldsPanel.add(addVendorLocation);
         selectVendorRecruiterContactsWidget = new SelectVendorRecruiterContactWidget(false, true, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
@@ -455,6 +459,11 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 new GenericPopup(new CreateVendorPanel(CreateCompositeType.CREATE), 350, 10).show();
             } else {
                 new GenericPopup(new GenericBPMStartFormPanel("AddNewVendorRequest", "add_new_vendor_request_1"), 350, 10).show();
+            }
+        }
+        if (event.getSource().equals(addVendorLocation)) {
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
+                new GenericPopup(new CreateVendorLocationsPanel(selectVendorWidgetF.getSelectedObjectId(), CreateCompositeType.CREATE), 400, 100).show();
             }
         }
 

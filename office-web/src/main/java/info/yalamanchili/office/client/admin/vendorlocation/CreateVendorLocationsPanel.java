@@ -20,6 +20,7 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.admin.vendor.TreeVendorsPanel;
 
@@ -33,6 +34,13 @@ public class CreateVendorLocationsPanel extends CreateAddressPanel implements Ch
         super(CreateAddressPanelType.ALL);
     }
 
+    String vendorId;
+
+    public CreateVendorLocationsPanel(String vendorId, CreateComposite.CreateCompositeType type) {
+        super(CreateAddressPanelType.ALL);
+        this.vendorId = vendorId;
+    }
+    
     @Override
     protected JSONObject populateEntityFromFields() {
         //TODO is thid needed
@@ -48,6 +56,10 @@ public class CreateVendorLocationsPanel extends CreateAddressPanel implements Ch
 
     @Override
     protected void postCreateSuccess(String result) {
+        if (SelectVendorLocationsWidget.instance() != null) {
+            SelectVendorLocationsWidget.instance().fireEvent();
+        }
+        GenericPopup.hideIfOpen();
         new ResponseStatusWidget().show("Successfully Added Vendor Location");
         TabPanel.instance().adminPanel.entityPanel.clear();
         TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorLocationPanel(TreeVendorsPanel.instance().getEntityId()));
@@ -70,8 +82,13 @@ public class CreateVendorLocationsPanel extends CreateAddressPanel implements Ch
 
     @Override
     protected String getURI() {
+        if (vendorId != null) {
+            return OfficeWelcome.constants.root_url() + "vendor/vendorlocation/" + vendorId;
+        } else {
         return OfficeWelcome.constants.root_url() + "vendor/vendorlocation/" + TreeVendorsPanel.instance().getEntityId();
-    }
+    
+        }
+    }    
 
     @Override
     protected void addListeners() {

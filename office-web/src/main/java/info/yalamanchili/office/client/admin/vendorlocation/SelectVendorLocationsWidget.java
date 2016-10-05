@@ -21,13 +21,21 @@ import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
  */
 public class SelectVendorLocationsWidget extends SelectComposite implements GenericListener {
 
+    private static SelectVendorLocationsWidget instance;
+
+    public static SelectVendorLocationsWidget instance() {
+        return instance;
+    }
+    
     public SelectVendorLocationsWidget(Boolean readOnly, Boolean isRequired, Alignment alignment) {
         super(OfficeWelcome.constants, "VendorLocation", readOnly, isRequired, alignment);
+        instance = this;
         SelectVendorWidget.instance().addListner(this);
     }
 
     public SelectVendorLocationsWidget(Boolean readOnly, Boolean isRequired) {
         super(OfficeWelcome.constants, "VendorLocation", readOnly, isRequired);
+        instance = this;
         SelectVendorWidget.instance().addListner(this);
     }
 
