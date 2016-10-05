@@ -108,8 +108,8 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         tabPanel.addSelectionHandler(this);
         if (History.getToken().length() < 1) {
             if (Auth.isCorporateEmployee()) {
-                logger.info("selecting tab 1");
-                TabPanel.instance().tabPanel.selectTab(1);
+                logger.info("selecting tab 0");
+                selectHomeTab();
             } else if (Auth.isW2Contractor()) {
                 tabPanel.selectTab(5);
             } else {
