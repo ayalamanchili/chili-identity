@@ -131,17 +131,17 @@ public class PerDiemRequestPanel extends CreateComposite implements ClickHandler
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                logger.info(arg0.getMessage());
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postCreateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
@@ -189,7 +189,7 @@ public class PerDiemRequestPanel extends CreateComposite implements ClickHandler
             addLive50MilesAwayWidget();
             loadEmpAdress(OfficeWelcome.instance().employeeId, true);
         }
-
+        entityFieldsPanel.add(tac);
         if (event.getSource().equals(amountCB.getBox())) {
             if (amountCB.getValue() == true) {
                 amountF.setVisible(true);
@@ -239,71 +239,67 @@ public class PerDiemRequestPanel extends CreateComposite implements ClickHandler
     private void loadEmpAdress(String employeeId, boolean live50MilesAway) {
         HttpService.HttpServiceAsync.instance().doGet(getEmpAddressesURI(employeeId), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                logger.info(arg0.getMessage());
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        if (arg0 != null && JSONParser.parseLenient(arg0).isObject() != null) {
-                            JSONObject resObj = JSONParser.parseLenient(arg0).isObject();
-                            String key = (String) resObj.keySet().toArray()[0];
-                            if (resObj.get(key) instanceof JSONObject) {
-                                if (live50MilesAway == true) {
-                                    if (resObj.get(key).isObject().get("addressType").isObject().get("addressType").isString().stringValue().equals("Office")) {
-                                        entityFieldsPanel.add(tac4);
-                                        entityFieldsPanel.add(residenceAddr);
-                                    } else if (resObj.get(key).isObject().get("addressType").isObject().get("addressType").isString().stringValue().equals("Other")) {
-                                        entityFieldsPanel.add(tac3);
-                                        entityFieldsPanel.add(WorkAddr);
-                                    } else {
-                                        entityFieldsPanel.add(tac4);
-                                        entityFieldsPanel.add(residenceAddr);
-                                        entityFieldsPanel.add(tac3);
-                                        entityFieldsPanel.add(WorkAddr);
-                                    }
-                                } else {
-                                    if (resObj.get(key).isObject().get("addressType").isObject().get("addressType").isString().stringValue().equals("Home")) {
-                                        entityFieldsPanel.add(tac2);
-                                        entityFieldsPanel.add(TemporaryAddr);
-                                    } else if (resObj.get(key).isObject().get("addressType").isObject().get("addressType").isString().stringValue().equals("Other")) {
-                                        entityFieldsPanel.add(tac1);
-                                        entityFieldsPanel.add(permanentAddr);
-                                    } else {
-                                        entityFieldsPanel.add(tac2);
-                                        entityFieldsPanel.add(TemporaryAddr);
-                                        entityFieldsPanel.add(tac1);
-                                        entityFieldsPanel.add(permanentAddr);
-                                    }
-                                }
-                                populateAddressFields(resObj.get(key).isObject(), live50MilesAway);
-                            } else if (resObj.get(key) instanceof JSONArray) {
-                                JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                for (int i = 1; i <= results.size(); i++) {
-                                    JSONObject entity = (JSONObject) results.get(i - 1);
-                                    populateAddressFields(entity, live50MilesAway);
-                                }
-                            }
-                        } else {
-                            if (live50MilesAway == true) {
-                                entityFieldsPanel.add(tac3);
-                                entityFieldsPanel.add(WorkAddr);
+            @Override
+            public void onSuccess(String arg0) {
+                if (arg0 != null && JSONParser.parseLenient(arg0).isObject() != null) {
+                    JSONObject resObj = JSONParser.parseLenient(arg0).isObject();
+                    String key = (String) resObj.keySet().toArray()[0];
+                    if (resObj.get(key) instanceof JSONObject) {
+                        if (live50MilesAway == true) {
+                            if (resObj.get(key).isObject().get("addressType").isObject().get("addressType").isString().stringValue().equals("Office")) {
                                 entityFieldsPanel.add(tac4);
                                 entityFieldsPanel.add(residenceAddr);
+                            } else if (resObj.get(key).isObject().get("addressType").isObject().get("addressType").isString().stringValue().equals("Other")) {
+                                entityFieldsPanel.add(tac3);
+                                entityFieldsPanel.add(WorkAddr);
                             } else {
-                                entityFieldsPanel.add(tac1);
-                                entityFieldsPanel.add(permanentAddr);
-                                entityFieldsPanel.add(tac2);
-                                entityFieldsPanel.add(TemporaryAddr);
+                                entityFieldsPanel.add(tac4);
+                                entityFieldsPanel.add(residenceAddr);
+                                entityFieldsPanel.add(tac3);
+                                entityFieldsPanel.add(WorkAddr);
                             }
+                        } else if (resObj.get(key).isObject().get("addressType").isObject().get("addressType").isString().stringValue().equals("Home")) {
+                            entityFieldsPanel.add(tac2);
+                            entityFieldsPanel.add(TemporaryAddr);
+                        } else if (resObj.get(key).isObject().get("addressType").isObject().get("addressType").isString().stringValue().equals("Other")) {
+                            entityFieldsPanel.add(tac1);
+                            entityFieldsPanel.add(permanentAddr);
+                        } else {
+                            entityFieldsPanel.add(tac2);
+                            entityFieldsPanel.add(TemporaryAddr);
+                            entityFieldsPanel.add(tac1);
+                            entityFieldsPanel.add(permanentAddr);
                         }
-                        if (entityFieldsPanel.getWidgetCount() == 9) {
-                            addAnotherAddressWidget(live50MilesAway);
+                        populateAddressFields(resObj.get(key).isObject(), live50MilesAway);
+                    } else if (resObj.get(key) instanceof JSONArray) {
+                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                        for (int i = 1; i <= results.size(); i++) {
+                            JSONObject entity = (JSONObject) results.get(i - 1);
+                            populateAddressFields(entity, live50MilesAway);
                         }
                     }
-                });
+                } else if (live50MilesAway == true) {
+                    entityFieldsPanel.add(tac3);
+                    entityFieldsPanel.add(WorkAddr);
+                    entityFieldsPanel.add(tac4);
+                    entityFieldsPanel.add(residenceAddr);
+                } else {
+                    entityFieldsPanel.add(tac1);
+                    entityFieldsPanel.add(permanentAddr);
+                    entityFieldsPanel.add(tac2);
+                    entityFieldsPanel.add(TemporaryAddr);
+                }
+                if (entityFieldsPanel.getWidgetCount() == 9) {
+                    addAnotherAddressWidget(live50MilesAway);
+                }
+            }
+        });
     }
 
     private void populateAddressFields(JSONObject get, boolean live50MilesAway) {
@@ -334,7 +330,6 @@ public class PerDiemRequestPanel extends CreateComposite implements ClickHandler
                     widget2.populateFieldsFromEntity(get);
                 }
             }
-            entityFieldsPanel.add(tac);
         }
     }
 
