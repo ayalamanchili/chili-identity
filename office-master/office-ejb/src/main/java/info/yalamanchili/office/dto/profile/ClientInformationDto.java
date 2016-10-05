@@ -36,6 +36,7 @@ import javax.persistence.Lob;
 import javax.persistence.Temporal;
 
 import javax.persistence.Transient;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -160,6 +161,7 @@ public class ClientInformationDto implements Serializable {
     /**
      * BillingRate
      */
+    @Digits(integer=10, fraction=2, message = "{billingRate.not.valid.msg}")
     protected BigDecimal billingRate;
     /**
      * OverTime PayRate
