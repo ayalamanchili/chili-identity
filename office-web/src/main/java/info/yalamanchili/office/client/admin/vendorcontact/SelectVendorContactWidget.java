@@ -21,9 +21,9 @@ import java.util.logging.Logger;
  * @author Prashanthi
  */
 public class SelectVendorContactWidget extends SelectComposite implements GenericListener {
-
+    
     private static Logger logger = Logger.getLogger(SelectVendorContactWidget.class.getName());
-
+    
     public SelectVendorContactWidget(Boolean readOnly, Boolean isRequired, Alignment alignment) {
         super(OfficeWelcome.constants, "VendorContact", readOnly, isRequired, alignment);
         SelectVendorWidget.instance().addListner(this);

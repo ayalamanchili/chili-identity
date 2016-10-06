@@ -12,6 +12,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.email.MailUtils;
 import info.chili.email.Email;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.invite.InviteTypeDao;
@@ -68,6 +69,7 @@ public class InviteCodeGeneratorService {
     public void sendInviteCodeEmail(InviteCode entity) {
         Email email = new Email();
         email.addTo(entity.getEmail());
+        email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_ON_BOARDING_MGR.name()));
         StringBuilder subject = new StringBuilder();
         subject.append("System Soft Invitation");
         email.setSubject(subject.toString());
