@@ -57,6 +57,7 @@ import info.yalamanchili.office.client.admin.clientcontact.CreateClientContactPa
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.CreateClientLocationPanel;
+import info.yalamanchili.office.client.admin.vendorcontact.CreateVendorAcctPayCntPanel;
 import info.yalamanchili.office.client.admin.vendorcontact.CreateVendorContactPanel;
 import info.yalamanchili.office.client.admin.vendorlocation.CreateVendorLocationsPanel;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
@@ -73,6 +74,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected Anchor addVendorL = new Anchor("Vendor not present? submit request");
     protected Anchor addVendorLocation = new Anchor("Vendor Location not present? submit request");
     protected Anchor addVendorRecruiter = new Anchor("Vendor Recruiter Contact not present? submit request");
+    protected Anchor addVendorAcctPayContact = new Anchor("Vendor Account Payable Contact not present? submit request");
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
     SelectVendorWidget selectVendorWidgetF = new SelectVendorWidget(false, true, Alignment.HORIZONTAL);
     SelectClientWidget selectClientWidgetF = new SelectClientWidget(false, true, Alignment.HORIZONTAL);
@@ -234,6 +236,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addVendorL.addClickHandler(this);
         addVendorLocation.addClickHandler(this);
         addVendorRecruiter.addClickHandler(this);
+        addVendorAcctPayContact.addClickHandler(this);
         submitForApprovalF.getBox().addClickHandler(this);
         selectVendorWidgetF.getListBox().addChangeHandler(this);
         selectClientWidgetF.getListBox().addChangeHandler(this);
@@ -355,6 +358,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             }
         };
         addDropDown("vendorAPContacts", selectVendorAPContactsW);
+        entityFieldsPanel.add(addVendorAcctPayContact);
         addField("vendorPaymentTerms", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Project Details"));
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -473,6 +477,11 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         if (event.getSource().equals(addVendorRecruiter)) {
             if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
                 new GenericPopup(new CreateVendorContactPanel(selectVendorWidgetF.getSelectedObjectId(), CreateCompositeType.ADD), 400, 100).show();
+            }
+        }
+        if (event.getSource().equals(addVendorAcctPayContact)) {
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
+                new GenericPopup(new CreateVendorAcctPayCntPanel(selectVendorWidgetF.getSelectedObjectId(), CreateCompositeType.ADD), 400, 100).show();
             }
         }
         
