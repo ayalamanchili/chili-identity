@@ -33,19 +33,20 @@ public class CreateVendorContactPanel extends CreateContactPanel {
     
     @Override
     protected void postCreateSuccess(String result) {
-        if (SelectVendorContactWidget.instance() != null) {
-            SelectVendorContactWidget.instance().fireEvent();
-        }
-        GenericPopup.hideIfOpen();
         new ResponseStatusWidget().show("Successfully Added Vendor Contact");
-        TabPanel.instance().adminPanel.entityPanel.clear();
-        TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorContactPanel(TreeVendorsPanel.instance().getEntityId()));
-    }
+        GenericPopup.hideIfOpen();
+        if (SelectVendorRecruiterContactWidget.instance() != null) {
+            SelectVendorRecruiterContactWidget.instance().fireEvent();
+        } else {
+            TabPanel.instance().adminPanel.entityPanel.clear();
+            TabPanel.instance().adminPanel.entityPanel.add(new ReadAllVendorContactPanel(TreeVendorsPanel.instance().getEntityId()));
+        }
+    }    
 
     @Override
     protected String getURI() {
         if (vendorId != null) {
-            return OfficeWelcome.constants.root_url() + "vendor/vendorlocation/" + vendorId;
+            return OfficeWelcome.constants.root_url() + "vendor/vendorcontact/" + vendorId;
         } else {
         return OfficeWelcome.constants.root_url() + "vendor/vendorcontact/" + TreeVendorsPanel.instance().getEntityId();
         }
