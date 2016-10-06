@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -64,8 +65,10 @@ public class Invoice extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date invoiceSentDate;
 
+    @Digits(integer=10, fraction=2, message = "{billingRate.not.valid.msg}")
     protected BigDecimal billingRate;
 
+    @Digits(integer=10, fraction=2, message = "{overtimePayRate.not.valid.msg}")
     protected BigDecimal overTimeBillingRate;
 
     @ManyToOne
