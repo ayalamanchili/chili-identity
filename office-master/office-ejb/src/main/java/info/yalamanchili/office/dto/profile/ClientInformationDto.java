@@ -166,10 +166,12 @@ public class ClientInformationDto implements Serializable {
     /**
      * OverTime PayRate
      */
+    @Digits(integer=10, fraction=2, message = "{overtimePayRate.not.valid.msg}")
     protected BigDecimal overTimePayRate;
     /**
      * over time billing rate
      */
+    @Digits(integer=10, fraction=2, message = "{overtimeBillingRate.not.valid.msg}")
     protected BigDecimal overTimeBillingRate;
     /**
      * historical billing rates
@@ -223,10 +225,12 @@ public class ClientInformationDto implements Serializable {
     /**
      * subcontractorPayRate
      */
+    @Digits(integer=10, fraction=2, message = "{subcontractorPayRate.not.valid.msg}")
     protected BigDecimal subcontractorPayRate;
     /**
      * subcontractorOvertimePayRate
      */
+    @Digits(integer=10, fraction=2, message = "{subcontractorOvertimePayRate.not.valid.msg}")
     protected BigDecimal subcontractorOvertimePayRate;
     /**
      * subcontractor Invoice Frequency
@@ -247,7 +251,9 @@ public class ClientInformationDto implements Serializable {
     /**
      * 1099 Details
      */
+    @Digits(integer=10, fraction=2, message = "{payRate1099.not.valid.msg}")
     protected BigDecimal payRate1099;
+    @Digits(integer=10, fraction=2, message = "{overtimePayRate1099.not.valid.msg}")
     protected BigDecimal overTimePayrate1099;
     protected BillingDuration payTimeDuration1099;
     protected String paymentTerms1099;
