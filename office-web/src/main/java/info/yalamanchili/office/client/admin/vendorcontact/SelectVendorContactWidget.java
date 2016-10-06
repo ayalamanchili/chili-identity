@@ -22,15 +22,23 @@ import java.util.logging.Logger;
  */
 public class SelectVendorContactWidget extends SelectComposite implements GenericListener {
 
-    private static Logger logger = Logger.getLogger(SelectVendorContactWidget.class.getName());
+    private static SelectVendorContactWidget instance;
 
+    public static SelectVendorContactWidget instance() {
+        return instance;
+    }
+    
+    private static Logger logger = Logger.getLogger(SelectVendorContactWidget.class.getName());
+    
     public SelectVendorContactWidget(Boolean readOnly, Boolean isRequired, Alignment alignment) {
         super(OfficeWelcome.constants, "VendorContact", readOnly, isRequired, alignment);
+        instance = this;
         SelectVendorWidget.instance().addListner(this);
     }
 
     public SelectVendorContactWidget(Boolean readOnly, Boolean isRequired) {
         super(OfficeWelcome.constants, "VendorContact", readOnly, isRequired);
+        instance = this;
         SelectVendorWidget.instance().addListner(this);
     }
 
