@@ -68,13 +68,13 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
     private static Logger logger = Logger.getLogger(CreateClientInfoPanel.class.getName());
     protected Anchor addClientL = new Anchor("Client not present? submit request");
-    protected Anchor addClientLocation = new Anchor("Worksite Location not present? submit request");
-    protected Anchor addClientRecruiter = new Anchor("Client Recruiter Contact not present? submit request");
-    protected Anchor addClientAcctPayContact = new Anchor("Client Account Payable Contact not present? submit request");
+    protected Anchor addClientLocation = new Anchor("Add new Worksite Location");
+    protected Anchor addClientRecruiter = new Anchor("Add new Client Recruiter Contact");
+    protected Anchor addClientAcctPayContact = new Anchor("Add new Client Account Payable Contact");
     protected Anchor addVendorL = new Anchor("Vendor not present? submit request");
-    protected Anchor addVendorLocation = new Anchor("Vendor Location not present? submit request");
-    protected Anchor addVendorRecruiter = new Anchor("Vendor Recruiter Contact not present? submit request");
-    protected Anchor addVendorAcctPayContact = new Anchor("Vendor Account Payable Contact not present? submit request");
+    protected Anchor addVendorLocation = new Anchor("Add new Vendor Location");
+    protected Anchor addVendorRecruiter = new Anchor("Add new Vendor Recruiter Contact");
+    protected Anchor addVendorAcctPayContact = new Anchor("Add new Vendor Account Payable Contact");
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
     SelectVendorWidget selectVendorWidgetF = new SelectVendorWidget(false, true, Alignment.HORIZONTAL);
     SelectClientWidget selectClientWidgetF = new SelectClientWidget(false, true, Alignment.HORIZONTAL);
