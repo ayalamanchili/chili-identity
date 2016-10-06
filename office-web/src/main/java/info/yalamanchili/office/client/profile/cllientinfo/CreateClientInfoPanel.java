@@ -72,7 +72,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected Anchor addClientAcctPayContact = new Anchor("Client Account Payable Contact not present? submit request");
     protected Anchor addVendorL = new Anchor("Vendor not present? submit request");
     protected Anchor addVendorLocation = new Anchor("Vendor Location not present? submit request");
-    protected Anchor addVendorContact = new Anchor("Vendor Recruiter Contact not present? submit request");
+    protected Anchor addVendorRecruiter = new Anchor("Vendor Recruiter Contact not present? submit request");
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(false, true, Alignment.HORIZONTAL);
     SelectVendorWidget selectVendorWidgetF = new SelectVendorWidget(false, true, Alignment.HORIZONTAL);
     SelectClientWidget selectClientWidgetF = new SelectClientWidget(false, true, Alignment.HORIZONTAL);
@@ -233,7 +233,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addClientAcctPayContact.addClickHandler(this);
         addVendorL.addClickHandler(this);
         addVendorLocation.addClickHandler(this);
-        addVendorContact.addClickHandler(this);
+        addVendorRecruiter.addClickHandler(this);
         submitForApprovalF.getBox().addClickHandler(this);
         selectVendorWidgetF.getListBox().addChangeHandler(this);
         selectClientWidgetF.getListBox().addChangeHandler(this);
@@ -347,7 +347,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             }
         };
         addDropDown("vendorRecruiters", selectVendorRecruiterContactsWidget);
-        entityFieldsPanel.add(addVendorContact);
+        entityFieldsPanel.add(addVendorRecruiter);
         selectVendorAPContactsW = new SelectVendorAcctPayContact(false, true, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
@@ -470,7 +470,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 new GenericPopup(new CreateVendorLocationsPanel(selectVendorWidgetF.getSelectedObjectId(), CreateCompositeType.CREATE), 400, 100).show();
             }
         }
-        if (event.getSource().equals(addVendorContact)) {
+        if (event.getSource().equals(addVendorRecruiter)) {
             if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
                 new GenericPopup(new CreateVendorContactPanel(selectVendorWidgetF.getSelectedObjectId(), CreateCompositeType.ADD), 400, 100).show();
             }
