@@ -51,11 +51,14 @@ public class BillingRate extends AbstractEntity {
     /**
      * OverTime PayRate
      */
+    @Digits(integer=10, fraction=2, message = "{overtimePayRate.not.valid.msg}")
     protected BigDecimal overTimePayRate;
     /**
      * over time billing rate
      */
+    @Digits(integer=10, fraction=2, message = "{overtimeBillingRate.not.valid.msg}")
     protected BigDecimal overTimeBillingRate;
+    
     @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_ClinetInfo_BillingRates")
     protected ClientInformation clientInformation;
