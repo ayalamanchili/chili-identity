@@ -109,7 +109,7 @@ public class OnBoardingEmployeeProcessBean {
         email.setRichText(Boolean.TRUE);
         String[] empDetails = onboarding.getEmpName().split("-");
         email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_BACKGROUND_SCREENING_MGR.name()));
-        email.setSubject("New Employee Onboarding initiated please start Background Screening for" + empDetails[0]);
+        email.setSubject("New Employee Onboarding initiated please start Background Screening for " + empDetails[0]);
         String messageText = "New Hire Onboarding process started. Please initiate background check for the employee";
         messageText = messageText.concat("<table border='1'>");
         messageText = messageText.concat("<tr><td><b>Employee </b></td> <td>" + empDetails[0] + "</td></tr>");
