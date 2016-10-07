@@ -27,6 +27,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableImage;
+import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.contact.Sex;
@@ -42,9 +43,10 @@ public class ReadJoiningFormPanel extends ReadComposite implements ClickHandler 
 
     private static Logger logger = Logger.getLogger(ReadJoiningFormPanel.class.getName());
     protected List<ReadDependentsPanel> readItemsPanels = new ArrayList<ReadDependentsPanel>();
-    ClickableImage rolesIcn = new ClickableImage("update", ChiliImages.INSTANCE.updateIcon_16_16());
+    ClickableLink rolesIcn = new ClickableLink("Update Roles & Responsibilities");
     ClickableImage printIcn = new ClickableImage("print", ChiliImages.INSTANCE.printIcon_16_16());
     HTML emptyLine = new HTML("<br/>");
+    protected String empId;
 
     public ReadJoiningFormPanel(JSONObject entity) {
         initReadComposite(entity, "Employee", OfficeWelcome.constants);
@@ -70,6 +72,7 @@ public class ReadJoiningFormPanel extends ReadComposite implements ClickHandler 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         JSONObject employee = (JSONObject) entity.get("employee");
+        empId = employee.get("id").isString().stringValue();
         JSONObject empAddnlDetails = (JSONObject) entity.get("empAddnlDetails");
         JSONObject address = (JSONObject) entity.get("address");
         assignFieldValueFromEntity("firstName", employee, DataType.STRING_FIELD);
@@ -130,16 +133,11 @@ public class ReadJoiningFormPanel extends ReadComposite implements ClickHandler 
         addEnumField("maritalStatus", true, true, MaritalStatus.names(), Alignment.HORIZONTAL);
         addEnumField("ethnicity", true, true, Ethnicity.names(), Alignment.HORIZONTAL);
         addField("rolesAndResponsibilities", true, true, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
-        renderRolesLink();
+        entityFieldsPanel.add(rolesIcn);
         renderPrintRolesLink();
         entityFieldsPanel.add(getLineSeperatorTag("Dependent's Information"));
         entityFieldsPanel.add(emptyLine);
         alignFields();
-    }
-
-    protected void renderRolesLink() {
-        BaseField rolesField = fields.get("rolesAndResponsibilities");
-        rolesField.addWidgetToFieldPanel(rolesIcn);
     }
 
     protected void renderPrintRolesLink() {
@@ -173,7 +171,11 @@ public class ReadJoiningFormPanel extends ReadComposite implements ClickHandler 
             new GenericPopup(new CreateRolesAndResponsibilitiesPanel(entity)).show();
         }
         if (event.getSource().equals(printIcn)) {
-            Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + "employee-forms/roles-responsibilities" + "&passthrough=true" + "&id=" + entityId, "_blank", "");
+            if (empId != null) {
+                Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + "employee-forms/roles-responsibilities" + "&passthrough=true" + "&id=" + empId, "_blank", "");
+            } else {
+                Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + "employee-forms/roles-responsibilities" + "&passthrough=true" + "&id=" + entityId, "_blank", "");
+            }
         }
     }
 }
