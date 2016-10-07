@@ -8,25 +8,22 @@
  */
 package info.yalamanchili.office.client.onboarding;
 
-import com.axeiya.gwtckeditor.client.CKEditor;
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONString;
-import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.RichTextArea;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.statusreport.Editor;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -38,7 +35,6 @@ public class CreateRolesAndResponsibilitiesPanel extends UpdateComposite impleme
     private static Logger logger = Logger.getLogger(CreateRolesAndResponsibilitiesPanel.class.getName());
     protected FlowPanel panel = new FlowPanel();
     protected JSONObject joiningDetails;
-    CKEditor reportF;
     private static CreateRolesAndResponsibilitiesPanel instance;
 
     public static CreateRolesAndResponsibilitiesPanel instance() {
@@ -56,27 +52,25 @@ public class CreateRolesAndResponsibilitiesPanel extends UpdateComposite impleme
 
     @Override
     protected void configure() {
+        formatTextAreaFields();
+    }
+    
+    protected void formatTextAreaFields() {
+        for (Map.Entry entry : fields.entrySet()) {
+            if (entry.getValue() instanceof TextAreaField) {
+                TextAreaField textAreaField = (TextAreaField) entry.getValue();
+                textAreaField.getTextbox().setCharacterWidth(75);
+                textAreaField.getTextbox().setVisibleLines(10);
+            }
+        }
     }
 
     @Override
     protected void addWidgets() {
-        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                addReportField();
-            }
-        });
+        addField("rolesAndResponsibilities", false, true, DataType.TEXT_AREA_FIELD);
     }
 
-    protected final void addReportField() {
-        reportF = Editor.getEditor(false);
-        entityFieldsPanel.add(reportF);
-    }
-
-    public void setSafeHtml(SafeHtml html) {
-        reportF.setData(html.asString());
-    }
-
+    @Override
     protected String getURI() {
         JSONObject address = (JSONObject) joiningDetails.get("address");
         JSONObject conatct = address.get("contact").isObject();
@@ -92,9 +86,7 @@ public class CreateRolesAndResponsibilitiesPanel extends UpdateComposite impleme
 
     @Override
     protected void updateButtonClicked() {
-        logger.info("get uri ... " + getURI());
-        JSONObject object = getRolesObject();
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), object.toString(), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable arg0) {
@@ -111,6 +103,10 @@ public class CreateRolesAndResponsibilitiesPanel extends UpdateComposite impleme
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        if (entity.containsKey("empAddnlDetails")) {
+            JSONObject empAddnlDetails = entity.get("empAddnlDetails").isObject();
+            assignFieldValueFromEntity("rolesAndResponsibilities", empAddnlDetails, DataType.TEXT_AREA_FIELD);
+        }
     }
 
     @Override
@@ -144,13 +140,5 @@ public class CreateRolesAndResponsibilitiesPanel extends UpdateComposite impleme
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-    }
-
-    protected JSONObject getRolesObject() {
-        JSONObject obj = new JSONObject();
-        if (reportF.getData() != null) {
-            obj.put("rolesAndResponsibilities", new JSONString(reportF.getData()));
-        }
-        return obj;
     }
 }
