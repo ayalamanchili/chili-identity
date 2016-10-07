@@ -279,7 +279,7 @@ public class EmployeeFormsService {
             data.getData().put("companyName", emp.getCompany().getName());
             if (emp.getCompany().getAbbreviation() != null) {
                 data.getData().put("companyCode", emp.getCompany().getAbbreviation());
-            }           
+            }
         }
 
         if (emp.getBranch() != null) {
@@ -441,9 +441,9 @@ public class EmployeeFormsService {
             }
         }
         EmployeeAdditionalDetails empAddnlDetails = EmployeeAdditionalDetailsDao.instance().find(emp);
-        if (empAddnlDetails != null) {
+        if (empAddnlDetails != null && empAddnlDetails.getRolesAndResponsibilities() != null) {
             String[] rolesArray = empAddnlDetails.getRolesAndResponsibilities().split("\n");
-            for (int i = 0; i < rolesArray.length; i = i + 2) {
+            for (int i = 0; i < rolesArray.length; i++) {
                 data.getData().put("role" + i, rolesArray[i].replaceAll("\\<.*?\\>", ""));
             }
         }
