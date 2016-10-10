@@ -26,6 +26,7 @@ import info.yalamanchili.office.template.TemplateService;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -290,8 +291,11 @@ public class CorporateTimeSheetDao extends CRUDDao<CorporateTimeSheet> {
     }
 
     public List<CorporateTimeSheet> getCurrentCompanyLeaves() {
-        TypedQuery<CorporateTimeSheet> query = getEntityManager().createQuery("from " + CorporateTimeSheet.class.getCanonicalName() + " where status=:statusParam and category IN (:categoryParam) and ((startDate <=:dateRangeEndParam ) and (endDate >=:dateRangeStartParam))", CorporateTimeSheet.class);
-        query.setParameter("statusParam", TimeSheetStatus.Approved);
+        List<TimeSheetStatus> statuses= new  ArrayList<TimeSheetStatus>();
+        statuses.add(TimeSheetStatus.Approved);
+        statuses.add(TimeSheetStatus.Pending);
+        TypedQuery<CorporateTimeSheet> query = getEntityManager().createQuery("from " + CorporateTimeSheet.class.getCanonicalName() + " where status IN (:statusParam) and category IN (:categoryParam) and ((startDate <=:dateRangeEndParam ) and (endDate >=:dateRangeStartParam))", CorporateTimeSheet.class);
+        query.setParameter("statusParam", statuses);
         query.setParameter("categoryParam", TimeSheetCategory.getLeaveSpentCategories());
         query.setParameter("dateRangeStartParam", DateUtils.getNextDay(new Date(), -1), TemporalType.DATE);
         query.setParameter("dateRangeEndParam", DateUtils.getNextDay(new Date(), 1), TemporalType.DATE);
