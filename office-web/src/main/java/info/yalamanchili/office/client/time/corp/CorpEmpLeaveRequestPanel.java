@@ -39,7 +39,7 @@ import java.util.logging.Logger;
  * @author prasanthi.p
  */
 public class CorpEmpLeaveRequestPanel extends CreateComposite {
-HTML Note = new HTML("<b> Note: </b> Please make sure to inform your Branch Manager, Receptionist, 6HR and Your Team below.");
+HTML Note = new HTML("<b> Note: </b> Please make sure to inform your Branch Manager, Receptionist, HR and Your Team below.");
     private static Logger logger = Logger.getLogger(CorpEmpLeaveRequestPanel.class.getName());
 
     public CorpEmpLeaveRequestPanel(CreateComposite.CreateCompositeType type) {
