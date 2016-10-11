@@ -56,10 +56,12 @@ public class ProfileReportsService {
             if (emp.getPhones().size() > 0) {
                 dto.setPhoneNumber(emp.getPhones().get(0).getPhoneNumber());
             }
-
+            if (emp.getCompany()!=null){
+                dto.setCompany(emp.getCompany().getName());
+            }
             res.add(dto);
         }
-        String[] columnOrder = new String[]{"firstName", "lastName", "startDate", "dateOfBirth", "type", "branchName", "phoneNumber", "jobTitle", "email"};
+        String[] columnOrder = new String[]{"firstName", "lastName", "startDate", "dateOfBirth", "type", "branchName", "phoneNumber", "jobTitle", "email","company"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Employee-Basic-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
