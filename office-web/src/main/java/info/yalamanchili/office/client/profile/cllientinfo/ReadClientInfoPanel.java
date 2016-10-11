@@ -102,8 +102,12 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
             assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("payRatePercentage" , entity, DataType.FLOAT_FIELD);
+            assignFieldValueFromEntity("payRate" , entity, DataType.CURRENCY_FIELD);          
             assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("overTimeRateDuration", entity, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("overTimePayRatePercentage" , entity, DataType.FLOAT_FIELD);
+            assignFieldValueFromEntity("overTimePayRate" , entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("joiningReport", entity, DataType.TEXT_AREA_FIELD);
@@ -241,8 +245,12 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
             }
             String[] billingDuration = {"HOUR", "DAY", "MONTH", "WEEK"};
             addEnumField("billingRateDuration", true, false, billingDuration, Alignment.HORIZONTAL);
+            addField("payRatePercentage", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+            addField("payRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addEnumField("overTimeRateDuration", true, false, billingDuration, Alignment.HORIZONTAL);
+            addField("overTimePayRatePercentage", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+            addField("overTimePayRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
             addEnumField("invoiceDeliveryMethod", true, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
             if (Auth.isSubContractor(getEmployee())) {
