@@ -88,7 +88,7 @@ public class ProfileReportsService {
             if (emp.getHoursPerWeek() != null) {
                 dto.setHoursPerWeek(emp.getHoursPerWeek());
             }
-            if (emp.getPhones().get(0).getExtension() != null) {
+            if (emp.getPhones().size() > 0 && emp.getPhones().get(0).getExtension() != null) {
                 dto.setPhoneNumberExt(emp.getPhones().get(0).getExtension());
             }
             for (CompanyContact contact : CompanyContactDao.instance().getEmployeeCompanyContacts(emp.getId())) {
