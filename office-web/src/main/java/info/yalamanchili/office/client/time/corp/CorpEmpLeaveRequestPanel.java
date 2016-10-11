@@ -13,6 +13,7 @@ import info.yalamanchili.office.client.time.LeaveRequestTimeCategory;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
@@ -38,7 +39,7 @@ import java.util.logging.Logger;
  * @author prasanthi.p
  */
 public class CorpEmpLeaveRequestPanel extends CreateComposite {
-
+HTML Note = new HTML("<b> Note: </b> Please make sure to inform your Branch Manager, Receptionist, HR and Your Team below.");
     private static Logger logger = Logger.getLogger(CorpEmpLeaveRequestPanel.class.getName());
 
     public CorpEmpLeaveRequestPanel(CreateComposite.CreateCompositeType type) {
@@ -140,6 +141,7 @@ public class CorpEmpLeaveRequestPanel extends CreateComposite {
             addEnumField("category", false, true, LeaveRequestTimeCategory.names(), Alignment.HORIZONTAL);
         }
         addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(Note);
         entityFieldsPanel.add(getLineSeperatorTag("Add team members to be notified"));
         entityFieldsPanel.add(employeesMSB);
         alignFields();
