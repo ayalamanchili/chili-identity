@@ -183,6 +183,8 @@ public class ClientInformation extends AbstractEntity {
      * PayRate
      */
     protected BigDecimal payRate;
+    
+    protected Float payRatePercentage;
     /**
      * BillingRate
      */
@@ -192,6 +194,8 @@ public class ClientInformation extends AbstractEntity {
      * OverTime PayRate
      */
     protected BigDecimal overTimePayRate;
+    
+    protected Float overTimePayRatePercentage;
     /**
      * over time billing rate
      */
@@ -549,7 +553,31 @@ public class ClientInformation extends AbstractEntity {
     public void setPayRate(BigDecimal payRate) {
         this.payRate = payRate;
     }
-
+/**
+     * @return the payRatePercentage
+     */
+    public Float getPayRatePercentage() {
+        return payRatePercentage;
+    }
+    /**
+     * @param payRatePercentage the payRatePercentage to set
+     */
+    public void setPayRatePercentage(Float payRatePercentage) {
+        this.payRatePercentage = payRatePercentage;
+    }
+    /**
+     * @return the overTimePayRatePercentage
+     */
+    public Float getOverTimePayRatePercentage() {
+        return overTimePayRatePercentage;
+    }
+    /**
+     * @param overTimePayRatePercentage the overTimePayRatePercentage to set
+     */
+    public void setOverTimePayRatePercentage(Float overTimePayRatePercentage) {
+        this.overTimePayRatePercentage = overTimePayRatePercentage;
+    }
+    
     public BigDecimal getBillingRate() {
         return billingRate;
     }
