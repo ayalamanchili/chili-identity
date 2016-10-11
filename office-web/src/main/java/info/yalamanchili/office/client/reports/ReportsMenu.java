@@ -56,7 +56,7 @@ public class ReportsMenu extends CMenuBar {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             addMenuItem("Email Groups", "Email Groups", emailMenuMaintainenceCmd);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_FULL_VIEW, ROLE.ROLE_RECRUITER)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_BILLING_ADMIN, ROLE.ROLE_RECRUITER, ROLE.ROLE_CONTRACTS_ADMIN)) {
             addMenuItem("Contracts Reports", "Contracts Reports", contractReportsMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
@@ -87,7 +87,7 @@ public class ReportsMenu extends CMenuBar {
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.clear();
-            if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_BILLING_ADMIN,ROLE.ROLE_CONTRACTS_ADMIN)) {
                 TabPanel.instance().getReportingPanel().entityPanel.add(new ReadAllBisContractsPanel());
             }
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new BISReportsSidePanel());
