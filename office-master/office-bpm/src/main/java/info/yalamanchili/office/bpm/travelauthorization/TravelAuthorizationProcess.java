@@ -45,9 +45,9 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
             case "travelAuthorizationManagerApprovalTask":
                 managerApprovalTaskComplete(entity, task);
                 break;
-            case "travelAuthorizationCEOApprovalTask":
-                ceoApprovalTaskComplete(entity, task);
-                break;
+//            case "travelAuthorizationCEOApprovalTask":
+//                ceoApprovalTaskComplete(entity, task);
+//                break;
             case "travelAuthorizationBookingTask":
                 travelBookingManagerApprovalTaskComplete(entity, task);
                 break;
@@ -61,7 +61,7 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
         //Status
         String status = (String) task.getExecution().getVariable("status");
         if (status.equalsIgnoreCase("approved")) {
-            entity.setStatus(TravelAuthorizationStatus.PENDING_CEO_APPROVAL);
+            entity.setStatus(TravelAuthorizationStatus.PENDING_TRAVEL_BOOKING);
             entity.setManagerApprovalBy(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
             entity.setManaerApprovalDate(new Date());
         } else {
@@ -71,22 +71,22 @@ public class TravelAuthorizationProcess extends RuleBasedTaskDelegateListner {
         task.getExecution().setVariable("entity", entity);
     }
 
-    protected void ceoApprovalTaskComplete(TravelAuthorization entity, DelegateTask task) {
-        //Notes
-        String notes = (String) task.getExecution().getVariable("notes");
-        CommentDao.instance().addComment(notes, entity);
-        //Status
-        String status = (String) task.getExecution().getVariable("status");
-        if (status.equalsIgnoreCase("approved")) {
-            entity.setStatus(TravelAuthorizationStatus.PENDING_TRAVEL_BOOKING);
-            entity.setCeoApprovalBy(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
-            entity.setCeoApprovalDate(new Date());
-        } else {
-            entity.setStatus(TravelAuthorizationStatus.REJECTED);
-        }
-        TravelAuthorizationDao.instance().save(entity);
-        task.getExecution().setVariable("entity", entity);
-    }
+//    protected void ceoApprovalTaskComplete(TravelAuthorization entity, DelegateTask task) {
+//        //Notes
+//        String notes = (String) task.getExecution().getVariable("notes");
+//        CommentDao.instance().addComment(notes, entity);
+//        //Status
+//        String status = (String) task.getExecution().getVariable("status");
+//        if (status.equalsIgnoreCase("approved")) {
+//            entity.setStatus(TravelAuthorizationStatus.PENDING_TRAVEL_BOOKING);
+//            entity.setCeoApprovalBy(OfficeSecurityService.instance().getCurrentUser().getEmployeeId());
+//            entity.setCeoApprovalDate(new Date());
+//        } else {
+//            entity.setStatus(TravelAuthorizationStatus.REJECTED);
+//        }
+//        TravelAuthorizationDao.instance().save(entity);
+//        task.getExecution().setVariable("entity", entity);
+//    }
 
     protected void travelBookingManagerApprovalTaskComplete(TravelAuthorization entity, DelegateTask task) {
         //Notes
