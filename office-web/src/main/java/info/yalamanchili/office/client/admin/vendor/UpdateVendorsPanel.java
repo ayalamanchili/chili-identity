@@ -145,11 +145,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        if (submitForUpdateF.getValue() || submitForUpdateP.getValue() || submitForUpdateD.getValue()) {
-            return OfficeWelcome.constants.root_url() + "vendor/updatecpd" + "?submitForUpdateF=" + submitForUpdateF.getValue() + "&submitForUpdateP=" + submitForUpdateP.getValue() + "&submitForUpdateD=" + submitForUpdateD.getValue();
-        } else {
-            return OfficeWelcome.constants.root_url() + "vendor";
-        }
+        return OfficeWelcome.constants.root_url() + "vendor/updatecpd" + "?submitForUpdateF=" + submitForUpdateF.getValue() + "&submitForUpdateP=" + submitForUpdateP.getValue() + "&submitForUpdateD=" + submitForUpdateD.getValue();
     }
 
     @Override
@@ -198,4 +194,3 @@ public class UpdateVendorsPanel extends UpdateComposite {
     }
 
 }
-    
