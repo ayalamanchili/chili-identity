@@ -34,6 +34,7 @@ public class EmployeeBasicInfoReportDto implements Serializable {
     protected String type;
     protected String branchName;
     protected String manager;
+    protected String company;
     
     protected List<CompanyContact> contacts;
 
@@ -44,11 +45,19 @@ public class EmployeeBasicInfoReportDto implements Serializable {
     public void setContacts(List<CompanyContact> contacts) {
         this.contacts = contacts;
     }
-
+    
     public String getManager() {
         return manager;
     }
 
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+        
     public void setManager(String manager) {
         this.manager = manager;
     }

@@ -158,6 +158,8 @@ public class ClientInformationDto implements Serializable {
      * PayRate
      */
     protected BigDecimal payRate;
+    
+    protected Float payRatePercentage;
     /**
      * BillingRate
      */
@@ -168,6 +170,8 @@ public class ClientInformationDto implements Serializable {
      */
     @Digits(integer=10, fraction=2, message = "{overtimePayRate.not.valid.msg}")
     protected BigDecimal overTimePayRate;
+    
+    protected Float overTimePayRatePercentage;
     /**
      * over time billing rate
      */
@@ -552,6 +556,33 @@ public class ClientInformationDto implements Serializable {
 
     public void setOverTimePayRate(BigDecimal overTimePayRate) {
         this.overTimePayRate = overTimePayRate;
+    }
+    /**
+     * @return the payRatePercentage
+     */
+    public Float getPayRatePercentage() {
+        return payRatePercentage;
+    }
+
+    /**
+     * @param payRatePercentage the payRatePercentage to set
+     */
+    public void setPayRatePercentage(Float payRatePercentage) {
+        this.payRatePercentage = payRatePercentage;
+    }
+
+    /**
+     * @return the overTimePayRatePercentage
+     */
+    public Float getOverTimePayRatePercentage() {
+        return overTimePayRatePercentage;
+    }
+
+    /**
+     * @param overTimePayRatePercentage the overTimePayRatePercentage to set
+     */
+    public void setOverTimePayRatePercentage(Float overTimePayRatePercentage) {
+        this.overTimePayRatePercentage = overTimePayRatePercentage;
     }
 
     public BigDecimal getOverTimeBillingRate() {

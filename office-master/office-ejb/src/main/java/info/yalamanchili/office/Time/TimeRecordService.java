@@ -184,14 +184,12 @@ public class TimeRecordService {
         MessagingService.instance().emailReport(fileName, email);
     }
 
-    @Async
-    @Transactional
-    public void generateBranchAttendenceReport(String email, String branch) {
+    public List<AvantelTimeSummaryDto> generateBranchAttendenceReport(TimeRecordDao.TimeRecordSearchDto dto) {
         List<AvantelTimeSummaryDto> res = new ArrayList();
         for (Employee emp : EmployeeDao.instance().getEmployeesByType(EmployeeType.CORPORATE_EMPLOYEE)) {
             if (emp.getBranch() != null) {
-                if (branch.equalsIgnoreCase(emp.getBranch().name())) {
-                    TimeRecord.TimeRecordsTable table = timeRecordDao.getTimeRecords(emp.getId().toString(), 0, 1000);
+                if (Branch.Hyderabad.name().equals(emp.getBranch().name().trim())) {
+                    TimeRecord.TimeRecordsTable table = timeRecordDao.getTimeRecords(emp.getId().toString(), dto.getStartDate(), dto.getEndDate(), 0, 10000);
                     if (table.getSize() > 0) {
                         List<TimeRecord> list = new ArrayList();
                         list.addAll(table.getEntities());
@@ -202,9 +200,7 @@ public class TimeRecordService {
                 }
             }
         }
-        String[] columnOrder = new String[]{"employee", "startDate", "endDate", "timeIn", "timeOut", "receptionHours", "secondFloorHours", "cubicalHours", "status"};
-        String fileName = ReportGenerator.generateExcelOrderedReport(res, "Branch Attendence Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
-        MessagingService.instance().emailReport(fileName, email);
+        return res;
     }
 
     public AvantelTimeSummaryDto populateAttendenceValues(TimeRecord tr, Employee emp) {
