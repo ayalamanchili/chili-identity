@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,11 +9,13 @@
 package info.yalamanchili.office.jrs.profile.benefit;
 
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.profile.benefit.BenefitEnrollmentDao;
 import info.yalamanchili.office.entity.profile.benefits.BenefitEnrollment;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.List;
+import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -47,6 +52,32 @@ public class BenefitEnrollmentResource extends CRUDResource<BenefitEnrollment> {
     @CacheEvict(value = OfficeCacheKeys.EMPLOYEES, allEntries = true)
     public void delete(@PathParam("id") Long id) {
         getDao().delete(id);
+    }
+    
+    
+    @PUT
+    @Validate
+    @Path("/save/{empId}")
+    public void addBenefit(@PathParam("empId") Long empId, BenefitEnrollment benefitEnrollment) {
+        getDao().save(benefitEnrollment);
+        
+    }
+    
+    @GET
+    @Path("/{start}/{limit}")
+    public BenefitEnrollmentTable getEmails(@PathParam("start") int start, @PathParam("limit") int limit) {
+        BenefitEnrollmentResource.BenefitEnrollmentTable tableObj = new BenefitEnrollmentResource.BenefitEnrollmentTable();
+        tableObj.setEntities(getDao().query(start,limit));
+        tableObj.setSize(getDao().size());
+        return tableObj;
+    }
+    
+    @GET
+    @Path("/{id}")
+    @Transactional(readOnly = true)
+    @Override
+    public BenefitEnrollment read(@PathParam("id") Long id) {
+        return (BenefitEnrollment) getDao().findById(id);
     }
 
     @XmlRootElement
