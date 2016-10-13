@@ -215,6 +215,13 @@ public class ContractReportService {
         return q.getResultList();
     }
 
+    public List<ContractDto> getAllActiveCPDsBetween(Date startDate, Date endDate) {
+        TypedQuery<ContractDto> q = em.createQuery("SELECT DISTINCT NEW " + ContractDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName,ci.employee.lastName, ci.client.name, ci.vendor.name,ci.billingRate,ci.billingRateDuration, ci.startDate, ci.endDate, ci.employee.employeeType.name, ci.company) from " + ClientInformation.class.getCanonicalName() + " ci where ci.startDate <=:startDateParam and ci.endDate >=:endDateParam", ContractDto.class);
+        q.setParameter("startDateParam", startDate);
+        q.setParameter("endDateParam", endDate);
+        return q.getResultList();
+    }
+
     @Async
     @Transactional
     public void activeEmployeesRevenueForcastReport(String email) {
@@ -246,7 +253,7 @@ public class ContractReportService {
         for (int i = start; i < limit; i++) {
             List<Employee> employees = EmployeeDao.instance().queryAll(start, limit);
             Iterator empIterator = employees.iterator();
-            while (empIterator.hasNext()== true) {
+            while (empIterator.hasNext() == true) {
                 Employee emp = (Employee) empIterator.next();
                 List<ClientInformation> cpds = emp.getClientInformations();
                 if (cpds.size() > 0) {
