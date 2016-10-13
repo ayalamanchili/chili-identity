@@ -11,10 +11,10 @@ import info.yalamanchili.office.client.profile.address.ReadAllAddressesPanel;
 import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPanel;
-import info.yalamanchili.office.client.profile.cllientinfo.ClientInfoOptionsPanel;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.ui.IsWidget;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
@@ -24,6 +24,7 @@ import info.yalamanchili.office.client.profile.role.MultiSelectRoleWidget;
 import info.yalamanchili.office.client.profile.skillset.SkillSetPanel;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.Auth.ROLE;
+import info.yalamanchili.office.client.profile.benefits.ReadAllBenefitsPanel;
 import info.yalamanchili.office.client.profile.password.DeactivatationPanel;
 import info.yalamanchili.office.client.profile.preferences.PreferencesPanel;
 import info.yalamanchili.office.client.profile.privacy.ReadAllPrivacySettngsPanel;
@@ -53,6 +54,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String DEACTIVATION_USER_NODE = "deactivation";
     protected static final String EMPLOYEE_FORMS = "employeeForms";
     protected static final String EMPLOYEE_CONTACTS = "employeeContacts";
+    protected static final String BENEFITS_NODE = "Benefits";
     protected SkillSetPanel skillSetPanel;
     protected TreeEmpReportsPanel empReportsPanel;
     protected TreeEmpFormsPanel empDocsPanel;
@@ -112,6 +114,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
             addFirstChildLink("Preferences", PREFERENCES_NODE);
         }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HEALTH_INSURANCE_MANAGER)) {
+            addFirstChildLink("Benefits", BENEFITS_NODE );
+        }
         if (Auth.isCorporateEmployee()) {
             addFirstChildLink("Privacy", PRIVACY_NODE);
         }
@@ -130,6 +135,10 @@ public class TreeEmployeePanel extends TreePanelComposite {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllAddressesPanel(getEntityId()));
             TabPanel.instance().myOfficePanel.entityPanel.add(new AddressOptionsPanel(getEntityId()));
+        }
+        if (BENEFITS_NODE.equals(entityNodeKey)) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBenefitsPanel(getEntityId()));
         }
         if (EMAIL_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
