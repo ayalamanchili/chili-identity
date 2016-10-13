@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -36,7 +39,7 @@ public class BenefitEnrollment extends AbstractEntity {
     protected Employee employee;
 
     @NotNull
-    protected String Year;
+    protected String year;
 
     protected Boolean enrolled;
     
@@ -62,14 +65,14 @@ public class BenefitEnrollment extends AbstractEntity {
      * @return the Year
      */
     public String getYear() {
-        return Year;
+        return year;
     }
 
     /**
      * @param Year the Year to set
      */
-    public void setYear(String Year) {
-        this.Year = Year;
+    public void setYear(String year) {
+        this.year = year;
     }
 
     /**
