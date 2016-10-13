@@ -8,11 +8,16 @@
  */
 package info.yalamanchili.office.jrs.time;
 
+import info.chili.reporting.ReportGenerator;
+import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.Time.TimeRecordService;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dao.time.TimeRecordDao;
+import info.yalamanchili.office.dto.time.AvantelTimeSummaryDto;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.model.time.TimeRecord;
 import info.yalamanchili.office.model.time.TimeRecord.TimeRecordsTable;
 import java.util.ArrayList;
@@ -52,12 +57,12 @@ public class TimeRecordResource {
         return timeRecordDao.find(id);
     }
 
-    @GET
+    @PUT
     @Path("/employee/{empId}/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")
-    public TimeRecordsTable getTimeRecordsForEmployee(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
+    public TimeRecordsTable getTimeRecordsForEmployee(TimeRecordDao.TimeRecordSearchDto dto, @PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = EmployeeDao.instance().findById(empId);
-        return timeRecordDao.getTimeRecords(empId.toString(), start, limit);
+        return timeRecordDao.getTimeRecords(empId.toString(), dto.getStartDate(), dto.getEndDate(), start, limit);
     }
 
     @PUT
@@ -80,23 +85,32 @@ public class TimeRecordResource {
         TimeRecordService.instance().getAllEmployeesSummaryReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail(), dto);
     }
 
-    @GET
+    @PUT
     @Path("/employee-report/{empId}")
     @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")
-    public void getTimeRecordsReportForEmployee(@PathParam("empId") Long empId) {
-        TimeRecord.TimeRecordsTable table = getTimeRecordsForEmployee(empId, 0, 1000);
+    public void getTimeRecordsReportForEmployee(TimeRecordDao.TimeRecordSearchDto dto, @PathParam("empId") Long empId) {
+        TimeRecord.TimeRecordsTable table = getTimeRecordsForEmployee(dto, empId, 0, 10000);
         Employee emp = EmployeeDao.instance().findById(empId);
-        if (table.getSize() != null) {
+        if (table.getSize() > 0) {
             List<TimeRecord> list = new ArrayList();
             list.addAll(table.getEntities());
             TimeRecordService.instance().generateEmpAttendenceReport(list, OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail(), emp);
+        } else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "DateInvalid", "No Results");
         }
     }
 
-    @GET
-    @Path("/employee-branch-report/{branch}")
+    @PUT
+    @Path("/employee-branch-report")
     @PreAuthorize("hasAnyRole('ROLE_BULK_IMPORT')")
-    public void getTimeRecordsReportForBranch(@PathParam("branch") String branch) {
-        TimeRecordService.instance().generateBranchAttendenceReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail(), branch);
+    public void getTimeRecordsReportForBranch(TimeRecordDao.TimeRecordSearchDto dto) {
+        List<AvantelTimeSummaryDto> dtos = TimeRecordService.instance().generateBranchAttendenceReport(dto);
+        if (dtos.size() > 0) {
+            String[] columnOrder = new String[]{"employee", "startDate", "endDate", "timeIn", "timeOut", "receptionHours", "secondFloorHours", "cubicalHours", "status"};
+            String fileName = ReportGenerator.generateExcelOrderedReport(dtos, "Branch Attendence Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+            MessagingService.instance().emailReport(fileName, OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
+        } else {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "DateInvalid", "No Results");
+        }
     }
 }

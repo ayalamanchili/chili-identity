@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
@@ -33,6 +34,7 @@ public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements Cli
 
     private static Logger logger = Logger.getLogger(ReadAllTimeRecordsPanel.class.getName());
     public static ReadAllTimeRecordsPanel instance;
+    public JSONObject search;
 
     public ReadAllTimeRecordsPanel(String parentId) {
         instance = this;
@@ -43,6 +45,13 @@ public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements Cli
     public ReadAllTimeRecordsPanel(String title, JSONArray array) {
         instance = this;
         initTable(title, array, OfficeWelcome.constants);
+    }
+
+    public ReadAllTimeRecordsPanel(String parentId, JSONObject search) {
+        instance = this;
+        this.parentId = parentId;
+        this.search = search;
+        initTable("Time Records", OfficeWelcome.constants);
     }
 
     @Override
@@ -78,10 +87,13 @@ public class ReadAllTimeRecordsPanel extends CRUDReadAllComposite implements Cli
 
     @Override
     public void preFetchTable(int start) {
-        HttpService.HttpServiceAsync.instance().doGet(getReadAllTimeRecordsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doPut(getReadAllTimeRecordsURL(start, OfficeWelcome.constants.tableSize()), search.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
+                        if (result == null || JSONParser.parseLenient(result).isObject().size() == 1) {
+                            new ResponseStatusWidget().show("no results");
+                        }
                         postFetchTable(result);
                     }
                 });

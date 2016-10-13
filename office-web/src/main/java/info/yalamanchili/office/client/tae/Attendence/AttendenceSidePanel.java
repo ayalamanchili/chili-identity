@@ -47,9 +47,6 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler {
     CaptionPanel timesheetsForEmpCaptionPanel = new CaptionPanel();
     FlowPanel timesheetsForEmpPanel = new FlowPanel();
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
-    String[] branch = {"Hyderabad"};
-    EnumField branchField = new EnumField(OfficeWelcome.constants, "Branch", "CorporateTimeSheet",
-            false, false, branch, Alignment.VERTICAL);
     Button showTimeSheetsForEmpB = new Button("View");
     Button timeSheetsreportForEmpB = new Button("Report");
     //Reports
@@ -58,6 +55,10 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler {
     DateField startDateF = new DateField(OfficeWelcome.constants,
             "startDate", "CorporateTimeSheet", false, true);
     DateField endDateF = new DateField(OfficeWelcome.constants,
+            "endDate", "CorporateTimeSheet", false, true);
+    DateField empstartDateF = new DateField(OfficeWelcome.constants,
+            "startDate", "CorporateTimeSheet", false, true);
+    DateField empendDateF = new DateField(OfficeWelcome.constants,
             "endDate", "CorporateTimeSheet", false, true);
     EnumField reportStatusField = new EnumField(OfficeWelcome.constants, "status", "CorporateTimeSheet",
             false, false, true, TimeSheetStatus.names(), Alignment.VERTICAL);
@@ -80,10 +81,12 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler {
         employeeSB.addDomHandler(new Handler(), KeyPressEvent.getType());
         timeSheetsreportForEmpB.addClickHandler(this);
     }
-    final class Handler implements KeyPressHandler{
+
+    final class Handler implements KeyPressHandler {
+
         @Override
         public void onKeyPress(KeyPressEvent event) {
-            if (event.getCharCode()==KeyCodes.KEY_ENTER) {
+            if (event.getCharCode() == KeyCodes.KEY_ENTER) {
                 TabPanel.instance().getTimePanel().entityPanel.clear();
                 TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllTimeRecordsPanel(employeeSB.getKey()));
             }
@@ -112,7 +115,9 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler {
         if (Auth.isCorporateEmployee()) {
             //time sheets for emp panel
             timesheetsForEmpPanel.add(employeeSB);
-            timesheetsForEmpPanel.add(branchField);
+//            timesheetsForEmpPanel.add(branchField);
+            timesheetsForEmpPanel.add(empstartDateF);
+            timesheetsForEmpPanel.add(empendDateF);
             timesheetsForEmpPanel.add(showTimeSheetsForEmpB);
             timesheetsForEmpPanel.add(timeSheetsreportForEmpB);
             timesheetsForEmpCaptionPanel.setContentWidget(timesheetsForEmpPanel);
@@ -132,34 +137,30 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler {
 
     @Override
     public void onClick(ClickEvent event) {
-        if (employeeSB.getSelectedObject() != null && event.getSource().equals(showTimeSheetsForEmpB)) {
-            TabPanel.instance().getTimePanel().entityPanel.clear();
-            TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllTimeRecordsPanel(employeeSB.getKey()));
-            clearReportsField();
-        }
-        if (employeeSB.getSelectedObject() != null && event.getSource().equals(timeSheetsreportForEmpB)) {
-            TabPanel.instance().getTimePanel().entityPanel.clear();
-            String reportUrl = OfficeWelcome.constants.root_url() + "timerecord/employee-report/" + employeeSB.getSelectedObject().get("id").isString().stringValue();
-            HttpService.HttpServiceAsync.instance().doGet(reportUrl, OfficeWelcome.instance().getHeaders(), true,
-                    new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String result) {
-                            new ResponseStatusWidget().show("Report will be emailed to your primary Email");
-                        }
-                    });
-            clearReportsField();
-        }
-        if (branchField.getValue() != null && event.getSource().equals(timeSheetsreportForEmpB)) {
-            TabPanel.instance().getTimePanel().entityPanel.clear();
-            String reportUrl = OfficeWelcome.constants.root_url() + "timerecord/employee-branch-report/" + branchField.getValue();
-            HttpService.HttpServiceAsync.instance().doGet(reportUrl, OfficeWelcome.instance().getHeaders(), true,
-                    new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String result) {
-                            new ResponseStatusWidget().show("Report will be emailed to your primary Email");
-                        }
-                    });
-            clearReportsField();
+        if (event.getSource().equals(showTimeSheetsForEmpB) || event.getSource().equals(timeSheetsreportForEmpB)) {
+            JSONObject search = getReportObject1();
+            if (employeeSB.getSelectedObject() != null && event.getSource().equals(showTimeSheetsForEmpB)) {
+                TabPanel.instance().getTimePanel().entityPanel.clear();
+                TabPanel.instance().getTimePanel().entityPanel.add(new ReadAllTimeRecordsPanel(employeeSB.getKey(), search));
+                clearReportsField();
+            }
+            if (event.getSource().equals(timeSheetsreportForEmpB)) {
+                String reportUrl = null;
+                if (employeeSB.getSelectedObject() != null) {
+                    reportUrl = OfficeWelcome.constants.root_url() + "timerecord/employee-report/" + employeeSB.getSelectedObject().get("id").isString().stringValue();
+                } else {
+                    reportUrl = OfficeWelcome.constants.root_url() + "timerecord/employee-branch-report";
+                }
+                TabPanel.instance().getTimePanel().entityPanel.clear();
+                HttpService.HttpServiceAsync.instance().doPut(reportUrl, search.toString(), OfficeWelcome.instance().getHeaders(), true,
+                        new ALAsyncCallback<String>() {
+                            @Override
+                            public void onResponse(String result) {
+                                new ResponseStatusWidget().show("Report will be emailed to your primary Email");
+                            }
+                        });
+                clearReportsField();
+            }
         }
         if (event.getSource().equals(reportsB)) {
             generateReport();
@@ -169,10 +170,11 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler {
     private String getEmployeeIdsDropDownUrl() {
         return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee");
     }
-    
+
     protected void clearReportsField() {
         employeeSB.clearText();
-        branchField.listBox.setSelectedIndex(0);
+        empstartDateF.setValue("");
+        empendDateF.setValue("");
     }
 
     protected void generateReport() {
@@ -183,7 +185,7 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler {
                     new ALAsyncCallback<String>() {
                         @Override
                         public void onResponse(String result) {
-                            new ResponseStatusWidget().show("Report will be emailed to your primary ");
+                            new ResponseStatusWidget().show("Report will be emailed to your primary Email");
                         }
                     });
         }
@@ -211,6 +213,29 @@ public class AttendenceSidePanel extends ALComposite implements ClickHandler {
         }
         if (reportStatusField.getValues() != null) {
             search.put("status", JSONUtils.toJSONArray(reportStatusField.getValues()));
+        }
+        return search;
+    }
+
+    private JSONObject getReportObject1() {
+        JSONObject search = new JSONObject();
+        if (empstartDateF.getDate() == null) {
+            empstartDateF.setMessage("required");
+            return null;
+        }
+        if (empendDateF.getDate() == null) {
+            empendDateF.setMessage("required");
+            return null;
+        }
+        if (empstartDateF.getDate().after(empendDateF.getDate())) {
+            empendDateF.setMessage("End Date must be after Start Date");
+            return null;
+        }
+        if (empstartDateF.getDate() != null) {
+            search.put("startDate", new JSONString(DateUtils.toDateString(empstartDateF.getDate())));
+        }
+        if (empendDateF.getDate() != null) {
+            search.put("endDate", new JSONString(DateUtils.toDateString(empendDateF.getDate())));
         }
         return search;
     }

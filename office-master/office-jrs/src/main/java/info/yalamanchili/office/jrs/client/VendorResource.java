@@ -13,6 +13,7 @@ import info.chili.service.jrs.types.Entry;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
+import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.client.VendorService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
@@ -37,7 +38,9 @@ import info.yalamanchili.office.mapper.profile.ContactMapper;
 import info.yalamanchili.office.profile.ContactService;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -75,6 +78,8 @@ public class VendorResource extends CRUDResource<Vendor> {
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
+    @Autowired
+    protected OfficeBPMService officeBPMService;
 
     @Override
     public CRUDDao getDao() {
@@ -98,7 +103,7 @@ public class VendorResource extends CRUDResource<Vendor> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CONTRACTS_ADMIN','ROLE_BILLING_AND_INVOICING')")
     @CacheEvict(value = OfficeCacheKeys.VENDOR, allEntries = true)
     public Vendor save(Vendor vendor) {
-        return super.save(vendor);
+        throw new UnsupportedOperationException();
     }
 
     @PUT
@@ -107,6 +112,10 @@ public class VendorResource extends CRUDResource<Vendor> {
     @Validate
     @CacheEvict(value = OfficeCacheKeys.VENDOR, allEntries = true)
     public Vendor update(Vendor vendor, @QueryParam("submitForUpdateF") Boolean submitForUpdateF, @QueryParam("submitForUpdateP") Boolean submitForUpdateP, @QueryParam("submitForUpdateD") Boolean submitForUpdateD) {
+        Map<String, Object> vars = new HashMap<String, Object>();
+        vars.put("vendor", vendor);
+        vars.put("currentEmployee",OfficeSecurityService.instance().getCurrentUser());
+        officeBPMService.startProcess("update_vendor_notification_process", vars);
         vendor = super.save(vendor);
         if (submitForUpdateP || submitForUpdateF || submitForUpdateD) {
             vendorDao.updateExistingClientInformations(vendor, submitForUpdateF, submitForUpdateP, submitForUpdateD, OfficeSecurityService.instance().getCurrentUserName());

@@ -36,11 +36,13 @@ public class TimeRecordDao {
     @Autowired
     protected MongoOperations mongoTemplate;
 
-    public TimeRecordsTable getTimeRecords(String employeeId, int start, int limit) {
+    public TimeRecordsTable getTimeRecords(String employeeId, Date startDate, Date endDate, int start, int limit) {
         TimeRecordsTable res = new TimeRecordsTable();
         Query query = new Query();
+        query.addCriteria(Criteria.where("startDate").gte(startDate));
+        query.addCriteria(Criteria.where("endDate").lte(endDate));
         query.addCriteria(Criteria.where("employeeId").is(employeeId));
-        query.with(new Sort(Sort.Direction.DESC, "startDate"));
+        query.with(new Sort(Sort.Direction.ASC, "startDate"));
         res.setEntities(mongoTemplate.find(query.limit(limit).skip(start), TimeRecord.class));
         res.setSize(mongoTemplate.count(query, TimeRecord.class));
         return res;

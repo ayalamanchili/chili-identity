@@ -300,8 +300,8 @@ public class ContractService {
     public ContractDto mapClientInformation(ClientInformation ci) {
         ContractDto dto = mapper.map(ci, ContractDto.class);
         Vendor vi = new Vendor();
-        Client ct= new Client();
-        BigDecimal clientFeePer=new BigDecimal(0);        
+        Client ct = new Client();
+        BigDecimal clientFeePer = new BigDecimal(0);
         if (ci.getEmployee() != null) {
             dto.setContractSignedEntity(ci.getCompany().name());
             dto.setEmployee(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
@@ -321,24 +321,23 @@ public class ContractService {
             dto.setClient(ct.getName());
             dto.setClientFeeApplicable(ci.getClientFeeApplicable());
             dto.setDirectClient(ci.getDirectClient());
-            if(ci.getClientFee() != null) {
+            if (ci.getClientFee() != null) {
                 clientFeePer = new BigDecimal(ci.getClientFee());
                 dto.setClientFees(clientFeePer.floatValue());
-            }  
-            else if (ct.getClientFee() != null) {
+            } else if (ct.getClientFee() != null) {
                 clientFeePer = new BigDecimal(ct.getClientFee());
-                dto.setClientFees(clientFeePer.floatValue()); 
+                dto.setClientFees(clientFeePer.floatValue());
             }
-            if(ci.getClientFeeApplicable() != null && ci.getClientFeeApplicable() && clientFeePer != null && clientFeePer.floatValue()>0) {
+            if (ci.getClientFeeApplicable() != null && ci.getClientFeeApplicable() && clientFeePer != null && clientFeePer.floatValue() > 0) {
                 BigDecimal clientFeeVal = clientFeePer.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
                 BigDecimal effectiveBillingRate = getEffectiveBillingRate(ci.getId());
                 if (effectiveBillingRate == null) {
                     dto.setBillingRate(ci.getBillingRate());
                 } else {
                     dto.setBillingRate(getEffectiveBillingRate(ci.getId()));
-                 }
-                dto.setFinalBillingRate(dto.getBillingRate().subtract(calculateMargin(clientFeeVal, ct.getMaxClientFee(), ct.getMinClientFee())));            
-            }                
+                }
+                dto.setFinalBillingRate(dto.getBillingRate().subtract(calculateMargin(clientFeeVal, ct.getMaxClientFee(), ct.getMinClientFee())));
+            }
         }
 
         if (ci.getVendor() != null) {
