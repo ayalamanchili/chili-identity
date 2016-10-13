@@ -43,33 +43,33 @@ public class InviteCodeResource {
     protected InviteCodeService inviteCodeService;
     @Autowired
     protected InviteCodeDao inviteCodeDao;
-    
+
     @GET
     @Path("/{start}/{limit}")
     public InviteCodeService.InviteCodeTable Code(@PathParam("start") int start, @PathParam("limit") int limit) {
         return inviteCodeService.getInviteCodes(start, limit);
     }
-    
+
     @PUT
     @Path("/search")
     public List<InviteCodeService.InviteCodeDto> search(InviteCodeService.InviteCodeDto search) {
         return inviteCodeService.searchInviteCodes(search);
     }
-    
+
     @PUT
     @Validate
     @Path("/invite")
-    public void invite(InviteCode entity, @DefaultValue("true") @QueryParam("sendEmail") boolean sendEmail) {
-        InviteCodeGeneratorService.instance().generate(entity, sendEmail);
+    public void invite(InviteCode entity, @DefaultValue("true") @QueryParam("sendEmail") boolean sendEmail, @QueryParam("name") String name) {
+        InviteCodeGeneratorService.instance().generate(entity, sendEmail, name);
     }
-    
+
     @PUT
     @Validate
     @Path("/update-expiration/{id}")
     public void updateExpirationDate(InviteCode entity) {
-    InviteCode updateEntity = inviteCodeDao.find(entity.getInvitationCode());
-    updateEntity.setExpiryDate(entity.getExpiryDate());
-    inviteCodeDao.save(updateEntity);
+        InviteCode updateEntity = inviteCodeDao.find(entity.getInvitationCode());
+        updateEntity.setExpiryDate(entity.getExpiryDate());
+        inviteCodeDao.save(updateEntity);
     }
-    
+
 }
