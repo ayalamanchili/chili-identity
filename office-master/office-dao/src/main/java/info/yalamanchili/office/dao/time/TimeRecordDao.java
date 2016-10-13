@@ -42,7 +42,7 @@ public class TimeRecordDao {
         query.addCriteria(Criteria.where("startDate").gte(startDate));
         query.addCriteria(Criteria.where("endDate").lte(endDate));
         query.addCriteria(Criteria.where("employeeId").is(employeeId));
-        query.with(new Sort(Sort.Direction.DESC, "startDate"));
+        query.with(new Sort(Sort.Direction.ASC, "startDate"));
         res.setEntities(mongoTemplate.find(query.limit(limit).skip(start), TimeRecord.class));
         res.setSize(mongoTemplate.count(query, TimeRecord.class));
         return res;
