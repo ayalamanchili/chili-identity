@@ -15,6 +15,7 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.profile.contact.WorkStatus;
 import java.util.logging.Logger;
 
 /**
@@ -32,12 +33,12 @@ public class ConsultantTimeSummaryPanel extends ReadComposite {
     }
 
     public ConsultantTimeSummaryPanel() {
-        initReadComposite("ConsultantTimeSummary", OfficeWelcome.constants);
+        initReadComposite("ConsultantTimeSummary", OfficeWelcome.constants2);
     }
 
     public ConsultantTimeSummaryPanel(String employeeId) {
         this.employeeId = employeeId;
-        initReadComposite("ConsultantTimeSummary", OfficeWelcome.constants);
+        initReadComposite("ConsultantTimeSummary", OfficeWelcome.constants2);
     }
 
     @Override
@@ -64,6 +65,7 @@ public class ConsultantTimeSummaryPanel extends ReadComposite {
         assignFieldValueFromEntity("totalAccumulatedHours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("totalUsedHours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("totalAvailableHours", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("workStatus", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -84,6 +86,7 @@ public class ConsultantTimeSummaryPanel extends ReadComposite {
         addField("totalAccumulatedHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("totalUsedHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("totalAvailableHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+        addEnumField("workStatus", true, false, WorkStatus.names(), Alignment.HORIZONTAL);
         alignFields();
     }
 
