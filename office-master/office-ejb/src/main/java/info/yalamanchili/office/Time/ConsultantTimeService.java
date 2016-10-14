@@ -134,6 +134,7 @@ public class ConsultantTimeService {
         if (employee.getStartDate() != null) {
             summary.setStartDate(new SimpleDateFormat("MM/dd/yyyy").format(employee.getStartDate()));
         }
+        summary.setWorkStatus(employee.getWorkStatus());
         return summary;
     }
 
