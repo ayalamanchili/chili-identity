@@ -22,13 +22,12 @@ import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.RichTextField;
 import info.chili.gwt.resources.ChiliImages;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableImage;
-import info.chili.gwt.widgets.ClickableLink;
-import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import java.util.ArrayList;
@@ -43,7 +42,6 @@ public class ReadJoiningFormPanel extends ReadComposite implements ClickHandler 
 
     private static Logger logger = Logger.getLogger(ReadJoiningFormPanel.class.getName());
     protected List<ReadDependentsPanel> readItemsPanels = new ArrayList<ReadDependentsPanel>();
-    ClickableLink rolesIcn = new ClickableLink("Update Roles & Responsibilities");
     ClickableImage printIcn = new ClickableImage("print", ChiliImages.INSTANCE.printIcon_16_16());
     HTML emptyLine = new HTML("<br/>");
     protected String empId;
@@ -106,13 +104,13 @@ public class ReadJoiningFormPanel extends ReadComposite implements ClickHandler 
 
     @Override
     protected void addListeners() {
-        rolesIcn.addClickHandler(this);
         printIcn.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
-
+        RichTextField p4 = (RichTextField) fields.get("rolesAndResponsibilities");
+        p4.setHeightAndWidth("100%", "100%");
     }
 
     @Override
@@ -133,7 +131,6 @@ public class ReadJoiningFormPanel extends ReadComposite implements ClickHandler 
         addEnumField("maritalStatus", true, true, MaritalStatus.names(), Alignment.HORIZONTAL);
         addEnumField("ethnicity", true, true, Ethnicity.names(), Alignment.HORIZONTAL);
         addField("rolesAndResponsibilities", true, true, DataType.RICH_TEXT_AREA, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(rolesIcn);
         renderPrintRolesLink();
         entityFieldsPanel.add(getLineSeperatorTag("Dependent's Information"));
         entityFieldsPanel.add(emptyLine);
@@ -167,9 +164,6 @@ public class ReadJoiningFormPanel extends ReadComposite implements ClickHandler 
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getSource().equals(rolesIcn)) {
-            new GenericPopup(new CreateRolesAndResponsibilitiesPanel(entity)).show();
-        }
         if (event.getSource().equals(printIcn)) {
             if (empId != null) {
                 Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + "employee-forms/roles-responsibilities" + "&passthrough=true" + "&id=" + empId, "_blank", "");
