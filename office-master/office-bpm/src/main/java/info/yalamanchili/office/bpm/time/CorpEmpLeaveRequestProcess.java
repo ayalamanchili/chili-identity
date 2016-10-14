@@ -21,6 +21,9 @@ import info.yalamanchili.office.dao.time.CorporateTimeSheetDao;
 import info.chili.email.Email;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.message.NotificationGroupDao;
+import info.yalamanchili.office.entity.message.NotificationGroup;
+import info.yalamanchili.office.entity.profile.Branch;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.time.CorporateTimeSheet;
 import info.yalamanchili.office.entity.time.TimeSheetCategory;
@@ -28,7 +31,9 @@ import info.yalamanchili.office.entity.time.TimeSheetStatus;
 import info.yalamanchili.office.jms.MessagingService;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.JavaDelegate;
@@ -61,6 +66,13 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
      *
      * @param task
      */
+    public static final String TAMPA_LEAVE_NOTIFICATION_GROUP = "Tampa_Leava_Notification_Group";
+    public static final String ATLANTA_LEAVE_NOTIFICATION_GROUP = "Atlanta_Leava_Notification_Group";
+    public static final String HERNDON_LEAVE_NOTIFICATION_GROUP = "Herndon_Leava_Notification_Group";
+    public static final String DALLAS_LEAVE_NOTIFICATION_GROUP = "Dallas_Leava_Notification_Group";
+    public static final String HYDERABAD_LEAVE_NOTIFICATION_GROUP = "Hyderabad_Leava_Notification_Group";
+    public static final String FLORIDA_LEAVE_NOTIFICATION_GROUP = "Florida_Leava_Notification_Group";
+
     protected void leaveRequestTaskCreated(DelegateTask task) {
         saveLeaveRequest(task);
         if (task.getTaskDefinitionKey().equals("leaveRequestApprovalTask")) {
@@ -243,6 +255,75 @@ public class CorpEmpLeaveRequestProcess extends RuleBasedTaskDelegateListner imp
             }
         }
         Employee emp = (Employee) task.getExecution().getVariable("currentEmployee");
+        if (emp.getBranch() != null) {
+            if (Branch.Tampa.name().equals(emp.getBranch().name().trim())) {
+                NotificationGroup group = NotificationGroupDao.instance().findByName(TAMPA_LEAVE_NOTIFICATION_GROUP);
+                Set<String> emailto1 = new HashSet<String>();
+                if (group != null) {
+                    for (Employee empname : group.getEmployees()) {
+                        if (empname.isActive() == true) {
+                            emailto1.add(empname.getPrimaryEmail().getEmail());
+                        }
+                        email.setTos(emailto1);
+                    }
+                }
+            } else if (Branch.Atlanta.name().equals(emp.getBranch().name().trim())) {
+                NotificationGroup group = NotificationGroupDao.instance().findByName(ATLANTA_LEAVE_NOTIFICATION_GROUP);
+                Set<String> emailto1 = new HashSet<String>();
+                if (group != null) {
+                    for (Employee empname : group.getEmployees()) {
+                        if (empname.isActive() == true) {
+                            emailto1.add(empname.getPrimaryEmail().getEmail());
+                        }
+                        email.setTos(emailto1);
+                    }
+                }
+            } else if (Branch.Florida.name().equals(emp.getBranch().name().trim())) {
+                NotificationGroup group = NotificationGroupDao.instance().findByName(FLORIDA_LEAVE_NOTIFICATION_GROUP);
+                Set<String> emailto1 = new HashSet<String>();
+                if (group != null) {
+                    for (Employee empname : group.getEmployees()) {
+                        if (empname.isActive() == true) {
+                            emailto1.add(empname.getPrimaryEmail().getEmail());
+                        }
+                        email.setTos(emailto1);
+                    }
+                }
+            } else if (Branch.Herndon.name().equals(emp.getBranch().name().trim())) {
+                NotificationGroup group = NotificationGroupDao.instance().findByName(HERNDON_LEAVE_NOTIFICATION_GROUP);
+                Set<String> emailto1 = new HashSet<String>();
+                if (group != null) {
+                    for (Employee empname : group.getEmployees()) {
+                        if (empname.isActive() == true) {
+                            emailto1.add(empname.getPrimaryEmail().getEmail());
+                        }
+                        email.setTos(emailto1);
+                    }
+                }
+            } else if (Branch.Dallas.name().equals(emp.getBranch().name().trim())) {
+                NotificationGroup group = NotificationGroupDao.instance().findByName(DALLAS_LEAVE_NOTIFICATION_GROUP);
+                Set<String> emailto1 = new HashSet<String>();
+                if (group != null) {
+                    for (Employee empname : group.getEmployees()) {
+                        if (empname.isActive() == true) {
+                            emailto1.add(empname.getPrimaryEmail().getEmail());
+                        }
+                        email.setTos(emailto1);
+                    }
+                }
+            } else if (Branch.Hyderabad.name().equals(emp.getBranch().name().trim())) {
+                NotificationGroup group = NotificationGroupDao.instance().findByName(HYDERABAD_LEAVE_NOTIFICATION_GROUP);
+                Set<String> emailto1 = new HashSet<String>();
+                if (group != null) {
+                    for (Employee empname : group.getEmployees()) {
+                        if (empname.isActive() == true) {
+                            emailto1.add(empname.getPrimaryEmail().getEmail());
+                        }
+                        email.setTos(emailto1);
+                    }
+                }
+            }
+        }
         CorporateTimeSheet ts = getTimeSheetFromTask(task);
         email.setSubject("Leave Request " + status + " For: " + emp.getFirstName() + " " + emp.getLastName());
         String summary = "<b>Leave Request " + status + " For Employee</b></br></br>" + "&nbsp;&nbsp;<b><i>Employee Name</i></b>&nbsp;:&nbsp;" + emp.getFirstName() + " " + emp.getLastName() + "</br>" + "&nbsp;&nbsp;<b><i>Start Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i></b>:&nbsp;" + sdf.format(ts.getStartDate()) + "</br>" + "&nbsp;&nbsp;<b><i>End Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i></b>:&nbsp;" + sdf.format(ts.getEndDate());
