@@ -54,7 +54,7 @@
                 Submited Date : #{leaveRequest.createdTimeStamp}
                 Submited By   : #{submittedBy}
                 PTO Available when request submitted : #{summary.availablePTOHours}
-                Hours         : #{leaveRequest.hours}
+                Notes         : #{leaveRequest.notes}
                 Follow instructions from below:
                 https://apps.sstech.us/site/office/timesheets/employee-leave-request.html                
             </documentation>
