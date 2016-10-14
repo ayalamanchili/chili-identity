@@ -7,8 +7,11 @@
  */
 package info.yalamanchili.office.dto.time;
 
+import info.yalamanchili.office.entity.profile.WorkStatus;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -39,6 +42,8 @@ public class ConsultantTimeSummary implements Serializable {
     protected String usedUnpaidHours;
     protected String employee;
     protected String startDate;
+    @Enumerated(EnumType.STRING)
+    protected WorkStatus workStatus;
 
     public ConsultantTimeSummary() {
     }
@@ -118,4 +123,13 @@ public class ConsultantTimeSummary implements Serializable {
     public void setTotalAvailableHours(String totalAvailableHours) {
         this.totalAvailableHours = totalAvailableHours;
     }
+
+    public WorkStatus getWorkStatus() {
+        return workStatus;
+    }
+
+    public void setWorkStatus(WorkStatus workStatus) {
+        this.workStatus = workStatus;
+    }
+    
 }
