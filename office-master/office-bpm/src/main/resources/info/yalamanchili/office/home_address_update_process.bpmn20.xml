@@ -39,6 +39,7 @@
                 1) Please update in other systems as applicable. Eg: ADP, BIS, SMS, CITS etc...
                 2) Please click complete on this task when other systems are updated.
                 
+                Company                             : ${company}
                 Address Change Notes From Employee  : ${entity.changeNotes} 
                 Street1                             : ${entity.street1}
                 Street2                             : ${entity.street2}
@@ -93,6 +94,7 @@
                 Employee Primary Residential Address is updated in portal.
                 1) Please update Health Insurance systems as applicable. 
                 
+                Company                             : ${company}
                 Address Change Notes From Employee  : ${entity.changeNotes} 
                 Street1                             : ${entity.street1}
                 Street2                             : ${entity.street2}
@@ -146,6 +148,7 @@
                 All departments have update the necessary information.
                 Please review and complete.
                 
+                Company                             : ${company}
                 Address Change Notes From Employee  : ${entity.changeNotes} 
                 Street1                             : ${entity.street1}
                 Street2                             : ${entity.street2}
