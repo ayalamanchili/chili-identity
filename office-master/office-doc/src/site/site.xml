@@ -64,6 +64,9 @@
                 <item name="Onboarding Reports" href="/office/onboarding/onboarding-reports.html"/>
                 <item name="Verify Employee Forms And Data" href="/office/onboarding/forms-docs-verification.html"/>
                 <item name="How To Fill Onboarding Form" href="/office/onboarding/submit-onboarding-details.html"/>
+                <item name="ACH Form" href="/office/onboarding/ach-form.html"/>
+                <item name="Joining Form" href="/office/onboarding/joining-form.html"/>
+                <item name="How to Update Roles and Resposibilities" href="/office/onboarding/roles-and-responsibilities.html"/>
             </item>
             <item name="Profile" href="office/profile/profile.html" collapse="true">
                 <item name="Change Password" href="office/profile/change_password.html"/>
