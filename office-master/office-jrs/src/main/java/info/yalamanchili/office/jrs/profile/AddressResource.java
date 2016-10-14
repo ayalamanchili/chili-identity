@@ -144,6 +144,7 @@ public class AddressResource extends CRUDResource<Address> {
             vars.put("entity", entity);
             vars.put("entityId", entity.getId());
             vars.put("employeeName", emp.getFirstName() + " " + emp.getLastName());
+            vars.put("company",emp.getCompany());
             vars.put("notifyHealthInsurance", notifyHealthInsurance);
             vars.put("allTasksCompleted", false);
             OfficeBPMService.instance().startProcess("home_address_update_process", vars);
