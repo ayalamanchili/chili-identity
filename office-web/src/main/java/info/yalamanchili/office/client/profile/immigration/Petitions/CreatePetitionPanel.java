@@ -6,8 +6,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.profile.immigration;
+package info.yalamanchili.office.client.profile.immigration.Petitions;
 
+import info.yalamanchili.office.client.profile.immigration.Passport.SelectPassportWidget;
+import info.yalamanchili.office.client.profile.immigration.LCA.SelectLCAWidget;
 import com.google.common.base.Strings;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.BlurEvent;
@@ -20,7 +22,7 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -32,6 +34,10 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.hr.PetitionFor;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
+import info.yalamanchili.office.client.profile.immigration.Polar;
+import info.yalamanchili.office.client.profile.immigration.VisaClassificationType;
+import info.yalamanchili.office.client.profile.immigration.VisaProcessingType;
+import info.yalamanchili.office.client.profile.immigration.VisaStatus;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -39,58 +45,55 @@ import java.util.logging.Logger;
  *
  * @author Madhu.Badiginchala
  */
-public class UpdatePetitionPanel extends UpdateComposite implements ClickHandler, BlurHandler {
+public class CreatePetitionPanel extends CreateComposite implements ClickHandler, BlurHandler {
 
-    private static Logger logger = Logger.getLogger(UpdatePetitionPanel.class.getName());
+    private static Logger logger = Logger.getLogger(CreatePetitionPanel.class.getName());
+
     HTML additionalInfo = new HTML("<h4 style=\"color:#427fed\">" + "Additional Information</h4>");
     HTML linkInfo = new HTML("<h4 style=\"color:#427fed\">" + "Link Information</h4>");
     HTML prevInfo = new HTML("<h4 style=\"color:#427fed\">" + "Previous Status Information</h4>");
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "consultant", "Consultant", false, true, Alignment.HORIZONTAL);
     SelectLCAWidget selectLCAWidgetF = new SelectLCAWidget(false, true, Alignment.HORIZONTAL);
     SelectPassportWidget selectPassportWidgetF = new SelectPassportWidget(false, true, Alignment.HORIZONTAL);
-    JSONObject petitionEmployee;
-    protected boolean empChange = false;
 
-    public UpdatePetitionPanel(JSONObject entity) {
-        initUpdateComposite(entity, "Petition", OfficeWelcome.constants);
+    public CreatePetitionPanel(CreateComposite.CreateCompositeType type) {
+        super(type);
+        initCreateComposite("Petition", OfficeWelcome.constants);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        if (employeeSB.getSelectedObject() != null) {
-            empChange = true;
-        }
+        JSONObject petition = new JSONObject();
         JSONObject petitionaddinfo = new JSONObject();
-        assignEntityValueFromField("receiptNumber", entity);
-        assignEntityValueFromField("attorneyName", entity);
-        assignEntityValueFromField("visaClassification", entity);
-        assignEntityValueFromField("visaProcessing", entity);
-        assignEntityValueFromField("petitionFileDate", entity);
-        assignEntityValueFromField("i140ApprovalStatus", entity);
-        assignEntityValueFromField("previousVisaStatus", entity);
-        assignEntityValueFromField("previousStatusExpiry", entity);
-        assignEntityValueFromField("petitionStatus", entity);
-        assignEntityValueFromField("lca", entity);
-        assignEntityValueFromField("passport", entity);
-        assignEntityValueFromField("petitionApprovalDate", entity);
-        assignEntityValueFromField("petitionValidFromDate", entity);
-        assignEntityValueFromField("petitionValidToDate", entity);
-        assignEntityValueFromField("workedByEmployees", entity);
+        assignEntityValueFromField("receiptNumber", petition);
+        assignEntityValueFromField("attorneyName", petition);
+        assignEntityValueFromField("visaClassification", petition);
+        assignEntityValueFromField("visaProcessing", petition);
+        assignEntityValueFromField("petitionFileDate", petition);
+        assignEntityValueFromField("i140ApprovalStatus", petition);
+        assignEntityValueFromField("previousVisaStatus", petition);
+        assignEntityValueFromField("previousStatusExpiry", petition);
+        assignEntityValueFromField("lca", petition);
+        assignEntityValueFromField("passport", petition);
+        assignEntityValueFromField("petitionApprovalDate", petition);
+        assignEntityValueFromField("petitionValidFromDate", petition);
+        assignEntityValueFromField("petitionValidToDate", petition);
         assignEntityValueFromField("h4Applicability", petitionaddinfo);
         assignEntityValueFromField("project", petitionaddinfo);
         assignEntityValueFromField("sisterCompanyLetterUsed", petitionaddinfo);
         assignEntityValueFromField("petitionTrackingNumber", petitionaddinfo);
         assignEntityValueFromField("petitionFolderMailedDate", petitionaddinfo);
         assignEntityValueFromField("petitionFolderMailTrkNbr", petitionaddinfo);
-        entity.put("petitionaddinfo", petitionaddinfo);
-        logger.info("entity is :::" + entity);
-        return entity;
+        petition.put("petitionaddinfo", petitionaddinfo);
+        petition.put("workedByEmployees", selectRecruiterW.getSelectedObjects());
+        logger.info("entity here: " + petition);
+        return petition;
     }
 
     @Override
-    protected void updateButtonClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
-                OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
+    protected void createButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
             @Override
             public void onFailure(Throwable arg0) {
                 handleErrorResponse(arg0);
@@ -98,44 +101,30 @@ public class UpdatePetitionPanel extends UpdateComposite implements ClickHandler
 
             @Override
             public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
+                postCreateSuccess(arg0);
             }
         });
     }
 
     @Override
-    public void populateFieldsFromEntity(JSONObject entity) {
-        if (entity.get("petitionEmployee") != null) {
-            petitionEmployee = (JSONObject) entity.get("petitionEmployee");
-            employeeSB.setValue(petitionEmployee.get("firstName").isString().stringValue());
-        }
-        assignFieldValueFromEntity("receiptNumber", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("visaClassification", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("visaProcessing", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("petitionFileDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("lca", entity, null);
-        assignFieldValueFromEntity("passport", entity, null);
-        assignFieldValueFromEntity("workedByEmployees", entity, null);
-        assignFieldValueFromEntity("previousVisaStatus", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("previousStatusExpiry", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("petitionStatus", entity, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("petitionApprovalDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("petitionValidFromDate", entity, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("petitionValidToDate", entity, DataType.DATE_FIELD);
-        if (entity.containsKey("petitionaddinfo")) {
-            JSONObject petitionaddinfo = entity.get("petitionaddinfo").isObject();
-            assignFieldValueFromEntity("h4Applicability", petitionaddinfo, DataType.ENUM_FIELD);
-            assignFieldValueFromEntity("project", petitionaddinfo, DataType.ENUM_FIELD);
-            assignFieldValueFromEntity("sisterCompanyLetterUsed", petitionaddinfo, DataType.ENUM_FIELD);
-            assignFieldValueFromEntity("petitionTrackingNumber", petitionaddinfo, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("petitionFolderMailedDate", petitionaddinfo, DataType.DATE_FIELD);
-            assignFieldValueFromEntity("petitionFolderMailTrkNbr", petitionaddinfo, DataType.STRING_FIELD);
-        }
+    protected void addButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                new AsyncCallback<String>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
+
+            @Override
+            public void onSuccess(String arg0) {
+                postCreateSuccess(arg0);
+            }
+        });
     }
 
     @Override
-    protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Updated Petition");
+    protected void postCreateSuccess(String result) {
+        new ResponseStatusWidget().show("Successfully Added Petition");
         TabPanel.instance().immigrationPanel.entityPanel.clear();
         TabPanel.instance().immigrationPanel.entityPanel.add(new ReadAllPetitionsPanel());
     }
@@ -147,7 +136,7 @@ public class UpdatePetitionPanel extends UpdateComposite implements ClickHandler
 
     @Override
     protected void configure() {
-        employeeSB.getLabel().getElement().getStyle().setWidth(145, Style.Unit.PX);
+        employeeSB.getLabel().getElement().getStyle().setWidth(253, Style.Unit.PX);
         HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
@@ -178,9 +167,6 @@ public class UpdatePetitionPanel extends UpdateComposite implements ClickHandler
         addField("attorneyName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("visaClassification", false, true, VisaClassificationType.names(), Alignment.HORIZONTAL);
         addEnumField("visaProcessing", false, true, VisaProcessingType.names(), Alignment.HORIZONTAL);
-        addField("petitionFileDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addEnumField("petitionStatus", true, false, PetitionStatus.names(), Alignment.HORIZONTAL);
-        addField("petitionApprovalDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("petitionValidFromDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("petitionValidToDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("i140ApprovalStatus", false, false, Polar.names(), Alignment.HORIZONTAL);
@@ -195,9 +181,11 @@ public class UpdatePetitionPanel extends UpdateComposite implements ClickHandler
         addEnumField("h4Applicability", false, false, Polar.names(), Alignment.HORIZONTAL);
         addEnumField("project", false, false, PetitionFor.names(), Alignment.HORIZONTAL);
         addEnumField("sisterCompanyLetterUsed", false, false, Polar.names(), Alignment.HORIZONTAL);
+        addField("petitionFileDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("petitionTrackingNumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("petitionFolderMailedDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("petitionFolderMailTrkNbr", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("petitionApprovalDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
@@ -208,20 +196,16 @@ public class UpdatePetitionPanel extends UpdateComposite implements ClickHandler
 
     @Override
     protected String getURI() {
-        if (empChange) {
-            return OfficeWelcome.constants.root_url() + "petition/update/" + JSONUtils.toString(employeeSB.getSelectedObject(), "id");
-        } else {
-            return OfficeWelcome.constants.root_url() + "petition/update/" + JSONUtils.toString(petitionEmployee, "id");
-        }
+        return OfficeWelcome.constants.root_url() + "petition/save/" + JSONUtils.toString(employeeSB.getSelectedObject(), "id");
     }
 
     @Override
     public void onBlur(BlurEvent event) {
         if (event.getSource().equals(employeeSB.getSuggestBox().getValueBox())) {
             if (employeeSB.getSelectedObject() != null) {
-                selectLCAWidgetF.getListBox().setSelectedIndex(0);
                 populateLCA();
                 populatePassport();
+
             }
         }
     }
@@ -241,7 +225,6 @@ public class UpdatePetitionPanel extends UpdateComposite implements ClickHandler
                     }
                 }
             }
-
         }
         );
     }
@@ -265,7 +248,6 @@ public class UpdatePetitionPanel extends UpdateComposite implements ClickHandler
                     }
                 }
             }
-
         }
         );
     }
@@ -277,7 +259,7 @@ public class UpdatePetitionPanel extends UpdateComposite implements ClickHandler
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         boolean valid = true;
-        if (employeeSB.getValue().isEmpty()) {
+        if (employeeSB.getSelectedObject() == null) {
             employeeSB.setMessage("Please choose an Employee");
             valid = false;
         }
@@ -291,4 +273,5 @@ public class UpdatePetitionPanel extends UpdateComposite implements ClickHandler
         }
         return valid;
     }
+
 }

@@ -6,20 +6,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.profile.immigration;
+package info.yalamanchili.office.client.profile.immigration.LCA;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.TextArea;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -27,6 +38,11 @@ import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.profile.address.CreateAddressWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
+import info.yalamanchili.office.client.profile.immigration.Passport.CreatePassportPanel;
+import info.yalamanchili.office.client.profile.immigration.Polar;
+import info.yalamanchili.office.client.profile.immigration.SOCCodesAndOccupations;
+import info.yalamanchili.office.client.profile.immigration.VisaClassificationType;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -37,11 +53,15 @@ public class CreateLCAPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreatePassportPanel.class.getName());
 
+    Button addLca = new Button("Add Employee");
+    Button removeLca = new Button("Remove Employee");
+    TextArea lcaTa = new TextArea();
+    FlowPanel lcapanel = new FlowPanel();
     protected BooleanField addAddress = new BooleanField(OfficeWelcome.constants, "Add LCA Secondary Address", "LCA", false, false, Alignment.HORIZONTAL);
     CreateAddressWidget createAddressWidget1 = new CreateAddressWidget(CreateAddressPanel.CreateAddressPanelType.MIN);
     CreateAddressWidget createAddressWidget2 = new CreateAddressWidget(CreateAddressPanel.CreateAddressPanelType.MIN);
     protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, false, Alignment.HORIZONTAL);
-    protected MultiSelectConsultantWidget employeeSelectWidget = new MultiSelectConsultantWidget("Employees", null, false, false);
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employees", "Employee", false, true, Alignment.VERTICAL);
     HTML wagesInfo = new HTML("<h4 style=\"color:#427fed\">" + "Wages Information</h4>");
     HTML empInfo = new HTML("<h4 style=\"color:#427fed\">" + "Select Consultants</h4>");
     HTML addInfo = new HTML("<h4 style=\"color:#427fed\">" + "Additional Information</h4>");
@@ -57,18 +77,17 @@ public class CreateLCAPanel extends CreateComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject lca = new JSONObject();
-        JSONObject lcaAddress1 = new JSONObject();
-        JSONObject lcaAddress2 = new JSONObject();
+        String[] split = lcaTa.getValue().split(",");
         JSONArray employees = new JSONArray();
-        int i = 0;
-        logger.info("size : " + employeeSelectWidget.getMultiSelectBox().getAllSelectedIds().size() );
-        for (String empId : employeeSelectWidget.getMultiSelectBox().getAllSelectedIds()) {
-            JSONObject emp = new JSONObject();
-            emp.put("id", new JSONString(empId));
-            employees.set(i, emp);
-            i++;
+        for (int j = 0; j < split.length; j++) {
+            String name = split[j];
+            logger.info(" JSONArray employees  " + name);
+            if (employeeSB.getValue().equals(name)) {
+                employees.set(j, employeeSB.getSelectedObject());
+            } else {
+                employees.set(j, new JSONString(split[j]));
+            }
         }
-        lca.put("employees", employees);
         lca.put("workedByEmployees", selectRecruiterW.getSelectedObjects());
         assignEntityValueFromField("lcaNumber", lca);
         assignEntityValueFromField("lcaFiledDate", lca);
@@ -104,7 +123,7 @@ public class CreateLCAPanel extends CreateComposite {
         assignEntityValueFromField("certifiedLcaSentConsultant", lca);
         assignEntityValueFromField("lcaPostingSSTLocation", lca);
         assignEntityValueFromField("lcaFiledInPIF", lca);
-        logger.info("entity: " + lca);
+        logger.info("entity : " + lca);
         return lca;
     }
 
@@ -112,32 +131,32 @@ public class CreateLCAPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
     protected void addButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -150,13 +169,60 @@ public class CreateLCAPanel extends CreateComposite {
     @Override
     protected void addListeners() {
         addAddress.getBox().addClickHandler(this);
+        addLca.addClickHandler(this);
+        removeLca.addClickHandler(this);
+        employeeSB.getSuggestBox().addKeyPressHandler(new KeyPressHandler() {
+            @Override
+            public void onKeyPress(KeyPressEvent event) {
+                if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+                    addLcaClicked();
+                }
+            }
+        });
+    }
+
+    protected void addLcaClicked() {
+        if (employeeSB.getValue() == null && employeeSB.getValue().isEmpty()) {
+            return;
+        }
+        String concat = lcaTa.getValue().concat(employeeSB.getValue() + " , ");
+        lcaTa.setValue(concat);
+        employeeSB.clearText();
+    }
+
+    protected void removeLcaClicked() {
+        if (employeeSB.getValue() == null && employeeSB.getValue().isEmpty()) {
+            return;
+        }
+        String concat = lcaTa.getValue();
+        String replaceAll = concat.replaceAll(employeeSB.getValue() + " , ", " ");
+        lcaTa.setValue(replaceAll);
+        employeeSB.clearText();
     }
 
     @Override
     protected void configure() {
-
+        lcaTa.setEnabled(false);
+        lcaTa.setVisibleLines(3);
+        lcaTa.setWidth("100%");
+        employeeSB.getLabel().getElement().getStyle().setWidth(145, Style.Unit.PX);
+        employeeSB.getLabel().getElement().getStyle().setWidth(145, Style.Unit.PX);
+        setButtonText("Submit");
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String entityString) {
+                logger.info(entityString);
+                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                if (values != null) {
+                    employeeSB.loadData(values);
+                }
+            }
+        });
     }
 
+    private String getEmployeeIdsDropDownUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000");
+    }
     SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("WorkedBy", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL) {
         @Override
         public boolean enableMultiSelect() {
@@ -176,7 +242,11 @@ public class CreateLCAPanel extends CreateComposite {
         addField("lcaValidToDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addDropDown("workedByEmployees", selectRecruiterW);
         entityFieldsPanel.add(empInfo);
-        entityFieldsPanel.add(employeeSelectWidget);
+        entityFieldsPanel.add(employeeSB);
+        lcapanel.add(addLca);
+        lcapanel.add(removeLca);
+        entityFieldsPanel.add(lcapanel);
+        entityFieldsPanel.add(lcaTa);
         entityFieldsPanel.add(wagesInfo);
         addEnumField("lcaCurrWageLvl", false, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
         addField("lcaCurrMinWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -212,6 +282,12 @@ public class CreateLCAPanel extends CreateComposite {
 
     @Override
     public void onClick(ClickEvent event) {
+        if (event.getSource().equals(removeLca)) {
+            removeLcaClicked();
+        }
+        if (event.getSource().equals(addLca)) {
+            addLcaClicked();
+        }
         if (addAddress.getValue()) {
             entityFieldsPanel.add(lcaAddress2);
             entityFieldsPanel.add(createAddressWidget2);
@@ -223,5 +299,4 @@ public class CreateLCAPanel extends CreateComposite {
         }
         super.onClick(event);
     }
-    
 }

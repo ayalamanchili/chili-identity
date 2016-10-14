@@ -6,8 +6,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.profile.immigration;
+package info.yalamanchili.office.client.profile.immigration.Petitions;
 
+import info.yalamanchili.office.client.profile.immigration.Passport.SelectPassportWidget;
+import info.yalamanchili.office.client.profile.immigration.LCA.SelectLCAWidget;
+import info.yalamanchili.office.client.profile.immigration.LCA.ReadLCAAddressWidget;
+import info.yalamanchili.office.client.profile.immigration.LCA.LCAWageLevels;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.HTML;
@@ -23,6 +27,11 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.admin.hr.PetitionFor;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
+import info.yalamanchili.office.client.profile.immigration.PetitionStatus;
+import info.yalamanchili.office.client.profile.immigration.Polar;
+import info.yalamanchili.office.client.profile.immigration.VisaClassificationType;
+import info.yalamanchili.office.client.profile.immigration.VisaProcessingType;
+import info.yalamanchili.office.client.profile.immigration.VisaStatus;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -175,7 +184,7 @@ public class ReadPetitionPanel extends TReadComposite {
     public void loadEntity(String entityId) {
 
     }
-    
+
     public void populatePrevLCAWages() {
         HttpService.HttpServiceAsync.instance().doGet(getPrevLCAWages(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
@@ -189,18 +198,18 @@ public class ReadPetitionPanel extends TReadComposite {
                 }
         );
     }
-    
-     private String getPrevLCAWages() {
+
+    private String getPrevLCAWages() {
         return OfficeWelcome.constants.root_url() + "lca/prevLCAWages/" + JSONUtils.toString(petitionEmployee, "id");
     }
 
-     @Override
-   protected boolean enableBack() {
-       return true;
-   }
-    
     @Override
-     protected ReadAllComposite getReadAllPanel() {
+    protected boolean enableBack() {
+        return true;
+    }
+
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
         return ReadAllPetitionsPanel.instance;
-    } 
+    }
 }

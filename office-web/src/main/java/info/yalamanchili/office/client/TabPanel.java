@@ -39,7 +39,11 @@ import info.yalamanchili.office.client.i18n.ReadAllci18nResourceBundlesPanel;
 import info.yalamanchili.office.client.profile.ProfileHomeStackPanel;
 import info.yalamanchili.office.client.profile.employee.ReadEmployeePopupPanel;
 import info.yalamanchili.office.client.profile.immigration.ImmigrationMenu;
-import info.yalamanchili.office.client.profile.immigration.ReadAllLCAPanel;
+import info.yalamanchili.office.client.profile.immigration.LCA.LcaMenu;
+import info.yalamanchili.office.client.profile.immigration.LCA.LcaSidePanel;
+import info.yalamanchili.office.client.profile.immigration.LCA.ReadAllLCAPanel;
+import info.yalamanchili.office.client.profile.immigration.LCA.SearchLcaPanel;
+import info.yalamanchili.office.client.profile.immigration.Petitions.ReadAllPetitionsPanel;
 import info.yalamanchili.office.client.profile.reports.ProfileReportsSidePanel;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
 import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
@@ -286,8 +290,15 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         tabPanel.selectTab(immigrationPanel);
         clearEntityPanel(immigrationPanel);
         immigrationPanel.entityTitlePanel.add(new ImmigrationMenu());
-        TabPanel.instance().getImmigrationPanel().entityPanel.add(new ReadAllLCAPanel());
-        //      TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new AdvanceRequisitionSidePanel());
+        TabPanel.instance().getImmigrationPanel().entityPanel.clear();
+        TabPanel.instance().getImmigrationPanel().sidePanelTop.clear();
+        TabPanel.instance().getImmigrationPanel().entityPanel.add(new LcaMenu());
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
+            TabPanel.instance().getImmigrationPanel().entityPanel.add(new ReadAllLCAPanel());
+            TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new LcaSidePanel());
+        } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION, Auth.ROLE.ROLE_RECRUITER)) {
+            TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new SearchLcaPanel());
+        }
     }
 
     public void selectDriveTab() {

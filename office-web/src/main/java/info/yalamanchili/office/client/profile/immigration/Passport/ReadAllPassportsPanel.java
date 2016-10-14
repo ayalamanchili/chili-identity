@@ -6,13 +6,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.profile.immigration;
+package info.yalamanchili.office.client.profile.immigration.Passport;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
+import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
@@ -29,32 +30,32 @@ import java.util.logging.Logger;
  *
  * @author Madhu.Badiginchala
  */
-public class ReadAllEmployeePetitionsPanel extends CRUDReadAllComposite {
+public class ReadAllPassportsPanel extends CRUDReadAllComposite {
 
-    private static Logger logger = Logger.getLogger(ReadAllEmployeePetitionsPanel.class.getName());
-    public static ReadAllEmployeePetitionsPanel instance;
+    private static Logger logger = Logger.getLogger(ReadAllPassportsPanel.class.getName());
+    public static ReadAllPassportsPanel instance;
     protected String url;
 
-    public ReadAllEmployeePetitionsPanel() {
+    public ReadAllPassportsPanel() {
         instance = this;
-        initTable("Petition", OfficeWelcome.constants);
+        initTable("Passport", OfficeWelcome.constants);
     }
 
-    public ReadAllEmployeePetitionsPanel(JSONArray array) {
+    public ReadAllPassportsPanel(JSONArray array) {
         instance = this;
-        initTable("Petition", array, OfficeWelcome.constants);
+        initTable("Passport", array, OfficeWelcome.constants);
     }
 
-    public ReadAllEmployeePetitionsPanel(String parentId) {
+    public ReadAllPassportsPanel(String parentId) {
         instance = this;
         this.parentId = parentId;
-        initTable("Petition", OfficeWelcome.constants);
+        initTable("Passport", OfficeWelcome.constants);
     }
 
     @Override
     public void preFetchTable(int start) {
-        logger.info(getReadAllPetitionsURL(start, OfficeWelcome.constants.tableSize()));
-        HttpService.HttpServiceAsync.instance().doGet(getReadAllPetitionsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), false,
+        logger.info(getReadAllPassportsURL(start, OfficeWelcome.constants.tableSize()));
+        HttpService.HttpServiceAsync.instance().doGet(getReadAllPassportsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), false,
                 new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String result) {
@@ -64,21 +65,20 @@ public class ReadAllEmployeePetitionsPanel extends CRUDReadAllComposite {
         });
     }
 
-    private String getReadAllPetitionsURL(Integer start, String tableSize) {
+    private String getReadAllPassportsURL(Integer start, String tableSize) {
         if (url != null) {
             return url;
         }
-        return OfficeWelcome.constants.root_url() + "petition/" + parentId + "/" + start.toString() + "/" + tableSize.toString();
+        return OfficeWelcome.constants.root_url() + "passport/" + parentId + "/" + start.toString() + "/" + tableSize.toString();
     }
 
     @Override
     public void createTableHeader() {
-        table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Petition Number"));
-        table.setText(0, 2, getKeyValue("Classification"));
-        table.setText(0, 3, getKeyValue("Processing"));
-        table.setText(0, 4, getKeyValue("Filed Date"));
-        table.setText(0, 5, getKeyValue("Status"));
+        table.setText(0, 0, getKeyValue("Table Action"));
+        table.setText(0, 1, getKeyValue("Passport Number"));
+        table.setText(0, 2, getKeyValue("Issued Date"));
+        table.setText(0, 3, getKeyValue("Expiry Date"));
+        table.setText(0, 4, getKeyValue("Issuance Country"));
     }
 
     @Override
@@ -86,19 +86,17 @@ public class ReadAllEmployeePetitionsPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
-            table.setText(i, 1, JSONUtils.toString(entity, "receiptNumber"));
-            setEnumColumn(i, 2, entity, VisaClassificationType.class.getSimpleName(), "visaClassification");
-            setEnumColumn(i, 3, entity, VisaProcessingType.class.getSimpleName(), "visaProcessing");
-            table.setText(i, 4, DateUtils.getFormatedDate(JSONUtils.toString(entity, "petitionFileDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
-            setEnumColumn(i, 5, entity, PetitionStatus.class.getSimpleName(), "petitionStatus");
-
+            table.setText(i, 1, JSONUtils.toString(entity, "passportNumber"));
+            table.setText(i, 2, DateUtils.getFormatedDate(JSONUtils.toString(entity, "passportIssuedDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 3, DateUtils.getFormatedDate(JSONUtils.toString(entity, "passportExpiryDate"), DateTimeFormat.PredefinedFormat.DATE_MEDIUM));
+            table.setText(i, 4, JSONUtils.toString(entity, "passportCountryOfIssuance"));
         }
     }
 
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadPetitionPanel(getEntity(entityId)));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadPassportPanel(getEntity(entityId)));
     }
 
     @Override
@@ -113,34 +111,32 @@ public class ReadAllEmployeePetitionsPanel extends CRUDReadAllComposite {
     }
 
     private String getDeleteURL(String entityId) {
-        return OfficeWelcome.instance().constants.root_url() + "petition/delete/" + entityId;
+        return OfficeWelcome.instance().constants.root_url() + "passport/delete/" + entityId;
     }
 
     @Override
     public void postDeleteSuccess() {
-        new ResponseStatusWidget().show("Successfully Deleted Petition Information");
+        new ResponseStatusWidget().show("Successfully Deleted Passport Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllEmployeePetitionsPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPassportsPanel(TreeEmployeePanel.instance().getEntityId()));
     }
 
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateLCAPanel(getEntity(entityId)));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdatePassportPanel(getEntity(entityId)));
     }
 
     @Override
     protected void configureCreateButton() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
-            createButton.setText("Add Petition");
-            createButton.setVisible(true);
-        }
+        createButton.setText("Add Passport");
+        createButton.setVisible(true);
     }
 
     @Override
     protected void createButtonClicked() {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-//        TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePetitionPanel(CreateComposite.CreateCompositeType.CREATE));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new CreatePassportPanel(CreateComposite.CreateCompositeType.CREATE));
     }
 
     @Override
@@ -148,9 +144,9 @@ public class ReadAllEmployeePetitionsPanel extends CRUDReadAllComposite {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE);
         } else {
-            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ);
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
         }
-
+        
     }
 
     @Override
@@ -161,7 +157,7 @@ public class ReadAllEmployeePetitionsPanel extends CRUDReadAllComposite {
     @Override
     protected void onQuickView(int row, String id) {
         if (!id.isEmpty()) {
-            new GenericPopup(new ReadPetitionPanel(getEntity(id))).show();
+            new GenericPopup(new ReadPassportPanel(getEntity(id))).show();
         }
     }
 

@@ -11,7 +11,7 @@ package info.yalamanchili.office.client.profile.employee;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
-import info.yalamanchili.office.client.profile.immigration.ReadAllPassportsPanel;
+import info.yalamanchili.office.client.profile.immigration.Passport.ReadAllPassportsPanel;
 import info.yalamanchili.office.client.profile.immigration.i94Record.ReadAllI94RecordPanel;
 import info.yalamanchili.office.client.profile.immigration.travelhistroy.ReadAllTravelHistoryRecordPanel;
 import info.yalamanchili.office.client.profile.immigration.educationrecord.ReadAllEducationRecordPanel;

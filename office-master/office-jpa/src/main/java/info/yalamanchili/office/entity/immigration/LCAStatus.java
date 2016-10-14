@@ -13,10 +13,10 @@ package info.yalamanchili.office.entity.immigration;
  * @author Madhu.Badiginchala
  */
 public enum LCAStatus {
-    
+
     Pending,
-    Approved_Open,
-    Approved_Closed,
+    Certified,
+    Certified_Spare,
     Withdrawn;
-    
+
 }

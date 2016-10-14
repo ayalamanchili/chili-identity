@@ -6,7 +6,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.profile.immigration;
+package info.yalamanchili.office.client.profile.immigration.LCA;
 
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.SelectComposite;
@@ -19,28 +19,28 @@ import java.util.logging.Logger;
  *
  * @author Madhu.Badiginchala
  */
-public class SelectPassportWidget extends SelectComposite {
+public class SelectLCAWidget extends SelectComposite {
 
-    private static SelectPassportWidget instance;
-    private static Logger logger = Logger.getLogger(SelectPassportWidget.class.getName());
+    private static SelectLCAWidget instance;
+    private static Logger logger = Logger.getLogger(SelectLCAWidget.class.getName());
 
-    public static SelectPassportWidget instance() {
+    public static SelectLCAWidget instance() {
         return instance;
     }
 
-    public SelectPassportWidget(Boolean readOnly, Boolean isRequired) {
-        super(OfficeWelcome.constants, "Passport", readOnly, isRequired);
+    public SelectLCAWidget(Boolean readOnly, Boolean isRequired) {
+        super(OfficeWelcome.constants, "LCA", readOnly, isRequired);
         instance = this;
     }
 
-    public SelectPassportWidget(Boolean readOnly, Boolean isRequired, Alignment alignemnt) {
-        super(OfficeWelcome.constants, "Passport", readOnly, isRequired, alignemnt);
+    public SelectLCAWidget(Boolean readOnly, Boolean isRequired, Alignment alignemnt) {
+        super(OfficeWelcome.constants, "LCA", readOnly, isRequired, alignemnt);
         instance = this;
     }
 
     @Override
     protected void fetchDropDownData() {
-        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "passportNumber"),
+        HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 1000, "id", "lcaNumber"),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String entityString) {
@@ -51,13 +51,12 @@ public class SelectPassportWidget extends SelectComposite {
 
     @Override
     protected String getDropDownURL(Integer start, Integer limit, String... columns) {
-        logger.info("here" + super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "passport/passport-dropdown", start, limit, columns));
-        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "passport/dropdown", start, limit, columns);
+        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "lca/dropdown", start, limit, columns);
     }
 
     @Override
     protected void validate() {
         clearMessage();
     }
-    
+
 }

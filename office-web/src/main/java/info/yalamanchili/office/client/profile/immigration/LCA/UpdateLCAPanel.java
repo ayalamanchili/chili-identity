@@ -6,7 +6,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.profile.immigration;
+package info.yalamanchili.office.client.profile.immigration.LCA;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
@@ -28,6 +28,10 @@ import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.profile.address.CreateAddressWidget;
 import info.yalamanchili.office.client.profile.address.UpdateAddressPanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
+import info.yalamanchili.office.client.profile.immigration.MultiSelectConsultantWidget;
+import info.yalamanchili.office.client.profile.immigration.Polar;
+import info.yalamanchili.office.client.profile.immigration.SOCCodesAndOccupations;
+import info.yalamanchili.office.client.profile.immigration.VisaClassificationType;
 import java.util.logging.Logger;
 
 /**

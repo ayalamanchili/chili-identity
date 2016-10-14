@@ -16,7 +16,6 @@ import info.yalamanchili.office.entity.immigration.LCA;
 import info.yalamanchili.office.entity.immigration.LCALink;
 import info.yalamanchili.office.entity.immigration.LCADto;
 import info.yalamanchili.office.entity.immigration.LCAStatus;
-import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
 import java.util.HashSet;
 import java.util.Set;

@@ -6,22 +6,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.client.profile.immigration;
+package info.yalamanchili.office.client.profile.immigration.LCA;
 
 /**
  *
  * @author Madhu.Badiginchala
  */
-public enum LCAWageLevels {
+public enum LCAStatus {
 
-    Level_1,
-    Level_2,
-    Level_3,
-    Level_4,
-    NA;
+    Pending,
+    Certified,
+    Certified_Spare,
+    Withdrawn;
 
     public static String[] names() {
-        LCAWageLevels[] values = values();
+        LCAStatus[] values = values();
         String[] names = new String[values.length];
         for (int i = 0; i < values.length; i++) {
             names[i] = values[i].name();
