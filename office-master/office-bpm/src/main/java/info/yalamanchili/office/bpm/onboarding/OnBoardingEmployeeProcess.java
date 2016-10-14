@@ -8,15 +8,12 @@
  */
 package info.yalamanchili.office.bpm.onboarding;
 
-import info.chili.email.Email;
 import info.chili.service.jrs.exception.ServiceException;
-import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.company.CompanyContactDao;
 import info.yalamanchili.office.dao.company.CompanyContactTypeDao;
-import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
@@ -26,17 +23,12 @@ import info.yalamanchili.office.entity.company.CompanyContactType;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
-import info.yalamanchili.office.entity.profile.ext.Ethnicity;
-import info.yalamanchili.office.entity.profile.ext.MaritalStatus;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import info.yalamanchili.office.entity.profile.onboarding.OnBoardingStatus;
 import info.yalamanchili.office.jms.MessagingService;
-import java.util.HashSet;
-import java.util.Set;
 import org.activiti.engine.delegate.DelegateTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +43,7 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
 
     @Autowired
     protected MessagingService messagingService;
-    
+
     @Override
     public void processTask(DelegateTask task) {
         if ("create".equals(task.getEventName()) || "assignment".equals(task.getEventName())) {
@@ -176,19 +168,9 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         CommentDao.instance().addComment(dt.getTaskDefinitionKey() + " Requirements:" + requirements, entity);
         EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findById(entity.getId());
         Employee emp = empOnBoarding.getEmployee();
-        //emp roles and responsibilities save
-        String rolesAndResponsibilities = (String) dt.getExecution().getVariable("rolesAndResponsibilities");
         EmployeeAdditionalDetails empAdditionalDetails = EmployeeAdditionalDetailsDao.instance().find(emp);
-        EmployeeAdditionalDetails additionalDetails = new EmployeeAdditionalDetails();
-        if (empAdditionalDetails != null) {
-            empAdditionalDetails.setRolesAndResponsibilities(rolesAndResponsibilities);
-            EmployeeAdditionalDetailsDao.instance().getEntityManager().merge(empAdditionalDetails);
-        } else {
-            additionalDetails.setReferredBy("Unknown");
-            additionalDetails.setEthnicity(Ethnicity.Unspecified);
-            additionalDetails.setMaritalStatus(MaritalStatus.Unknown);
-            additionalDetails.setRolesAndResponsibilities(rolesAndResponsibilities);
-            EmployeeAdditionalDetailsDao.instance().save(additionalDetails);
+        if (empAdditionalDetails == null || empAdditionalDetails.getRolesAndResponsibilities() == null || empAdditionalDetails.getRolesAndResponsibilities().isEmpty()) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "cannot.complete.manager.task", "Please update Roles & Responsibilities through MyOffice -> Employees -> Search -> View -> Forms&Docs -> Joining Form -> Updates Roles & Responsibilities");
         }
         empOnBoarding.setStatus(OnBoardingStatus.Pending_HR_Validation);
         new GenericTaskCompleteNotification().notify(dt);
@@ -225,7 +207,7 @@ public class OnBoardingEmployeeProcess extends RuleBasedTaskDelegateListner {
         new GenericTaskCompleteNotification().notify(dt);
         EmployeeOnBoardingDao.instance().save(empOnBoarding);
     }
-    
+
     protected EmployeeOnBoarding getRequestFromTask(DelegateTask task) {
         Long entityId = (Long) task.getExecution().getVariable("entityId");
         EmployeeOnBoarding entity = EmployeeOnBoardingDao.instance().findById(entityId);
