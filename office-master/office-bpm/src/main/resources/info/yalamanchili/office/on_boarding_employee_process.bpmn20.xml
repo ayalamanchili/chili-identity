@@ -52,13 +52,13 @@
         </sequenceFlow>
         <sequenceFlow sourceRef="fork3" 
                       targetRef="backGroundScreeningTestTask">
-            </sequenceFlow>
+        </sequenceFlow>
         <sequenceFlow sourceRef="fork3" 
                       targetRef="drugScreeningTestTask">
-            </sequenceFlow>            
+        </sequenceFlow>            
         <sequenceFlow sourceRef="fork3" 
                       targetRef="SetupManagerTask">
-            </sequenceFlow>
+        </sequenceFlow>
                 
         <!-- On Boarding Form and Data Validation task : OnBoarding_Manager-->
         <userTask id="onBoardingFormsAndDataValidationTask" 
@@ -359,14 +359,16 @@
                 Please assign roles and responsibilities to the employee in the allocated fields in the task.
                 Please enter the requirements from a network perspective so the necessary will be arranged by the networking team. 
                 Eg: Developer Laptop, MS word, Team Viewer, Access to IT Projects folder etc...
+              
+                Please update employee Roles and Responsibilities by navigating to 
+                My Office --> Employees --> Search --> View --> Forms and Docs --> Roles and Responsibilities 
+                and then complete the task.
+
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
-                <activiti:formProperty id="rolesAndResponsibilities" 
-                                       name="Roles And Responsibilities"
-                                       required="true" 
-                                       type="string" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />                
+                <!--  remove roles and responsibilities form element -->
                 <activiti:formProperty id="requirements" 
                                        name="Requirements"
                                        required="true" 
