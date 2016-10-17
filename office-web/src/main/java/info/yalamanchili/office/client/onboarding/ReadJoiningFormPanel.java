@@ -154,7 +154,7 @@ public class ReadJoiningFormPanel extends ReadComposite implements ClickHandler 
 
     @Override
     protected boolean enableBack() {
-        return true;
+        return false;
     }
 
     @Override
