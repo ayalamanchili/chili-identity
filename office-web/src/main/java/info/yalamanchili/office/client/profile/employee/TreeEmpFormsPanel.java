@@ -92,7 +92,6 @@ public class TreeEmpFormsPanel extends TreePanelComposite {
         if (ROLESRESPONSIBILITES.equals(entityNodeKey)) {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadEmployeeRolesAndResponsibilitesPanel(employeeId));
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(printJoiningFormL);
         }
         if (DOCUMENTS_NODE.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();

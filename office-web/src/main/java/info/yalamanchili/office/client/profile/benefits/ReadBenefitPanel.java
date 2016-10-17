@@ -56,7 +56,7 @@ public class ReadBenefitPanel extends ReadComposite {
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("benefitType", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("year", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("enrolled", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("enrolled", entity, DataType.BOOLEAN_FIELD);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ReadBenefitPanel extends ReadComposite {
     protected void addWidgets() {
         addField("benefitType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("year", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("enrolled", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);      
+        addField("enrolled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);      
     }
 
     @Override
