@@ -144,12 +144,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             assignEntityValueFromField("billingRate", clientInfo);
             assignEntityValueFromField("billingRateDuration", clientInfo);
-            assignEntityValueFromField("payRatePercentage", clientInfo);
-            assignEntityValueFromField("payRate", clientInfo);
             assignEntityValueFromField("overTimeBillingRate", clientInfo);
             assignEntityValueFromField("overTimeRateDuration", clientInfo);
-            assignEntityValueFromField("overTimePayRatePercentage", clientInfo);
-            assignEntityValueFromField("overTimePayRate", clientInfo);
             assignEntityValueFromField("invoiceFrequency", clientInfo);
             assignEntityValueFromField("invoiceDeliveryMethod", clientInfo);
             if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
@@ -379,12 +375,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             addField("billingRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             String[] billingDuration = {"HOUR", "DAY", "MONTH", "WEEK"};
             addEnumField("billingRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
-            addField("payRatePercentage", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL); 
-            addField("payRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL); 
             addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addEnumField("overTimeRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
-            addField("overTimePayRatePercentage", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL); 
-            addField("overTimePayRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             addEnumField("invoiceFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
             addEnumField("invoiceDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
             if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
