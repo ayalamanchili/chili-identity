@@ -102,12 +102,8 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
             assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
-            assignFieldValueFromEntity("payRatePercentage" , entity, DataType.FLOAT_FIELD);
-            assignFieldValueFromEntity("payRate" , entity, DataType.CURRENCY_FIELD);          
             assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("overTimeRateDuration", entity, DataType.ENUM_FIELD);
-            assignFieldValueFromEntity("overTimePayRatePercentage" , entity, DataType.FLOAT_FIELD);
-            assignFieldValueFromEntity("overTimePayRate" , entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("joiningReport", entity, DataType.TEXT_AREA_FIELD);
