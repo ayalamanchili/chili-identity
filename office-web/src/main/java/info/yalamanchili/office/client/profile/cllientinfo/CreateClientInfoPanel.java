@@ -284,39 +284,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("employeeType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("company", false, true, ClientInformationCompany.names(), Alignment.HORIZONTAL);
-        if (TreeEmployeePanel.instance().getEntity().get("company").isObject() != null) {
-            String employeeCompany = TreeEmployeePanel.instance().getEntity().get("company").isObject().get("name").isString().stringValue();
-            EnumField company = (EnumField) fields.get("company");
-            switch (employeeCompany) {
-                case "System Soft Technologies LLC":
-                    company.selectValue(ClientInformationCompany.SSTECH_LLC.name());
-                    break;
-                case "TechPillars":
-                    company.selectValue(ClientInformationCompany.Techpillars.name());
-                    break;
-                case "System Soft Technologies INC":
-                    company.selectValue(ClientInformationCompany.SSTECH_INC.name());
-                    break;
-                case "CGS INC":
-                    company.selectValue(ClientInformationCompany.CGS_INC.name());
-                    break;
-                case "SST Canada":
-                    company.selectValue(ClientInformationCompany.SST_Canada.name());
-                    break;
-                case "SST PVT":
-                    company.selectValue(ClientInformationCompany.SST_PVT.name());
-                    break;
-                case "CapMark solutions":
-                    company.selectValue(ClientInformationCompany.CapMark_Solutions.name());
-                    break;
-                case "ACO360":
-                    company.selectValue(ClientInformationCompany.ACO360.name());
-                    break;
-                default:
-                    break;
-            }
-
-        }
         entityFieldsPanel.add(getLineSeperatorTag("Client Information"));
         addDropDown("client", selectClientWidgetF);
         entityFieldsPanel.add(addClientL);
