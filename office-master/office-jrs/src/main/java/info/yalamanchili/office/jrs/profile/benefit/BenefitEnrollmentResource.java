@@ -11,9 +11,12 @@ package info.yalamanchili.office.jrs.profile.benefit;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.benefit.BenefitEnrollmentDao;
+import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.benefits.BenefitEnrollment;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -53,25 +56,26 @@ public class BenefitEnrollmentResource extends CRUDResource<BenefitEnrollment> {
     public void delete(@PathParam("id") Long id) {
         getDao().delete(id);
     }
-    
-    
+
     @PUT
     @Validate
     @Path("/save/{empId}")
+    @AccessCheck(roles = {"ROLE_HEALTH_INSURANCE_MANAGER"})
     public void addBenefit(@PathParam("empId") Long empId, BenefitEnrollment benefitEnrollment) {
         getDao().save(benefitEnrollment);
-        
+
     }
-    
+
     @GET
-    @Path("/{start}/{limit}")
-    public BenefitEnrollmentTable getEmails(@PathParam("start") int start, @PathParam("limit") int limit) {
+    @Path("/{empId}/{start}/{limit}")
+    public BenefitEnrollmentTable getBenefits(@PathParam("empId") Long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
         BenefitEnrollmentResource.BenefitEnrollmentTable tableObj = new BenefitEnrollmentResource.BenefitEnrollmentTable();
-        tableObj.setEntities(getDao().query(start,limit));
+        Employee emp = (Employee) getDao().findById(empId);
+        tableObj.setEntities(getDao().query(start, limit));
         tableObj.setSize(getDao().size());
         return tableObj;
     }
-    
+
     @GET
     @Path("/{id}")
     @Transactional(readOnly = true)
