@@ -62,7 +62,7 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         }
         if (task.getTaskDefinitionKey().equals("newClientInfoPayrollTask")) {
             if (status.equalsIgnoreCase("approved")) {
-                entity.setStatus(ClientInformationStatus.PENDING_PAYROLL_COMPLETION);
+                entity.setStatus(ClientInformationStatus.PENDING_PAYROLL_VERIFICATION);
                 entity.setPayRatePercentage(Float.valueOf(payratePercent));
                 entity.setOverTimePayRatePercentage(Float.valueOf(overtimePayratePercent));
             } else {
