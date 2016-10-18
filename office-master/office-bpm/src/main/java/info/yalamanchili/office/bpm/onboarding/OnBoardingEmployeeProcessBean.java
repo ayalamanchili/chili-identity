@@ -91,16 +91,18 @@ public class OnBoardingEmployeeProcessBean {
     }
 
     public void deleteEmployee(Employee emp) {
-        emp.setEndDate(new Date());
-        emp = EmployeeDao.instance().getEntityManager().merge(emp);
-        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(emp.getId());
+        Employee employee = EmployeeDao.instance().getEntityManager().find(Employee.class, emp.getId());
+        employee.setEndDate(new Date());
+        employee = EmployeeDao.instance().getEntityManager().merge(employee);
+        EmployeeOnBoarding empOnBoarding = EmployeeOnBoardingDao.instance().findByEmployeeId(employee.getId());
         empOnBoarding.setStatus(OnBoardingStatus.Rejected);
-        CUser user1 = emp.getUser();
+        CUser user1 = employee.getUser();
         user1.setEnabled(false);
-        emp.setUser(user1);
+        employee.setUser(user1);
+        EmployeeDao.instance().getEntityManager().merge(user1);
         //OfficeBPMTaskService.instance().deleteAllTasksForProcessId(empOnBoarding.getBpmProcessId(), false);
         //TODO this should be only done in case of a corporate employee since for others bpm user is not created.
-        OfficeBPMIdentityService.instance().deleteUser(emp.getUser().getUsername());
+        OfficeBPMIdentityService.instance().deleteUser(employee.getUser().getUsername());
     }
 
     public void notifyBackgroundCheckTeam(EmployeeOnBoarding onboarding) {

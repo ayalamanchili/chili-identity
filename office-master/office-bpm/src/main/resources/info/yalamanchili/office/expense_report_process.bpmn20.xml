@@ -22,8 +22,8 @@
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Expense Form Type   : #{entity.expenseFormType}
                 Purpose             : #{entity.location}
-                Start Date          : #{entity.startDate}
-                End Date            : #{entity.endDate}
+                Start Date          : #{startDate}
+                End Date            : #{endDate}
                 Total Amount        : #{entity.totalExpenses}
                 
                 Navigate to view Expense Report:
@@ -92,8 +92,8 @@
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Expense Form Type   : #{entity.expenseFormType}
                 Purpose             : #{entity.location}
-                Start Date          : #{entity.startDate}
-                End Date            : #{entity.endDate}
+                Start Date          : #{startDate}
+                End Date            : #{endDate}
                 Total Amount        : #{entity.totalExpenses}
                 
                 Navigate to view Expense Report:
@@ -155,8 +155,8 @@
                 Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
                 Expense Form Type   : #{entity.expenseFormType}
                 Purpose             : #{entity.location}
-                Start Date          : #{entity.startDate}
-                End Date            : #{entity.endDate}
+                Start Date          : #{startDate}
+                End Date            : #{endDate}
                 Total Amount        : #{entity.totalExpenses}
                 
                 Navigate to view Expense Report:

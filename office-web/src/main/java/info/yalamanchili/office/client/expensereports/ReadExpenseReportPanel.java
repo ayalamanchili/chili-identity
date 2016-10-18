@@ -118,38 +118,38 @@ public class ReadExpenseReportPanel extends ReadComposite {
 
     @Override
     protected void addWidgets() {
-        addEnumField(EXPENSE_FORM_TYPE, true, true, ExpenseFormType.names(), Alignment.HORIZONTAL);
+        addEnumField(EXPENSE_FORM_TYPE, true, false, ExpenseFormType.names(), Alignment.HORIZONTAL);
         expenseFormType = (EnumField) fields.get(EXPENSE_FORM_TYPE);
 //        entityFieldsPanel.add(generalInfo);
 //        entityFieldsPanel.add(travelInfo);
-        SelectEmployeeWidget otherEmployees = new SelectEmployeeWidget(OTHEREMPLOYEES, false, false, Alignment.HORIZONTAL) {
+        SelectEmployeeWidget otherEmployees = new SelectEmployeeWidget(OTHEREMPLOYEES, true, false, Alignment.HORIZONTAL) {
             @Override
             public boolean enableMultiSelect() {
                 return true;
             }
         };
         otherEmployees.setVisible(true);
-        addField(NAMEOFREPORT, true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField(NAMEOFREPORT, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         nameOfReport = (StringField) fields.get(NAMEOFREPORT);
-        addField(LOCATION, true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField(LOCATION, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         location = (StringField) fields.get(LOCATION);
-        addField(DESTINATION, true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField(DESTINATION, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         destination = (StringField) fields.get(DESTINATION);
-        addField(START_DATE, true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField(START_DATE, true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         startDate = (DateField) fields.get(START_DATE);
-        addField(END_DATE, true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField(END_DATE, true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         endDate = (DateField) fields.get(END_DATE);
         addField(EXPENSE_REPORT_NUMBER, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField(PROJECT_NAME, true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField(PROJECT_NAME, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         projectName = (StringField) fields.get(PROJECT_NAME);
-        addField(PROJECT_NUMBER, true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField(PROJECT_NUMBER, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         projectNumber = (StringField) fields.get(PROJECT_NUMBER);
-        addEnumField(REIMBURSMENTMETHOD, true, true, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
+        addEnumField(REIMBURSMENTMETHOD, true, false, ExpenseReimbursePaymentMode.names(), Alignment.HORIZONTAL);
         expenseReimbursePaymentMode = (EnumField) fields.get(REIMBURSMENTMETHOD);
         addDropDown("company", selectCompanyWidget);
-        addEnumField(DEPARTMENTTYPE, true, true, Department.names(), Alignment.HORIZONTAL);
+        addEnumField(DEPARTMENTTYPE, true, false, Department.names(), Alignment.HORIZONTAL);
         departmentType = (EnumField) fields.get(DEPARTMENTTYPE);
-        addField(OTHERDEPARTMENT, true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField(OTHERDEPARTMENT, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         otherDepartment = (StringField) fields.get(OTHERDEPARTMENT);
         entityFieldsPanel.add(expenseInfo);
         alignFields();
