@@ -137,6 +137,7 @@ public class ExpenseReportService {
         if (entity.getBpmProcessId() != null) {
             OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
         }
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
         Map<String, Object> vars = new HashMap<>();
         vars.put("entity", entity);
         if (approvalManagerId != null) {
@@ -147,6 +148,8 @@ public class ExpenseReportService {
         } else {
             vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
         }
+        vars.put("startDate", sdf.format(entity.getStartDate()));
+        vars.put("endDate", sdf.format(entity.getEndDate()));
         vars.put("entityId", entity.getId());
         return OfficeBPMService.instance().startProcess("expense_report_process", vars);
     }
@@ -310,8 +313,7 @@ public class ExpenseReportService {
                 itemTotal = itemTotal.add(item.getAmount());
                 i++;
             } else // Expanse Item Personal 
-            {
-                if (item.getExpensePaymentMode() != null && item.getExpensePaymentMode().name().equals("PERSONAL_CARD")) {
+             if (item.getExpensePaymentMode() != null && item.getExpensePaymentMode().name().equals("PERSONAL_CARD")) {
                     if (item.getCategory() != null) {
                         if (item.getCategory().getName().equals("AirFare")) {
                             data.getData().put("Air Fare", "true");
@@ -374,7 +376,6 @@ public class ExpenseReportService {
                     itemAmex = itemAmex.add(item.getAmount());
                     a++;
                 }
-            }
         }
 
         data.getData().put("p-itemTotal", itemPersonal.setScale(2, BigDecimal.ROUND_UP).toString());
