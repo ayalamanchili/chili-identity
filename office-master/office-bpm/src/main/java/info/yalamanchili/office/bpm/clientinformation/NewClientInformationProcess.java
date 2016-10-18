@@ -50,10 +50,21 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         //Status
         String status = (String) task.getExecution().getVariable("status");
         String itemno = (String) task.getExecution().getVariable("itemNumber");
+        String payratePercent = (String) task.getExecution().getVariable("payratePercent");
+        String overtimePayratePercent = (String) task.getExecution().getVariable("overtimePayratePercent");
         if (task.getTaskDefinitionKey().equals("newClientInfoInvoicingAndBillingTask")) {
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ClientInformationStatus.PENDING_HR_VERIFICATION);
                 sendNewClieniInformationNotification(entity, itemno, task);
+            } else {
+                entity.setStatus(ClientInformationStatus.CANCELED);
+            }
+        }
+        if (task.getTaskDefinitionKey().equals("newClientInfoPayrollTask")) {
+            if (status.equalsIgnoreCase("approved")) {
+                entity.setStatus(ClientInformationStatus.PENDING_PAYROLL_VERIFICATION);
+                entity.setPayRatePercentage(Float.valueOf(payratePercent));
+                entity.setOverTimePayRatePercentage(Float.valueOf(overtimePayratePercent));
             } else {
                 entity.setStatus(ClientInformationStatus.CANCELED);
             }

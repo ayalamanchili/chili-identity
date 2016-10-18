@@ -95,7 +95,58 @@
             name="New Client Information Account Department Submit" 
             activiti:class="info.yalamanchili.office.client.NewClientInfoInvoicingAndBillingSubmit">
         </serviceTask>
-        <sequenceFlow id="newClientInfoAccountSubmitToHRTask" sourceRef="newClientInfoInvoicingAndBillingSubmit" targetRef="newClientInfoHRTask">
+        <sequenceFlow id="newClientInfoAccountSubmitToPayrollTask" 
+                      sourceRef="newClientInfoInvoicingAndBillingSubmit" 
+                      targetRef="newClientInfoPayrollTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and clientInfo.employee.employeeType.name != 'Subcontractor' and clientInfo.employee.employeeType.name != '1099 Contractor'}
+            </conditionExpression>
+        </sequenceFlow>
+        <userTask id="newClientInfoPayrollTask" 
+                  name="New Client Info Payroll Department Task for ${clientInfo.employee.firstName} ${clientInfo.employee.lastName}"
+                  activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
+            <documentation>
+                New Client Information has been created with following details. 
+                Navigate to MyOffice--> Search--> View --> Client information to verify all data.
+                and fill the fields below to complete the task.
+                
+                Employee                    : #{clientInfo.employee.firstName} #{clientInfo.employee.lastName} 
+                Employee Type               : #{clientInfo.employee.employeeType.name}
+                Consultant Job Title        : #{clientInfo.consultantJobTitle}
+                Client                      : #{clientInfo.client.name}
+                Client AP Contact           : #{clientAP}
+                Vendor                      : #{clientInfo.vendor.name}
+                Vendor AP Contact           : #{vendorAP}
+                Vendor Payment Terms        : #{clientInfo.vendorPaymentTerms}
+                Project Start Date          : #{clientInfo.startDate}
+                Project End Date            : #{clientInfo.endDate}
+                Billing Rate                : #{clientInfo.billingRate}
+                Overtime Billing Rate       : #{clientInfo.overTimeBillingRate}
+                Billing Rate Duration       : #{clientInfo.billingRateDuration}
+                Overtime Rate Duration      : #{clientInfo.overTimeRateDuration}
+                Invoice Frequency           : #{clientInfo.invoiceFrequency}
+                Invoice Delivery Method     : #{clientInfo.invoiceDeliveryMethod}
+                Notes                       : #{clientInfo.notes}
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/bpm/new-client-info-process.html
+                    
+            </documentation>
+        <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.clientinformation.NewClientInformationProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.clientinformation.NewClientInformationProcess" />
+                <activiti:formProperty id="payratePercent" 
+                                       name="PayRate Percentage"
+                                       required="false"
+                                       type="string"/>
+                <activiti:formProperty id="overtimePayratePercent" 
+                                       name="Overtime PayRate Percentage"
+                                       required="false"
+                                       type="string"/>
+            </extensionElements> 
+        </userTask>
+        <sequenceFlow id="newClientInfoAccountSubmitToHRTask" 
+                      sourceRef="newClientInfoPayrollTask" 
+                      targetRef="newClientInfoHRTask">
             <conditionExpression xsi:type="tFormalExpression">
                 ${status == 'approved' and clientInfo.employee.employeeType.name != 'Subcontractor' and clientInfo.employee.employeeType.name != '1099 Contractor'}
             </conditionExpression>

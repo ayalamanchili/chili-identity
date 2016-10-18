@@ -87,7 +87,6 @@ public class ExpenseReportProcess extends RuleBasedTaskDelegateListner {
                 entity.setStatus(ExpenseReportStatus.REJECTED);
             }
         }
-
         if (dt.getTaskDefinitionKey().equals("expenseReportAccountsPayableTask") && ExpenseReportStatus.PENDING_ACCOUNTS_PAYABLE_DISPATCH.equals(entity.getStatus())) {
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ExpenseReportStatus.APPROVED);

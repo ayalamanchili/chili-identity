@@ -46,6 +46,7 @@ import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.utils.JSONUtils;
+import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
@@ -133,7 +134,9 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("itemNumber", entity);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             assignEntityValueFromField("billingRate", entity);
+            assignEntityValueFromField("payRatePercentage", entity);
             assignEntityValueFromField("overTimeBillingRate", entity);
+            assignEntityValueFromField("overTimePayRatePercentage", entity);
             assignEntityValueFromField("invoiceFrequency", entity);
             assignEntityValueFromField("invoiceDeliveryMethod", entity);
             assignEntityValueFromField("billingRateDuration", entity);
@@ -246,6 +249,8 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
+            assignFieldValueFromEntity("payRatePercentage", entity, DataType.FLOAT_FIELD);
+            assignFieldValueFromEntity("overTimePayRatePercentage", entity, DataType.FLOAT_FIELD);
             assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
@@ -413,12 +418,18 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
             }
             String[] billingDuration = {"HOUR", "DAY", "MONTH", "WEEK"};
             addEnumField("billingRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_ADMIN)) {
+                addField("payRatePercentage", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+            }
             if (cistatus.equals("PENDING_CONTRACTS_SUBMIT")) {
                 addField("overTimeBillingRate", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             } else {
                 addField("overTimeBillingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
             }
             addEnumField("overTimeRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
+            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS, Auth.ROLE.ROLE_ADMIN)) {
+                addField("overTimePayRatePercentage", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+            }
             if ((cistatus.equals("COMPLETED")) && Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
                 addEnumField("invoiceFrequency", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
                 addEnumField("invoiceDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);

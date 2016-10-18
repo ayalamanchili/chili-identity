@@ -20,10 +20,12 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RadioButton;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.config.ChiliClientConfig;
@@ -69,7 +71,10 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     public List<CreateExpenseItemPanel> expenseItemPanels = new ArrayList();
     SuggestBox approvalManager = new SuggestBox(OfficeWelcome.constants2, "approvalManager", "ExpenseReport", false, false, Alignment.HORIZONTAL);
     BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants2, "Submit", "ExpenseReport", false, false, Alignment.HORIZONTAL);
+    HTML tac = new HTML(" I " + OfficeWelcome.instance().getCurrentUserName() + " Acknowledge that all information in my expenses report is accurate and true \n");
     boolean isGeneralExpenseItem = false;
+    CheckBox confrmCB = new CheckBox();
+    HorizontalPanel hPanel = new HorizontalPanel();
 
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants2, "ExpenseReceipt", "", "ExpenseReceipt/fileURL", false, true) {
         @Override
@@ -102,9 +107,9 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             + "\n"
             + "<ul>\n"
             + "</ul>");
-    protected static HTML notes = new HTML("\n"
+    protected static HTML Acknowledgement = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
-            + "<strong style=\"color:#555555\">Note: Please mail expense original receipts to Tampa office.</strong></p>\n"
+            + "<strong style=\"color:#555555\">Acknowledge</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");
@@ -193,16 +198,18 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         addField(OTHERDEPARTMENT, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         otherDepartment = (StringField) fields.get(OTHERDEPARTMENT);
         addField(COMMENTS, false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(receiptsInfo);
-        entityFieldsPanel.add(fileUploadPanel);
         entityFieldsPanel.add(expenseItemsInfo);
         CreateExpenseItemPanel panel = null;
         entityActionsPanel.add(addItemL);
-        entityFieldsPanel.add(notes);
         panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem);
         expenseItemPanels.add(panel);
         entityFieldsPanel.add(panel);
-        entityActionsPanel.add(getLineSeperatorTag("I certify that all information in my expenses report is accurate and true."));
+        entityActionsPanel.add(receiptsInfo);
+        entityActionsPanel.add(fileUploadPanel);
+        entityActionsPanel.add(Acknowledgement);
+        hPanel.add(confrmCB);
+        hPanel.add(tac);
+        entityActionsPanel.add(hPanel);
         entityActionsPanel.add(submitForApprovalF);
         submitForApprovalF.setValue(true);
         alignFields();
@@ -221,7 +228,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         travelInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseItemsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         receiptsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-        notes.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        Acknowledgement.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         approver.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         approvalManager.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH + 5, Style.Unit.PX);
         setButtonText("Submit");
@@ -229,7 +236,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         approver.setVisible(false);
         otherDepartment.setVisible(false);
         otherEmployees.setVisible(false);
-        HttpService.HttpServiceAsync.instance().doGet(getGeneralExpMgrIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+        HttpService.HttpServiceAsync.instance().doGet(getCorpEmpIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
                 Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
@@ -442,7 +449,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
                 travelInfo.setVisible(true);
                 entityCaptionPanel.setCaptionHTML("Travel Expense form");
             }
-            expenseFormType.setVisible(false);
+            expenseFormType.setVisible(true);
         }
         if (event.getSource().equals(departmentType.listBox)) {
             if (departmentType.getValue().equals(Department.Other.name())) {
@@ -461,16 +468,13 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         return ChiliClientConfig.instance().getFileUploadUrl();
     }
 
-    private String getGeneralExpMgrIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_GENERAL_EXPENSE_MANAGER.name() + "/0/10000");
+    private String getCorpEmpIdsDropDownUrl() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_CORPORATE_EMPLOYEE.name() + "/0/10000");
     }
 
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         boolean valid = true;
-        if (expenseItemPanels.size() > 0 && (fileUploadPanel.getFileNames().size() <= 0 || fileUploadPanel.getFileNames().get(0).stringValue().isEmpty())) {
-            return Window.confirm("Your expense report does not have any receipts attached so will not be processed. Are you sure you still want to submit?");
-        }
         if (entity.get("expenseFormType") != null && entity.get("expenseFormType").isString().stringValue().equals(ExpenseFormType.GENERAL_EXPENSE.name())) {
             if (cardHolderName.getValue() == null || "".equals(cardHolderName.getValue())) {
                 fields.get("cardHolderName").setMessage("Card Holder Name can not be null");
@@ -481,6 +485,20 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
                 return false;
             }
         }
+        startDate = (DateField) fields.get("startDate");
+        endDate = (DateField) fields.get("endDate");
+        if (startDate.getDate() != null && endDate.getDate() != null && startDate.getDate().after(endDate.getDate())) {
+            endDate.setMessage("End Date must be equal to or after Start Date");
+            return false;
+        }
+        if (confrmCB.getValue() == false) {
+            Window.alert("Please Check Acknowledge Check Box before you submit the expense report");
+            return false;
+        }
+        if (expenseItemPanels.size() > 0 && (fileUploadPanel.getFileNames().size() <= 0 || fileUploadPanel.getFileNames().get(0).stringValue().isEmpty())) {
+            return Window.confirm("Your expense report does not have any receipts attached so will not be processed. Are you sure you still want to submit?");
+        }
+
         return valid;
 
     }
