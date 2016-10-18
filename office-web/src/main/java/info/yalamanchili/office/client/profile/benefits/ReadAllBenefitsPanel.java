@@ -33,6 +33,7 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
 
     public ReadAllBenefitsPanel(String entityId) {
         instance = this;
+        this.parentId = entityId;
         initTable("Benefits", OfficeWelcome.constants2);
     }
     
@@ -43,8 +44,8 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
 
      @Override
     public void preFetchTable(int start) {
-       HttpService.HttpServiceAsync.instance().doGet(getEmployeeBenefitsURL(start, OfficeWelcome.constants.tableSize()),
-                OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+       HttpService.HttpServiceAsync.instance().doGet(getEmployeeBenefitsURL(parentId, start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
+                false, new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
                         logger.info(result);
@@ -74,7 +75,7 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Address Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBenefitsPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBenefitsPanel((OfficeWelcome.instance().employeeId)));
     }
 
     @Override
@@ -86,9 +87,9 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
     @Override
     public void createTableHeader() {
         table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("benefitType"));
-        table.setText(0, 2, getKeyValue("year"));
-        table.setText(0, 3, getKeyValue("enrolled"));
+        table.setText(0, 1, getKeyValue("Benefit Type"));
+        table.setText(0, 2, getKeyValue("Year"));
+        table.setText(0, 3, getKeyValue("Enrolled"));
        
 
     }
@@ -119,8 +120,8 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
         }
     }
 
-    private String getEmployeeBenefitsURL( Integer start, String limit) {
-         return OfficeWelcome.constants.root_url() + "benefit/" + start.toString() + "/" + limit.toString();
+    private String getEmployeeBenefitsURL(String employeeId, Integer start, String limit) {
+         return OfficeWelcome.constants.root_url() + "benefit/" + employeeId + "/"  + start.toString() + "/" + limit.toString();
     }
 
     private String getDeleteURL(String entityId) {
@@ -130,7 +131,7 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
      @Override
     protected void configureCreateButton() {
         if (TabPanel.instance().myOfficePanel.isVisible()) {
-            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_HEALTH_INSURANCE_MANAGER)) {
+            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HEALTH_INSURANCE_MANAGER)) {
                 createButton.setText("Add Benefit");
                 createButton.setVisible(true);
             } else {

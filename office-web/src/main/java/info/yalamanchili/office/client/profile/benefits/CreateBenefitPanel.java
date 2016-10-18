@@ -11,10 +11,10 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.email.CreateEmailPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
@@ -23,8 +23,8 @@ import java.util.logging.Logger;
  * @author Hemanth
  */
 public class CreateBenefitPanel extends CreateComposite {
-        
-      private static Logger logger = Logger.getLogger(CreateEmailPanel.class.getName());
+
+    private static Logger logger = Logger.getLogger(CreateBenefitPanel.class.getName());
 
     public CreateBenefitPanel(CreateCompositeType type) {
         super(type);
@@ -64,8 +64,9 @@ public class CreateBenefitPanel extends CreateComposite {
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Benefit.");
+        GenericPopup.hideIfOpen();
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBenefitsPanel(TreeEmployeePanel.instance().getEntityId()));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBenefitsPanel(OfficeWelcome.instance().employeeId));
     }
 
     @Override
@@ -92,7 +93,11 @@ public class CreateBenefitPanel extends CreateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "benefit/save/" + TreeEmployeePanel.instance().getEntityId();
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            return OfficeWelcome.constants.root_url() + "benefit/save/" + TreeEmployeePanel.instance().getEntityId();
+        } else {
+            return OfficeWelcome.constants.root_url() + "benefit/save/" + OfficeWelcome.instance().employeeId;
+        }
     }
-    
+
 }
