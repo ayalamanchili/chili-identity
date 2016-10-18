@@ -31,6 +31,8 @@ import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.onboarding.InitiateOnBoardingPanel;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -82,6 +84,10 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         }
         return OfficeWelcome.constants.root_url() + "prospect/" + start.toString() + "/" + tableSize.toString();
     }
+    
+    private String getProspectsOnboardingNotifyURL() {
+        return OfficeWelcome.constants.root_url() + "prospect/request-prospect-onboarding";
+    }
 
     @Override
     public void createTableHeader() {
@@ -94,6 +100,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         table.setText(0, 6, getKeyValue("Phone Number"));
         if (isClosedWon == true && isOnAllTab == false) {
             table.setText(0, 7, getKeyValue("OnBoarding Invitation"));
+            table.setText(0, 8, getKeyValue("Request for onboarding"));
         } else if (isClosedWon == false && isOnAllTab == true) {
             table.setText(0, 7, getKeyValue("Status"));
         }
@@ -120,6 +127,12 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
                             getOnBoardInviteCode(((ClickableLink) event.getSource()).getTitle());
                         });
                         table.setWidget(i, 7, invitationLink);
+                        ClickableLink onboardingRequestLink = new ClickableLink("Request For OnBoarding");
+                        onboardingRequestLink.setTitle(JSONUtils.toString(entity, "id"));
+                        onboardingRequestLink.addClickHandler((ClickEvent event) -> {
+                            getOnBoardRequestCode(entity);
+                        });
+                        table.setWidget(i, 8, onboardingRequestLink);
                     }
                 }
             } else if (isClosedWon == false && isOnAllTab == true) {
@@ -145,6 +158,18 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         if (!entityId.isEmpty()) {
             new GenericPopup(new InitiateOnBoardingPanel(getEntity(entityId))).show();
         }
+    }
+    
+    protected void getOnBoardRequestCode(JSONObject entity) {
+            logger.info(getProspectsOnboardingNotifyURL());
+            HttpService.HttpServiceAsync.instance().doPut(getProspectsOnboardingNotifyURL(), entity.toString(), OfficeWelcome.instance().getHeaders(), false,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info(result);
+                        postSendNotification();
+                    }
+                });
     }
 
     private String getemailurl(String entityId) {
@@ -179,6 +204,12 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel());
     }
 
+    public void postSendNotification() {
+        new ResponseStatusWidget().show("Successfully Sent Onboarding Invitation Initiation Email");
+        TabPanel.instance().myOfficePanel.entityPanel.clear();
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel());
+    }
+    
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
