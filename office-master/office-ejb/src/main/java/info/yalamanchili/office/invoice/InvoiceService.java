@@ -219,12 +219,19 @@ public class InvoiceService {
                             dto.setInvFrequency(cpd.getInvoiceFrequency().name());
                             if (startDate.before(dates.first())) {
                                 dto.setMissingInvPeriodFrom(startDate);
-                                dto.setMissingInvPeriodTo(DateUtils.getNextDay(dates.first(), -2));
-                            } else {
-                                dto.setMissingInvPeriodFrom(dates.first());
-                                dto.setMissingInvPeriodTo(DateUtils.getNextDay(startDate, 0));
+                                dto.setMissingInvPeriodTo(DateUtils.getNextDay(dates.first(), -1));
+                                missingInvoices.add(dto);
+                            } else if (!startDate.after(firstInvoice.getStartDate()) && !startDate.before(firstInvoice.getEndDate())) {
+                                dto.setMissingInvPeriodFrom(startDate);
+                                dto.setMissingInvPeriodTo(endDate);
+                                missingInvoices.add(dto);
                             }
-                            missingInvoices.add(dto);
+                            /**
+                             * else { dto.setMissingInvPeriodFrom(startDate);
+                             * dto.setMissingInvPeriodTo(endDate);
+                             * missingInvoices.add(dto); }*
+                             */
+
                         } else {
                             MissingInvoicesReportDto dto = new MissingInvoicesReportDto();
                             dto.setEmployee(contract.getEmployee());
@@ -244,16 +251,22 @@ public class InvoiceService {
                                 dto.setEmployee(contract.getEmployee());
                                 dto.setItemNumber(cpd.getItemNumber());
                                 dto.setInvFrequency(cpd.getInvoiceFrequency().name());
-                                dto.setMissingInvPeriodFrom(DateUtils.getNextDay(lastInvoice.getEndDate(), 0));
-                                dto.setMissingInvPeriodTo(endDate);
-                                missingInvoices.add(dto);
+                                if (startDate.before(lastInvoice.getEndDate())) {
+                                    dto.setMissingInvPeriodFrom(DateUtils.getNextDay(lastInvoice.getEndDate(), 1));
+                                    dto.setMissingInvPeriodTo(endDate);
+                                    missingInvoices.add(dto);
+                                } else {
+                                    dto.setMissingInvPeriodFrom(startDate);
+                                    dto.setMissingInvPeriodTo(endDate);
+                                    missingInvoices.add(dto);
+                                }
                             }
                         } else {
                             MissingInvoicesReportDto dto = new MissingInvoicesReportDto();
                             dto.setEmployee(contract.getEmployee());
                             dto.setItemNumber(cpd.getItemNumber());
                             dto.setInvFrequency(cpd.getInvoiceFrequency().name());
-                            dto.setMissingInvPeriodFrom(DateUtils.getNextDay(lastInvoice.getEndDate(), 0));
+                            dto.setMissingInvPeriodFrom(DateUtils.getNextDay(lastInvoice.getEndDate(), 1));
                             dto.setMissingInvPeriodTo(cpd.getEndDate());
                             missingInvoices.add(dto);
                         }
@@ -267,17 +280,31 @@ public class InvoiceService {
                         if (inv2 != null && inv2.getId() != null) {
                             Date date1 = inv1.getEndDate();
                             Date date2 = inv2.getStartDate();
-                            if (!date2.equals(DateUtils.getNextDay(date1, 1))) {
-                                MissingInvoicesReportDto dto = new MissingInvoicesReportDto();
-                                dto.setEmployee(contract.getEmployee());
-                                dto.setItemNumber(cpd.getItemNumber());
-                                dto.setInvFrequency(cpd.getInvoiceFrequency().name());
-                                dto.setMissingInvPeriodFrom(DateUtils.getNextDay(date1, 0));
-                                dto.setMissingInvPeriodTo(DateUtils.getNextDay(date2, -2));
-                                missingInvoices.add(dto);
+                            //** condition for checking invoices missinv only between start and end date
+                            if (startDate.after(inv1.getEndDate()) && endDate.before(inv2.getStartDate())) {
+                                if (!date2.equals(DateUtils.getNextDay(date1, 1))) {
+                                    MissingInvoicesReportDto dto = new MissingInvoicesReportDto();
+                                    dto.setEmployee(contract.getEmployee());
+                                    dto.setItemNumber(cpd.getItemNumber());
+                                    dto.setInvFrequency(cpd.getInvoiceFrequency().name());
+                                    dto.setMissingInvPeriodFrom(DateUtils.getNextDay(date1, 1));
+                                    dto.setMissingInvPeriodTo(DateUtils.getNextDay(date2, -1));
+                                    missingInvoices.add(dto);
+                                } else if (endDate.after(inv2.getStartDate())) {
+                                    if (!date2.equals(DateUtils.getNextDay(date1, 1))) {
+                                        MissingInvoicesReportDto dto = new MissingInvoicesReportDto();
+                                        dto.setEmployee(contract.getEmployee());
+                                        dto.setItemNumber(cpd.getItemNumber());
+                                        dto.setInvFrequency(cpd.getInvoiceFrequency().name());
+                                        dto.setMissingInvPeriodFrom(DateUtils.getNextDay(date1, 1));
+                                        dto.setMissingInvPeriodTo(DateUtils.getNextDay(date2, -1));
+                                        missingInvoices.add(dto);
+                                    }
+                                }
                             }
                         }
                     }
+
                 }
             }
         }
