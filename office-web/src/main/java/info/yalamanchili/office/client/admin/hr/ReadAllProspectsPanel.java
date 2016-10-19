@@ -165,6 +165,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
     
     protected void getOnBoardRequestCode(JSONObject entity) {
             logger.info(getProspectsOnboardingNotifyURL());
+            if (Window.confirm("Please click on ok to send request to HR to On Board."))   {         
             HttpService.HttpServiceAsync.instance().doPut(getProspectsOnboardingNotifyURL(), entity.toString(), OfficeWelcome.instance().getHeaders(), false,
                 new ALAsyncCallback<String>() {
                     @Override
@@ -173,6 +174,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
                         postSendNotification();
                     }
                 });
+            }
     }
 
     private String getemailurl(String entityId) {
