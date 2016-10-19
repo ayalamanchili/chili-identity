@@ -21,18 +21,4 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 @XmlType
 public class LCADto extends LCA {
-
-    protected Set<Employee> employees;
-
-    public Set<Employee> getEmployees() {
-        if (employees == null) {
-            this.employees = new HashSet<>();
-        }
-        return employees;
-    }
-
-    public void setEmployees(Set<Employee> employees) {
-        this.employees = employees;
-    }
-
 }

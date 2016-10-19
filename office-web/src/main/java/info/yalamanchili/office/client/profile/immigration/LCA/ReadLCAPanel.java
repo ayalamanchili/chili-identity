@@ -17,7 +17,6 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
-import info.yalamanchili.office.client.profile.immigration.MultiSelectConsultantWidget;
 import info.yalamanchili.office.client.profile.immigration.Polar;
 import info.yalamanchili.office.client.profile.immigration.SOCCodesAndOccupations;
 import info.yalamanchili.office.client.profile.immigration.VisaClassificationType;
@@ -32,7 +31,6 @@ public class ReadLCAPanel extends TReadComposite {
     private static ReadLCAPanel instance;
     private static Logger logger = Logger.getLogger(ReadLCAPanel.class.getName());
     protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, false, Alignment.HORIZONTAL);
-    protected MultiSelectConsultantWidget employeeSelectWidget;
     HTML wagesInfo = new HTML("<h4 style=\"color:#427fed\">" + "Wages Information</h4>");
     HTML addInfo = new HTML("<h4 style=\"color:#427fed\">" + "Additional Information</h4>");
     HTML empInfo = new HTML("<h4 style=\"color:#427fed\">" + "Select Consultants</h4>");
@@ -101,8 +99,6 @@ public class ReadLCAPanel extends TReadComposite {
         logger.info("entity read : " + entity);
         addField("lcaNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
         addEnumField("visaClassification", true, true, VisaClassificationType.names(), Alignment.HORIZONTAL, 1, 2);
-        employeeSelectWidget = new MultiSelectConsultantWidget("Employees", getEntityId(), true, false);
-        entityFieldsPanel.setWidget(2, 1, employeeSelectWidget);
         entityFieldsPanel.getFlexCellFormatter().setColSpan(2, 1, 2);
         addDropDown("workedByEmployees", selectRecruiterW, 3, 1);
         addDropDown("company", selectCompanyWidget, 3, 2);

@@ -28,7 +28,6 @@ import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
 import info.yalamanchili.office.client.profile.address.CreateAddressWidget;
 import info.yalamanchili.office.client.profile.address.UpdateAddressPanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWithRoleWidget;
-import info.yalamanchili.office.client.profile.immigration.MultiSelectConsultantWidget;
 import info.yalamanchili.office.client.profile.immigration.Polar;
 import info.yalamanchili.office.client.profile.immigration.SOCCodesAndOccupations;
 import info.yalamanchili.office.client.profile.immigration.VisaClassificationType;
@@ -52,7 +51,6 @@ public class UpdateLCAPanel extends UpdateComposite {
     UpdateLCAAddressWidget updateAddressWidget2;
     CreateAddressWidget createAddressWidget2 = new CreateAddressWidget(CreateAddressPanel.CreateAddressPanelType.MIN);
     boolean isLCASecAddAvail = false;
-    protected MultiSelectConsultantWidget employeeSelectWidget;
 
     public UpdateLCAPanel(JSONObject entity) {
         initUpdateComposite(entity, "LCA", OfficeWelcome.constants);
@@ -101,14 +99,6 @@ public class UpdateLCAPanel extends UpdateComposite {
         }
         JSONArray employees = new JSONArray();
         int i = 0;
-        logger.info("size : " + employeeSelectWidget.getMultiSelectBox().getAllSelectedIds().size());
-        for (String empId : employeeSelectWidget.getMultiSelectBox().getAllSelectedIds()) {
-            JSONObject emp = new JSONObject();
-            emp.put("id", new JSONString(empId));
-            employees.set(i, emp);
-            i++;
-        }
-        entity.put("employees", employees);
         return entity;
     }
 
@@ -206,8 +196,6 @@ public class UpdateLCAPanel extends UpdateComposite {
         addEnumField("status", false, true, LCAStatus.names(), Alignment.HORIZONTAL);
         addDropDown("workedByEmployees", selectRecruiterW);
         entityFieldsPanel.add(empInfo);
-        employeeSelectWidget = new MultiSelectConsultantWidget("Employees", getEntityId(), false, true);
-        entityFieldsPanel.add(employeeSelectWidget);
         entityFieldsPanel.add(wagesInfo);
         addEnumField("lcaCurrWageLvl", false, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
         addField("lcaCurrMinWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);

@@ -70,12 +70,12 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
         logger.info(getReadAllLCAsURL(start, OfficeWelcome.constants.tableSize()));
         HttpService.HttpServiceAsync.instance().doGet(getReadAllLCAsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), false,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        logger.info(result);
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                logger.info(result);
+                postFetchTable(result);
+            }
+        });
     }
 
     private String getReadAllLCAsURL(Integer start, String tableSize) {
@@ -124,20 +124,7 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
             JSONArray lca1;
             String workedByEmps = "";
             String status = JSONUtils.toString(entity, "status");
-            JSONObject emp = (JSONObject) entity.get("employee");
-            if (entity.get("employee") instanceof JSONObject) {
-                lca = entity.get("employee").isObject();
-                table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName"));
-            } else if (entity.get("employee") instanceof JSONArray) {
-                lca1 = entity.get("workedByEmployees").isArray();
-                for (int idex = 0; idex < lca1.size(); idex++) {
-                    workedByEmps = workedByEmps.concat(lca1.get(idex).isObject().get("firstName").isString().stringValue().concat(" ").concat(lca1.get(idex).isObject().get("lastName").isString().stringValue()).concat(","));
-                }
-                table.setText(i, 1, JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName") + ",");
-            } else if (entity.get("lcaEmployeeName") instanceof JSONString) {
-                workedByEmps = entity.get("lcaEmployeeName").isArray().toString();
-                table.setText(i, 1, JSONUtils.toString(entity, "lcaEmployeeName"));
-            }
+            table.setText(i, 1, JSONUtils.toString(entity, "candidateNames"));
             setEnumColumn(i, 2, entity, VisaClassificationType.class.getSimpleName(), "visaClassification");
             if (entity.get("workedByEmployees") instanceof JSONObject) {
                 lca = entity.get("workedByEmployees").isObject();
@@ -204,11 +191,11 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
     ) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     private String getDeleteURL(String entityId) {
