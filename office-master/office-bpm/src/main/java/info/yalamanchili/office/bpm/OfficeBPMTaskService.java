@@ -17,11 +17,15 @@ import info.chili.bpm.types.HistoricTask;
 import info.chili.bpm.types.HistoricTask.HistoricTaskTable;
 import info.chili.bpm.types.Task;
 import info.chili.bpm.types.Task.TaskTable;
+import info.chili.email.Email;
 import info.chili.security.SecurityUtils;
 import info.chili.service.jrs.exception.ServiceException;
+import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jms.MessagingService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,6 +40,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.task.TaskQuery;
+import org.activiti.spring.annotations.TaskId;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -93,7 +98,20 @@ public class OfficeBPMTaskService {
     }
 
     public void assignTask(String taskId, Long employeeId) {
+        org.activiti.engine.task.Task task = bpmTaskService.createTaskQuery().taskId(taskId).singleResult();
         bpmTaskService.setAssignee(taskId, EmployeeDao.instance().findById(Long.valueOf(employeeId)).getEmployeeId());
+        Employee emp = EmployeeDao.instance().findById(employeeId);
+        Set<String> emailto = new HashSet<String>();
+        Email email = new Email();
+        email.setRichText(Boolean.TRUE);
+        if (emp.isActive() == true) {
+            emailto.add(EmployeeDao.instance().getPrimaryEmail(emp));
+        }
+        email.setTos(emailto);
+        email.setSubject("   A task is assigned to you by     " + OfficeSecurityService.instance().getCurrentUser().getFirstName()   +    OfficeSecurityService.instance().getCurrentUser().getLastName());
+        String messageText = "    Please click on the following link and complete the task as soon as possible      " + getTaskLink(taskId);
+        email.setBody(messageText);
+        MessagingService.instance().sendEmail(email);
     }
 
     public void assignTask(String taskId, String employeeId) {
@@ -102,6 +120,12 @@ public class OfficeBPMTaskService {
 
     public void resolveTask(String taskId) {
         bpmTaskService.resolveTask(taskId);
+    }
+
+    protected String getTaskLink(String taskId) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(OfficeServiceConfiguration.instance().getPortalWebUrl()).append("#?entity=info.chili.bpm.types.Task&id=").append(taskId);
+        return sb.toString();
     }
 
     @Transactional
