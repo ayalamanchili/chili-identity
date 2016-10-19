@@ -33,6 +33,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
@@ -110,11 +111,13 @@ public class ClientInformation extends AbstractEntity {
      */
     @ManyToOne
     @ForeignKey(name = "FK_ClientContact_ClientInformations")
+    @NotNull(groups = VendorChecks.class)
     protected Contact clientContact;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "clientinformation_client_apcontacts")
     @ForeignKey(name = "FK_ClientAPContacts_ClientInformations")
+    @Size(min = 1 ,groups = VendorChecks.class, message = "may not be null")
     protected Set<Contact> clientAPContacts;
     /**
      * Client Location
@@ -144,7 +147,7 @@ public class ClientInformation extends AbstractEntity {
      */
     @ManyToOne
     @ForeignKey(name = "FK_Vendor_ClientInformations")
-    @NotNull(groups = SubmitChecks.class)
+    @NotNull(groups = SubmitChecks.class, message = "cannot be null")
     protected Vendor vendor;
     /**
      * Vendor Contact
@@ -363,6 +366,7 @@ public class ClientInformation extends AbstractEntity {
     @NotNull(groups = SubmitChecks.class)
     protected String vendorPaymentTerms;
 
+    @NotNull(groups = VendorChecks.class)
     protected String clientPaymentTerms;
 
     protected String specialInvoiceInstructions;
@@ -1079,6 +1083,10 @@ public class ClientInformation extends AbstractEntity {
     }
     
     public interface SubcontractorChecks {
+        
+    }
+    
+    public interface VendorChecks {
         
     }
 }

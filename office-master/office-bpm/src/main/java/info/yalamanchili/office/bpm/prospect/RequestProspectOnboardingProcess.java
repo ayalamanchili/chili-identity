@@ -12,6 +12,7 @@ import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.entity.hr.Prospect;
+import info.yalamanchili.office.entity.hr.ProspectStatus;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 
@@ -40,6 +41,7 @@ public class RequestProspectOnboardingProcess implements TaskListener {
         }
         //Notes
         String notes = (String) task.getExecution().getVariable("notes");
+        //entity.setStatus(ProspectStatus.CLOSED_ONBOARDING_INITIATED);
         CommentDao.instance().addComment(notes, entity);
     }
 

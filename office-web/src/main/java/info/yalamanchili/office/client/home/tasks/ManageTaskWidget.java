@@ -16,7 +16,9 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.ALComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.employee.SelectCorpEmployeeWidget;
 import info.yalamanchili.office.client.security.SelectRoleWidget;
@@ -62,13 +64,18 @@ public class ManageTaskWidget extends ALComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        panel.add(employeeF);
-        panel.add(addUserB);
-        panel.add(removeUserB);
-        panel.add(assignToB);
-        panel.add(roleWidget);
-        panel.add(addGroupB);
-        panel.add(removeGroupB);
+        if (Auth.isAdmin()) {
+            panel.add(employeeF);
+            panel.add(addUserB);
+            panel.add(removeUserB);
+            panel.add(assignToB);
+            panel.add(roleWidget);
+            panel.add(addGroupB);
+            panel.add(removeGroupB);
+        } else {
+            panel.add(employeeF);
+            panel.add(assignToB);
+        }
         mainPanel.setContentWidget(panel);
     }
 
@@ -98,6 +105,7 @@ public class ManageTaskWidget extends ALComposite implements ClickHandler {
                     @Override
                     public void onResponse(String arg0) {
                         new ResponseStatusWidget().show("Task Updated");
+                        GenericPopup.hideIfOpen();
                     }
                 });
     }

@@ -527,10 +527,13 @@ public class ClientInformationService {
         if (emp.getEmployeeType().getName().equals(EmployeeType.SUBCONTRACTOR)) {
             ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubcontractorChecks.class);
         }
+        Vendor vendor = vendorDao.findById(ci.getVendor().getId());
+        String vName = vendor.getName();
+        if ( "NA".equals(vName)) {
+            ServiceInterceptor.instance().validateInput(ci, ClientInformation.VendorChecks.class);
+        }
         if (submitForApproval) {
-            ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class
-            );
-
+            ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class);
         }
         if (ci.getStatus() != null && !ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && !submitForApproval) {
             ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class

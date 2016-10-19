@@ -8,9 +8,14 @@
  */
 package info.yalamanchili.office.profile;
 
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 import info.chili.commons.DateUtils;
 import info.chili.commons.pdf.PDFUtils;
-import static info.chili.commons.pdf.PDFUtils.generatePdf;
 import info.chili.commons.pdf.PdfDocumentData;
 import info.chili.security.Signature;
 import info.chili.spring.SpringContext;
@@ -37,6 +42,9 @@ import info.yalamanchili.office.entity.profile.ext.Ethnicity;
 import info.yalamanchili.office.entity.profile.ext.MaritalStatus;
 import info.yalamanchili.office.entity.profile.ext.Relationship;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
+import info.yalamanchili.office.template.TemplateService;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -241,21 +249,21 @@ public class EmployeeFormsService {
         //section 5 :Emergency Contact Information - Other
         emp.getEmergencyContacts().stream().filter((emergencyContact) -> ((emergencyContact.getContact() != null)
                 && (emergencyContact.getRelation() != null))).map((emergencyContact) -> {
-                    data.getData().put("ecName2", emergencyContact.getContact().getFirstName());
-                    return emergencyContact;
-                }).map((emergencyContact) -> {
-                    data.getData().put("ecRelation2", emergencyContact.getRelation());
-                    return emergencyContact;
-                }).map((emergencyContact) -> {
-                    emergencyContact.getContact().getPhones().stream().forEach((phone) -> {
-                        data.getData().put("ecPhone2", phone.getPhoneNumber());
-                    });
-                    return emergencyContact;
-                }).forEach((EmergencyContact emergencyContact) -> {
-                    emergencyContact.getContact().getAddresss().stream().forEach((address1) -> {
-                        data.getData().put("ecAddress2", address1.getStreet1() + "," + address1.getCity() + "," + address1.getState() + "," + address1.getCountry());
-                    });
-                });
+            data.getData().put("ecName2", emergencyContact.getContact().getFirstName());
+            return emergencyContact;
+        }).map((emergencyContact) -> {
+            data.getData().put("ecRelation2", emergencyContact.getRelation());
+            return emergencyContact;
+        }).map((emergencyContact) -> {
+            emergencyContact.getContact().getPhones().stream().forEach((phone) -> {
+                data.getData().put("ecPhone2", phone.getPhoneNumber());
+            });
+            return emergencyContact;
+        }).forEach((EmergencyContact emergencyContact) -> {
+            emergencyContact.getContact().getAddresss().stream().forEach((address1) -> {
+                data.getData().put("ecAddress2", address1.getStreet1() + "," + address1.getCity() + "," + address1.getState() + "," + address1.getCountry());
+            });
+        });
         data.getData().put("employeeId", emp.getEmployeeId());
         if (emp.getJobTitle() != null) {
             data.getData().put("designation", emp.getJobTitle());
@@ -415,49 +423,82 @@ public class EmployeeFormsService {
 
     public Response printRolesAndRespForm(Employee emp) {
         PdfDocumentData data = new PdfDocumentData();
-        OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
-        data.setTemplateUrl("/templates/pdf/emp-roles-responsibilities-template.pdf");
-        data.setKeyStoreName(securityConfiguration.getKeyStoreName());
-
-        //print ACH Form with the employee and bank details. @radhika
         data.getData().put("employee", emp.getLastName() + " , " + emp.getFirstName());
         if (emp.getBranch() != null) {
             data.getData().put("branch", emp.getBranch().name());
+        } else {
+            data.getData().put("branch", "");
         }
         if (emp.getJobTitle() != null) {
             data.getData().put("jobtitle", emp.getJobTitle());
+        } else {
+            data.getData().put("jobtitle", "");
         }
         if (emp.getStartDate() != null) {
             data.getData().put("startDate", new SimpleDateFormat("MM/dd/yyyy").format(emp.getStartDate()));
+        } else {
+            data.getData().put("startDate", "");
         }
         if (CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To") != null) {
             Employee reportsToEmp = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Reports_To");
             data.getData().put("reporsToMgr", reportsToEmp.getFirstName() + " , " + reportsToEmp.getLastName());
+        } else {
+            data.getData().put("reporsToMgr", "");
         }
         if (CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Perf_Eval_Manager") != null) {
             Employee manager = CompanyContactDao.instance().getCompanyContactForEmployee(emp, "Perf_Eval_Manager");
             if (manager.getId() != null) {
                 data.getData().put("perfEvolMgr", manager.getFirstName() + " , " + manager.getLastName());
             }
+        } else {
+            data.getData().put("perfEvolMgr", "");
         }
         EmployeeAdditionalDetails empAddnlDetails = EmployeeAdditionalDetailsDao.instance().find(emp);
         if (empAddnlDetails != null && empAddnlDetails.getRolesAndResponsibilities() != null) {
-            String[] rolesArray = empAddnlDetails.getRolesAndResponsibilities().split("\n");
-            for (int i = 0; i < rolesArray.length; i++) {
-                data.getData().put("role" + i, rolesArray[i].replaceAll("\\<.*?\\>", ""));
-            }
+            data.getData().put("roles", empAddnlDetails.getRolesAndResponsibilities());
         }
         String empCompanyLogo = "";
         if (emp.getCompany() != null) {
             empCompanyLogo = emp.getCompany().getLogoURL().replace("entityId", emp.getCompany().getId().toString());
+
         } else {
             Company company = CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC);
             empCompanyLogo = company.getLogoURL().replace("entityId", company.getId().toString());
+
         }
-        byte[] pdf = generatePdf(data, empCompanyLogo);
-        return Response.ok(pdf)
+        String html = TemplateService.instance().process("emp-roles-responsibilities.xhtml", "entity", data.getData());
+
+        byte[] pdf = PDFUtils.convertToPDF(html);
+        ByteArrayOutputStream pdfOut = new ByteArrayOutputStream();
+        try {
+            PdfReader pdfReader = new PdfReader(pdf);
+            PdfStamper pdfStamper = new PdfStamper(pdfReader,
+                    pdfOut);
+
+            Image image = Image.getInstance("C:\\content-management\\office\\" + empCompanyLogo);
+            Rectangle pagesize;
+            for (int i = 1; i <= pdfReader.getNumberOfPages(); i++) {
+                PdfContentByte content = pdfStamper.getOverContent(i);
+                pagesize = pdfReader.getPageSize(i);
+                float x = pagesize.getLeft() + 20;
+                float y = pagesize.getTop() - 57;
+                image.setAbsolutePosition(x, y);
+                image.scaleAbsoluteHeight(30);
+                image.scaleAbsoluteWidth(image.getWidth() / 3);
+                content.addImage(image);
+                content.addImage(image);
+            }
+            pdfStamper.close();
+            pdfReader.close();
+        } catch (IOException | DocumentException e) {
+            throw new RuntimeException(e);
+        }
+        byte[] newPDF = pdfOut.toByteArray();
+        return Response
+                .ok(newPDF)
                 .header("content-disposition", "filename = emp-roles-responsibilities.pdf")
-                .header("Content-Length", pdf.length)
+                .header("Content-Length", newPDF.length)
                 .build();
+
     }
 }
