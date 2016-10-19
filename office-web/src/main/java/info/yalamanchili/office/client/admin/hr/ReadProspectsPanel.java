@@ -28,6 +28,7 @@ import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
+import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
 import java.util.logging.Logger;
 
 /**
@@ -188,6 +189,19 @@ public class ReadProspectsPanel extends ReadComposite {
    protected boolean enableBack() {
        return true;
    }
+   
+    @Override
+    protected boolean enableViewTasks() {
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER);
+    }
+
+    @Override
+    protected void displayTasks() {
+        String tasksUrl = OfficeWelcome.constants.root_url() + "bpm/tasks/process/";
+        if (!JSONUtils.toString(getEntity(), "bpmProcessId").isEmpty()) {
+            tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
+        }
+    }
     
     @Override
     protected ReadAllComposite getReadAllPanel() {

@@ -100,7 +100,8 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         table.setText(0, 6, getKeyValue("Phone Number"));
         if (isClosedWon == true && isOnAllTab == false) {
             table.setText(0, 7, getKeyValue("OnBoarding Invitation"));
-            table.setText(0, 8, getKeyValue("Request for onboarding"));
+            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER))
+                table.setText(0, 8, getKeyValue("Request for onboarding"));
         } else if (isClosedWon == false && isOnAllTab == true) {
             table.setText(0, 7, getKeyValue("Status"));
         }
@@ -127,12 +128,14 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
                             getOnBoardInviteCode(((ClickableLink) event.getSource()).getTitle());
                         });
                         table.setWidget(i, 7, invitationLink);
-                        ClickableLink onboardingRequestLink = new ClickableLink("Request For OnBoarding");
-                        onboardingRequestLink.setTitle(JSONUtils.toString(entity, "id"));
-                        onboardingRequestLink.addClickHandler((ClickEvent event) -> {
-                            getOnBoardRequestCode(entity);
-                        });
-                        table.setWidget(i, 8, onboardingRequestLink);
+                        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER)) {
+                            ClickableLink onboardingRequestLink = new ClickableLink("Request For OnBoarding");
+                            onboardingRequestLink.setTitle(JSONUtils.toString(entity, "id"));
+                            onboardingRequestLink.addClickHandler((ClickEvent event) -> {
+                                getOnBoardRequestCode(entity);
+                            });
+                            table.setWidget(i, 8, onboardingRequestLink);
+                        }
                     }
                 }
             } else if (isClosedWon == false && isOnAllTab == true) {
@@ -205,7 +208,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
     }
 
     public void postSendNotification() {
-        new ResponseStatusWidget().show("Successfully Sent Onboarding Invitation Initiation Email");
+        new ResponseStatusWidget().show("Successfully send onboarding request to HR");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel());
     }
