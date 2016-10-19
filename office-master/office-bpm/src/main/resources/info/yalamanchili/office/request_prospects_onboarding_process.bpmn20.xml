@@ -39,7 +39,6 @@
                                        type="enum">
                     <activiti:value id="approved" name="Approved"/>
                     <activiti:value id="rejected" name="Rejected"/>
-                    <activiti:value id="hold" name="On Hold"/>
                 </activiti:formProperty>
                 <activiti:formProperty id="notes" 
                                        name="Notes"
