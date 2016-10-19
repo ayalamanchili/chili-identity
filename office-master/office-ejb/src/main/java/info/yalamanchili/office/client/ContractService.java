@@ -328,15 +328,23 @@ public class ContractService {
                 clientFeePer = new BigDecimal(ct.getClientFee());
                 dto.setClientFees(clientFeePer.floatValue());
             }
+            BigDecimal effectiveBillingRate = getEffectiveBillingRate(ci.getId());
+            if (effectiveBillingRate == null) {
+                dto.setBillingRate(ci.getBillingRate());
+            } else {
+                dto.setBillingRate(getEffectiveBillingRate(ci.getId()));
+            }
             if (ci.getClientFeeApplicable() != null && ci.getClientFeeApplicable() && clientFeePer != null && clientFeePer.floatValue() > 0) {
                 BigDecimal clientFeeVal = clientFeePer.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
-                BigDecimal effectiveBillingRate = getEffectiveBillingRate(ci.getId());
-                if (effectiveBillingRate == null) {
-                    dto.setBillingRate(ci.getBillingRate());
-                } else {
-                    dto.setBillingRate(getEffectiveBillingRate(ci.getId()));
-                }
                 dto.setFinalBillingRate(dto.getBillingRate().subtract(calculateMargin(clientFeeVal, ct.getMaxClientFee(), ct.getMinClientFee())));
+                if (ci.getPayRatePercentage() != null) {
+                    dto.setPayRate(dto.getFinalBillingRate().multiply(new BigDecimal(ci.getPayRatePercentage())).divide(new BigDecimal(100)));
+                }
+            } else if (ci.getClientFeeApplicable() != null && !(ci.getClientFeeApplicable())) {
+                dto.setFinalBillingRate(dto.getBillingRate());
+                if (ci.getPayRatePercentage() != null) {
+                    dto.setPayRate(dto.getFinalBillingRate().multiply(new BigDecimal(ci.getPayRatePercentage())).divide(new BigDecimal(100)));
+                }
             }
         }
 
@@ -344,16 +352,24 @@ public class ContractService {
             vi = ci.getVendor();
             dto.setVendor(vi.getName());
             dto.setVendorFees(vi.getVendorFees());
+            BigDecimal effectiveBillingRate = getEffectiveBillingRate(ci.getId());
+            if (effectiveBillingRate == null) {
+                dto.setBillingRate(ci.getBillingRate());
+            } else {
+                dto.setBillingRate(getEffectiveBillingRate(ci.getId()));
+            }
             if (!(ci.getClientFeeApplicable() != null && ci.getClientFeeApplicable()) && vi.getVendorFees() != null) {
                 BigDecimal value = new BigDecimal(vi.getVendorFees());
                 BigDecimal vendorFee = value.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
-                BigDecimal effectiveBillingRate = getEffectiveBillingRate(ci.getId());
-                if (effectiveBillingRate == null) {
-                    dto.setBillingRate(ci.getBillingRate());
-                } else {
-                    dto.setBillingRate(getEffectiveBillingRate(ci.getId()));
-                }
                 dto.setFinalBillingRate(dto.getBillingRate().subtract(calculateMargin(vendorFee, vi.getMaxFees(), vi.getMinFees())));
+                if (ci.getPayRatePercentage() != null) {
+                    dto.setPayRate(dto.getFinalBillingRate().multiply(new BigDecimal(ci.getPayRatePercentage())).divide(new BigDecimal(100)));
+                }
+            } else if (!(ci.getClientFeeApplicable() != null && ci.getClientFeeApplicable()) && vi.getVendorFees() == null) {
+                dto.setFinalBillingRate(dto.getBillingRate());
+                if (ci.getPayRatePercentage() != null) {
+                    dto.setPayRate(dto.getFinalBillingRate().multiply(new BigDecimal(ci.getPayRatePercentage())).divide(new BigDecimal(100)));
+                }
             }
         }
 
