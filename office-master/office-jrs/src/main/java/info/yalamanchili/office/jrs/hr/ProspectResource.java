@@ -128,11 +128,14 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     public void requestProspectOnBoarding(ProspectDto prospect) {
         Map<String, Object> vars = new HashMap<>();
         Prospect entity=ProspectDao.instance().findById(prospect.getId());
+        //entity.setStatus(ProspectStatus.CLOSED_ONBOARDING_REQUESTED);        
         vars.put("prospect", entity);
         vars.put("caseManagerName", EmployeeDao.instance().findById(entity.getManager()).getFirstName());
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
         vars.put("prospectLink", getProspectLink(prospect.getId()));
-        officeBPMService.startProcess("request_prospect_onboarding_process", vars);
+        String Processid = officeBPMService.startProcess("request_prospect_onboarding_process", vars);
+        entity.setBpmProcessId(Processid);
+        prospectDao.getEntityManager().merge(entity);
     }
 
     protected String getProspectLink(Long prospect) {
