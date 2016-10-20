@@ -255,7 +255,7 @@ public class PerDiemRequestPanel extends CreateComposite implements ClickHandler
                             if (resObj.get(key).isObject().get("addressType").isObject().get("addressType").isString().stringValue().equals("Office")) {
                                 entityFieldsPanel.add(tac4);
                                 entityFieldsPanel.add(residenceAddr);
-                            } else if (resObj.get(key).isObject().get("addressType").isObject().get("addressType").isString().stringValue().equals("Other")) {
+                            } else if (resObj.get(key).isObject().get("addressType").isObject().get("addressType").isString().stringValue().equals("Home")) {
                                 entityFieldsPanel.add(tac3);
                                 entityFieldsPanel.add(WorkAddr);
                             } else {
@@ -317,7 +317,7 @@ public class PerDiemRequestPanel extends CreateComposite implements ClickHandler
                     entityFieldsPanel.add(tac3);
                     entityFieldsPanel.add(widget1);
                     widget1.populateFieldsFromEntity(get);
-                } else if (addressType.get("addressType").isString().stringValue().equals("Other")) {
+                } else if (addressType.get("addressType").isString().stringValue().equals("Home")) {
                     entityFieldsPanel.add(tac4);
                     entityFieldsPanel.add(widget2);
                     widget2.populateFieldsFromEntity(get);
