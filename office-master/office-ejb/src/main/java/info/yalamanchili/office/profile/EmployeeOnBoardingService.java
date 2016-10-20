@@ -93,7 +93,7 @@ public class EmployeeOnBoardingService {
         if (eo != null && !eo.getStatus().equals(OnBoardingStatus.Rejected)) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invitation.already.sent", "Onboarding Invitation Already Sent To This Email");
         } else {
-            InviteCode code = InviteCodeGeneratorService.instance().generate(InvitationType.CLIENT_ONBOARDING, dto.getEmail(), new Date(), DateUtils.addDays(new Date(), 7), false, dto.getFirstName()+" "+dto.getLastName());
+            InviteCode code = InviteCodeGeneratorService.instance().generate(InvitationType.CLIENT_ONBOARDING, dto.getEmail(), new Date(), DateUtils.addDays(new Date(), 7), false, dto);
             SerializedEntityDao.instance().save(dto, code.getClass().getCanonicalName(), code.getId());
             EmployeeOnBoarding onboarding = new EmployeeOnBoarding();
             onboarding.setEmail(dto.getEmail());
@@ -102,7 +102,7 @@ public class EmployeeOnBoardingService {
             onboarding.setStatus(OnBoardingStatus.Pending_Initial_Document_Submission);
             onboarding.setEmpName(dto.getFirstName()+" "+dto.getLastName()+" - "+EmployeeTypeDao.instance().findById(dto.getEmployeeType().getId()).getName().trim()+" - "+dto.getJobTitle().trim());
             onboarding = em.merge(onboarding);
-            InviteCodeGeneratorService.instance().sendInviteCodeEmail(code, dto.getFirstName()+" "+dto.getLastName());
+            InviteCodeGeneratorService.instance().sendInviteCodeEmail(code, dto);
             processBean.notifyBackgroundCheckTeam(EmployeeOnBoardingDao.instance().save(onboarding));
             if (dto.getComment() != null) {
                 CommentDao.instance().addComment(dto.getComment(), onboarding);
