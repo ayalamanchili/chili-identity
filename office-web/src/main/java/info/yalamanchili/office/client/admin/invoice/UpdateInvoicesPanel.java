@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.BaseField;
@@ -27,8 +28,10 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.contracts.ReadContractsPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -196,6 +199,29 @@ public class UpdateInvoicesPanel extends UpdateComposite implements ChangeHandle
         if (event.getSource().equals(update)) {
             super.onClick(event);
         }
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
+        List<String> invNumList = new ArrayList();
+        for (int i = 0; i < updateInvoiceItemPanel.size(); i++) {
+            UpdateInvoiceItemWidget get = updateInvoiceItemPanel.get(i);
+            JSONObject item = get.populateEntityFromFields();
+            invNumList.add(item.get("invoiceNumber").isString().stringValue());
+        }
+        final Set<String> dupInvSet = new HashSet();
+        final Set<String> InvSet = new HashSet();
+        for (String yourInt : invNumList) {
+            if (!InvSet.add(yourInt)) {
+                dupInvSet.add(yourInt);
+            }
+        }
+        if (dupInvSet.size() > 0) {
+            Window.alert("Invoice Number must be unique");
+            return false;
+        }
+        return valid;
     }
 
 }
