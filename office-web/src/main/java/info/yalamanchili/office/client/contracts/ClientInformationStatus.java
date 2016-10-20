@@ -18,6 +18,8 @@ public enum ClientInformationStatus {
     PENDING_INVOICING_BILLING_APPROVAL,
     PENDING_HR_VERIFICATION,
     COMPLETED,
+    PENDING_CLOSING,
+    CLOSED,
     CANCELED;
 
     public static String[] names() {
