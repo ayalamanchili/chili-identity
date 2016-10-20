@@ -8,7 +8,9 @@
  */
 package info.yalamanchili.office.bpm.clientinformation;
 
+import com.google.common.base.Strings;
 import info.chili.email.Email;
+import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
 import info.yalamanchili.office.dao.ext.CommentDao;
@@ -20,6 +22,7 @@ import info.yalamanchili.office.entity.profile.ClientInformationStatus;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import org.activiti.engine.delegate.DelegateTask;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,8 +53,6 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         //Status
         String status = (String) task.getExecution().getVariable("status");
         String itemno = (String) task.getExecution().getVariable("itemNumber");
-        String payratePercent = (String) task.getExecution().getVariable("payratePercent");
-        String specialNotes = (String) task.getExecution().getVariable("specialNotes");
         if (task.getTaskDefinitionKey().equals("newClientInfoInvoicingAndBillingTask")) {
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ClientInformationStatus.PENDING_HR_VERIFICATION);
@@ -61,29 +62,47 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
             }
         }
         if (task.getTaskDefinitionKey().equals("newClientInfoPayrollTask")) {
+            String payratePercent = (String) task.getExecution().getVariable("payratePercent");
+            String specialNotes = (String) task.getExecution().getVariable("specialNotes");
+            Integer payratePercentNum;
+            if (!StringUtils.isNumeric(payratePercent)) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "payratepercentage.invalid", "Please enter valid percentage");
+            }
+            if (!Strings.isNullOrEmpty(payratePercent)) {
+                payratePercentNum = Integer.valueOf(payratePercent);
+
+                if (payratePercentNum > 100 || payratePercentNum < 0) {
+                    throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "payratepercentage.not.number", "Please enter valid percentage between 0 and 100 eg: 80");
+                }
+            }
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ClientInformationStatus.PENDING_PAYROLL_VERIFICATION);
-                entity.setPayRatePercentage(Float.valueOf(payratePercent));
+                if (!payratePercent.equalsIgnoreCase("")) {
+                    entity.setPayRatePercentage(Float.valueOf(payratePercent));
+                }
                 CommentDao.instance().addComment(specialNotes, entity);
             } else {
                 entity.setStatus(ClientInformationStatus.CANCELED);
             }
         }
-        if (task.getTaskDefinitionKey().equals("newClientInfoSUBCTask")) {
+        if (task.getTaskDefinitionKey()
+                .equals("newClientInfoSUBCTask")) {
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ClientInformationStatus.COMPLETED);
             } else {
                 entity.setStatus(ClientInformationStatus.CANCELED);
             }
         }
-        if (task.getTaskDefinitionKey().equals("newClientInfoHRTask")) {
+        if (task.getTaskDefinitionKey()
+                .equals("newClientInfoHRTask")) {
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ClientInformationStatus.COMPLETED);
             } else {
                 entity.setStatus(ClientInformationStatus.CANCELED);
             }
         }
-        ClientInformationDao.instance().save(entity);
+        ClientInformationDao.instance()
+                .save(entity);
     }
 
     @Async
@@ -95,22 +114,22 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         email.setHtml(Boolean.TRUE);
         email.setRichText(Boolean.TRUE);
         email.setSubject("New File/Project   : " + ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
-        String messageText = "<h3> <b> Client Information : </b> </h3> </br> " ;
+        String messageText = "<h3> <b> Client Information : </b> </h3> </br> ";
         messageText = messageText.concat("\n  <b> Client &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp : </b>  " + ci.getClient().getName() + "</br>");
         messageText = messageText.concat("\n  <b> Item_No  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp : </b> " + itemNo + "</br>");
         if (ci.getVendor() != null) {
             messageText = messageText.concat(" \n <b> Vendor  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp : </b> " + ci.getVendor().getName() + "</br>");
         }
         if (ci.getSubcontractor() != null) {
-            messageText = messageText.concat("\n <b> Subcontractor &nbsp;&nbsp;&nbsp;&nbsp : </b>" + ci.getSubcontractor().getName() +"</br>");
+            messageText = messageText.concat("\n <b> Subcontractor &nbsp;&nbsp;&nbsp;&nbsp : </b>" + ci.getSubcontractor().getName() + "</br>");
         }
         if (ci.getCompany() != null) {
-            messageText = messageText.concat("\n <b> Company  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp : </b> " + ci.getCompany().name() +"</br>");
+            messageText = messageText.concat("\n <b> Company  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp : </b> " + ci.getCompany().name() + "</br>");
         }
-        messageText = messageText.concat("\n <b> Project Start Date  &nbsp :  </b> " + ci.getStartDate() +"</br>");
-        messageText = messageText.concat("\n  <b> Updated_By &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp : </b> " + emp.getFirstName() + " " + emp.getLastName() +"</br>");
+        messageText = messageText.concat("\n <b> Project Start Date  &nbsp :  </b> " + ci.getStartDate() + "</br>");
+        messageText = messageText.concat("\n  <b> Updated_By &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp : </b> " + emp.getFirstName() + " " + emp.getLastName() + "</br>");
         if (task.getExecution().getVariable("specialInvoiceInstructions") != null) {
-            messageText = messageText.concat("\n <b> Special Invoice Instructions : </b> " + task.getExecution().getVariable("specialInvoiceInstructions") +"</br>");
+            messageText = messageText.concat("\n <b> Special Invoice Instructions : </b> " + task.getExecution().getVariable("specialInvoiceInstructions") + "</br>");
         }
         if (task.getExecution().getVariable("accountNotes") != null) {
             messageText = messageText.concat("\n <b> Account Notes : </b>" + task.getExecution().getVariable("accountNotes"));
