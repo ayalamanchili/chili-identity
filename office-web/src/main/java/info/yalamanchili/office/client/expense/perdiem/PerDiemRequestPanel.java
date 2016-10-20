@@ -169,7 +169,6 @@ public class PerDiemRequestPanel extends CreateComposite implements ClickHandler
     protected void addWidgets() {
         entityFieldsPanel.add(maintain2ResidencesInfo);
         entityFieldsPanel.add(live50MilesAwayInfo);
-        entityActionsPanel.add(tac);
     }
     
     @Override
@@ -190,6 +189,7 @@ public class PerDiemRequestPanel extends CreateComposite implements ClickHandler
             addLive50MilesAwayWidget();
             loadEmpAdress(OfficeWelcome.instance().employeeId, true);
         }
+
         if (event.getSource().equals(amountCB.getBox())) {
             if (amountCB.getValue() == true) {
                 amountF.setVisible(true);
@@ -264,7 +264,8 @@ public class PerDiemRequestPanel extends CreateComposite implements ClickHandler
                                 entityFieldsPanel.add(tac3);
                                 entityFieldsPanel.add(WorkAddr);
                             }
-                        } else if (resObj.get(key).isObject().get("addressType").isObject().get("addressType").isString().stringValue().equals("Home")) {
+                                } else {
+                                    if (resObj.get(key).isObject().get("addressType").isObject().get("addressType").isString().stringValue().equals("Home")) {
                             entityFieldsPanel.add(tac2);
                             entityFieldsPanel.add(TemporaryAddr);
                         } else if (resObj.get(key).isObject().get("addressType").isObject().get("addressType").isString().stringValue().equals("Other")) {
@@ -276,6 +277,7 @@ public class PerDiemRequestPanel extends CreateComposite implements ClickHandler
                             entityFieldsPanel.add(tac1);
                             entityFieldsPanel.add(permanentAddr);
                         }
+                                }
                         populateAddressFields(resObj.get(key).isObject(), live50MilesAway);
                     } else if (resObj.get(key) instanceof JSONArray) {
                         JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
@@ -284,7 +286,9 @@ public class PerDiemRequestPanel extends CreateComposite implements ClickHandler
                             populateAddressFields(entity, live50MilesAway);
                         }
                     }
-                } else if (live50MilesAway == true) {
+                        } else {
+                            logger.info("else");
+                            if (live50MilesAway == true) {
                     entityFieldsPanel.add(tac3);
                     entityFieldsPanel.add(WorkAddr);
                     entityFieldsPanel.add(tac4);
@@ -295,6 +299,7 @@ public class PerDiemRequestPanel extends CreateComposite implements ClickHandler
                     entityFieldsPanel.add(tac2);
                     entityFieldsPanel.add(TemporaryAddr);
                 }
+                        }
                 if (entityFieldsPanel.getWidgetCount() == 9) {
                     addAnotherAddressWidget(live50MilesAway);
                 }
@@ -330,6 +335,7 @@ public class PerDiemRequestPanel extends CreateComposite implements ClickHandler
                     widget2.populateFieldsFromEntity(get);
                 }
             }
+            entityFieldsPanel.add(tac);
         }
     }
     
