@@ -16,9 +16,11 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.crud.TCRUDComposite;
@@ -60,6 +62,9 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
     public List<TCRUDComposite> updateItemPanels = new ArrayList<>();
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
     protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, false, Alignment.HORIZONTAL);
+    HTML tac = new HTML(" I " + OfficeWelcome.instance().getCurrentUserName() + " Acknowledge that all information in my expenses report is accurate and true \n");
+    CheckBox confrmCB = new CheckBox();
+    HorizontalPanel hPanel = new HorizontalPanel();
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants2, "ExpenseReceipt", "", "ExpenseReceipt/fileURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
@@ -94,13 +99,12 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
             + "<ul>\n"
             + "</ul>");
 
-    protected static HTML notes = new HTML("\n"
+    protected static HTML Acknowledgement = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
-            + "<strong style=\"color:#555555\">Note: Please mail expense original receipts to Tampa office.</strong></p>\n"
+            + "<strong style=\"color:#555555\">Acknowledge</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");
-
     HTML emptyLine = new HTML("<br/>");
 
     EnumField expenseFormType;
@@ -189,7 +193,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
                 i++;
             }
         }
-        logger.info("items are .... "+items);
+        logger.info("items are .... " + items);
         entity.put(EXPENSE_ITEMS, items);
         int j = expenseReceipts.size();
         logger.info(expenseReceipts.toString());
@@ -358,7 +362,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
         travelInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseItemsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseReceiptInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-        notes.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        Acknowledgement.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         otherDepartment.setVisible(false);
         otherEmployees.setVisible(true);
     }
@@ -399,7 +403,11 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
         entityFieldsPanel.add(fileUploadPanel);
         entityFieldsPanel.add(expenseItemsInfo);
         entityActionsPanel.add(addItemL);
-        entityActionsPanel.add(getLineSeperatorTag("I certify that all information in my expenses report is accurate and true."));
+        entityActionsPanel.add(Acknowledgement);
+        hPanel.add(confrmCB);
+        confrmCB.setValue(true);
+        hPanel.add(tac);
+        entityActionsPanel.add(hPanel);
         entityActionsPanel.add(submitForApprovalF);
         submitForApprovalF.setValue(true);
         setButtonText("Submit");

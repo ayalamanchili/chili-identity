@@ -158,10 +158,10 @@ public class ReadTaskPanel extends ALComposite implements ClickHandler {
         panel.add(completeB);
         panel.add(acquireB);
         panel.add(releaseB);
-        if (Auth.isAdmin()) {
+        if (Auth.isAdmin()) 
             panel.add(deleteB);
+        if(Auth.isAdmin() || Auth.isCorporateEmployee())
             panel.add(manageB);
-        }
         panel.add(new CommentsPanel(taskId));
     }
 

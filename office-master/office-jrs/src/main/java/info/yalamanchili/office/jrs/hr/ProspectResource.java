@@ -15,6 +15,7 @@ import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
+import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.drive.FileDao;
@@ -47,7 +48,10 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import jdk.nashorn.internal.parser.JSONParser;
+import org.activiti.engine.delegate.DelegateTask;
 import org.dozer.Mapper;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -72,7 +76,8 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
 
     @Autowired
     public ProspectService prospectService;
-
+    @Autowired
+    protected OfficeBPMService officeBPMService;
     @Autowired
     protected InviteCodeDao inviteCodeDao;
     @Autowired
@@ -116,6 +121,27 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @CacheEvict(value = OfficeCacheKeys.PROSPECT, allEntries = true)
     public ProspectDto update(ProspectDto prospect, @QueryParam("screenedById") Long screenedById) {
         return prospectService.update(prospect, screenedById);
+    }
+
+    @PUT
+    @Path("/request-prospect-onboarding")
+    public void requestProspectOnBoarding(ProspectDto prospect) {
+        Map<String, Object> vars = new HashMap<>();
+        Prospect entity=ProspectDao.instance().findById(prospect.getId());
+        //entity.setStatus(ProspectStatus.CLOSED_ONBOARDING_REQUESTED);        
+        vars.put("prospect", entity);
+        vars.put("caseManagerName", EmployeeDao.instance().findById(entity.getManager()).getFirstName());
+        vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
+        vars.put("prospectLink", getProspectLink(prospect.getId()));
+        String Processid = officeBPMService.startProcess("request_prospect_onboarding_process", vars);
+        entity.setBpmProcessId(Processid);
+        prospectDao.getEntityManager().merge(entity);
+    }
+
+    protected String getProspectLink(Long prospect) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(OfficeServiceConfiguration.instance().getPortalWebUrl()).append("#?entity=info.yalamanchili.office.entity.hr.Prospect&id=").append(prospect);
+        return sb.toString();
     }
 
     @GET
@@ -236,15 +262,15 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         }
         dto.setFirstName(p.getContact().getFirstName());
         dto.setLastName(p.getContact().getLastName());
-        if(p.getContact().getMiddleInitial()!=null){
+        if (p.getContact().getMiddleInitial() != null) {
             dto.setMiddleInitial(p.getContact().getMiddleInitial());
         }
         dto.setScreenedBy(p.getScreenedBy());
         dto.setPhoneNumber(p.getContact().getPhones().get(0).getPhoneNumber());
         if (p.getContact().getEmails() != null && p.getContact().getEmails().size() > 0) {
-               dto.setEmail(p.getContact().getEmails().get(0).getEmail());
+            dto.setEmail(p.getContact().getEmails().get(0).getEmail());
         }
-        if(p.getCompany()!=null){
+        if (p.getCompany() != null) {
             dto.setCompany(p.getCompany());
         }
         dto.setReferredBy(p.getReferredBy());

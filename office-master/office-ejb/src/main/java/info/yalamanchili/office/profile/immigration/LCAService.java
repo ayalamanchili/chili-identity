@@ -10,10 +10,8 @@ package info.yalamanchili.office.profile.immigration;
 
 import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.dao.profile.immigration.LCALinkDao;
 import info.yalamanchili.office.dao.profile.immigration.LCADao;
 import info.yalamanchili.office.entity.immigration.LCA;
-import info.yalamanchili.office.entity.immigration.LCALink;
 import info.yalamanchili.office.entity.immigration.LCADto;
 import info.yalamanchili.office.entity.immigration.LCAStatus;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -33,7 +31,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class LCAService {
-    
+
     @PersistenceContext
     protected EntityManager em;
     @Autowired
@@ -41,12 +39,10 @@ public class LCAService {
     @Autowired
     protected LCADao lcaDao;
     @Autowired
-    protected LCALinkDao lcaLinkDao;
-    @Autowired
     protected EmployeeDao employeeDao;
     @Autowired
     protected CompanyDao companyDao;
-    
+
     public LCA saveLCA(LCADto dto) {
         LCA lca = mapper.map(dto, LCA.class);
         if (lca.getStatus() == null) {
@@ -62,20 +58,9 @@ public class LCAService {
             }
         }
         lca = lcaDao.save(lca);
-        for (Employee emp : dto.getEmployees()) {
-            if (emp.getId() != null) {
-                LCALink lcaLink = new LCALink();
-                Employee employee = employeeDao.findById(emp.getId());
-                lcaLink.setFirstName(employee.getFirstName());
-                lcaLink.setLastName(employee.getLastName());
-                lcaLink.setTargetEntityId(emp.getId());
-                lcaLink.setTargetEntityName(Employee.class.getCanonicalName());
-                lcaLinkDao.save(lcaLink, lca, employee);
-            }
-        }
         return lca;
     }
-    
+
     public LCA updateLCA(LCADto dto) {
         LCA lca = mapper.map(dto, LCA.class);
         if (lca.getStatus() == null) {
@@ -93,21 +78,7 @@ public class LCAService {
         }
         lca.setWorkedByEmployees(newRecs);
         lca = em.merge(lca);
-        for (LCALink link : lcaLinkDao.findLCA(lca.getId(), lca.getClass().getCanonicalName())) {
-            if (link.getId() != null) {
-                lcaLinkDao.delete(link);
-            }
-        }
-        for (Employee emp : dto.getEmployees()) {
-            if (emp.getId() != null) {
-                LCALink lcaLink = new LCALink();
-                Employee employee = employeeDao.findById(emp.getId());
-                lcaLink.setFirstName(employee.getFirstName());
-                lcaLink.setLastName(employee.getLastName());
-                lcaLinkDao.save(lcaLink, lca, employee);
-            }
-        }
         return lca;
     }
-    
+
 }

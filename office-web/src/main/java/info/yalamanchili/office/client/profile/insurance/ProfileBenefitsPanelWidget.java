@@ -17,7 +17,7 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.benefits.RetirementPlanReadPanel;
+import info.yalamanchili.office.client.profile.benefits.ReadAllBenefitsPanel;
 
 /**
  *
@@ -55,7 +55,7 @@ public class ProfileBenefitsPanelWidget extends ALComposite implements ClickHand
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(benefitsPanel)) {
             TabPanel.instance().profilePanel.entityPanel.clear();
-            TabPanel.instance().profilePanel.entityPanel.add(new RetirementPlanReadPanel());
+            TabPanel.instance().profilePanel.entityPanel.add(new ReadAllBenefitsPanel(OfficeWelcome.instance().employeeId));
         }
         if (event.getSource().equals(healthInsuranceL)) {
             TabPanel.instance().profilePanel.entityPanel.clear();

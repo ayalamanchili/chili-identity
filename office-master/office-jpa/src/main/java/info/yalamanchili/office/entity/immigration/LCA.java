@@ -54,7 +54,7 @@ public class LCA extends AbstractEntity {
     @ForeignKey(name = "FK_Emp_Lca")
     private Employee employee;
 
-    protected String lcaEmployeeName;
+    protected String candidateNames;
 
     protected Long totalWorkingPositions;
 
@@ -369,17 +369,17 @@ public class LCA extends AbstractEntity {
         this.employee = employee;
     }
 
-    public String getLcaEmployeeName() {
-        return lcaEmployeeName;
+    public String getCandidateNames() {
+        return candidateNames;
     }
 
-    public void setLcaEmployeeName(String lcaEmployeeName) {
-        this.lcaEmployeeName = lcaEmployeeName;
+    public void setCandidateNames(String candidateNames) {
+        this.candidateNames = candidateNames;
     }
 
     @Override
     public String toString() {
-        return "LCA{" + "visaClassification=" + visaClassification + ", socCodesAndOccupations=" + socCodesAndOccupations + ", employee=" + employee + ", lcaEmployeeName=" + lcaEmployeeName + ", totalWorkingPositions=" + totalWorkingPositions + ", totalPendingPositions=" + totalPendingPositions + ", workedByEmployees=" + workedByEmployees + ", company=" + company + ", lcaAddress1=" + lcaAddress1 + ", lcaAddress2=" + lcaAddress2 + ", lcaCurrWageLvl=" + lcaCurrWageLvl + ", lcaCurrMinWage=" + lcaCurrMinWage + ", lcaCurrMaxWage=" + lcaCurrMaxWage + ", jobTitle=" + jobTitle + ", withdrawnLCANumber=" + withdrawnLCANumber + ", lcaNumber=" + lcaNumber + ", lcaFiledDate=" + lcaFiledDate + ", lcaValidFromDate=" + lcaValidFromDate + ", lcaValidToDate=" + lcaValidToDate + ", status=" + status + ", clientName=" + clientName + ", vendorName=" + vendorName + ", lcaPostingSentToVendor=" + lcaPostingSentToVendor + ", responseOnLcaPosting=" + responseOnLcaPosting + ", reminderEmail=" + reminderEmail + ", certifiedLcaSentConsultant=" + certifiedLcaSentConsultant + ", lcaPostingSSTLocation=" + lcaPostingSSTLocation + ", lcaFiledInPIF=" + lcaFiledInPIF + ", nonDisplacement=" + nonDisplacement + '}';
+        return "LCA{" + "visaClassification=" + visaClassification + ", socCodesAndOccupations=" + socCodesAndOccupations + ", employee=" + employee + ", lcaEmployeeName=" + candidateNames + ", totalWorkingPositions=" + totalWorkingPositions + ", totalPendingPositions=" + totalPendingPositions + ", workedByEmployees=" + workedByEmployees + ", company=" + company + ", lcaAddress1=" + lcaAddress1 + ", lcaAddress2=" + lcaAddress2 + ", lcaCurrWageLvl=" + lcaCurrWageLvl + ", lcaCurrMinWage=" + lcaCurrMinWage + ", lcaCurrMaxWage=" + lcaCurrMaxWage + ", jobTitle=" + jobTitle + ", withdrawnLCANumber=" + withdrawnLCANumber + ", lcaNumber=" + lcaNumber + ", lcaFiledDate=" + lcaFiledDate + ", lcaValidFromDate=" + lcaValidFromDate + ", lcaValidToDate=" + lcaValidToDate + ", status=" + status + ", clientName=" + clientName + ", vendorName=" + vendorName + ", lcaPostingSentToVendor=" + lcaPostingSentToVendor + ", responseOnLcaPosting=" + responseOnLcaPosting + ", reminderEmail=" + reminderEmail + ", certifiedLcaSentConsultant=" + certifiedLcaSentConsultant + ", lcaPostingSSTLocation=" + lcaPostingSSTLocation + ", lcaFiledInPIF=" + lcaFiledInPIF + ", nonDisplacement=" + nonDisplacement + '}';
     }
 
 }

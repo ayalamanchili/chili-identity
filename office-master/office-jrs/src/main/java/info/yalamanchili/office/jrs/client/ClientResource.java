@@ -13,6 +13,7 @@ import info.chili.service.jrs.types.Entry;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
+import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.client.ClientService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
@@ -38,7 +39,9 @@ import info.yalamanchili.office.jrs.profile.AddressResource.AddressTable;
 import info.yalamanchili.office.mapper.profile.ContactMapper;
 import info.yalamanchili.office.profile.ContactService;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -83,6 +86,8 @@ public class ClientResource extends CRUDResource<Client> {
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
+    @Autowired
+    protected OfficeBPMService officeBPMService;
 
     @Override
     public CRUDDao getDao() {
@@ -127,6 +132,10 @@ public class ClientResource extends CRUDResource<Client> {
     @CacheEvict(value = OfficeCacheKeys.CLIENT, allEntries = true)
     @Override
     public Client save(Client entity) {
+        Map<String, Object> vars = new HashMap<String, Object>();
+        vars.put("client", entity);
+        vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
+        officeBPMService.startProcess("update_client_notification_process", vars);
         return clientDao.save(entity);
     }
 

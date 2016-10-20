@@ -15,13 +15,10 @@ import info.yalamanchili.office.client.profile.immigration.LCA.LCAWageLevels;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.HTML;
-import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.TReadComposite;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -32,7 +29,6 @@ import info.yalamanchili.office.client.profile.immigration.Polar;
 import info.yalamanchili.office.client.profile.immigration.VisaClassificationType;
 import info.yalamanchili.office.client.profile.immigration.VisaProcessingType;
 import info.yalamanchili.office.client.profile.immigration.VisaStatus;
-import java.util.Date;
 import java.util.logging.Logger;
 
 /**
@@ -183,24 +179,6 @@ public class ReadPetitionPanel extends TReadComposite {
     @Override
     public void loadEntity(String entityId) {
 
-    }
-
-    public void populatePrevLCAWages() {
-        HttpService.HttpServiceAsync.instance().doGet(getPrevLCAWages(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        if (arg0 != null) {
-                            Date date2 = new Date(arg0);
-
-                        }
-                    }
-                }
-        );
-    }
-
-    private String getPrevLCAWages() {
-        return OfficeWelcome.constants.root_url() + "lca/prevLCAWages/" + JSONUtils.toString(petitionEmployee, "id");
     }
 
     @Override
