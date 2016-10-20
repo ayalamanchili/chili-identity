@@ -249,21 +249,21 @@ public class EmployeeFormsService {
         //section 5 :Emergency Contact Information - Other
         emp.getEmergencyContacts().stream().filter((emergencyContact) -> ((emergencyContact.getContact() != null)
                 && (emergencyContact.getRelation() != null))).map((emergencyContact) -> {
-            data.getData().put("ecName2", emergencyContact.getContact().getFirstName());
-            return emergencyContact;
-        }).map((emergencyContact) -> {
-            data.getData().put("ecRelation2", emergencyContact.getRelation());
-            return emergencyContact;
-        }).map((emergencyContact) -> {
-            emergencyContact.getContact().getPhones().stream().forEach((phone) -> {
-                data.getData().put("ecPhone2", phone.getPhoneNumber());
-            });
-            return emergencyContact;
-        }).forEach((EmergencyContact emergencyContact) -> {
-            emergencyContact.getContact().getAddresss().stream().forEach((address1) -> {
-                data.getData().put("ecAddress2", address1.getStreet1() + "," + address1.getCity() + "," + address1.getState() + "," + address1.getCountry());
-            });
-        });
+                    data.getData().put("ecName2", emergencyContact.getContact().getFirstName());
+                    return emergencyContact;
+                }).map((emergencyContact) -> {
+                    data.getData().put("ecRelation2", emergencyContact.getRelation());
+                    return emergencyContact;
+                }).map((emergencyContact) -> {
+                    emergencyContact.getContact().getPhones().stream().forEach((phone) -> {
+                        data.getData().put("ecPhone2", phone.getPhoneNumber());
+                    });
+                    return emergencyContact;
+                }).forEach((EmergencyContact emergencyContact) -> {
+                    emergencyContact.getContact().getAddresss().stream().forEach((address1) -> {
+                        data.getData().put("ecAddress2", address1.getStreet1() + "," + address1.getCity() + "," + address1.getState() + "," + address1.getCountry());
+                    });
+                });
         data.getData().put("employeeId", emp.getEmployeeId());
         if (emp.getJobTitle() != null) {
             data.getData().put("designation", emp.getJobTitle());
@@ -456,6 +456,8 @@ public class EmployeeFormsService {
         EmployeeAdditionalDetails empAddnlDetails = EmployeeAdditionalDetailsDao.instance().find(emp);
         if (empAddnlDetails != null && empAddnlDetails.getRolesAndResponsibilities() != null) {
             data.getData().put("roles", empAddnlDetails.getRolesAndResponsibilities());
+        } else {
+            data.getData().put("roles", "");
         }
         String empCompanyLogo = "";
         if (emp.getCompany() != null) {
