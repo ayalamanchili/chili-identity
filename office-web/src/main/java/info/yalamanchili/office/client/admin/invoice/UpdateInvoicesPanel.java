@@ -208,7 +208,9 @@ public class UpdateInvoicesPanel extends UpdateComposite implements ChangeHandle
         for (int i = 0; i < updateInvoiceItemPanel.size(); i++) {
             UpdateInvoiceItemWidget get = updateInvoiceItemPanel.get(i);
             JSONObject item = get.populateEntityFromFields();
-            invNumList.add(item.get("invoiceNumber").isString().stringValue());
+            if (item.containsKey("invoiceNumber")) {
+                invNumList.add(item.get("invoiceNumber").isString().stringValue());
+            }
         }
         final Set<String> dupInvSet = new HashSet();
         final Set<String> InvSet = new HashSet();
