@@ -483,9 +483,9 @@ public class EmployeeFormsService {
                 PdfContentByte content = pdfStamper.getOverContent(i);
                 pagesize = pdfReader.getPageSize(i);
                 float x = pagesize.getLeft() + 20;
-                float y = pagesize.getTop() - 57;
+                float y = pagesize.getTop() - 30;
                 image.setAbsolutePosition(x, y);
-                image.scaleAbsoluteHeight(30);
+                image.scaleAbsoluteHeight(25);
                 image.scaleAbsoluteWidth(image.getWidth() / 3);
                 content.addImage(image);
                 content.addImage(image);
