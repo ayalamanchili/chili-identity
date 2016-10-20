@@ -132,11 +132,13 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("isEndDateConfirmed", entity);
         assignEntityValueFromField("recruiters", entity);
         assignEntityValueFromField("itemNumber", entity);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_ADMIN)) {
+        assignEntityValueFromField("payRatePercentage", entity);
+        assignEntityValueFromField("overTimePayRatePercentage", entity);
+        }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             assignEntityValueFromField("billingRate", entity);
-            assignEntityValueFromField("payRatePercentage", entity);
-            assignEntityValueFromField("overTimeBillingRate", entity);
-            assignEntityValueFromField("overTimePayRatePercentage", entity);
+            assignEntityValueFromField("overTimeBillingRate", entity);           
             assignEntityValueFromField("invoiceFrequency", entity);
             assignEntityValueFromField("invoiceDeliveryMethod", entity);
             assignEntityValueFromField("billingRateDuration", entity);
@@ -247,10 +249,12 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("isEndDateConfirmed", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("recruiters", entity, null);
         assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_ADMIN)) {
+        assignFieldValueFromEntity("payRatePercentage", entity, DataType.FLOAT_FIELD);
+        assignFieldValueFromEntity("overTimePayRatePercentage", entity, DataType.FLOAT_FIELD);
+        }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
-            assignFieldValueFromEntity("payRatePercentage", entity, DataType.FLOAT_FIELD);
-            assignFieldValueFromEntity("overTimePayRatePercentage", entity, DataType.FLOAT_FIELD);
             assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
             assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
@@ -348,7 +352,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addDropDown("clientAPContacts", selectClientAcctPayContact);
 //        addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        if (!Auth.isAdmin() && cistatus.equals("COMPLETED")) {
+        if (!Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN,ROLE.ROLE_CONTRACTS_ADMIN) && cistatus.equals("COMPLETED")) {
             selectVendorWidgetF.setReadOnly(true);
             entityFieldsPanel.add(getLineSeperatorTag("Middle Vendor Information"));
             addDropDown("middleVendor", new SelectMiddleVendorWidget(true, false, Alignment.HORIZONTAL));
