@@ -20,11 +20,10 @@
             <documentation>
                 Update Vendor Notification.
                 
-                Below Vendor has been updated in portal. Please click on below link to view the changes.                                
+                Below Vendor has been updated in portal. 
                 
                 Vendor Name: ${vendor.name} 
                 
-                https://apps.sstech.us/site/office/
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.vendor.UpdateVendorNotificationProcess" />

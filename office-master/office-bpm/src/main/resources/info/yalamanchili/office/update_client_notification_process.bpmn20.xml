@@ -20,11 +20,10 @@
             <documentation>
                 Update Client Notification.
                 
-                Below Client has been updated in portal. Please click on below link to view the changes.                                
+                Below Client has been updated in portal. 
                 
                 Client Name: ${client.name} 
                 
-                https://apps.sstech.us/site/office/
             </documentation>
             <extensionElements>
                 <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.client.UpdateClientNotificationProcess" />
