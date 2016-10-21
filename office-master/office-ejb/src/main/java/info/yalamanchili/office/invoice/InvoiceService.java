@@ -205,7 +205,7 @@ public class InvoiceService {
         //TODO get active CPDS during the report start and end date range
         for (ContractDto contract : ContractReportService.instance().getAllActiveCPDsBetween(startDate, DateUtils.getNextDay(endDate, -31))) {
             ClientInformation cpd = ciDao.findById(contract.getId());
-            if (!cpd.getInvoiceDeliveryMethod().equals(InvoiceDeliveryMethod.DO_NOT_SEND_INVOICES)) {
+            if (!InvoiceDeliveryMethod.DO_NOT_SEND_INVOICES.equals(cpd.getInvoiceDeliveryMethod())) {
                 if (cpd.getInvoice().size() > 0) {
                     //fix AIOOBE with dates set
                     dates.clear();
@@ -228,13 +228,6 @@ public class InvoiceService {
                                     dto.setMissingInvPeriodTo(endDate);
                                     missingInvoices.add(dto);
                                 }
-                                /**
-                                 * else {
-                                 * dto.setMissingInvPeriodFrom(startDate);
-                                 * dto.setMissingInvPeriodTo(endDate);
-                                 * missingInvoices.add(dto); }*
-                                 */
-
                             } else {
                                 MissingInvoicesReportDto dto = new MissingInvoicesReportDto();
                                 dto.setEmployee(contract.getEmployee());
