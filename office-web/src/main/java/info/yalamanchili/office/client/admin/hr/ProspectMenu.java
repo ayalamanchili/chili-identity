@@ -46,7 +46,7 @@ public class ProspectMenu extends CMenuBar {
             if (TabPanel.instance().getMyOfficePanel().entityPanel.getWidgetCount() > 0) {
                 TabPanel.instance().getMyOfficePanel().entityPanel.remove(1);
             }
-            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR)) {
+            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
                 TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllProspectsPanel());
                 TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new ProspectsSidePanel());
             }
@@ -57,7 +57,7 @@ public class ProspectMenu extends CMenuBar {
         if (TabPanel.instance().getMyOfficePanel().entityPanel.getWidgetCount() > 0) {
             TabPanel.instance().getMyOfficePanel().entityPanel.remove(1);
         }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
             JSONObject entity = new JSONObject();
             entity.put("status", new JSONString("IN_PROGRESS"));
             getProspects(entity);
@@ -70,7 +70,7 @@ public class ProspectMenu extends CMenuBar {
         if (TabPanel.instance().getMyOfficePanel().entityPanel.getWidgetCount() > 0) {
             TabPanel.instance().getMyOfficePanel().entityPanel.remove(1);
         }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
             JSONObject entity = new JSONObject();
             entity.put("status", new JSONString("RECRUITING"));
             getProspects(entity);
@@ -83,7 +83,7 @@ public class ProspectMenu extends CMenuBar {
         if (TabPanel.instance().getMyOfficePanel().entityPanel.getWidgetCount() > 0) {
             TabPanel.instance().getMyOfficePanel().entityPanel.remove(1);
         }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
             JSONObject entity = new JSONObject();
             entity.put("status", new JSONString("BENCH"));
             getProspects(entity);
@@ -96,7 +96,7 @@ public class ProspectMenu extends CMenuBar {
         if (TabPanel.instance().getMyOfficePanel().entityPanel.getWidgetCount() > 0) {
             TabPanel.instance().getMyOfficePanel().entityPanel.remove(1);
         }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
             JSONObject entity = new JSONObject();
             entity.put("status", new JSONString("ONHOLD"));
             getProspects(entity);
@@ -109,7 +109,7 @@ public class ProspectMenu extends CMenuBar {
         if (TabPanel.instance().getMyOfficePanel().entityPanel.getWidgetCount() > 0) {
             TabPanel.instance().getMyOfficePanel().entityPanel.remove(1);
         }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
             JSONObject entity = new JSONObject();
             entity.put("status", new JSONString("CLOSED_WON"));
             getProspects(entity);
@@ -122,7 +122,7 @@ public class ProspectMenu extends CMenuBar {
         if (TabPanel.instance().getMyOfficePanel().entityPanel.getWidgetCount() > 0) {
             TabPanel.instance().getMyOfficePanel().entityPanel.remove(1);
         }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
             JSONObject entity = new JSONObject();
             entity.put("status", new JSONString("CLOSED_LOST"));
             getProspects(entity);
