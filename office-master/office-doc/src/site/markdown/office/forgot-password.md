@@ -1,4 +1,4 @@
-Reset/Forgot Password
+How do I get my Username, Reset my Password
 =========
 
 - Visit [Portal](https://apps.sstech.us/portal) [please bookmark] (https://apps.sstech.us/portal)
