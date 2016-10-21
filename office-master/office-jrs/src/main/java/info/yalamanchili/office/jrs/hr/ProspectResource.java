@@ -127,8 +127,8 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @Path("/request-prospect-onboarding")
     public void requestProspectOnBoarding(ProspectDto prospect) {
         Map<String, Object> vars = new HashMap<>();
-        Prospect entity=ProspectDao.instance().findById(prospect.getId());
-        //entity.setStatus(ProspectStatus.CLOSED_ONBOARDING_REQUESTED);        
+        Prospect entity = ProspectDao.instance().findById(prospect.getId());
+        entity.setStatus(ProspectStatus.CLOSED_ONBOARDING_REQUESTED);
         vars.put("prospect", entity);
         vars.put("caseManagerName", EmployeeDao.instance().findById(entity.getManager()).getFirstName());
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
