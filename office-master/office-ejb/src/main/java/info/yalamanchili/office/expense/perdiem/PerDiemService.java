@@ -123,12 +123,12 @@ public class PerDiemService {
                         data.getData().put("workcity", address.getCity());
                         data.getData().put("workstate", address.getState());
                         data.getData().put("workzip", address.getZip());
-                    } else if (address.getAddressType().getAddressType().equals("Other")) {
-                        data.getData().put("residencestreet1", address.getStreet1());
-                        data.getData().put("residencestreet2", address.getStreet2());
-                        data.getData().put("residencecity", address.getCity());
-                        data.getData().put("residencestate", address.getState());
-                        data.getData().put("residencezip", address.getZip());
+                    } else if (address.getAddressType().getAddressType().equals("Home")) {
+                        data.getData().put("permanentstreet1", address.getStreet1());
+                        data.getData().put("permanentstreet2", address.getStreet2());
+                        data.getData().put("permanentcity", address.getCity());
+                        data.getData().put("permanentstate", address.getState());
+                        data.getData().put("permanentzip", address.getZip());
                     }
                 }
             }
