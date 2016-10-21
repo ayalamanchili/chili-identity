@@ -36,8 +36,8 @@ public class GenericTaskCompleteNotification implements TaskListener {
         Email email = new Email();
         email.setRichText(Boolean.TRUE);
         email.setTos(getEmails(delegateTask, notifyEmployee, notifyRoles));
-        String subjectText = "Task Complete:" + delegateTask.getName();
-        String messageText = "<b>Task Complete.  </b> <br/> <br/> <b> Name: </b>" + delegateTask.getName() + " <br/> <b> Description: </b>";
+        String subjectText = "Task Completed:" + delegateTask.getName();
+        String messageText = "<b>Task Completed.  </b> <br/> <br/> <b> Name: </b>" + delegateTask.getName() + " <br/> <b> Description: </b>";
         String description = delegateTask.getDescription();
         String[] descA = description.split("\n");
         messageText = messageText.concat(descA[0] + "<br/> <br/> <b> <u> Details: </u> </b> <br/><html><body><table>");

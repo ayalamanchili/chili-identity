@@ -136,7 +136,11 @@
                 <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.clientinformation.NewClientInformationProcess" />
                 <activiti:formProperty id="payratePercent" 
                                        name="PayRate Percentage"
-                                       required="true"
+                                       required="false"
+                                       type="string"/>
+                <activiti:formProperty id="specialNotes" 
+                                       name="Special Notes"
+                                       required="false"
                                        type="string"/>
             </extensionElements> 
         </userTask>

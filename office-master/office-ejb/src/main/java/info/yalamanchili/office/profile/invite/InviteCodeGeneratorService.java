@@ -16,11 +16,10 @@ import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.invite.InviteTypeDao;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
+import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dto.onboarding.InitiateOnBoardingDto;
-import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.invite.InvitationType;
-import info.yalamanchili.office.entity.profile.invite.InviteType;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.Date;
@@ -49,36 +48,38 @@ public class InviteCodeGeneratorService {
     @Autowired
     protected MailUtils mailUtils;
 
-    public InviteCode generate(InvitationType type, String email, Date vaidDate, Date expiryDate, boolean sendEmail, String empName) {
+    public InviteCode generate(InvitationType type, String email, Date vaidDate, Date expiryDate, boolean sendEmail, InitiateOnBoardingDto dto) {
         InviteCode code = new InviteCode();
         code.setInviteType(InviteTypeDao.instance().find(type));
         code.setValidFromDate(vaidDate);
         code.setExpiryDate(expiryDate);
         code.setEmail(email);
-        return generate(code, sendEmail, empName);
+        return generate(code, sendEmail, dto);
     }
 
-    public InviteCode generate(InviteCode entity, boolean sendEmail, String empName) {
+    public InviteCode generate(InviteCode entity, boolean sendEmail, InitiateOnBoardingDto dto) {
         entity.setInvitationCode(uuidGen());
         inviteCodeDao.save(entity);
         if (sendEmail) {
-            sendInviteCodeEmail(entity,empName);
+            sendInviteCodeEmail(entity, dto);
         }
         return entity;
     }
     protected final String[] ON_BOARDING_FORMS_LIST = {"W4_On_Boarding", "I9_On_Boarding", "I9_New_Version_Example"};
-    
+
 //TODO remove specific code for employee on boarding
-    public void sendInviteCodeEmail(InviteCode entity, String strEmpName) {
+    public void sendInviteCodeEmail(InviteCode entity, InitiateOnBoardingDto dto) {
         Email email = new Email();
         email.addTo(entity.getEmail());
         email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_ON_BOARDING_MGR.name()));
         StringBuilder subject = new StringBuilder();
-        subject.append("System Soft Invitation");
+        Company cmp = CompanyDao.instance().findById(dto.getCompany().getId());
+        subject.append(cmp.getName() + " Joining Forms - " + dto.getFirstName() + " " + dto.getLastName());
         email.setSubject(subject.toString());
         Map<String, Object> emailCtx = new HashMap<>();
         emailCtx.put("invitationCode", OfficeServiceConfiguration.instance().getPortalWebUrl() + "?inviteCode=" + entity.getInvitationCode());
-        emailCtx.put("employeeName", strEmpName);
+        emailCtx.put("employeeName", dto.getFirstName() + " " + dto.getLastName());
+        emailCtx.put("companyName", cmp.getName());
         email.setTemplateName("send_onboarding_invitation_eamil_template.html");
         String messageText = OfficeServiceConfiguration.instance().getPortalWebUrl() + "?inviteCode=" + entity.getInvitationCode();
         email.setContext(emailCtx);

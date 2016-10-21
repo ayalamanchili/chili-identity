@@ -58,6 +58,10 @@
             }
             .preformatted {
                 white-space: pre-wrap;
+                background-color: #ffffff;
+                font-size:14px;  
+                font-family:Arial, Helvetica, sans-serif;
+                text-align:left;
             }
 
         </style>
@@ -66,9 +70,8 @@
         <div class="container">
             <div class="wrapper" style="width:700px;height:700px;margin-left:auto;margin-right:auto;border-style:solid;border-width:0px;border-color:#000000;border-radius:10px;">
                 <div  class="content" style="width:700px;height:700px;margin-left:auto;margin-right:auto;border-style:solid;border-width:0px;border-color:#000000;border-radius:10px;">
-                    <br/><br/>
                     <hr/>
-                    <div  style="text-align:center;" >
+                    <div  style="color: #086F6F; text-align:center;" >
                         <h4>JOB ROLES AND RESPONSIBILITIES</h4>
                     </div>
                     <hr/>
@@ -114,12 +117,12 @@
                             </div>
                             <br></br>
                             <div class="wrapper" style="width:620px;height:350px;background-color:#FFFFFF;float:left;font-family:Tahoma, Geneva, sans-serif;text-align:left;">
-                                <div>
+                                <div style="color: #086F6F">
                                     <h3> <u> Roles And Responsibilities </u> </h3>
                                 </div>     
                                 <table class="gridtable" style="width:700px;background-color: #D8D8D8;">
-                                    <thead align="left">
-                                        <div class="preformatted" th:each="string : ${#strings.replace( #strings.escapeXml( entity.roles ),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"
+                                    <thead align="left"> 
+                                        <div class="preformatted" th:each="string : ${entity.roles}"
                                              th:text="${string}">
                                         </div>
                                     </thead>

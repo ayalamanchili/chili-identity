@@ -98,14 +98,16 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         assignFieldValueFromEntity("endDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("isEndDateConfirmed", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("recruiters", entity, null);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_ADMIN)) {
+             assignFieldValueFromEntity("payRatePercentage", entity, DataType.FLOAT_FIELD);
+             assignFieldValueFromEntity("overTimePayRatePercentage", entity, DataType.FLOAT_FIELD);
+        }       
         if (checkPermission()) {
             assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
-            assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
-            assignFieldValueFromEntity("payRatePercentage", entity, DataType.FLOAT_FIELD);
+            assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);           
             assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
-            assignFieldValueFromEntity("overTimeRateDuration", entity, DataType.ENUM_FIELD);
-            assignFieldValueFromEntity("overTimePayRatePercentage", entity, DataType.FLOAT_FIELD);
+            assignFieldValueFromEntity("overTimeRateDuration", entity, DataType.ENUM_FIELD);           
             assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("joiningReport", entity, DataType.TEXT_AREA_FIELD);

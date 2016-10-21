@@ -32,6 +32,7 @@ public class ReadAllPrivacySettngsPanel extends CRUDReadAllComposite {
     public static ReadAllPrivacySettngsPanel instance;
 
     public ReadAllPrivacySettngsPanel(String parentId) {
+        logger.info("parent id is ... "+parentId);
         instance = this;
         this.parentId = parentId;
         initTable("Privacy", OfficeWelcome.constants);
