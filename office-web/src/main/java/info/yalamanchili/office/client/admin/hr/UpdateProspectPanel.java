@@ -119,7 +119,9 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     }
 
     protected void populateComments() {
-        entityActionsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.hr.Prospect"));
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER)) {        
+            entityActionsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.hr.Prospect"));
+        }
     }
 
     protected String getReadURI() {

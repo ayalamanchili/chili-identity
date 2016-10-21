@@ -92,7 +92,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
 
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER','ROLE_ON_BOARDING_MGR', 'ROLE_HR_ADMINSTRATION')")
     @Cacheable(OfficeCacheKeys.PROSPECT)
     public ProspectResource.ProspectTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         List<ProspectDto> res = new ArrayList<>();
@@ -127,8 +127,8 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @Path("/request-prospect-onboarding")
     public void requestProspectOnBoarding(ProspectDto prospect) {
         Map<String, Object> vars = new HashMap<>();
-        Prospect entity=ProspectDao.instance().findById(prospect.getId());
-        //entity.setStatus(ProspectStatus.CLOSED_ONBOARDING_REQUESTED);        
+        Prospect entity = ProspectDao.instance().findById(prospect.getId());
+        entity.setStatus(ProspectStatus.CLOSED_ONBOARDING_REQUESTED);
         vars.put("prospect", entity);
         vars.put("caseManagerName", EmployeeDao.instance().findById(entity.getManager()).getFirstName());
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
@@ -175,7 +175,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @GET
     @Override
     @Path("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER', 'ROLE_RECRUITER', 'ROLE_H1B_IMMIGRATION', 'ROLE_GC_IMMIGRATION')")
+    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER', 'ROLE_RECRUITER', 'ROLE_H1B_IMMIGRATION', 'ROLE_GC_IMMIGRATION', 'ROLE_ON_BOARDING_MGR', 'ROLE_HR_ADMINSTRATION')")
     public ProspectDto read(@PathParam("id") Long id) {
         return prospectService.read(id);
     }

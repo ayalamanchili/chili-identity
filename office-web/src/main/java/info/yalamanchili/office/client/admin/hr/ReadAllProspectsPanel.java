@@ -100,7 +100,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         table.setText(0, 6, getKeyValue("Phone Number"));
         if (isClosedWon == true && isOnAllTab == false) {
             table.setText(0, 7, getKeyValue("OnBoarding Invitation"));
-            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR))
+            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR_ADMINSTRATION))
                 table.setText(0, 8, getKeyValue("Request for onboarding"));
         } else if (isClosedWon == false && isOnAllTab == true) {
             table.setText(0, 7, getKeyValue("Status"));
@@ -128,7 +128,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
                             getOnBoardInviteCode(((ClickableLink) event.getSource()).getTitle());
                         });
                         table.setWidget(i, 7, invitationLink);
-                        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR)) {
+                        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER)) {
                             ClickableLink onboardingRequestLink = new ClickableLink("Request For OnBoarding");
                             onboardingRequestLink.setTitle(JSONUtils.toString(entity, "id"));
                             onboardingRequestLink.addClickHandler((ClickEvent event) -> {
@@ -240,7 +240,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         String status = JSONUtils.toString(entity, "status");
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_PROSPECTS_MANAGER)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_PROSPECTS_MANAGER, ROLE.ROLE_ON_BOARDING_MGR, ROLE.ROLE_HR_ADMINSTRATION)) {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.DELETE);
         } else if ((ProspectStatus.IN_PROGRESS.name().equals(status)) && Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION, ROLE.ROLE_RECRUITER)) {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
