@@ -85,7 +85,9 @@ public class ReadProspectsPanel extends ReadComposite {
     }
 
     protected void populateComments() {
+       if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER)) {
         entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.hr.Prospect"));
+       }
     }
 
     @Override
