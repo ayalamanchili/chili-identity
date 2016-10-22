@@ -8,10 +8,12 @@
  */
 package info.yalamanchili.office.dto.prospect;
 
+import info.chili.commons.BeanMapper;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.hr.PetitionFor;
 import info.yalamanchili.office.entity.hr.PlacedBy;
+import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
 import info.yalamanchili.office.entity.hr.Resume;
 import info.yalamanchili.office.entity.hr.TransferEmployeeType;
@@ -124,7 +126,7 @@ public class ProspectDto implements Serializable {
     protected String assignedto;
     protected String stage;
     protected Date createdDate;
-    
+
     protected String benchDate;
 
     public String getPlacedby() {
@@ -444,14 +446,15 @@ public class ProspectDto implements Serializable {
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
-    
+
     @Override
     public String toString() {
         return "ProspectDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", status=" + status + ", processDocSentDate=" + processDocSentDate + '}';
     }
 
     public static ProspectDto map(Mapper mapper, info.yalamanchili.office.entity.hr.Prospect entity) {
-        ProspectDto prospectContact = mapper.map(entity, ProspectDto.class);
+        Prospect prospect = (Prospect) BeanMapper.clone(entity);
+        ProspectDto prospectContact = mapper.map(prospect, ProspectDto.class);
         prospectContact.setEmployee(entity.getContact().getFirstName() + " " + entity.getContact().getLastName());
         if (entity.getManager() != null) {
             Employee manager = EmployeeDao.instance().findById(entity.getManager());
@@ -498,9 +501,13 @@ public class ProspectDto implements Serializable {
             prospectContact.setCompany(entity.getCompany());
             prospectContact.setCompanyName(entity.getCompany().getName());
         }
-        if(entity.getStartDate() != null){
+        if (entity.getStartDate() != null) {
             prospectContact.setCreatedDate(entity.getStartDate());
         }
+        if (entity.getResumeURL() != null && entity.getResumeURL().size() > 0) {
+            prospectContact.setResumeURL(entity.getResumeURL());
+        }
+        prospectContact.setStatus(entity.getStatus());
         prospectContact.setStage(entity.getStatus().name());
         prospectContact.setId(entity.getId());
         return prospectContact;

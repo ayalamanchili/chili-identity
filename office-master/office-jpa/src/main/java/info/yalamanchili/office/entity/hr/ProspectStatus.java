@@ -12,8 +12,9 @@ package info.yalamanchili.office.entity.hr;
  *
  * @author radhika.mukkala
  */
+
 public enum ProspectStatus {
-    IN_PROGRESS, RECRUITING, BENCH, ONHOLD, CLOSED_WON, CLOSED_LOST;
+    IN_PROGRESS, RECRUITING, BENCH, ONHOLD, CLOSED_WON, CLOSED_LOST, CLOSED_ONBOARDING_REQUESTED, CLOSED_ONBOARDING_INITIATED;
     public static String[] names() {
         ProspectStatus[] values = values();
         String[] names = new String[values.length];

@@ -106,15 +106,15 @@ public class ReadContractsPanel extends TReadComposite {
                             isClientFeeApplicable = JSONUtils.toBoolean(entity, "clientFeeApplicable");
                         }
                         if (isClientFeeApplicable && entity.containsKey("clientFees")) {
-                            addField("finalBillingRate", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 4, 1);
-                            addField("clientFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 4, 2);
+                            addField("finalBillingRate", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 3, 1);
+                            addField("clientFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 3, 2);
                             assignFieldValueFromEntity("finalBillingRate", entity, DataType.FLOAT_FIELD);
                             assignFieldValueFromEntity("clientFees", entity, DataType.FLOAT_FIELD);
                             alignFields();
                         } else if (entity.containsKey("vendorFees")) {
                             /*vendorFees*/
-                            addField("finalBillingRate", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 4, 1);
-                            addField("vendorFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 4, 2);
+                            addField("finalBillingRate", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 3, 1);
+                            addField("vendorFees", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 3, 2);
                             assignFieldValueFromEntity("finalBillingRate", entity, DataType.FLOAT_FIELD);
                             assignFieldValueFromEntity("vendorFees", entity, DataType.FLOAT_FIELD);
                             alignFields();
@@ -211,8 +211,8 @@ public class ReadContractsPanel extends TReadComposite {
         addField("billingRate", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 2, 1);
         addField("overTimeBillingRate", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 2, 2);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS)) {
-            addField("payRate", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 3, 1);
-            addField("overTimePayRate", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 3, 2);
+            addField("payRate", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 4, 1);
+            addField("overTimePayRate", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL, 4, 2);
         }
         String[] billingDuration = {"HOUR", "DAY", "MONTH", "WEEK"};
         addEnumField("billingRateDuration", true, false, billingDuration, Alignment.HORIZONTAL, 5, 1);

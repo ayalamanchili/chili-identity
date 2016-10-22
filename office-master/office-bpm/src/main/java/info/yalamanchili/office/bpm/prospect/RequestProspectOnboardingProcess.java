@@ -11,6 +11,7 @@ package info.yalamanchili.office.bpm.prospect;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.dao.ext.CommentDao;
+import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
 import org.activiti.engine.delegate.DelegateTask;
@@ -34,14 +35,14 @@ public class RequestProspectOnboardingProcess implements TaskListener {
     }
 
     protected void prospectTaskCompleted(DelegateTask task) {
-        //Prospect entity = getRequestFromTask(task);
         Prospect entity = (Prospect) task.getExecution().getVariable("prospect");
+        entity = ProspectDao.instance().findById(entity.getId());
         if (entity == null) {
             return;
         }
         //Notes
         String notes = (String) task.getExecution().getVariable("notes");
-        //entity.setStatus(ProspectStatus.CLOSED_ONBOARDING_INITIATED);
+        entity.setStatus(ProspectStatus.CLOSED_ONBOARDING_INITIATED);
         CommentDao.instance().addComment(notes, entity);
     }
 
