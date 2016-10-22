@@ -26,7 +26,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.contracts.ClientInformationStatus;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.project.offboarding.SubmitProjectOffboardingPanel;
-import java.util.Date;
 import java.util.logging.Logger;
 
 public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements ClickHandler {
@@ -206,8 +205,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
                 table.setText(i, ++column, DateUtils.formatDate(JSONUtils.toString(entity, "endDate")));
                 setEnumColumn(i, ++column, entity, ClientInformationStatus.class.getSimpleName(), "status");
             }
-            if (JSONUtils.toString(entity, "status").equalsIgnoreCase("Completed")
-                    && new Date().before(DateUtils.toDate(JSONUtils.toString(entity, "endDate")))) {
+            if (JSONUtils.toString(entity, "status").equalsIgnoreCase("Completed") && JSONUtils.toBoolean(entity, "active").booleanValue()) {
                 ClickableLink projectOffboarding = new ClickableLink("Initiate Project Offboarding");
                 projectOffboarding.setTitle(JSONUtils.toString(entity, "id"));
                 projectOffboarding.addClickHandler((ClickEvent event) -> {
