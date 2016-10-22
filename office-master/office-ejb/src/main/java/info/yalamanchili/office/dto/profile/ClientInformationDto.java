@@ -77,17 +77,6 @@ public class ClientInformationDto implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date endDate;
     /**
-     * flag to indicate to end of previous project.
-     */
-    @Transient
-    protected boolean endPreviousProject;
-    /**
-     *
-     */
-    @Transient
-    @Temporal(javax.persistence.TemporalType.DATE)
-    protected Date previousProjectEndDate;
-    /**
      *
      */
     @NotNull
@@ -114,7 +103,7 @@ public class ClientInformationDto implements Serializable {
      * clientFee
      */
     protected Float clientFee;
-    
+
     /**
      * directClient
      */
@@ -158,24 +147,24 @@ public class ClientInformationDto implements Serializable {
      * PayRate
      */
     protected BigDecimal payRate;
-    
+
     protected Float payRatePercentage;
     /**
      * BillingRate
      */
-    @Digits(integer=10, fraction=2, message = "{billingRate.not.valid.msg}")
+    @Digits(integer = 10, fraction = 2, message = "{billingRate.not.valid.msg}")
     protected BigDecimal billingRate;
     /**
      * OverTime PayRate
      */
-    @Digits(integer=10, fraction=2, message = "{overtimePayRate.not.valid.msg}")
+    @Digits(integer = 10, fraction = 2, message = "{overtimePayRate.not.valid.msg}")
     protected BigDecimal overTimePayRate;
-    
+
     protected Float overTimePayRatePercentage;
     /**
      * over time billing rate
      */
-    @Digits(integer=10, fraction=2, message = "{overtimeBillingRate.not.valid.msg}")
+    @Digits(integer = 10, fraction = 2, message = "{overtimeBillingRate.not.valid.msg}")
     protected BigDecimal overTimeBillingRate;
     /**
      * historical billing rates
@@ -229,12 +218,12 @@ public class ClientInformationDto implements Serializable {
     /**
      * subcontractorPayRate
      */
-    @Digits(integer=10, fraction=2, message = "{subcontractorPayRate.not.valid.msg}")
+    @Digits(integer = 10, fraction = 2, message = "{subcontractorPayRate.not.valid.msg}")
     protected BigDecimal subcontractorPayRate;
     /**
      * subcontractorOvertimePayRate
      */
-    @Digits(integer=10, fraction=2, message = "{subcontractorOvertimePayRate.not.valid.msg}")
+    @Digits(integer = 10, fraction = 2, message = "{subcontractorOvertimePayRate.not.valid.msg}")
     protected BigDecimal subcontractorOvertimePayRate;
     /**
      * subcontractor Invoice Frequency
@@ -255,9 +244,9 @@ public class ClientInformationDto implements Serializable {
     /**
      * 1099 Details
      */
-    @Digits(integer=10, fraction=2, message = "{payRate1099.not.valid.msg}")
+    @Digits(integer = 10, fraction = 2, message = "{payRate1099.not.valid.msg}")
     protected BigDecimal payRate1099;
-    @Digits(integer=10, fraction=2, message = "{overtimePayRate1099.not.valid.msg}")
+    @Digits(integer = 10, fraction = 2, message = "{overtimePayRate1099.not.valid.msg}")
     protected BigDecimal overTimePayrate1099;
     protected BillingDuration payTimeDuration1099;
     protected String paymentTerms1099;
@@ -268,7 +257,7 @@ public class ClientInformationDto implements Serializable {
     protected List<ClientInfoComment> comments;
 
     protected Set<CIDocument> cidocument;
-    
+
     @Lob
     protected String reason;
 
@@ -397,22 +386,6 @@ public class ClientInformationDto implements Serializable {
         this.endDate = endDate;
     }
 
-    public boolean isEndPreviousProject() {
-        return endPreviousProject;
-    }
-
-    public void setEndPreviousProject(boolean endPreviousProject) {
-        this.endPreviousProject = endPreviousProject;
-    }
-
-    public Date getPreviousProjectEndDate() {
-        return previousProjectEndDate;
-    }
-
-    public void setPreviousProjectEndDate(Date previousProjectEndDate) {
-        this.previousProjectEndDate = previousProjectEndDate;
-    }
-
     public Client getClient() {
         return client;
     }
@@ -452,7 +425,7 @@ public class ClientInformationDto implements Serializable {
     public void setClientFee(Float clientFee) {
         this.clientFee = clientFee;
     }
-    
+
     public Boolean getDirectClient() {
         return directClient;
     }
@@ -557,6 +530,7 @@ public class ClientInformationDto implements Serializable {
     public void setOverTimePayRate(BigDecimal overTimePayRate) {
         this.overTimePayRate = overTimePayRate;
     }
+
     /**
      * @return the payRatePercentage
      */

@@ -49,7 +49,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -159,9 +158,6 @@ public class ClientInformationService {
         if (ci.getSubcontractorAddress() != null) {
             ci.setSubcontractorAddress(AddressDao.instance().findById(ci.getSubcontractorAddress().getId()));
         }
-        if (ci.isEndPreviousProject()) {
-            updatePreviousProjectEndDate(emp, ci);
-        }
         if (vendor != null) {
             project.setVendor(vendor);
             client.getVendors().add(vendor);
@@ -259,18 +255,6 @@ public class ClientInformationService {
             dto.setBillingRate(ContractService.instance().getEffectiveBillingRate(dto.getId()));
         }
         return dto;
-    }
-
-    protected void updatePreviousProjectEndDate(Employee emp, ClientInformation ci) {
-        ClientInformation previousClientInformation = null;
-        Query query = em.createQuery("from ClientInformation where employee =:emp order by endDate desc");
-        query.setParameter("emp", emp);
-        if (query.getResultList().size() > 0) {
-            previousClientInformation = (ClientInformation) query.getResultList().get(0);
-            previousClientInformation.setActive(Boolean.FALSE);
-            previousClientInformation.setEndDate(ci.getPreviousProjectEndDate());
-            em.merge(previousClientInformation);
-        }
     }
 
     /**
@@ -529,7 +513,7 @@ public class ClientInformationService {
         }
         Vendor vendor = vendorDao.findById(ci.getVendor().getId());
         String vName = vendor.getName();
-        if ( "NA".equals(vName)) {
+        if ("NA".equals(vName)) {
             ServiceInterceptor.instance().validateInput(ci, ClientInformation.VendorChecks.class);
         }
         if (submitForApproval) {

@@ -45,7 +45,6 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.fields.FloatField;
@@ -62,7 +61,6 @@ import info.yalamanchili.office.client.admin.vendorcontact.CreateVendorContactPa
 import info.yalamanchili.office.client.admin.vendorlocation.CreateVendorLocationsPanel;
 import info.yalamanchili.office.client.admin.vendorlocation.SelectVendorLocationsWidget;
 import info.yalamanchili.office.client.practice.SelectPracticeWidget;
-import java.util.Date;
 
 public class CreateClientInfoPanel extends CreateComposite implements ChangeHandler, ValueChangeHandler {
 
@@ -100,9 +98,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         initCreateComposite("ClientInfo", OfficeWelcome.constants2);
     }
 
-    BooleanField endPreviousProjectFlagField = new BooleanField(OfficeWelcome.constants2, "endPreviousProject", "ClientInfo", false, false, Alignment.HORIZONTAL);
-    DateField previousProjectEndDate = new DateField(OfficeWelcome.constants2, "previousProjectEndDate", "ClientInfo", false, false, Alignment.HORIZONTAL);
-    TextAreaField reason = new TextAreaField(OfficeWelcome.constants2, "reason", "ClientInfo", false, true, Alignment.HORIZONTAL);
     EnumField servicesF;
     EnumField sectorsF;
     DateField endDateF;
@@ -134,11 +129,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         if (isEndDateConfirmedF.isVisible() == true) {
             isEndDateConfirmedF.getValue();
             clientInfo.put("isEndDateConfirmed", new JSONString(isEndDateConfirmedF.getValue().toString()));
-        }
-        if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
-            clientInfo.put("endPreviousProject", new JSONString(endPreviousProjectFlagField.getValue().toString()));
-            clientInfo.put("previousProjectEndDate", new JSONString(DateUtils.toDateString(previousProjectEndDate.getDate())));
-            clientInfo.put("reason", new JSONString(reason.getValue()));
         }
         clientInfo.put("recruiters", selectRecruiterW.getSelectedObjects());
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
@@ -206,17 +196,17 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected void addButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                logger.info(arg0.getMessage());
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadDocuments(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadDocuments(arg0);
+            }
+        });
     }
 
     @Override
@@ -224,7 +214,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         new ResponseStatusWidget().show("Successfully Added Client Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId(), active));
-//        TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
     }
 
     @Override
@@ -240,9 +229,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         submitForApprovalF.getBox().addClickHandler(this);
         selectVendorWidgetF.getListBox().addChangeHandler(this);
         selectClientWidgetF.getListBox().addChangeHandler(this);
-        if (endPreviousProjectFlagField != null) {
-            endPreviousProjectFlagField.getBox().addClickHandler(this);
-        }
         selectPractiseWidgetF.getListBox().addChangeHandler(this);
         endDateF = (DateField) fields.get("endDate");
         if (endDateF != null) {
@@ -253,14 +239,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
     @Override
     protected void configure() {
-        if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
-            endPreviousProjectFlagField.setValue(Boolean.TRUE);
-            entityFieldsPanel.insert(previousProjectEndDate, entityFieldsPanel.getWidgetIndex(endPreviousProjectFlagField) + 1);
-            entityFieldsPanel.insert(reason, entityFieldsPanel.getWidgetIndex(previousProjectEndDate) + 1);
-            previousProjectEndDate.setVisible(Boolean.TRUE);
-            reason.setVisible(Boolean.TRUE);
-            populateEndDate();
-        }
         setButtonText("Submit");
     }
 
@@ -331,11 +309,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("isEndDateConfirmed", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
-            entityFieldsPanel.add(endPreviousProjectFlagField);
-            entityFieldsPanel.add(previousProjectEndDate);
-            entityFieldsPanel.add(reason);
-        }
         addDropDown("recruiter", selectRecruiterW);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
@@ -451,12 +424,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 new GenericPopup(new CreateVendorAcctPayCntPanel(selectVendorWidgetF.getSelectedObjectId(), CreateCompositeType.ADD), 400, 100).show();
             }
         }
-        
-        if ((ReadAllClientInfoPanel.instance().numberOfRecords > 0) && (event.getSource().equals(endPreviousProjectFlagField.getBox()))) {
-            previousProjectEndDate.setVisible(endPreviousProjectFlagField.getValue());
-            reason.setVisible(endPreviousProjectFlagField.getValue());
-            populateEndDate();
-        }
+
         if (submitForApprovalF.getValue()) {
             setButtonText("Submit");
         } else {
@@ -466,42 +434,28 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         super.onClick(event);
     }
 
-    public void populateEndDate() {
-        HttpService.HttpServiceAsync.instance().doGet(getProjectEndDate(), OfficeWelcome.instance().getHeaders(), true,
-                new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        if (arg0 != null) {
-                            Date date2 = new Date(arg0);
-                            previousProjectEndDate.setDate(date2);
-                        }
-                    }
-                }
-        );
-    }
-
     public void loadVendor(String vendorEntityId) {
         HttpService.HttpServiceAsync.instance().doGet(getVendor(vendorEntityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
-                        TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
-                        payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
-                        EnumField invDelv = (EnumField) fields.get("invoiceDeliveryMethod");
-                        if (vendor.get("vendorinvDeliveryMethod") != null) {
-                            invDelv.selectValue(JSONUtils.toString(vendor, "vendorinvDeliveryMethod"));
-                        } else {
-                            invDelv.setSelectedIndex(0);
-                        }
-                        EnumField invFrequencyv = (EnumField) fields.get("invoiceFrequency");
-                        if (vendor.get("vendorinvFrequency") != null) {
-                            invFrequencyv.selectValue(JSONUtils.toString(vendor, "vendorinvFrequency"));
-                        } else {
-                            invFrequencyv.setSelectedIndex(0);
-                        }
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
+                TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
+                payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
+                EnumField invDelv = (EnumField) fields.get("invoiceDeliveryMethod");
+                if (vendor.get("vendorinvDeliveryMethod") != null) {
+                    invDelv.selectValue(JSONUtils.toString(vendor, "vendorinvDeliveryMethod"));
+                } else {
+                    invDelv.setSelectedIndex(0);
+                }
+                EnumField invFrequencyv = (EnumField) fields.get("invoiceFrequency");
+                if (vendor.get("vendorinvFrequency") != null) {
+                    invFrequencyv.selectValue(JSONUtils.toString(vendor, "vendorinvFrequency"));
+                } else {
+                    invFrequencyv.setSelectedIndex(0);
+                }
+            }
+        });
     }
 
     protected String getVendor(String vendorEntityId) {
@@ -511,26 +465,22 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     public void loadClient(String clientEntityId) {
         HttpService.HttpServiceAsync.instance().doGet(getClient(clientEntityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONObject client = (JSONObject) JSONParser.parseLenient(response);
-                        TextAreaField payTermF = (TextAreaField) fields.get("clientPaymentTerms");
-                        payTermF.setValue(JSONUtils.toString(client, "paymentTerms"));
+            @Override
+            public void onResponse(String response) {
+                JSONObject client = (JSONObject) JSONParser.parseLenient(response);
+                TextAreaField payTermF = (TextAreaField) fields.get("clientPaymentTerms");
+                payTermF.setValue(JSONUtils.toString(client, "paymentTerms"));
 //                        BooleanField directClientB=(BooleanField) fields.get("directClient");
 //                        directClientB.setValue(JSONUtils.toBoolean(client, "directClient"));
 //                        FloatField clientFee=(FloatField) fields.get("clientFee");
 //                        clientFee.setValue(JSONUtils.toString(client, "clientFee"));
 
-                    }
-                });
+            }
+        });
     }
 
     protected String getClient(String clientEntityId) {
         return OfficeWelcome.constants.root_url() + "client/" + clientEntityId;
-    }
-
-    private String getProjectEndDate() {
-        return OfficeWelcome.constants.root_url() + "clientinformation/endDate/" + TreeEmployeePanel.instance().getEntityId() + "/" + endPreviousProjectFlagField.getValue();
     }
 
     @Override
@@ -609,13 +559,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                     pay1099.setMessage("PayRate may not be null");
                     valid = false;
                 }
-            }
-        }
-
-        if ((ReadAllClientInfoPanel.instance().numberOfRecords > 0) && endPreviousProjectFlagField.isVisible() == true && endPreviousProjectFlagField.getValue() == true) {
-            if (reason.getValue() == null || "".equals(reason.getValue())) {
-                reason.setMessage("Reason Required");
-                valid = false;
             }
         }
 
