@@ -8,17 +8,19 @@
  */
 package info.yalamanchili.office.bpm.offboarding;
 
-import info.chili.email.Email;
-import info.chili.spring.SpringContext;
-import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
-import info.yalamanchili.office.email.MailUtils;
-import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.jms.MessagingService;
+import info.yalamanchili.office.dao.ext.CommentDao;
+import info.yalamanchili.office.dao.profile.ClientInformationDao;
+import info.yalamanchili.office.entity.profile.ClientInformation;
+import info.yalamanchili.office.entity.profile.ClientInformationStatus;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.activiti.engine.delegate.DelegateTask;
 
 /**
@@ -29,34 +31,90 @@ public class ProjectOffboardingProcess extends RuleBasedTaskDelegateListner {
 
     @Override
     public void processTask(DelegateTask task) {
-        if ("create".equals(task.getEventName())) {
-            new GenericTaskCreateNotification().notify(task);
+        if ("create".equals(task.getEventName()) || "assignment".equals(task.getEventName())) {
+            projectOffboardingTaskCreated(task);
         }
         if ("complete".equals(task.getEventName())) {
-            if (task.getTaskDefinitionKey().equals("projectOffBoardingTask")) {
-                notifyEmployeeAndTeams(task);
-            } else {
-                new GenericTaskCompleteNotification().notify(task);
-            }
-
+            projectOffboardingTaskCompleted(task);
         }
     }
 
-    public void notifyEmployeeAndTeams(DelegateTask dt) {
-        ProjectOffBoardingDto dto = (ProjectOffBoardingDto) dt.getExecution().getVariable("entity");
-        
-        if (dto == null) {
-            return;
+    public void projectOffboardingTaskCreated(DelegateTask task) {
+        ClientInformation entity = getRequestFromTask(task);
+        if (entity.getStatus().equals(ClientInformationStatus.COMPLETED)) {
+            entity.setStatus(ClientInformationStatus.PENDING_CLOSING);
         }
-        MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
-        Employee associateEmployee = EmployeeDao.instance().findById(dto.getEmployeeId());
-        Email email1 = new Email();
-        email1.setHtml(Boolean.TRUE);
-        email1.setRichText(Boolean.TRUE);
-         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYY");
-        email1.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_HR.name(), OfficeRoles.OfficeRole.ROLE_GC_IMMIGRATION.name(), OfficeRoles.OfficeRole.ROLE_H1B_IMMIGRATION.name(), OfficeRoles.OfficeRole.ROLE_RECRUITER.name()));
-        email1.setSubject("Project Offboarding Submitted for Employee - " + associateEmployee.getFirstName() + " " + associateEmployee.getLastName());
-        email1.setBody("Project Offboarding request has been submitted for Employee - " + " <b> " + associateEmployee.getFirstName() + " </b> " + "  " + " <b> " + associateEmployee.getLastName() +  " </b>" + " </br> " + " <b> \n Client &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:" + " </b> " + dto.getClientName() + " </br> " + " <b> \n Vendor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:" + " </b> " + dto.getVendorName() + " </br> " + " <b> " + "\n End Date of the project: " + " </b> "+ sdf.format(dto.getEndDate()) + " </br> " + " <i> " + "\n This employee project has been offboarded:" + " </i> " + " <b> " + associateEmployee.getFirstName() + " </b> " + " " + " <b> " + associateEmployee.getLastName() + " </b> " + " </br> " + " Please Proceed your actions!!!!!");
-        messagingService.sendEmail(email1);
+        new GenericTaskCreateNotification().notify(task);
+    }
+
+    public void projectOffboardingTaskCompleted(DelegateTask task) {
+        ClientInformation entity = getRequestFromTask(task);
+        attachComment(task, entity);
+        switch (task.getTaskDefinitionKey()) {
+            case "projectOffboardingContractsAdminTask":
+                projectOffboardingContractsAdminTask(task, entity);
+                break;
+            case "projectOffboardingValidationTask":
+                entity.setStatus(ClientInformationStatus.CLOSED);
+                break;
+            default:
+                break;
+        }
+        new GenericTaskCompleteNotification().notify(task);
+        ClientInformationDao.instance().save(entity);
+    }
+
+    public void projectOffboardingContractsAdminTask(DelegateTask task, ClientInformation entity) {
+        DateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+        String date = task.getExecution().getVariable("endDate").toString();
+        try {
+            Date endDate = sdf.parse(date);
+            entity.setEndDate(endDate);
+        } catch (ParseException ex) {
+            Logger.getLogger(ProjectOffboardingProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    protected void attachComment(DelegateTask task, ClientInformation entity) {
+        String notes = (String) task.getExecution().getVariable("notes");
+        String taskName = null;
+        switch (task.getTaskDefinitionKey()) {
+            case "projectOffboardingContractsAdminTask":
+                taskName = "Project Offboarding Contracts Admin Task";
+                break;
+            case "projectOffboardingBillingAdminTask":
+                taskName = "Project Offboarding Billing Admin Task";
+                break;
+            case "projectOffboardingPayrollDeptTask":
+                taskName = "Project Offboarding Payroll Dept Task";
+                break;
+            case "projectOffboardingAccountsPayableTask":
+                taskName = "Project Offboarding Accounts Payable Task";
+                break;
+            case "projectOffboardingAccountsReceivableTask":
+                taskName = "Project Offboarding Accounts Receivable Task";
+                break;
+            case "projectOffboardingImmigrationDeptTask":
+                taskName = "Project Offboarding Immigration Dept Task";
+                break;
+            case "projectOffboardingRecruitingDeptTask":
+                taskName = "Project Offboarding Recruiting Dept Task";
+                break;
+            case "projectOffboardingValidationTask":
+                taskName = "Project Offboarding Validation Task";
+                break;
+            default:
+                taskName = "";
+                break;
+        }
+        CommentDao.instance().addComment(taskName + " Completion Notes: " + notes, entity);
+    }
+
+    protected ClientInformation getRequestFromTask(DelegateTask task) {
+        Long entityId = (Long) task.getExecution().getVariable("entityId");
+        if (entityId != null) {
+            return ClientInformationDao.instance().findById(entityId);
+        }
+        return null;
     }
 }

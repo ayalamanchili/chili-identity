@@ -16,11 +16,11 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.integration.bis.BISClientInformationServiceBean;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.ClientInformationService;
-import info.yalamanchili.office.bpm.offboarding.ProjectOffBoardingDto;
+import info.yalamanchili.office.dto.offboarding.ProjectOffboardingDto;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.dto.profile.ClientInformationSaveDto;
-import info.yalamanchili.office.project.offboarding.ProjectOffBoardingService;
+import info.yalamanchili.office.project.offboarding.ProjectOffboardingService;
 import info.yalamanchili.office.security.AccessCheck;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -165,8 +165,8 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     @PUT
     @Validate
     @Path("/project-off-boarding")
-    public void projectOffBoarding(ProjectOffBoardingDto dto) {
-        ProjectOffBoardingService.instance().startProjectOffBoardingTask(dto);
+    public void projectOffboarding(ProjectOffboardingDto dto) {
+        ProjectOffboardingService.instance().startProjectOffboardingTask(dto);
     }
 
     @GET

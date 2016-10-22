@@ -7,77 +7,54 @@
 <definitions
     xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
     targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:activiti="http://activiti.org/bpmn">
     
     <process id="associate_project_offboarding_process">
-        <startEvent id="projectOffBoardingTaskCreated" />
-        <sequenceFlow sourceRef="projectOffBoardingTaskCreated" targetRef="projectOffBoardingTask" />
-        <!-- this should got to contacts admin-->
-        <!--Project Offboarding task created-->
-        <userTask id="projectOffBoardingTask" 
-                  name="Project Offboarding Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
-            <documentation> 
-                Associate Project Offboarding Task Details:
-                Please update project end date to this employee and complete this task
-                Employee                : ${currentEmployee.firstName} ${currentEmployee.lastName}
-                Client Name             : ${entity.clientName}
-                Vendor Name             : ${entity.vendorName}
-                End Date                : ${entity.endDate}
-                Notes                   : ${entity.notes}                   
-            </documentation>
-            <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
-                <activiti:formProperty id="notes" 
-                                       name="Notes"
-                                       required="true" 
-                                       type="string" />
-            </extensionElements>         
-        </userTask>
-        <!-- Task escalation email after 2 days-->
-        <boundaryEvent id="emailEscalationTimer"
-                       cancelActivity="false" 
-                       attachedToRef="projectOffBoardingTask">
-            <timerEventDefinition> 
-                <timeDuration>PT48H</timeDuration> 
-            </timerEventDefinition>
-        </boundaryEvent>
-        <sequenceFlow sourceRef="emailEscalationTimer" 
-                      targetRef="taskEmailEscalation" />
-        <serviceTask
-            id="taskEmailEscalation"
-            name="Task Email Escalation"
-            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
-        </serviceTask>
-        <sequenceFlow id="flow3" sourceRef="projectOffBoardingTask" targetRef="fork" />
-        <parallelGateway id="fork" />
-        <sequenceFlow sourceRef="fork" targetRef="projectOffBoardingPayrollTask" />
-        <sequenceFlow sourceRef="fork" targetRef="projectOffBoardingBillingTask" />
-        <sequenceFlow sourceRef="fork" targetRef="projectOffBoardingContractsTask" />
+        <startEvent id="projectOffboardingTaskStart" />
         
-        <userTask id="projectOffBoardingPayrollTask" name="Project OffBoarding Payroll Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
+        <sequenceFlow sourceRef="projectOffboardingTaskStart" 
+                      targetRef="projectOffboardingContractsAdminTask" />
+        
+        <!-- Project Offboarding task for Contracts Admin-->
+        <userTask id="projectOffboardingContractsAdminTask" 
+                  name="Project Offboarding Contracts Admin Task for ${employee.firstName} ${employee.lastName}"
+                  activiti:candidateGroups="ROLE_CONTRACTS_ADMIN">
+            
             <documentation> 
-                Associate Project Offboarding Payroll Task Details:
-                Please update payroll systems and complete this task:
-                Employee                : ${currentEmployee.firstName} ${currentEmployee.lastName}
-                Client Name             : ${entity.clientName}
-                Vendor Name             : ${entity.vendorName}
-                End Date                : ${entity.endDate}
-                Notes                   : ${entity.notes}                
+                Associate Project Offboarding Contracts Admin Task Details:
+                Project Offboarding has been initiated for this employee. 
+                Please validate the end date and complete this task.
+                Employee                : ${employee.firstName} ${employee.lastName}
+                Client Name             : ${entity.client.name}
+                Vendor Name             : ${entity.vendor.name}
+                End Date                : ${projectOffboardingEntity.endDate}
+                Reason                  : ${projectOffboardingEntity.notes}                   
             </documentation>
+            
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:taskListener 
+                    event="create" 
+                    class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:taskListener 
+                    event="complete" 
+                    class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:formProperty id="endDate" 
+                                       name=" End Date"
+                                       datePattern="MM/dd/YYYY"
+                                       required="true" 
+                                       type="date" />
                 <activiti:formProperty id="notes" 
                                        name="Notes"
                                        required="true" 
                                        type="string" />
             </extensionElements>         
         </userTask>
-        <sequenceFlow sourceRef="projectOffBoardingPayrollTask" targetRef="join" />
+        
+        <!--         Task escalation email after 2 days-->
         <boundaryEvent id="emailEscalationTimer1"
                        cancelActivity="false" 
-                       attachedToRef="projectOffBoardingPayrollTask">
+                       attachedToRef="projectOffboardingContractsAdminTask">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
@@ -89,30 +66,118 @@
             name="Task Email Escalation1"
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>
-        <!--this task should ideally should go to billing and invoicinf admin-->
-        <userTask id="projectOffBoardingBillingTask" name="Project OffBoarding Billing Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" activiti:candidateGroups="ROLE_BILLING_AND_INVOICING">
+        
+        <sequenceFlow sourceRef="projectOffboardingContractsAdminTask" 
+                      targetRef="gateway" />
+        
+        <exclusiveGateway id="gateway"/>
+            <sequenceFlow id="flow1" sourceRef="gateway" targetRef="fork1">
+                <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${projectOffboardingEntity.projectInPipeline!=true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+                </conditionExpression>
+            </sequenceFlow>
+            <sequenceFlow id="flow2" sourceRef="gateway" targetRef="fork2">
+                <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${projectOffboardingEntity.projectInPipeline==true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+                </conditionExpression>
+            </sequenceFlow>
+            <sequenceFlow id="flow3" sourceRef="gateway" targetRef="fork3">
+                <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${projectOffboardingEntity.projectInPipeline!=true && employee.workStatus!="H1B" && employee.workStatus!="OPT" }]]>
+                </conditionExpression>
+            </sequenceFlow>
+            <sequenceFlow id="flow4" sourceRef="gateway" targetRef="fork4">
+                <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${projectOffboardingEntity.projectInPipeline==true &&  employee.workStatus!="H1B" && employee.workStatus!="OPT" }]]>
+                </conditionExpression>
+            </sequenceFlow>
+            
+        <parallelGateway id="fork1" />
+        
+        <sequenceFlow sourceRef="fork1" 
+                      targetRef="projectOffboardingBillingAdminTask" />
+        <sequenceFlow sourceRef="fork1" 
+                      targetRef="projectOffboardingPayrollDeptTask" />
+        <sequenceFlow sourceRef="fork1" 
+                      targetRef="projectOffboardingAccountsPayableTask" />
+        <sequenceFlow sourceRef="fork1" 
+                      targetRef="projectOffboardingAccountsReceivableTask" />
+        <sequenceFlow sourceRef="fork1" 
+                      targetRef="projectOffboardingImmigrationDeptTask" />
+        <sequenceFlow sourceRef="fork1" 
+                      targetRef="projectOffboardingRecruitingDeptTask" />
+        
+        <parallelGateway id="fork2" />
+        
+        <sequenceFlow sourceRef="fork2" 
+                      targetRef="projectOffboardingBillingAdminTask" />
+        <sequenceFlow sourceRef="fork2" 
+                      targetRef="projectOffboardingPayrollDeptTask" />
+        <sequenceFlow sourceRef="fork2" 
+                      targetRef="projectOffboardingAccountsPayableTask" />
+        <sequenceFlow sourceRef="fork2" 
+                      targetRef="projectOffboardingAccountsReceivableTask" />
+        <sequenceFlow sourceRef="fork2" 
+                      targetRef="projectOffboardingImmigrationDeptTask" />
+        
+        <parallelGateway id="fork3" />
+        
+        <sequenceFlow sourceRef="fork3" 
+                      targetRef="projectOffboardingBillingAdminTask" />
+        <sequenceFlow sourceRef="fork3" 
+                      targetRef="projectOffboardingPayrollDeptTask" />
+        <sequenceFlow sourceRef="fork3" 
+                      targetRef="projectOffboardingAccountsPayableTask" />
+        <sequenceFlow sourceRef="fork3" 
+                      targetRef="projectOffboardingAccountsReceivableTask" />
+        <sequenceFlow sourceRef="fork3" 
+                      targetRef="projectOffboardingRecruitingDeptTask" />
+        
+        <parallelGateway id="fork4" />
+        
+        <sequenceFlow sourceRef="fork4" 
+                      targetRef="projectOffboardingBillingAdminTask" />
+        <sequenceFlow sourceRef="fork4" 
+                      targetRef="projectOffboardingPayrollDeptTask" />
+        <sequenceFlow sourceRef="fork4" 
+                      targetRef="projectOffboardingAccountsPayableTask" />
+        <sequenceFlow sourceRef="fork4" 
+                      targetRef="projectOffboardingAccountsReceivableTask" />
+            
+        
+        <!-- Project Offboarding task for Billing Admin-->
+        <userTask id="projectOffboardingBillingAdminTask" 
+                  name="Project Offboarding Billing Admin Task for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_BILLING_ADMIN">
             <documentation> 
-                Associate Project Offboarding Billing Task Details:
-                Please update billing records for this employee and complete this task:
-                Employee                : ${currentEmployee.firstName} ${currentEmployee.lastName}
-                Client Name             : ${entity.clientName}
-                Vendor Name             : ${entity.vendorName}
+                Associate Project Offboarding Billing Admin Task Details:
+                Project Offboarding has been initiated for this employee. 
+                Please process any pending invoices, update the billing records for this employee and complete this task:
+                Employee                : ${employee.firstName} ${employee.lastName}
+                Client Name             : ${entity.client.name}
+                Vendor Name             : ${entity.vendor.name}
                 End Date                : ${entity.endDate}
-                Notes                   : ${entity.notes}               
+                Reason                  : ${projectOffboardingEntity.notes}
             </documentation>
+            
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:taskListener 
+                    event="create" 
+                    class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:taskListener 
+                    event="complete" 
+                    class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
                 <activiti:formProperty id="notes" 
                                        name="Notes"
                                        required="true" 
                                        type="string" />
             </extensionElements>         
         </userTask>
-        <sequenceFlow sourceRef="projectOffBoardingBillingTask" targetRef="join" />
+        
+        <!--         Task escalation email after 2 days-->
         <boundaryEvent id="emailEscalationTimer2"
                        cancelActivity="false" 
-                       attachedToRef="projectOffBoardingBillingTask">
+                       attachedToRef="projectOffboardingBillingAdminTask">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
@@ -124,30 +189,43 @@
             name="Task Email Escalation2"
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>
+        
+        <sequenceFlow sourceRef="projectOffboardingBillingAdminTask" 
+                      targetRef="join" />
 
-        <userTask id="projectOffBoardingContractsTask" name="Project OffBoarding Contracts Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" activiti:candidateGroups="ROLE_CONTRACTS_ADMIN">
+        
+        <!-- Project Offboarding task for Payroll Dept-->
+        <userTask id="projectOffboardingPayrollDeptTask" 
+                  name="Project Offboarding Payroll Task for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
             <documentation> 
-                Associate Project Offboarding Contracts Task Details:
-                Please update contracts records for this employee and complete this task:
-                Employee                : ${currentEmployee.firstName} ${currentEmployee.lastName}
-                Client Name             : ${entity.clientName}
-                Vendor Name             : ${entity.vendorName}
+                Associate Project Offboarding Payroll Dept Task Details:
+                Project Offboarding has been initiated for this employee. 
+                Please make any necessary payroll systems changes for this employee and complete this task:
+                Employee                : ${employee.firstName} ${employee.lastName}
+                Client Name             : ${entity.client.name}
+                Vendor Name             : ${entity.vendor.name}
                 End Date                : ${entity.endDate}
-                Notes                   : ${entity.notes}        
+                Reason                  : ${projectOffboardingEntity.notes}               
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:taskListener 
+                    event="create" 
+                    class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:taskListener 
+                    event="complete" 
+                    class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
                 <activiti:formProperty id="notes" 
                                        name="Notes"
                                        required="true" 
                                        type="string" />
             </extensionElements>         
         </userTask>
-        <sequenceFlow sourceRef="projectOffBoardingContractsTask" targetRef="join" />
+        
+        <!--         Task escalation email after 2 days-->
         <boundaryEvent id="emailEscalationTimer3"
                        cancelActivity="false" 
-                       attachedToRef="projectOffBoardingContractsTask">
+                       attachedToRef="projectOffboardingPayrollDeptTask">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
@@ -159,32 +237,42 @@
             name="Task Email Escalation3"
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>
-        <parallelGateway id="join" />
-        <sequenceFlow sourceRef="join" targetRef="projectOffBoardingValidationTask" />
-        <userTask id="projectOffBoardingValidationTask"
-                  name="Project OffBoarding Validation Task for ${currentEmployee.firstName} ${currentEmployee.lastName}"
-                  activiti:candidateGroups="ROLE_CONSULTANT_TIME_ADMIN">
+        
+        <sequenceFlow sourceRef="projectOffboardingPayrollDeptTask" 
+                      targetRef="join" />
+        
+        <!-- Project Offboarding task for Accounts Payable Dept-->
+        <userTask id="projectOffboardingAccountsPayableTask" 
+                  name="Project Offboarding Accounts Payable Task for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_ACCOUNTS_PAYABLE">
             <documentation> 
-                Associate Project Offboarding Validation Task Details:
-                Please validate offboarding details for this employee and complete this task:
-                Employee                : ${currentEmployee.firstName} ${currentEmployee.lastName}
-                Client Name             : ${entity.clientName}
-                Vendor Name             : ${entity.vendorName}
+                Associate Project Offboarding Accounts Payable Dept Task Details:
+                Project Offboarding has been initiated for this employee. 
+                Please  make sure evrything is taken care of from an accounts payable perpestive and complete this task.
+                Employee                : ${employee.firstName} ${employee.lastName}
+                Client Name             : ${entity.client.name}
+                Vendor Name             : ${entity.vendor.name}
                 End Date                : ${entity.endDate}
-                Notes                   : ${entity.notes}                
+                Reason                  : ${projectOffboardingEntity.notes}               
             </documentation>
             <extensionElements>
-                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
-                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:taskListener 
+                    event="create" 
+                    class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:taskListener 
+                    event="complete" 
+                    class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
                 <activiti:formProperty id="notes" 
                                        name="Notes"
                                        required="true" 
                                        type="string" />
             </extensionElements>         
         </userTask>
+        
+        <!--         Task escalation email after 2 days-->
         <boundaryEvent id="emailEscalationTimer4"
                        cancelActivity="false" 
-                       attachedToRef="projectOffBoardingValidationTask">
+                       attachedToRef="projectOffboardingAccountsPayableTask">
             <timerEventDefinition> 
                 <timeDuration>PT48H</timeDuration> 
             </timerEventDefinition>
@@ -196,7 +284,203 @@
             name="Task Email Escalation4"
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>
-        <sequenceFlow  sourceRef="projectOffBoardingValidationTask" targetRef="end" />
-        <endEvent id="end" />
+        
+        <sequenceFlow sourceRef="projectOffboardingAccountsPayableTask" 
+                      targetRef="join" />
+        
+        <!-- Project Offboarding task for Accounts Receivable Dept-->
+        <userTask id="projectOffboardingAccountsReceivableTask" 
+                  name="Project Offboarding Accounts Receivable Task for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_ACCOUNTS_RECEIVABLE">
+            <documentation> 
+                Associate Project Offboarding Accounts Receivable Dept Task Details:
+                Project Offboarding has been initiated for this employee. 
+                Please  make sure evrything is taken care of from an accounts receivable perpestive and complete this task.
+                Employee                : ${employee.firstName} ${employee.lastName}
+                Client Name             : ${entity.client.name}
+                Vendor Name             : ${entity.vendor.name}
+                End Date                : ${entity.endDate}
+                Reason                  : ${projectOffboardingEntity.notes}               
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener 
+                    event="create" 
+                    class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:taskListener 
+                    event="complete" 
+                    class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements>         
+        </userTask>
+        
+        <!--         Task escalation email after 2 days-->
+        <boundaryEvent id="emailEscalationTimer5"
+                       cancelActivity="false" 
+                       attachedToRef="projectOffboardingAccountsReceivableTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer5" 
+                      targetRef="taskEmailEscalation5" />
+        <serviceTask
+            id="taskEmailEscalation5"
+            name="Task Email Escalation5"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        
+        <sequenceFlow sourceRef="projectOffboardingAccountsReceivableTask" 
+                      targetRef="join" />
+
+        <!-- Project Offboarding task for Immigration Dept-->
+        <userTask id="projectOffboardingImmigrationDeptTask" 
+                  name="Project Offboarding Immigration Dept Task for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_H1B_IMMIGRATION">
+            <documentation> 
+                Associate Project Offboarding Immigration Dept Task Details:
+                Project Offboarding has been initiated for this employee. 
+                Please make any necessary immgiration chnages if required and complete this task.
+                Employee                : ${employee.firstName} ${employee.lastName}
+                Client Name             : ${entity.client.name}
+                Vendor Name             : ${entity.vendor.name}
+                WorkStatus              : ${employee.workStatus}
+                End Date                : ${entity.endDate}
+                Reason                  : ${projectOffboardingEntity.notes}                
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener 
+                    event="create" 
+                    class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:taskListener 
+                    event="complete" 
+                    class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements>         
+        </userTask>
+        
+        <!--         Task escalation email after 2 days-->
+        <boundaryEvent id="emailEscalationTimer6"
+                       cancelActivity="false" 
+                       attachedToRef="projectOffboardingImmigrationDeptTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer6" 
+                      targetRef="taskEmailEscalation6" />
+        <serviceTask
+            id="taskEmailEscalation6"
+            name="Task Email Escalation6"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        
+        <sequenceFlow sourceRef="projectOffboardingImmigrationDeptTask" 
+                      targetRef="join" />
+
+        
+        <!-- Project Offboarding task for Recruiting Dept-->
+        <userTask id="projectOffboardingRecruitingDeptTask" 
+                  name="Project Offboarding Recruiting Dept Task for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_RECRUITER">
+            <documentation> 
+                Associate Project Offboarding Recruiting Dept Task Details:
+                Project Offboarding has been initiated for this employee. 
+                This employee's current project ends on the given end date below and as will be available for recruitment. 
+                Employee                : ${employee.firstName} ${employee.lastName}
+                Client Name             : ${entity.client.name}
+                Vendor Name             : ${entity.vendor.name}
+                End Date                : ${entity.endDate}
+                Reason                  : ${projectOffboardingEntity.notes}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener 
+                    event="create" 
+                    class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:taskListener 
+                    event="complete" 
+                    class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements>         
+        </userTask>
+        
+        <!--         Task escalation email after 2 days-->
+        <boundaryEvent id="emailEscalationTimer7"
+                       cancelActivity="false" 
+                       attachedToRef="projectOffboardingRecruitingDeptTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer7" 
+                      targetRef="taskEmailEscalation7" />
+        <serviceTask
+            id="taskEmailEscalation7"
+            name="Task Email Escalation7"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        
+        <sequenceFlow sourceRef="projectOffboardingRecruitingDeptTask" 
+                      targetRef="join" />
+
+        <parallelGateway id="join" />
+        
+        <sequenceFlow sourceRef="join" 
+                      targetRef="projectOffboardingValidationTask" />
+        
+        <userTask id="projectOffboardingValidationTask"
+                  name="Project Offboarding Validation Task for ${employee.firstName} ${employee.lastName}"
+                  activiti:candidateGroups="ROLE_CONTRACTS_ADMIN">
+            <documentation> 
+                Associate Project Offboarding Validation Task Details:
+                Project Offboarding has been initiated for this employee.
+                Please validate the offboarding details for this employee and complete this task:
+                Employee                : ${employee.firstName} ${employee.lastName}
+                Client Name             : ${entity.client.name}
+                Vendor Name             : ${entity.vendor.name}
+                End Date                : ${entity.endDate}
+                Reason                  : ${projectOffboardingEntity.notes}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener 
+                    event="create" 
+                    class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:taskListener 
+                    event="complete" 
+                    class="info.yalamanchili.office.bpm.offboarding.ProjectOffboardingProcess" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements>         
+        </userTask>
+        <!--Task escalation email after 2 days-->
+        <boundaryEvent id="emailEscalationTimer8"
+                       cancelActivity="false" 
+                       attachedToRef="projectOffboardingValidationTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer8" 
+                      targetRef="taskEmailEscalation8" />
+        <serviceTask
+            id="taskEmailEscalation8"
+            name="Task Email Escalation8"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        
+        <sequenceFlow sourceRef="projectOffboardingValidationTask" 
+                      targetRef="projectOffboardingTaskEnd" />
+
+        <endEvent id="projectOffboardingTaskEnd" />
     </process>
 </definitions>
