@@ -16,6 +16,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.contracts.ClientInformationStatus;
+import java.util.Date;
 
 /**
  *
@@ -64,7 +65,8 @@ public class ReadAllClientInfoPopupPanel extends ReadAllClientInfoPanel {
             table.setText(i, ++column, DateUtils.formatDate(JSONUtils.toString(entity, "startDate")));
             table.setText(i, ++column, DateUtils.formatDate(JSONUtils.toString(entity, "endDate")));
             setEnumColumn(i, ++column, entity, ClientInformationStatus.class.getSimpleName(), "status");
-            if (JSONUtils.toString(entity, "status").equalsIgnoreCase("Completed") && JSONUtils.toBoolean(entity, "active").booleanValue()) {
+            if (JSONUtils.toString(entity, "status").equalsIgnoreCase("Completed")
+                    && new Date().before(DateUtils.toDate(JSONUtils.toString(entity, "endDate")))) {
                 ClickableLink projectOffboarding = new ClickableLink("Initiate Project Offboarding");
                 projectOffboarding.setTitle(JSONUtils.toString(entity, "id"));
                 projectOffboarding.addClickHandler((ClickEvent event) -> {
