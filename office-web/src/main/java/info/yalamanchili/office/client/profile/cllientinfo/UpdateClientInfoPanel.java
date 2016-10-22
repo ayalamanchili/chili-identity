@@ -96,14 +96,14 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected void populateCIDocuments() {
         HttpService.HttpServiceAsync.instance().doGet(getDocumentUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if (!response.trim().toString().equals("null")) {
-                            JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
-                            entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
-                        }
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                if (!response.trim().toString().equals("null")) {
+                    JSONArray docs = JSONUtils.toJSONArray(JSONParser.parseLenient(response).isObject().get("ciDocument"));
+                    entityFieldsPanel.add(new ReadAllCiDocumentPanel(getEntityId(), docs));
+                }
+            }
+        });
     }
 
     protected String getDocumentUrl() {
@@ -133,12 +133,12 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignEntityValueFromField("recruiters", entity);
         assignEntityValueFromField("itemNumber", entity);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_ADMIN)) {
-        assignEntityValueFromField("payRatePercentage", entity);
-        assignEntityValueFromField("overTimePayRatePercentage", entity);
+            assignEntityValueFromField("payRatePercentage", entity);
+            assignEntityValueFromField("overTimePayRatePercentage", entity);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             assignEntityValueFromField("billingRate", entity);
-            assignEntityValueFromField("overTimeBillingRate", entity);           
+            assignEntityValueFromField("overTimeBillingRate", entity);
             assignEntityValueFromField("invoiceFrequency", entity);
             assignEntityValueFromField("invoiceDeliveryMethod", entity);
             assignEntityValueFromField("billingRateDuration", entity);
@@ -196,16 +196,16 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadDocuments(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadDocuments(arg0);
+            }
+        });
 
     }
 
@@ -219,7 +219,6 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         new ResponseStatusWidget().show("Successfully Updated Client Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId(), active));
-//        TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
     }
 
     @Override
@@ -250,8 +249,8 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         assignFieldValueFromEntity("recruiters", entity, null);
         assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_ADMIN)) {
-        assignFieldValueFromEntity("payRatePercentage", entity, DataType.FLOAT_FIELD);
-        assignFieldValueFromEntity("overTimePayRatePercentage", entity, DataType.FLOAT_FIELD);
+            assignFieldValueFromEntity("payRatePercentage", entity, DataType.FLOAT_FIELD);
+            assignFieldValueFromEntity("overTimePayRatePercentage", entity, DataType.FLOAT_FIELD);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN)) {
             assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
@@ -352,7 +351,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         addDropDown("clientAPContacts", selectClientAcctPayContact);
 //        addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        if (!Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN,ROLE.ROLE_CONTRACTS_ADMIN) && cistatus.equals("COMPLETED")) {
+        if (!Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_ADMIN) && cistatus.equals("COMPLETED")) {
             selectVendorWidgetF.setReadOnly(true);
             entityFieldsPanel.add(getLineSeperatorTag("Middle Vendor Information"));
             addDropDown("middleVendor", new SelectMiddleVendorWidget(true, false, Alignment.HORIZONTAL));
@@ -489,7 +488,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
         entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
         addField("visaStatus", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        
+
         if (TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
             StringField employeeTypeF = (StringField) fields.get("employeeType");
             employeeTypeF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
@@ -597,19 +596,19 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     public void loadVendor(String vendorEntityId) {
         HttpService.HttpServiceAsync.instance().doGet(getVendor(vendorEntityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
-                        TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
-                        payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
-                        EnumField invDelv = (EnumField) fields.get("invoiceDeliveryMethod");
-                        if (vendor.get("vendorinvDeliveryMethod") != null) {
-                            invDelv.selectValue(JSONUtils.toString(vendor, "vendorinvDeliveryMethod"));
-                        } else {
-                            invDelv.setSelectedIndex(0);
-                        }
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
+                TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
+                payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
+                EnumField invDelv = (EnumField) fields.get("invoiceDeliveryMethod");
+                if (vendor.get("vendorinvDeliveryMethod") != null) {
+                    invDelv.selectValue(JSONUtils.toString(vendor, "vendorinvDeliveryMethod"));
+                } else {
+                    invDelv.setSelectedIndex(0);
+                }
+            }
+        });
     }
 
     protected String getVendor(String vendorEntityId) {
@@ -619,15 +618,15 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
     public void loadClient(String clientEntityId) {
         HttpService.HttpServiceAsync.instance().doGet(getClient(clientEntityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONObject client = (JSONObject) JSONParser.parseLenient(response);
-                        TextAreaField payTermF = (TextAreaField) fields.get("clientPaymentTerms");
-                        payTermF.setValue(JSONUtils.toString(client, "paymentTerms"));
+            @Override
+            public void onResponse(String response) {
+                JSONObject client = (JSONObject) JSONParser.parseLenient(response);
+                TextAreaField payTermF = (TextAreaField) fields.get("clientPaymentTerms");
+                payTermF.setValue(JSONUtils.toString(client, "paymentTerms"));
 //                        BooleanField directClientB = (BooleanField) fields.get("directClient");
 //                        directClientB.setValue(JSONUtils.toBoolean(client, "directClient"));
-                    }
-                });
+            }
+        });
     }
 
     protected String getClient(String clientEntityId) {
@@ -661,7 +660,7 @@ public class UpdateClientInfoPanel extends UpdateComposite implements ChangeHand
                 }
             }
         }
-        
+
         StringField visaStatusF = (StringField) fields.get("visaStatus");
         if (visaStatusF.getValue() == null || "".equals(visaStatusF.getValue())) {
             visaStatusF.setMessage("Visa status cannot be empty");

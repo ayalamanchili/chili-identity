@@ -20,10 +20,12 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.utils.FormatUtils;
+import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.contracts.ClientInformationStatus;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
+import info.yalamanchili.office.client.project.offboarding.SubmitProjectOffboardingPanel;
 import java.util.logging.Logger;
 
 public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements ClickHandler {
@@ -62,12 +64,12 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     public void preFetchTable(int start) {
         HttpServiceAsync.instance().doGet(getReadAllURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        logger.info("Result with employee is:" + result);
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                logger.info("Result with employee is:" + result);
+                postFetchTable(result);
+            }
+        });
     }
 
     @Override
@@ -82,21 +84,26 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
 
     @Override
     public void createTableHeader() {
-        table.setText(0, 0, getKeyValue("Table_Action"));
-        table.setText(0, 1, getKeyValue("Client"));
-        table.setText(0, 2, getKeyValue("Vendor"));
+        int column = 0;
+        table.setText(0, column, getKeyValue("Table_Action"));
+        table.setText(0, ++column, getKeyValue("Client"));
+        table.setText(0, ++column, getKeyValue("Vendor"));
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS, Auth.ROLE.ROLE_RECRUITER)) {
-            table.setText(0, 3, getKeyValue("ItemNo"));
-            table.setText(0, 4, getKeyValue("BillRate"));
-            table.setText(0, 5, getKeyValue("Frequency"));
-            table.setText(0, 6, getKeyValue("StartDate"));
-            table.setText(0, 7, getKeyValue("EndDate"));
-            table.setText(0, 8, getKeyValue("Status"));
+            table.setText(0, ++column, getKeyValue("ItemNo"));
+            table.setText(0, ++column, getKeyValue("BillRate"));
+            table.setText(0, ++column, getKeyValue("Frequency"));
+            table.setText(0, ++column, getKeyValue("StartDate"));
+            table.setText(0, ++column, getKeyValue("EndDate"));
+            table.setText(0, ++column, getKeyValue("Status"));
         } else {
-            table.setText(0, 3, getKeyValue("StartDate"));
-            table.setText(0, 4, getKeyValue("EndDate"));
-            table.setText(0, 5, getKeyValue("Status"));
+            table.setText(0, ++column, getKeyValue("StartDate"));
+            table.setText(0, ++column, getKeyValue("EndDate"));
+            table.setText(0, ++column, getKeyValue("Status"));
         }
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS, Auth.ROLE.ROLE_RECRUITER)) {
+            table.setText(0, ++column, getKeyValue("Project Offboarding"));
+        }
+
     }
 
     @Override
@@ -145,11 +152,11 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     public void deleteClicked(String entityId) {
         HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     @Override
@@ -162,7 +169,6 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
         new ResponseStatusWidget().show("Successfully Deleted Client Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId(), active));
-//        TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
     }
 
     @Override
@@ -174,31 +180,46 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     @Override
     public void fillData(JSONArray entities) {
         for (int i = 1; i <= entities.size(); i++) {
+            int column = 1;
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             OfficeWelcome.instance().logger.info(entity.toString());
 
             if (entity.get("client") != null) {
                 JSONObject client = entity.get("client").isObject();
-                table.setText(i, 1, JSONUtils.toString(client, "name"));
+                table.setText(i, column, JSONUtils.toString(client, "name"));
             }
             if (entity.get("vendor") != null) {
                 JSONObject vendor = entity.get("vendor").isObject();
-                table.setText(i, 2, JSONUtils.toString(vendor, "name"));
+                table.setText(i, ++column, JSONUtils.toString(vendor, "name"));
             }
             if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN, Auth.ROLE.ROLE_CONTRACTS, Auth.ROLE.ROLE_RECRUITER)) {
-                table.setText(i, 3, JSONUtils.toString(entity, "itemNumber"));
-                table.setText(i, 4, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
-                setEnumColumn(i, 5, entity, InvoiceFrequency.class.getSimpleName(), "invoiceFrequency");
-                table.setText(i, 6, DateUtils.formatDate(JSONUtils.toString(entity, "startDate")));
-                table.setText(i, 7, DateUtils.formatDate(JSONUtils.toString(entity, "endDate")));
-                setEnumColumn(i, 8, entity, ClientInformationStatus.class.getSimpleName(), "status");
+                table.setText(i, ++column, JSONUtils.toString(entity, "itemNumber"));
+                table.setText(i, ++column, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
+                setEnumColumn(i, ++column, entity, InvoiceFrequency.class.getSimpleName(), "invoiceFrequency");
+                table.setText(i, ++column, DateUtils.formatDate(JSONUtils.toString(entity, "startDate")));
+                table.setText(i, ++column, DateUtils.formatDate(JSONUtils.toString(entity, "endDate")));
+                setEnumColumn(i, ++column, entity, ClientInformationStatus.class.getSimpleName(), "status");
             } else {
-                table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "startDate")));
-                table.setText(i, 4, DateUtils.formatDate(JSONUtils.toString(entity, "endDate")));
-                setEnumColumn(i, 5, entity, ClientInformationStatus.class.getSimpleName(), "status");
+                table.setText(i, ++column, DateUtils.formatDate(JSONUtils.toString(entity, "startDate")));
+                table.setText(i, ++column, DateUtils.formatDate(JSONUtils.toString(entity, "endDate")));
+                setEnumColumn(i, ++column, entity, ClientInformationStatus.class.getSimpleName(), "status");
+            }
+            if (JSONUtils.toString(entity, "status").equalsIgnoreCase("Completed") && JSONUtils.toBoolean(entity, "active").booleanValue()) {
+                ClickableLink projectOffboarding = new ClickableLink("Initiate Project Offboarding");
+                projectOffboarding.setTitle(JSONUtils.toString(entity, "id"));
+                projectOffboarding.addClickHandler((ClickEvent event) -> {
+                    submitProjectOffBoarding(((ClickableLink) event.getSource()).getTitle());
+                });
+                table.setWidget(i, ++column, projectOffboarding);
             }
 
+        }
+    }
+
+    protected void submitProjectOffBoarding(String clientInfoId) {
+        if (!clientInfoId.isEmpty()) {
+            new GenericPopup(new SubmitProjectOffboardingPanel(CreateComposite.CreateCompositeType.CREATE, clientInfoId)).show();
         }
     }
 

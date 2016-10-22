@@ -18,6 +18,7 @@ import info.chili.gwt.fields.StringField;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.DateField;
@@ -80,7 +81,7 @@ public abstract class GenericBPMFormPanel extends CreateComposite {
             if (fields.get(key) instanceof DateField) {
                 DateField field = (DateField) fields.get(key);
                 if (field.getDate() != null) {
-                    value.put("value", new JSONString(field.getDate().toString()));
+                    value.put("value", new JSONString(DateUtils.toDateStringForBPMN(field.getDate())));
                     type.put("name", new JSONString("date"));
                 }
             }
