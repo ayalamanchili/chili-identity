@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.project.offboarding;
 
+import com.google.common.base.Strings;
 import info.yalamanchili.office.dto.offboarding.ProjectOffboardingDto;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
@@ -29,9 +30,14 @@ public class ProjectOffboardingService {
 
     public void startProjectOffboardingTask(ProjectOffboardingDto ped) {
         ClientInformation ci = ClientInformationDao.instance().findById(ped.getClientInformtaionId());
-        CommentDao.instance().addComment("Reason for Project End: " + ped.getNotes(), ci);
-        if (ped.getSpecialNotes() != null && ped.getSpecialNotes() != "") {
-            CommentDao.instance().addComment("Special Notes for Project End: " + ped.getSpecialNotes(), ci);
+        CommentDao.instance().addComment("Project Offboarding-> Reason for Project End: " + ped.getNotes(), ci);
+        if (ped.getProjectInPipeline()) {
+            CommentDao.instance().addComment("Project Offboarding-> New Project in Pipeline: Yes", ci);
+        } else {
+            CommentDao.instance().addComment("Project Offboarding-> New Project in Pipeline: No", ci);
+        }
+        if (!Strings.isNullOrEmpty(ped.getSpecialNotes())) {
+            CommentDao.instance().addComment("Project Offboarding-> Special Notes : " + ped.getSpecialNotes(), ci);
         }
         Map<String, Object> vars = new HashMap<>();
         vars.put("entityId", ped.getClientInformtaionId());
