@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.bpm.offboarding;
 
+import info.chili.service.jrs.exception.ServiceException;
 import info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification;
 import info.yalamanchili.office.bpm.email.GenericTaskCreateNotification;
 import info.yalamanchili.office.bpm.rule.RuleBasedTaskDelegateListner;
@@ -22,6 +23,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.activiti.engine.delegate.DelegateTask;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -49,7 +51,12 @@ public class ProjectOffboardingProcess extends RuleBasedTaskDelegateListner {
 
     public void projectOffboardingTaskCompleted(DelegateTask task) {
         ClientInformation entity = getRequestFromTask(task);
-        attachComment(task, entity);
+        String notes = (String) task.getExecution().getVariable("notes");
+        if (StringUtils.isBlank(notes)) {
+            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "notes.empty", "Please enter notes. Notes cannot be empty.");
+        } else {
+            attachComment(task, entity);
+        }
         switch (task.getTaskDefinitionKey()) {
             case "projectOffboardingContractsAdminTask":
                 projectOffboardingContractsAdminTask(task, entity);
