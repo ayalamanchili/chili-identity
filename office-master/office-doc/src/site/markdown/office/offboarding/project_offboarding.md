@@ -2,7 +2,7 @@ Project Offboarding
 =========
   
 - To initiate project offboarding, the employee should: 
-    - Navigate to his _**Profile**_ and click on _**Client Information**_ on the side panel.
+    - Navigate to their _**Profile**_ and click on _**Client Information**_ on the side panel.
 
     ![Client Information](../../images/offboarding/client_information.png)
 
