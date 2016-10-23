@@ -55,6 +55,7 @@
                     <item name="Submit Invoice" href="/office/invoice/submit-invoice.html" collapse="true"/>
                 </item>
             </item>
+            <item name="Project Offboarding" href="office/offboarding/project_offboarding.html"/>
             <item name="Prospects" href="/office/prospects/prospects.html" collapse="true">
                 <item name="Prospect Reports" href="/office/prospects/prospect-reports.html"/>
                 <item name="Prospect Graphs" href="/office/prospects/prospect-graphs.html"/>
