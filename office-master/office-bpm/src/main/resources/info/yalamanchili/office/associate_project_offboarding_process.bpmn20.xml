@@ -391,7 +391,7 @@
             <documentation> 
                 Associate Project Offboarding Recruiting Dept Task Details:
                 Project Offboarding has been initiated for this employee. 
-                This employee's current project ends on the given end date below and as will be available for recruitment. 
+                This employee's current project is ending soon and he/she will be available for recruitment. 
                 Employee                : ${employee.firstName} ${employee.lastName}
                 Client Name             : ${entity.client.name}
                 Vendor Name             : ${entity.vendor.name}
