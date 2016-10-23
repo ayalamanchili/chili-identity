@@ -437,8 +437,7 @@
                       targetRef="projectOffboardingValidationTask" />
         
         <userTask id="projectOffboardingValidationTask"
-                  name="Project Offboarding Validation Task for ${employee.firstName} ${employee.lastName}"
-                  activiti:candidateGroups="ROLE_CONTRACTS_ADMIN">
+                  name="Project Offboarding Validation Task for ${employee.firstName} ${employee.lastName}">
             <documentation> 
                 Associate Project Offboarding Validation Task Details:
                 Project Offboarding has been initiated for this employee.
