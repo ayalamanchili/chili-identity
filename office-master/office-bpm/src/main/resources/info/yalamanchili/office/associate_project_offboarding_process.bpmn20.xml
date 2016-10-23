@@ -156,8 +156,8 @@
                 Employee                : ${employee.firstName} ${employee.lastName}
                 Client Name             : ${entity.client.name}
                 Vendor Name             : ${entity.vendor.name}
-                End Date                : ${entity.endDate}
-                Reason                  : ${projectOffboardingEntity.notes}
+                End Date                : ${projectOffboardingEntity.endDate}
+                Reason                  : ${projectOffboardingEntity.notes}                   
             </documentation>
             
             <extensionElements>
@@ -252,7 +252,7 @@
                 Employee                : ${employee.firstName} ${employee.lastName}
                 Client Name             : ${entity.client.name}
                 Vendor Name             : ${entity.vendor.name}
-                End Date                : ${entity.endDate}
+                End Date                : ${projectOffboardingEntity.endDate}
                 Reason                  : ${projectOffboardingEntity.notes}               
             </documentation>
             <extensionElements>
@@ -299,7 +299,7 @@
                 Employee                : ${employee.firstName} ${employee.lastName}
                 Client Name             : ${entity.client.name}
                 Vendor Name             : ${entity.vendor.name}
-                End Date                : ${entity.endDate}
+                End Date                : ${projectOffboardingEntity.endDate}
                 Reason                  : ${projectOffboardingEntity.notes}               
             </documentation>
             <extensionElements>
@@ -347,7 +347,7 @@
                 Client Name             : ${entity.client.name}
                 Vendor Name             : ${entity.vendor.name}
                 WorkStatus              : ${employee.workStatus}
-                End Date                : ${entity.endDate}
+                End Date                : ${projectOffboardingEntity.endDate}
                 Reason                  : ${projectOffboardingEntity.notes}                
             </documentation>
             <extensionElements>
@@ -395,7 +395,7 @@
                 Employee                : ${employee.firstName} ${employee.lastName}
                 Client Name             : ${entity.client.name}
                 Vendor Name             : ${entity.vendor.name}
-                End Date                : ${entity.endDate}
+                End Date                : ${projectOffboardingEntity.endDate}
                 Reason                  : ${projectOffboardingEntity.notes}
             </documentation>
             <extensionElements>
@@ -445,7 +445,7 @@
                 Employee                : ${employee.firstName} ${employee.lastName}
                 Client Name             : ${entity.client.name}
                 Vendor Name             : ${entity.vendor.name}
-                End Date                : ${entity.endDate}
+                End Date                : ${projectOffboardingEntity.endDate}
                 Reason                  : ${projectOffboardingEntity.notes}
             </documentation>
             <extensionElements>
