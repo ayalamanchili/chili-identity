@@ -80,7 +80,9 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
                 if (!payratePercent.equalsIgnoreCase("")) {
                     entity.setPayRatePercentage(Float.valueOf(payratePercent));
                 }
-                CommentDao.instance().addComment("New Client Info Payroll Department Task: " + specialNotes, entity);
+                if (!StringUtils.isBlank(specialNotes)) {
+                    CommentDao.instance().addComment("New Client Info Payroll Department Task: " + specialNotes, entity);
+                }
             } else {
                 entity.setStatus(ClientInformationStatus.CANCELED);
             }
