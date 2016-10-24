@@ -248,7 +248,7 @@
             <documentation> 
                 Associate Project Offboarding Accounts Payable Dept Task Details:
                 Project Offboarding has been initiated for this employee. 
-                Please  make sure evrything is taken care of from an accounts payable perpestive and complete this task.
+                Please  make sure evrything is taken care of from an accounts payable perspective and complete this task.
                 Employee                : ${employee.firstName} ${employee.lastName}
                 Client Name             : ${entity.client.name}
                 Vendor Name             : ${entity.vendor.name}
@@ -295,7 +295,7 @@
             <documentation> 
                 Associate Project Offboarding Accounts Receivable Dept Task Details:
                 Project Offboarding has been initiated for this employee. 
-                Please  make sure evrything is taken care of from an accounts receivable perpestive and complete this task.
+                Please  make sure evrything is taken care of from an accounts receivable perspective and complete this task.
                 Employee                : ${employee.firstName} ${employee.lastName}
                 Client Name             : ${entity.client.name}
                 Vendor Name             : ${entity.vendor.name}
