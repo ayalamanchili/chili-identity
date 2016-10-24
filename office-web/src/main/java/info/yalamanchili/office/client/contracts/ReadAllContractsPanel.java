@@ -139,7 +139,10 @@ public class ReadAllContractsPanel extends CRUDReadAllComposite {
             table.setText(i, 7, DateUtils.formatDate(JSONUtils.toString(entity, "startDate")));
 //            table.setText(i, 9, DateUtils.formatDate(JSONUtils.toString(entity, "endDate")));
             setEnumColumn(i, 8, entity, ClientInformationStatus.class.getSimpleName(), "status");
-            if (Auth.hasAnyOfRoles(ROLE.ROLE_INVOICE_MANAGER) && entity.containsKey("status") && entity.get("status").isString().stringValue().equalsIgnoreCase("Completed")) {
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_INVOICE_MANAGER)
+                    && (entity.containsKey("status") && entity.get("status").isString().stringValue().equalsIgnoreCase("Completed")
+                    || entity.containsKey("status") && entity.get("status").isString().stringValue().equalsIgnoreCase("Pending_Closing")
+                    || entity.containsKey("status") && entity.get("status").isString().stringValue().equalsIgnoreCase("Closed"))) {
                 ClickableLink invoiceLink = new ClickableLink("Create Invoice");
                 invoiceLink.setTitle(JSONUtils.toString(entity, "id"));
                 emp = JSONUtils.toString(entity, "employee");
