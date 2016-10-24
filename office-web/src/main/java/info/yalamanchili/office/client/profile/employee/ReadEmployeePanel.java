@@ -22,6 +22,7 @@ import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.Company;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.contact.Branch;
@@ -207,6 +208,8 @@ public class ReadEmployeePanel extends ReadComposite {
 
     @Override
     protected ReadAllComposite getReadAllPanel() {
+        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new EmployeeSidePanel());
         return ReadAllEmployeesPanel.instance;
     }
 }
