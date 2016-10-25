@@ -207,7 +207,7 @@ public class ClientInformationService {
             CommentDao.instance().addComment("End Previous Project Reason: " + ciDto.getReason(), ci);
         }
         if (submitForApproval) {
-            ci.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
+            ci.setStatus(ClientInformationStatus.PENDING_CONTRACTS_VALIDATION);
             ci.setBpmProcessId(ClientInformationProcessBean.instance().startNewClientInfoProcess(ci, OfficeSecurityService.instance().getCurrentUser()));
         } else {
             ci.setStatus(ClientInformationStatus.PENDING_CONTRACTS_SUBMIT);
