@@ -374,8 +374,6 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
 
     @Override
     protected void postUpdateSuccess(String result) {
-        if (fileUploadPanel.getFileNames().size() < 3) {
-new ResponseStatusWidget().show("Expense Form Successfully Created");        }
         RootPanel.get().clear();
         RootPanel.get().add(new HTML("Thank you. Please check your email on follow up instructions"));
     }
