@@ -67,17 +67,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Scope("prototype")
 public class ContractService {
-
+    
     @PersistenceContext
     protected EntityManager em;
     @Autowired
     protected Mapper mapper;
-
+    
     public ContractDto read(Long id) {
         ClientInformation ci = ClientInformationDao.instance().findById(id);
         return mapClientInformation(ci);
     }
-
+    
     public ContractTable getContractorPlacementInfo(int start, int limit) {
         String queryStr = "SELECT ci from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate>=:dateParam or ci.endDate is null ";
         TypedQuery<ClientInformation> query = em.createQuery(queryStr + " order by ci.employee.firstName ASC group by ci.employee", ClientInformation.class);
@@ -87,7 +87,7 @@ public class ContractService {
         String sizeQueryStr = queryStr.replace("SELECT ci", "SELECT count(*)");
         TypedQuery<Long> sizeQuery = em.createQuery(sizeQueryStr, Long.class);
         sizeQuery.setParameter("dateParam", new Date(), TemporalType.DATE);
-
+        
         ContractTable table = new ContractTable();
         table.setSize(sizeQuery.getSingleResult());
         for (ClientInformation ci : query.getResultList()) {
@@ -95,7 +95,7 @@ public class ContractService {
         }
         return table;
     }
-
+    
     public ContractTable search(ContractSearchDto searchDto, int start, int limit) {
         ContractTable table = new ContractTable();
         String searchQuery = getSearchQuery(searchDto);
@@ -142,7 +142,7 @@ public class ContractService {
         }
         return table;
     }
-
+    
     public ContractTable search(Long empId, int start, int limit) {
         ContractTable table = new ContractTable();
         List<ClientInformation> cis = EmployeeDao.instance().findById(empId).getClientInformations();
@@ -154,7 +154,7 @@ public class ContractService {
         }
         return table;
     }
-
+    
     public ContractTable search(String itemNum, int start, int limit) {
         ContractTable table = new ContractTable();
         String searchQuery = getSearchQuery(itemNum);
@@ -169,7 +169,7 @@ public class ContractService {
         }
         return table;
     }
-
+    
     protected String getSearchQuery(String searchText) {
         StringBuilder queryStr = new StringBuilder();
         queryStr.append("SELECT ci from ").append(ClientInformation.class.getCanonicalName());
@@ -190,7 +190,7 @@ public class ContractService {
             queryStr.append(" join ci.recruiters as recruiters");
         }
         queryStr.append(" where ");
-
+        
         if (StringUtils.isNotBlank(searchDto.getRecruiter())) {
             String[] recruiters = searchDto.getRecruiter().split(" ");
             queryStr.append("recruiters.firstName LIKE '%").append(recruiters[0].trim()).append("%' ").append(" and ");
@@ -253,7 +253,7 @@ public class ContractService {
         }
         return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }
-
+    
     @Async
     @Transactional
     public void sendClientinfoUpdatedEmail(ClientInformation ci, String updatedBy) {
@@ -273,7 +273,7 @@ public class ContractService {
             MessagingService.instance().sendEmail(email);
         }
     }
-
+    
     @Async
     @Transactional
     public void sendBillingRateUpdatedEmail(ClientInformation ci, Date effectiveDate, String updatedBy) {
@@ -296,7 +296,7 @@ public class ContractService {
             MessagingService.instance().sendEmail(email);
         }
     }
-
+    
     public ContractDto mapClientInformation(ClientInformation ci) {
         ContractDto dto = mapper.map(ci, ContractDto.class);
         Vendor vi = new Vendor();
@@ -346,8 +346,9 @@ public class ContractService {
                     dto.setPayRate(dto.getFinalBillingRate().multiply(new BigDecimal(ci.getPayRatePercentage())).divide(new BigDecimal(100)));
                 }
             }
+            dto.setPayRate(ci.getPayRate());
         }
-
+        
         if (ci.getVendor() != null) {
             vi = ci.getVendor();
             dto.setVendor(vi.getName());
@@ -372,7 +373,7 @@ public class ContractService {
                 }
             }
         }
-
+        
         StringBuilder recruiters = new StringBuilder();
         for (Employee rec : ci.getRecruiters()) {
             recruiters.append(rec.getFirstName()).append(" ").append(rec.getLastName()).append(" , ");
@@ -424,7 +425,7 @@ public class ContractService {
         if (ci.getVendorLocation() != null) {
             dto.setVendorLocation(ci.getVendorLocation().getStreet1() + " " + ci.getVendorLocation().getCity() + " " + ci.getVendorLocation().getState());
         }
-
+        
         if (ci.getSubcontractor() != null) {
             dto.setSubContractorName(ci.getSubcontractor().getName());
             if (ci.getSubcontractor().getLocations().size() > 0) {
@@ -471,17 +472,17 @@ public class ContractService {
         }
         return dto;
     }
-
+    
     public Response generateContractorPlacementInfoReport(String format) {
         ContractTable data = getContractorPlacementInfo(0, 10000);
         String[] columnOrder = new String[]{"employee", "client", "vendor", "itemNumber", "billingRate", "overTimeBillingRate", "invoiceFrequency", "startDate", "endDate",};
         return ReportGenerator.generateReport(data.getEntities(), "contracts", format, OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
     }
-
+    
     public BigDecimal calculateMargin(BigDecimal fee, BigDecimal maxFee, BigDecimal minFee) {
-
+        
         BigDecimal margin = BigDecimal.ZERO;
-
+        
         if (fee != null && fee.floatValue() > 0) {
             if (maxFee != null && minFee != null && fee.floatValue() <= maxFee.floatValue() && fee.floatValue() >= minFee.floatValue()) {
                 margin = fee;
@@ -493,10 +494,10 @@ public class ContractService {
                 margin = fee;
             }
         }
-
+        
         return margin;
     }
-
+    
     @Async
     @Transactional
     public void generateSubCReport(ContractSearchDto dto, String email) {
@@ -505,7 +506,7 @@ public class ContractService {
         String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employees From SubContractor " + dto.getSubContractorName(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, email);
     }
-
+    
     @Async
     @Transactional
     public void generateClientReport(ContractSearchDto dto, String email) {
@@ -514,7 +515,7 @@ public class ContractService {
         String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employees Working Under Client " + dto.getClient(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, email);
     }
-
+    
     @Async
     @Transactional
     public void generateVendorReport(ContractSearchDto dto, String email) {
@@ -523,7 +524,7 @@ public class ContractService {
         String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employees Working Under Vendor " + dto.getVendor(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, email);
     }
-
+    
     @Async
     @Transactional
     public void generateRecruiterReport(ContractSearchDto dto, String email) {
@@ -539,7 +540,7 @@ public class ContractService {
         }
         MessagingService.instance().emailReport(fileName, email);
     }
-
+    
     public ContractTable getResultForReport(ContractSearchDto dto) {
         String query = getSearchQuery(dto);
         ContractTable table = new ContractTable();
@@ -550,7 +551,7 @@ public class ContractService {
         queryForSub.setCacheable(false);
         queryForSub.setLockMode("lockmode", LockMode.NONE);
         ScrollableResults scrollableResults = queryForSub.scroll(ScrollMode.FORWARD_ONLY);
-
+        
         while (scrollableResults.next()) {
             ClientInformation ci = (ClientInformation) scrollableResults.get(0);
             table.getEntities().add(mapClientInformation(ci));
@@ -559,7 +560,7 @@ public class ContractService {
         session.close();
         return table;
     }
-
+    
     public BigDecimal getEffectiveBillingRate(Long id) {
         Query query = em.createNativeQuery("Select billingRate from BILLINGRATE where clientInformation_id=" + id + " and billingRate is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
         for (Object obj : query.getResultList()) {
@@ -567,7 +568,7 @@ public class ContractService {
         }
         return null;
     }
-
+    
     public void getEffectiveOvertimeBillingRate(ClientInformation ci, ContractDto dto) {
         dto.setOverTimeBillingRate(null);
         Query query = em.createNativeQuery("Select overTimeBillingRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and overTimeBillingRate is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
@@ -575,7 +576,7 @@ public class ContractService {
             dto.setOverTimeBillingRate((BigDecimal) obj);
         }
     }
-
+    
     public BigDecimal getEffectiveBillingRateForInvoice(Long id, Date date) {
         TypedQuery<BillingRate> queryForSub = em.createQuery("from " + BillingRate.class.getCanonicalName() + " where clientInformation_id=:ClientInfoIdParam and billingRate != NULL and effectiveDate <=:startDateParam  order by effectiveDate desc LIMIT 1", BillingRate.class);
         queryForSub.setParameter("ClientInfoIdParam", id);
@@ -586,7 +587,7 @@ public class ContractService {
             return ClientInformationDao.instance().findById(id).getBillingRate();
         }
     }
-
+    
     public void getEffectiveBillingInvoiceFrequency(ClientInformation ci, ContractDto dto) {
         dto.setInvoiceFrequency(null);
         Query query = em.createNativeQuery("Select billingInvoiceFrequency from BILLINGRATE where clientInformation_id=" + ci.getId() + " and billingInvoiceFrequency is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
@@ -594,7 +595,7 @@ public class ContractService {
             dto.setInvoiceFrequency(InvoiceFrequency.valueOf((String) obj));
         }
     }
-
+    
     public void getEffectiveSubConPayRate(ClientInformation ci, ContractDto dto) {
         dto.setSubcontractorPayRate(null);
         Query query = em.createNativeQuery("Select subContractorPayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorPayRate is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
@@ -602,7 +603,7 @@ public class ContractService {
             dto.setSubcontractorPayRate((BigDecimal) obj);
         }
     }
-
+    
     public void getEffectiveSubConOverTimePayRate(ClientInformation ci, ContractDto dto) {
         dto.setSubcontractorOvertimePayRate(null);
         Query query = em.createNativeQuery("Select subContractorOverTimePayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorOverTimePayRate is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
@@ -610,7 +611,7 @@ public class ContractService {
             dto.setSubcontractorOvertimePayRate((BigDecimal) obj);
         }
     }
-
+    
     public void getEffectiveSubConInvoiceFrequency(ClientInformation ci, ContractDto dto) {
         dto.setSubcontractorinvoiceFrequency(null);
         Query query = em.createNativeQuery("Select subContractorInvoiceFrequency from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorInvoiceFrequency is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
@@ -618,7 +619,7 @@ public class ContractService {
             dto.setSubcontractorinvoiceFrequency(InvoiceFrequency.valueOf((String) obj));
         }
     }
-
+    
     public void getEffectivePayRate1099(ClientInformation ci, ContractDto dto) {
         dto.setPayRate1099(null);
         Query query = em.createNativeQuery("Select subContractorPayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorPayRate is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
@@ -626,7 +627,7 @@ public class ContractService {
             dto.setPayRate1099((BigDecimal) obj);
         }
     }
-
+    
     public void getEffectiveOverTimePayRate1099(ClientInformation ci, ContractDto dto) {
         dto.setOverTimePayrate1099(null);
         Query query = em.createNativeQuery("Select subContractorOverTimePayRate from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorOverTimePayRate is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
@@ -634,7 +635,7 @@ public class ContractService {
             dto.setOverTimePayrate1099((BigDecimal) obj);
         }
     }
-
+    
     public void getEffectiveInvoiceFrequency1099(ClientInformation ci, ContractDto dto) {
         dto.setInvoiceFrequency1099(null);
         Query query = em.createNativeQuery("Select subContractorInvoiceFrequency from BILLINGRATE where clientInformation_id=" + ci.getId() + " and subContractorInvoiceFrequency is not null and effectiveDate <= NOW() order by effectiveDate desc,updatedTs desc LIMIT 1");
@@ -642,7 +643,7 @@ public class ContractService {
             dto.setInvoiceFrequency1099(InvoiceFrequency.valueOf((String) obj));
         }
     }
-
+    
     public Response getContractReport(Long id) {
         ClientInformation ci = ClientInformationDao.instance().findById(id);
         if (ci != null) {
@@ -658,7 +659,7 @@ public class ContractService {
             return null;
         }
     }
-
+    
     public ContractTable searchContractsForRecruiter(ContractSearchDto dto) {
         ContractTable table = search(dto, 0, 10000);
         List<ContractDto> dtos = new ArrayList();
@@ -673,7 +674,7 @@ public class ContractService {
         }
         return ctable;
     }
-
+    
     public List<ContractDto> activeCPDs(List<ContractDto> dtos) {
         List<ContractDto> results = new ArrayList();
         for (ContractDto dto : dtos) {
@@ -687,7 +688,7 @@ public class ContractService {
         }
         return results;
     }
-
+    
     public static ContractService instance() {
         return SpringContext.getBean(ContractService.class);
     }
