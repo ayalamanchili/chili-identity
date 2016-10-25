@@ -372,6 +372,7 @@ public class ContractService {
                     dto.setPayRate(dto.getFinalBillingRate().multiply(new BigDecimal(ci.getPayRatePercentage())).divide(new BigDecimal(100)));
                 }
             }
+            dto.setPayRate(ci.getPayRate());
         }
         
         StringBuilder recruiters = new StringBuilder();
