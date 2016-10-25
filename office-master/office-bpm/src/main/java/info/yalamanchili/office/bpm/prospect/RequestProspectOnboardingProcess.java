@@ -42,7 +42,8 @@ public class RequestProspectOnboardingProcess implements TaskListener {
         }
         //Notes
         String notes = (String) task.getExecution().getVariable("notes");
-        entity.setStatus(ProspectStatus.CLOSED_ONBOARDING_INITIATED);
+        entity.setStatus(ProspectStatus.CLOSED_ONBOARDING_REQUESTED);
+        ProspectDao.instance().save(entity);
         CommentDao.instance().addComment(notes, entity);
     }
 

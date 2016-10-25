@@ -39,7 +39,7 @@ public class SearchProspectsPanel extends SearchComposite {
     //EnumField statusF = new EnumField(OfficeWelcome.constants, "status", "Prospect", false, false, ProspectStatus.names());
 
     public SearchProspectsPanel() {
-        init("Prospect Search", "Prospect", OfficeWelcome.constants);
+        init("Prospect Search", "Prospect", OfficeWelcome.constants2);
         advancedSearchDP.setOpen(true);
     }
 
@@ -127,11 +127,11 @@ public class SearchProspectsPanel extends SearchComposite {
         } else {
             HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 1000),
                     OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                @Override
-                public void onResponse(String result) {
-                    processSearchResult(result);
-                }
-            });
+                        @Override
+                        public void onResponse(String result) {
+                            processSearchResult(result);
+                        }
+                    });
         }
     }
 
@@ -139,11 +139,11 @@ public class SearchProspectsPanel extends SearchComposite {
     protected void search(JSONObject entity) {
         HttpService.HttpServiceAsync.instance().doPut(getSearchURI(0, 1000), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                processSearchResult(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        processSearchResult(result);
+                    }
+                });
     }
 
     @Override
@@ -182,11 +182,9 @@ public class SearchProspectsPanel extends SearchComposite {
             }
         };
         timer.schedule(1000);
-
     }
 
     protected String getnameDropDownUrl() {
         return OfficeWelcome.constants.root_url() + "prospect/search-suggestions";
     }
-
 }

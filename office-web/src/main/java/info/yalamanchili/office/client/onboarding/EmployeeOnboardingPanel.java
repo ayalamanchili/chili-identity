@@ -19,6 +19,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
@@ -42,6 +43,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.expense.bnkacct.AccountType;
@@ -510,6 +512,10 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
             } else if (number.length() != 10) {
                 phoneNumberF.setMessage("PhoneNumber must be in 10 characters long");
             }
+        }
+        if (fileUploadPanel.getFileNames().size() < 3) {
+             Window.confirm("Please make sure you are uploading I9, W4 and Supporting doc before submitting");
+             valid = false;
         }
         return valid;
     }
