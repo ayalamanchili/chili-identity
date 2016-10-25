@@ -39,6 +39,7 @@ public class ProspectMenu extends CMenuBar {
         addMenuItem("ONHOLD", "ONHOLD", onHoldMaintainenceCmd);
         addMenuItem("CLOSED_WON", "CLOSED_WON", closedWonMaintainenceCmd);
         addMenuItem("CLOSED_LOST", "CLOSED_LOST", closedLastMaintainenceCmd);
+        addMenuItem("CLOSED_ONBOARDING_REQUESTED", "CLOSED_ONBOARDING_REQUESTED", closedOnboardingCmd);
     }
     static Command allMaintainenceCmd = new Command() {
         public void execute() {
@@ -158,6 +159,19 @@ public class ProspectMenu extends CMenuBar {
                     }
                 });
     }
+    static Command closedOnboardingCmd = () -> {
+        TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
+        if (TabPanel.instance().getMyOfficePanel().entityPanel.getWidgetCount() > 0) {
+            TabPanel.instance().getMyOfficePanel().entityPanel.remove(1);
+        }
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
+            JSONObject entity = new JSONObject();
+            entity.put("status", new JSONString("CLOSED_ONBOARDING_REQUESTED"));
+            getProspects(entity);
+        } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION, Auth.ROLE.ROLE_RECRUITER)) {
+            TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new SearchProspectsPanel());
+        }
+    };
 
     protected static String getStatusSearchURI() {
         return OfficeWelcome.constants.root_url() + "prospect/prospect-status-search";

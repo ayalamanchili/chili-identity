@@ -52,7 +52,7 @@ public class ProspectsSidePanel extends ALComposite implements ClickHandler {
     protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, false);
     Button reportB = new Button("Reports");
     Button graphsB = new Button("Graphs");
-    EnumField statusF = new EnumField(OfficeWelcome.constants, "status", "Prospect", false, false, ProspectStatus.names(), Alignment.VERTICAL);
+    EnumField statusF = new EnumField(OfficeWelcome.constants2, "status", "Prospect", false, false, ProspectStatus.names(), Alignment.VERTICAL);
     DateField startDateF = new DateField(OfficeWelcome.constants, "joiningDateFrom", "Prospect", false, false, Alignment.VERTICAL);
     DateField endDateF = new DateField(OfficeWelcome.constants, "joiningDateTo", "Prospect", false, false, Alignment.VERTICAL);
     DateField createDateFromF = new DateField(OfficeWelcome.constants, "createdDateFrom", "Prospect", false, false, Alignment.VERTICAL);

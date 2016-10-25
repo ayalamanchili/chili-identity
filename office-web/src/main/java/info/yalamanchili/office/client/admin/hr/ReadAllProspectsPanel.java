@@ -8,19 +8,15 @@
  */
 package info.yalamanchili.office.client.admin.hr;
 
-import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
-import info.chili.gwt.fields.ListBoxField;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
@@ -31,8 +27,6 @@ import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.onboarding.InitiateOnBoardingPanel;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -50,19 +44,19 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
     public ReadAllProspectsPanel() {
         instance = this;
         isOnAllTab = true;
-        initTable("Prospect", OfficeWelcome.constants);
+        initTable("Prospect", OfficeWelcome.constants2);
     }
 
     public ReadAllProspectsPanel(JSONArray array) {
         instance = this;
-        initTable("Prospect", array, OfficeWelcome.constants);
+        initTable("Prospect", array, OfficeWelcome.constants2);
     }
 
     public ReadAllProspectsPanel(JSONArray array, boolean isClosedWon, boolean isOnAllTab) {
         instance = this;
         this.isClosedWon = isClosedWon;
         this.isOnAllTab = isOnAllTab;
-        initTable("Prospect", array, OfficeWelcome.constants);
+        initTable("Prospect", array, OfficeWelcome.constants2);
     }
 
     @Override
@@ -84,7 +78,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         }
         return OfficeWelcome.constants.root_url() + "prospect/" + start.toString() + "/" + tableSize.toString();
     }
-    
+
     private String getProspectsOnboardingNotifyURL() {
         return OfficeWelcome.constants.root_url() + "prospect/request-prospect-onboarding";
     }
@@ -100,8 +94,9 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         table.setText(0, 6, getKeyValue("Phone Number"));
         if (isClosedWon == true && isOnAllTab == false) {
             table.setText(0, 7, getKeyValue("OnBoarding Invitation"));
-            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR_ADMINSTRATION))
+            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER, Auth.ROLE.ROLE_ON_BOARDING_MGR, Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
                 table.setText(0, 8, getKeyValue("Request for onboarding"));
+            }
         } else if (isClosedWon == false && isOnAllTab == true) {
             table.setText(0, 7, getKeyValue("Status"));
         }
@@ -132,7 +127,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
                             ClickableLink onboardingRequestLink = new ClickableLink("Request For OnBoarding");
                             onboardingRequestLink.setTitle(JSONUtils.toString(entity, "id"));
                             onboardingRequestLink.addClickHandler((ClickEvent event) -> {
-                                getOnBoardRequestCode(entity);
+                                getOnBoardRequestCode(((ClickableLink) event.getSource()).getTitle());
                             });
                             table.setWidget(i, 8, onboardingRequestLink);
                         }
@@ -162,19 +157,18 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
             new GenericPopup(new InitiateOnBoardingPanel(getEntity(entityId))).show();
         }
     }
-    
-    protected void getOnBoardRequestCode(JSONObject entity) {
-            logger.info(getProspectsOnboardingNotifyURL());
-            if (Window.confirm("Please click on ok to send request to HR to On Board."))   {         
-            HttpService.HttpServiceAsync.instance().doPut(getProspectsOnboardingNotifyURL(), entity.toString(), OfficeWelcome.instance().getHeaders(), false,
-                new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        logger.info(result);
-                        postSendNotification();
-                    }
-                });
-            }
+
+    protected void getOnBoardRequestCode(String entityId) {
+        if (Window.confirm("Please click on ok to send request to HR to On Board.")) {
+            HttpService.HttpServiceAsync.instance().doPut(getProspectsOnboardingNotifyURL(), getEntity(entityId).toString(), OfficeWelcome.instance().getHeaders(), false,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String result) {
+                            logger.info(result);
+                            postSendNotification();
+                        }
+                    });
+        }
     }
 
     private String getemailurl(String entityId) {
@@ -214,7 +208,7 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel());
     }
-    
+
     @Override
     public void updateClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();

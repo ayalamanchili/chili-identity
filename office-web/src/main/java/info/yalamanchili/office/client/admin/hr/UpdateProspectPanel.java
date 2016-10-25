@@ -25,7 +25,6 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.DisclosurePanel;
-import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
@@ -85,41 +84,41 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
 
     public UpdateProspectPanel(JSONObject entity) {
         instance = this;
-        initUpdateComposite(entity, "Prospect", OfficeWelcome.constants);
+        initUpdateComposite(entity, "Prospect", OfficeWelcome.constants2);
     }
 
     public UpdateProspectPanel(String id) {
         instance = this;
-        initUpdateComposite(id, "Prospect", OfficeWelcome.constants);
+        initUpdateComposite(id, "Prospect", OfficeWelcome.constants2);
     }
 
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info(response);
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                if (entity.get("id") != null) {
-                    entityFieldsPanel.add(getLineSeperatorTag("Status Information"));
-                    addEnumField("status", false, false, ProspectStatus.validStatusFor(ProspectStatus.valueOf(entity.get("status").isString().stringValue())), Alignment.HORIZONTAL);
-                    statusField = (EnumField) fields.get("status");
-                    statusField.listBox.addChangeHandler(instance);
-                    alignFields();
-                    if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
-                        addProspectWonFields();
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info(response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        if (entity.get("id") != null) {
+                            entityFieldsPanel.add(getLineSeperatorTag("Status Information"));
+                            addEnumField("status", false, false, ProspectStatus.validStatusFor(ProspectStatus.valueOf(entity.get("status").isString().stringValue())), Alignment.HORIZONTAL);
+                            statusField = (EnumField) fields.get("status");
+                            statusField.listBox.addChangeHandler(instance);
+                            alignFields();
+                            if (ProspectStatus.CLOSED_WON.name().equals(JSONUtils.toString(getEntity(), "status"))) {
+                                addProspectWonFields();
+                            }
+                        }
+                        populateFieldsFromEntity(entity);
+                        populateComments();
                     }
                 }
-                populateFieldsFromEntity(entity);
-                populateComments();
-            }
-        }
         );
     }
 
     protected void populateComments() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER)) {        
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER)) {
             entityActionsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.hr.Prospect"));
         }
     }
@@ -235,16 +234,16 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                uploadResume(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadResume(arg0);
+                    }
+                });
     }
 
     protected void uploadResume(String entityStr) {

@@ -53,11 +53,11 @@ public class ReadProspectsPanel extends ReadComposite {
 
     public ReadProspectsPanel(JSONObject entity) {
         instance = this;
-        initReadComposite(entity, "Prospect", OfficeWelcome.constants);
+        initReadComposite(entity, "Prospect", OfficeWelcome.constants2);
     }
 
     public ReadProspectsPanel(String id) {
-        initReadComposite(id, "Prospect", OfficeWelcome.constants);
+        initReadComposite(id, "Prospect", OfficeWelcome.constants2);
     }
 
     @Override
@@ -85,9 +85,9 @@ public class ReadProspectsPanel extends ReadComposite {
     }
 
     protected void populateComments() {
-       if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER)) {
-        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.hr.Prospect"));
-       }
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER)) {
+            entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.hr.Prospect"));
+        }
     }
 
     @Override
@@ -188,10 +188,10 @@ public class ReadProspectsPanel extends ReadComposite {
     }
 
     @Override
-   protected boolean enableBack() {
-       return true;
-   }
-   
+    protected boolean enableBack() {
+        return true;
+    }
+
     @Override
     protected boolean enableViewTasks() {
         return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER);
@@ -204,12 +204,12 @@ public class ReadProspectsPanel extends ReadComposite {
             tasksDP.setContent(new ReadAllTasks(tasksUrl + JSONUtils.toString(getEntity(), "bpmProcessId") + "/", true));
         }
     }
-    
+
     @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllProspectsPanel.instance;
     }
-    
+
     protected void addProspectWonFields() {
         if (!fields.containsKey("petitionFiledFor")) {
             addDropDown("company", selectCompnayWidget);

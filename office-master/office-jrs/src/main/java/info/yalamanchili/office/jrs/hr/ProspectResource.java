@@ -48,13 +48,9 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import jdk.nashorn.internal.parser.JSONParser;
-import org.activiti.engine.delegate.DelegateTask;
 import org.dozer.Mapper;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -93,7 +89,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @GET
     @Path("/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER','ROLE_ON_BOARDING_MGR', 'ROLE_HR_ADMINSTRATION')")
-    @Cacheable(OfficeCacheKeys.PROSPECT)
+    @CacheEvict(value = OfficeCacheKeys.PROSPECT, allEntries = true)
     public ProspectResource.ProspectTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         List<ProspectDto> res = new ArrayList<>();
         for (Prospect entity : prospectDao.query(start, limit)) {
@@ -130,7 +126,11 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
         Prospect entity = ProspectDao.instance().findById(prospect.getId());
         entity.setStatus(ProspectStatus.CLOSED_ONBOARDING_REQUESTED);
         vars.put("prospect", entity);
-        vars.put("caseManagerName", EmployeeDao.instance().findById(entity.getManager()).getFirstName());
+        if (entity.getManager() != null) {
+            vars.put("caseManagerName", EmployeeDao.instance().findById(entity.getManager()).getFirstName());
+        } else {
+            vars.put("caseManagerName", "");
+        }
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
         vars.put("prospectLink", getProspectLink(prospect.getId()));
         String Processid = officeBPMService.startProcess("request_prospect_onboarding_process", vars);

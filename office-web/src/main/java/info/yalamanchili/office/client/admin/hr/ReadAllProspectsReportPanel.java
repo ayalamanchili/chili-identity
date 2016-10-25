@@ -5,7 +5,6 @@
  */
 package info.yalamanchili.office.client.admin.hr;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.crud.CRUDReadAllComposite;
@@ -30,7 +29,7 @@ public class ReadAllProspectsReportPanel extends CRUDReadAllComposite {
     public ReadAllProspectsReportPanel(JSONArray array, boolean isClosedWon) {
         instance = this;
         this.isClosedWon = isClosedWon;
-        initTable("Prospect", array, OfficeWelcome.constants);
+        initTable("Prospect", array, OfficeWelcome.constants2);
     }
 
     @Override

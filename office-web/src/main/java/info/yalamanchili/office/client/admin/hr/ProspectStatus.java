@@ -17,7 +17,7 @@ import java.util.List;
  */
 public enum ProspectStatus {
 
-    IN_PROGRESS, RECRUITING, BENCH, ONHOLD, CLOSED_WON, CLOSED_LOST;
+    IN_PROGRESS, RECRUITING, BENCH, ONHOLD, CLOSED_WON, CLOSED_LOST, CLOSED_ONBOARDING_REQUESTED;
 
     public static String[] names() {
         ProspectStatus[] values = values();
@@ -61,6 +61,7 @@ public enum ProspectStatus {
                 roles.add(ProspectStatus.BENCH.name());
                 roles.add(ProspectStatus.ONHOLD.name());
                 roles.add(ProspectStatus.CLOSED_LOST.name());
+                roles.add(ProspectStatus.CLOSED_ONBOARDING_REQUESTED.name());
                 break;
             case CLOSED_LOST:
                 roles.add(ProspectStatus.BENCH.name());
