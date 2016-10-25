@@ -184,6 +184,10 @@
                                        name="PayRate Percentage"
                                        required="false"
                                        type="string"/>
+                <activiti:formProperty id="payrate" 
+                                       name="PayRate"
+                                       required="false"
+                                       type="string"/>
                 <activiti:formProperty id="specialNotes" 
                                        name="Special Notes"
                                        required="false"

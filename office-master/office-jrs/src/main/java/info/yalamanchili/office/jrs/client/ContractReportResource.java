@@ -150,6 +150,13 @@ public class ContractReportResource {
         String email = currentEmpEmail();
         ContractReportService.instance().allActiveProjectsRevenueForcastReport(email);
     }
+    
+    @GET
+    @Path("/all-payrate-summary-report")
+    public void getAllPayRateSummaryReport() {
+        String email = currentEmpEmail();
+        ContractReportService.instance().allPayRateSummaryReport(email);
+    }
 
     private String currentEmpEmail() {
         return OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail();

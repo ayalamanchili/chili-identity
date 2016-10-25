@@ -337,14 +337,8 @@ public class ContractService {
             if (ci.getClientFeeApplicable() != null && ci.getClientFeeApplicable() && clientFeePer != null && clientFeePer.floatValue() > 0) {
                 BigDecimal clientFeeVal = clientFeePer.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
                 dto.setFinalBillingRate(dto.getBillingRate().subtract(calculateMargin(clientFeeVal, ct.getMaxClientFee(), ct.getMinClientFee())));
-                if (ci.getPayRatePercentage() != null) {
-                    dto.setPayRate(dto.getFinalBillingRate().multiply(new BigDecimal(ci.getPayRatePercentage())).divide(new BigDecimal(100)));
-                }
             } else if (ci.getClientFeeApplicable() != null && !(ci.getClientFeeApplicable())) {
                 dto.setFinalBillingRate(dto.getBillingRate());
-                if (ci.getPayRatePercentage() != null) {
-                    dto.setPayRate(dto.getFinalBillingRate().multiply(new BigDecimal(ci.getPayRatePercentage())).divide(new BigDecimal(100)));
-                }
             }
         }
 
@@ -362,17 +356,20 @@ public class ContractService {
                 BigDecimal value = new BigDecimal(vi.getVendorFees());
                 BigDecimal vendorFee = value.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
                 dto.setFinalBillingRate(dto.getBillingRate().subtract(calculateMargin(vendorFee, vi.getMaxFees(), vi.getMinFees())));
-                if (ci.getPayRatePercentage() != null) {
-                    dto.setPayRate(dto.getFinalBillingRate().multiply(new BigDecimal(ci.getPayRatePercentage())).divide(new BigDecimal(100)));
-                }
             } else if (!(ci.getClientFeeApplicable() != null && ci.getClientFeeApplicable()) && vi.getVendorFees() == null) {
                 dto.setFinalBillingRate(dto.getBillingRate());
-                if (ci.getPayRatePercentage() != null) {
-                    dto.setPayRate(dto.getFinalBillingRate().multiply(new BigDecimal(ci.getPayRatePercentage())).divide(new BigDecimal(100)));
-                }
             }
         }
-
+        //payrate
+        if (ci.getPayRatePercentage() != null) {
+            if (dto.getFinalBillingRate() != null) {
+                dto.setPayRate(dto.getFinalBillingRate().multiply(new BigDecimal(ci.getPayRatePercentage())).divide(new BigDecimal(100)));
+            } else {
+                dto.setPayRate(dto.getBillingRate().multiply(new BigDecimal(ci.getPayRatePercentage())).divide(new BigDecimal(100)));
+            }
+        } else {
+            dto.setPayRate(ci.getPayRate());
+        }
         StringBuilder recruiters = new StringBuilder();
         for (Employee rec : ci.getRecruiters()) {
             recruiters.append(rec.getFirstName()).append(" ").append(rec.getLastName()).append(" , ");

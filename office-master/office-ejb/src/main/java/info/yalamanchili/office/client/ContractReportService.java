@@ -21,6 +21,7 @@ import info.yalamanchili.office.dto.client.ProjectRevenueForecastReportDto;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
+import info.yalamanchili.office.dto.client.PayRateReportDto;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
@@ -214,6 +215,11 @@ public class ContractReportService {
         TypedQuery<ContractDto> q = em.createQuery("SELECT DISTINCT NEW " + ContractDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName,ci.employee.lastName, ci.client.name, ci.vendor.name,ci.billingRate,ci.billingRateDuration, ci.startDate, ci.endDate, ci.employee.employeeType.name, ci.company) from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate > Now()", ContractDto.class);
         return q.getResultList();
     }
+    
+    private List<ContractDto> getAllActiveCPDsPayRateSummary() {
+        TypedQuery<ContractDto> q = em.createQuery("SELECT DISTINCT NEW " + ContractDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName,ci.employee.lastName, ci.client.name, ci.vendor.name,ci.billingRate,ci.billingRateDuration, ci.startDate, ci.endDate, ci.employee.employeeType.name, ci.company, ci.payRate, ci.payRatePercentage) from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate > Now()", ContractDto.class);
+        return q.getResultList();
+    }
 
     public List<ContractDto> getAllActiveCPDsBetween(Date startDate, Date endDate) {
         TypedQuery<ContractDto> q = em.createQuery("SELECT DISTINCT NEW " + ContractDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName,ci.employee.lastName, ci.client.name, ci.vendor.name,ci.billingRate,ci.billingRateDuration, ci.startDate, ci.endDate, ci.employee.employeeType.name, ci.company) from " + ClientInformation.class.getCanonicalName() + " ci where ci.startDate <=:startDateParam and ci.endDate >=:endDateParam", ContractDto.class);
@@ -244,6 +250,18 @@ public class ContractReportService {
         String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "startDate", "endDate", "totalDuration", "remainingDuration", "monthlyIncome", "remainingIncome", "employeeType", "company"};
         MessagingService.instance()
                 .emailReport(ReportGenerator.generateExcelOrderedReport(res, "All Active CPDS Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+    }
+    
+    @Async
+    @Transactional
+    public void allPayRateSummaryReport(String email) {
+       List<PayRateReportDto> res = new ArrayList<>();
+        getAllActiveCPDsPayRateSummary().stream().forEach((dto) -> {
+            res.add(new PayRateReportDto(dto.getEmployee(), dto.getClient(), dto.getVendor(), dto.getBillingRate(), dto.getBillingRateDuration(), dto.getStartDate(), dto.getEndDate(), dto.getEmployeeType(), dto.getCompany(), dto.getPayRate(), dto.getPayRatePercentage()));
+        });
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "billingRate", "billingRateDuration", "startDate", "endDate", "employeeType", "company", "payRate", "payRatePercentage"};
+        MessagingService.instance()
+                .emailReport(ReportGenerator.generateExcelOrderedReport(res, "All PayRate Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
     @Transactional
@@ -313,5 +331,5 @@ public class ContractReportService {
             }
         }
         return flag;
-    }
+    }  
 }

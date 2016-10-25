@@ -118,6 +118,10 @@ public class ContractDto implements Serializable {
      */
     protected BigDecimal payRate;
     /**
+     * PayRatePercentage
+     */
+    protected Float payRatePercentage;
+    /**
      * BillingRate
      */
     protected BigDecimal billingRate;
@@ -254,6 +258,11 @@ public class ContractDto implements Serializable {
         this.employeeType = employeeType;
         this.company = company;
     }
+     public ContractDto(Long id, String firstName, String lastName, String client, String vendor, BigDecimal billingRate, BillingDuration billnigDuration, Date startDate, Date endDate, String employeeType, ClientInformationCompany company, BigDecimal payRate, Float payRatePercentage ) {
+         this(id,firstName,lastName,client,vendor,billingRate,billnigDuration,startDate,endDate,employeeType,company);
+         this.payRate = payRate;
+         this.payRatePercentage = payRatePercentage;
+     }
 
     public void setPaymentTerms1099(String paymentTerms1099) {
         this.paymentTerms1099 = paymentTerms1099;
@@ -552,6 +561,14 @@ public class ContractDto implements Serializable {
 
     public void setPayRate(BigDecimal payRate) {
         this.payRate = payRate;
+    }
+    
+    public Float getPayRatePercentage() {
+        return payRatePercentage;
+    }
+
+    public void setPayRatePercentage(Float payRatePercentage) {
+        this.payRatePercentage = payRatePercentage;
     }
 
     public BigDecimal getBillingRate() {
