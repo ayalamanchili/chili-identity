@@ -62,6 +62,9 @@ public class ReportsMenu extends CMenuBar {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             addMenuItem("Address Reports", "Address Reports", addressReportMaintainenceCmd);
         }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
+            addMenuItem("PayRate Reports", "PayRate Reports", payRateCmd);
+        }
     }
     public static Command contractingMaintainenceCmd = new Command() {
         @Override
@@ -145,6 +148,13 @@ public class ReportsMenu extends CMenuBar {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new AddressReportSidePanel());
+        }
+    };
+    static Command payRateCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getReportingPanel().entityPanel.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.add(new PayRateSummaryReportSidePanel());
         }
     };
 
