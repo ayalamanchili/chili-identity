@@ -24,7 +24,6 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.DisclosurePanel;
-import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
@@ -73,7 +72,7 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
 
     public CreateProspectPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("Prospect", OfficeWelcome.constants);
+        initCreateComposite("Prospect", OfficeWelcome.constants2);
     }
 
     @Override
@@ -166,16 +165,16 @@ public class CreateProspectPanel extends CreateComposite implements ChangeHandle
         logger.info(getURI());
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                uploadResume(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadResume(arg0);
+                    }
+                });
     }
 
     protected void uploadResume(String entityStr) {
