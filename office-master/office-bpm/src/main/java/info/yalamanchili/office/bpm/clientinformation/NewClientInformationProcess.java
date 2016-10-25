@@ -67,7 +67,7 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
             String payrate = (String) task.getExecution().getVariable("payrate");
             String specialNotes = (String) task.getExecution().getVariable("specialNotes");
             Integer payratePercentNum;
-            if (!Strings.isNullOrEmpty(payrate) && !Strings.isNullOrEmpty(payratePercent)) {
+            if ((!Strings.isNullOrEmpty(payrate) && !Strings.isNullOrEmpty(payratePercent)) || ((Strings.isNullOrEmpty(payrate) && Strings.isNullOrEmpty(payratePercent)))) {
                 throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "task.invalid", "Please enter either payrate or payrate percentage. You can not enter both");
             }
             if (!StringUtils.isNumeric(payrate)) {
