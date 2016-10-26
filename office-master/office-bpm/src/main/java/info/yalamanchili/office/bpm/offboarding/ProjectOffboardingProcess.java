@@ -45,6 +45,7 @@ public class ProjectOffboardingProcess extends RuleBasedTaskDelegateListner {
         ClientInformation entity = getRequestFromTask(task);
         if (entity.getStatus().equals(ClientInformationStatus.COMPLETED)) {
             entity.setStatus(ClientInformationStatus.PENDING_CLOSING);
+            entity.setBpmProcessId(task.getExecution().getProcessInstanceId());
         }
         new GenericTaskCreateNotification().notify(task);
     }
