@@ -543,7 +543,7 @@ public class ContractService {
         Session session = em.getEntityManagerFactory().createEntityManager().unwrap(Session.class);
         org.hibernate.Query queryForSub = session.createQuery(query);
         queryForSub.setReadOnly(true);
-        queryForSub.setFetchSize(200);
+        queryForSub.setFetchSize(Integer.MIN_VALUE);
         queryForSub.setCacheable(false);
         queryForSub.setLockMode("lockmode", LockMode.NONE);
         ScrollableResults scrollableResults = queryForSub.scroll(ScrollMode.FORWARD_ONLY);
