@@ -51,6 +51,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -89,7 +90,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @GET
     @Path("/{start}/{limit}")
     @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER','ROLE_ON_BOARDING_MGR', 'ROLE_HR_ADMINSTRATION')")
-    @CacheEvict(value = OfficeCacheKeys.PROSPECT, allEntries = true)
+    @Cacheable(OfficeCacheKeys.PROSPECT)
     public ProspectResource.ProspectTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         List<ProspectDto> res = new ArrayList<>();
         for (Prospect entity : prospectDao.query(start, limit)) {
@@ -121,6 +122,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
 
     @PUT
     @Path("/request-prospect-onboarding")
+    @CacheEvict(value = OfficeCacheKeys.PROSPECT, allEntries = true)
     public void requestProspectOnBoarding(ProspectDto prospect) {
         Map<String, Object> vars = new HashMap<>();
         Prospect entity = ProspectDao.instance().findById(prospect.getId());
