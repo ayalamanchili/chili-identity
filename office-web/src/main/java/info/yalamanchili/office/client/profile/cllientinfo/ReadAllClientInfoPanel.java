@@ -65,12 +65,12 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     public void preFetchTable(int start) {
         HttpServiceAsync.instance().doGet(getReadAllURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info("Result with employee is:" + result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info("Result with employee is:" + result);
+                        postFetchTable(result);
+                    }
+                });
     }
 
     @Override
@@ -153,11 +153,11 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     public void deleteClicked(String entityId) {
         HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     @Override
@@ -251,6 +251,16 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateClientInfoPanel(CreateComposite.CreateCompositeType.ADD, active));
         }
+    }
+
+    @Override
+    protected boolean enableDraft() {
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN);
+    }
+
+    @Override
+    protected String getDraftUrl() {
+        return OfficeWelcome.constants.root_url() + "/chili/serialized-entities/find?className=info.yalamanchili.office.entity.profile.ClientInformation&targetClassName=info.yalamanchili.office.entity.profile.Employee&targetInstanceId=" + TreeEmployeePanel.instance().getEntityId();
     }
 
 }
