@@ -507,7 +507,7 @@ public class ContractService {
     @Transactional
     public void generateClientReport(ContractSearchDto dto, String email) {
         ContractTable table = getResultForReport(dto);
-        String[] columnOrder = new String[]{"employee", "consultantJobTitle", "vendor", "billingRate", "startDate", "endDate", "subContractorName", "subcontractorPayRate"};
+        String[] columnOrder = new String[]{"employee", "consultantJobTitle", "vendor", "billingRate", "startDate", "endDate", "clientContact", "subContractorName", "subcontractorPayRate"};
         String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employees Working Under Client " + dto.getClient(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, email);
     }
@@ -516,7 +516,7 @@ public class ContractService {
     @Transactional
     public void generateVendorReport(ContractSearchDto dto, String email) {
         ContractTable table = getResultForReport(dto);
-        String[] columnOrder = new String[]{"employee", "consultantJobTitle", "client", "billingRate", "startDate", "endDate", "subContractorName", "subcontractorPayRate"};
+        String[] columnOrder = new String[]{"employee", "consultantJobTitle", "client", "billingRate", "startDate", "endDate", "vendorRecruiter", "subContractorName", "subcontractorPayRate"};
         String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employees Working Under Vendor " + dto.getVendor(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, email);
     }
