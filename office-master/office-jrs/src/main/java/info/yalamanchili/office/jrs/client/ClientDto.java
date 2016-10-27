@@ -9,6 +9,7 @@
 package info.yalamanchili.office.jrs.client;
 
 import info.yalamanchili.office.entity.client.Client;
+import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
 import java.io.Serializable;
@@ -131,4 +132,21 @@ public class ClientDto implements Serializable {
         return dto;
     }
 
+    public static ClientDto mapSubcontractor(Mapper mapper, Subcontractor entity, SubcontractorSearchDto csdto) {
+        ClientDto dto = mapper.map(entity, ClientDto.class);
+        dto.setName(entity.getName());
+        if (entity.getLocations().size() > 0) {
+            for (Address address : entity.getLocations()) {
+                if ((csdto.getCity() != null && csdto.getCity().equals(address.getCity())) || (csdto.getState() != null && csdto.getState().equals(address.getState()))) {
+                    dto.setStreet1(address.getStreet1());
+                    dto.setStreet2(address.getStreet2());
+                    dto.setCity(address.getCity());
+                    dto.setState(address.getState());
+                }
+            }
+        }
+        dto.setId(entity.getId());
+        return dto;
+    }
+    
 }

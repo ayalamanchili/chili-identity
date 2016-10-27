@@ -270,4 +270,14 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
         }
     }
 
+    @Override
+    protected boolean enableDraft() {
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN);
+    }
+
+    @Override
+    protected String getDraftUrl() {
+        return OfficeWelcome.constants.root_url() + "/chili/serialized-entities/find?className=info.yalamanchili.office.entity.profile.ClientInformation&targetClassName=info.yalamanchili.office.entity.profile.Employee&targetInstanceId=" + TreeEmployeePanel.instance().getEntityId();
+    }
+
 }

@@ -61,8 +61,9 @@ public class ReadAllVendorReportPanel extends CRUDReadAllComposite {
         table.setText(0, 4, getKeyValue("BillRate"));
         table.setText(0, 5, getKeyValue("StartDate"));
         table.setText(0, 6, getKeyValue("EndDate"));
-        table.setText(0, 7, getKeyValue("Sub-Contractor"));
-        table.setText(0, 8, getKeyValue("SC-PayRate"));
+        table.setText(0, 7, getKeyValue("Vendor Recruiter Contact"));
+        table.setText(0, 8, getKeyValue("Sub-Contractor"));
+        table.setText(0, 9, getKeyValue("SC-PayRate"));
     }
 
     @Override
@@ -70,14 +71,16 @@ public class ReadAllVendorReportPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
+            String vendorContactInfo = JSONUtils.toString(entity, "vendorRecruiter").replaceAll("<br/>", ",");
             table.setText(i, 1, JSONUtils.toString(entity, "employee"));
             table.setText(i, 2, JSONUtils.toString(entity, "consultantJobTitle"));
             table.setText(i, 3, JSONUtils.toString(entity, "client"));
             table.setText(i, 4, FormatUtils.formarCurrency(JSONUtils.toString(entity, "billingRate")));
             table.setText(i, 5, DateUtils.formatDate(JSONUtils.toString(entity, "startDate")));
             table.setText(i, 6, DateUtils.formatDate(JSONUtils.toString(entity, "endDate")));
-            table.setText(i, 7, JSONUtils.toString(entity, "subContractorName"));
-            table.setText(i, 8, FormatUtils.formarCurrency(JSONUtils.toString(entity, "subcontractorPayRate")));
+            table.setText(i, 7, vendorContactInfo);
+            table.setText(i, 8, JSONUtils.toString(entity, "subContractorName"));
+            table.setText(i, 9, FormatUtils.formarCurrency(JSONUtils.toString(entity, "subcontractorPayRate")));
         }
     }
 
