@@ -52,9 +52,8 @@ public class UpdateVendorNotificationProcess implements TaskListener {
         Email email = new Email();
         email.setRichText(Boolean.TRUE);
         email.setTos(getEmails(notifyRoles));
-        email.setSubject("Task Created:" + delegateTask.getName());
-
         Vendor vendor = (Vendor) delegateTask.getExecution().getVariable("vendor");
+        email.setSubject("Task Created:" + delegateTask.getName() + " " + "for" + " " + vendor.getName());
         List<AuditChangeDto> changes = AuditService.instance().compareWithRecentVersion(vendor, vendor.getId());
         Map<String, Object> emailCtx = new HashMap<>();
 
