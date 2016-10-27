@@ -41,6 +41,11 @@ public class ReadAllSubcontractorLocationsPanel extends CRUDReadAllComposite {
         initTable("SubcontractorLocation", OfficeWelcome.constants);
     }
 
+    public ReadAllSubcontractorLocationsPanel(JSONArray results) {
+        instance = this;
+        initTable("Contract", results, OfficeWelcome.constants);
+    }
+
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getSubcontractorLocURL(start, OfficeWelcome.constants.tableSize()),
