@@ -43,6 +43,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
+import info.yalamanchili.office.client.admin.subcntrlocation.ReadAllSubcontractorLocationsPanel;
 import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
@@ -80,6 +81,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     protected DisclosurePanel recruiterL = new DisclosurePanel("Employee Recruited By");
     protected DisclosurePanel myVlocationL = new DisclosurePanel("Vendors in a Location");
     protected DisclosurePanel myClocationL = new DisclosurePanel("Clients in a Location");
+    protected DisclosurePanel mySlocationL = new DisclosurePanel("Subcontractors in a Location");
     protected DisclosurePanel empLocationL = new DisclosurePanel("Emp Working in a Location");
     protected DisclosurePanel projEndL = new DisclosurePanel("Emp Projects Going To Start / End");
     protected ClickableLink activeCPDL = new ClickableLink("Employees Project Forecast Report");
@@ -100,6 +102,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     FlowPanel joinedPanel = new FlowPanel();
     FlowPanel vLocationPanel = new FlowPanel();
     FlowPanel cLocationPanel = new FlowPanel();
+    FlowPanel sLocationPanel = new FlowPanel();
     FlowPanel empLocPanel = new FlowPanel();
     FlowPanel projEndPanel = new FlowPanel();
 
@@ -139,6 +142,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
         myJoinedL.addOpenHandler(this);
         myVlocationL.addOpenHandler(this);
         myClocationL.addOpenHandler(this);
+        mySlocationL.addOpenHandler(this);
         empLocationL.addOpenHandler(this);
         projEndL.addOpenHandler(this);
         recruiterL.addOpenHandler(this);
@@ -184,6 +188,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             panel.add(projEndL);
             panel.add(myVlocationL);
             panel.add(myClocationL);
+            panel.add(mySlocationL);
             panel.add(empLocationL);
             panel.add(activeCPDL);
             panel.add(allProjectsForecastReport);
@@ -498,6 +503,39 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                                         String key = (String) resObj.keySet().toArray()[0];
                                         JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
                                         TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllClientLocationPanel(results));
+                                    }
+                                }
+                            });
+                    clearFields();
+                } else {
+                    cityField.setMessage("Required");
+                }
+            }
+            if (searchTasks.getParent().equals(sLocationPanel)) {
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                JSONObject sLovation = new JSONObject();
+                String lurl = OfficeWelcome.constants.root_url() + "subcontractor/search-subcontractor1/0/1000";
+                if (cityField != null && !Strings.isNullOrEmpty(cityField.getValue())) {
+                    sLovation.put("city", new JSONString(cityField.getValue()));
+                    lurl = lurl.concat("?city=" + cityField.getValue());
+                }
+                if (stateFeild != null && !Strings.isNullOrEmpty(stateFeild.getValue())) {
+                    sLovation.put("state", new JSONString(stateFeild.getValue()));
+                    lurl = lurl.concat("?state=" + stateFeild.getValue());
+                }
+                if (sLovation.size() != 0) {
+                    HttpService.HttpServiceAsync.instance().doPut(URL.encode(lurl), sLovation.toString(), OfficeWelcome.instance().getHeaders(), true,
+                            new ALAsyncCallback<String>() {
+                                @Override
+                                public void onResponse(String result) {
+                                    if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                                        new ResponseStatusWidget().show("No Results");
+                                    } else {
+                                        //TODO use size and entities attributes
+                                        JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                                        String key = (String) resObj.keySet().toArray()[0];
+                                        JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                                        TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllSubcontractorLocationsPanel(results));
                                     }
                                 }
                             });
@@ -832,6 +870,14 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
             cLocationPanel.add(searchTasks);
             cLocationPanel.add(reportTasks);
             myClocationL.setContent(cLocationPanel);
+        }
+        if (event.getSource().equals(mySlocationL)) {
+            TabPanel.instance().reportingPanel.sidePanelTop.setHeight("100%");
+            sLocationPanel.add(cityField);
+            sLocationPanel.add(stateFeild);
+            sLocationPanel.add(searchTasks);
+            sLocationPanel.add(reportTasks);
+            mySlocationL.setContent(sLocationPanel);
         }
         if (event.getSource().equals(empLocationL)) {
             TabPanel.instance().reportingPanel.sidePanelTop.setHeight("100%");
