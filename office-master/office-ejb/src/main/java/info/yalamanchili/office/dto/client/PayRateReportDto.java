@@ -44,7 +44,10 @@ public class PayRateReportDto {
         this.employeeType = employeeType;
         this.company = company.name();
         this.payRate = payRate;
-        this.payRatePercentage = payRatePercentage.toString();
+        if(payRatePercentage == null ){
+            
+        }
+        else this.payRatePercentage = payRatePercentage.toString();
 
     }
 
