@@ -22,4 +22,21 @@
 
     <context:annotation-config />
     <context:component-scan base-package="info.yalamanchili.office.server" />
+    
+    <bean id="httpClient" class="org.apache.http.impl.client.DefaultHttpClient">
+        <constructor-arg>
+            <bean class="org.apache.http.impl.conn.PoolingClientConnectionManager"/>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <constructor-arg>
+            <bean class="org.springframework.http.client.HttpComponentsClientHttpRequestFactory">
+                <constructor-arg ref="httpClient"/>
+            </bean>
+        </constructor-arg>
+        <property name="errorHandler">
+            <bean class="info.yalamanchili.office.server.ServiceExceptionResponseHandler" />
+        </property>
+    </bean>
 </beans>

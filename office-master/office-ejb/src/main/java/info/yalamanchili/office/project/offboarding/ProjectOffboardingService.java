@@ -12,6 +12,7 @@ import com.google.common.base.Strings;
 import info.yalamanchili.office.dto.offboarding.ProjectOffboardingDto;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
+import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.entity.profile.ClientInformation;
@@ -48,6 +49,15 @@ public class ProjectOffboardingService {
 
     }
 
+    public void updateProjectOffboardingRequest(ProjectOffboardingDto entity) {
+        ClientInformation ci = ClientInformationDao.instance().findById(entity.getClientInformtaionId());
+        OfficeBPMTaskService taskService = OfficeBPMTaskService.instance();
+        taskService.deleteAllTasksForProcessId(ci.getBpmProcessId(), true);
+        //delete cancel request is exists
+        taskService.deleteTasksWithVariable("entityId", entity.getClientInformtaionId(), "", true);
+         startProjectOffboardingTask (entity);
+    }
+    
     public static ProjectOffboardingService instance() {
         return SpringContext.getBean(ProjectOffboardingService.class);
     }

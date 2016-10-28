@@ -7,6 +7,7 @@
  */
 package info.yalamanchili.office.jrs.client;
 
+import com.google.common.base.Strings;
 import info.chili.dao.CRUDDao;
 import info.chili.email.Email;
 import info.chili.jpa.validation.Validate;
@@ -38,6 +39,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -353,6 +355,39 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
         public void setEntities(List<Subcontractor> entities) {
             this.entities = entities;
         }
+    }
+    
+    @PUT
+    @Path("/search-subcontractor1/{start}/{limit}")
+    public List<ClientDto> search1(SubcontractorSearchDto dto, @PathParam("start") int start, @PathParam("limit") int limit) {
+        List<ClientDto> dtos = new ArrayList();
+        ClientDto dto1 = null;
+        TypedQuery<Subcontractor> q = em.createQuery(getSearchQuery(dto), Subcontractor.class);
+        for (Subcontractor client : q.getResultList()) {
+            dto1 = ClientDto.mapSubcontractor(mapper, client, dto);
+            dtos.add(dto1);
+        }
+        return dtos;
+    }
+    
+    protected String getSearchQuery(SubcontractorSearchDto dto) {
+        StringBuilder queryStr = new StringBuilder();
+        queryStr.append("SELECT s from ").append(Subcontractor.class.getCanonicalName()).append(" as s");
+        if (!Strings.isNullOrEmpty(dto.getCity()) || !Strings.isNullOrEmpty(dto.getState())) {
+            queryStr.append(" join s.locations as subcontractorLocations");
+        }
+        queryStr.append("  where ");
+        if (!Strings.isNullOrEmpty(dto.getName())) {
+            queryStr.append("name LIKE '%").append(dto.getName().trim()).append("%' ").append(" and ");
+        }
+        if (!Strings.isNullOrEmpty(dto.getCity())) {
+            queryStr.append("lower(subcontractorLocations.city) = '").append(dto.getCity().toLowerCase().trim()).append("' ").append(" and ");
+        }
+
+        if (!Strings.isNullOrEmpty(dto.getState())) {
+            queryStr.append("subcontractorLocations.state = '").append(dto.getState().trim()).append("' ").append(" and ");
+        }
+        return queryStr.toString().substring(0, queryStr.toString().lastIndexOf("and"));
     }
 
     @Async

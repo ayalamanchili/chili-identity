@@ -169,6 +169,13 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
         ProjectOffboardingService.instance().startProjectOffboardingTask(dto);
     }
 
+    @PUT
+    @Validate
+    @Path("/update-project-off-boarding")
+    public void updateprojectOffboarding(ProjectOffboardingDto dto) {
+        ProjectOffboardingService.instance().updateProjectOffboardingRequest(dto);
+    }
+
     @GET
     @Path("/endDate/{id}/{endPrevProj}")
     public String getPrevProjEndDate(@PathParam("id") Long id, @PathParam("endPrevProj") Boolean endprevProj) {

@@ -23,19 +23,18 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlType
 public class ProjectOffboardingDto implements Serializable {
 
-   
-    @NotNull(message="{endDate.not.null}")
+    @NotNull(message = "{endDate.not.null}")
     protected Date endDate;
-   
+
     @NotEmpty
     protected String notes;
-    
+
     protected String specialNotes;
-    
+
     protected Boolean projectInPipeline;
     @NotNull
     protected Long clientInformtaionId;
-    
+
     public Date getEndDate() {
         return endDate;
     }
@@ -51,6 +50,7 @@ public class ProjectOffboardingDto implements Serializable {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
     /**
      * @return the projectInPipeline
      */
@@ -64,7 +64,7 @@ public class ProjectOffboardingDto implements Serializable {
     public void setProjectInPipeline(Boolean projectInPipeline) {
         this.projectInPipeline = projectInPipeline;
     }
-    
+
     /**
      * @return the clientInformtaionId
      */
@@ -78,7 +78,7 @@ public class ProjectOffboardingDto implements Serializable {
     public void setClientInformtaionId(Long clientInformtaionId) {
         this.clientInformtaionId = clientInformtaionId;
     }
-    
+
     /**
      * @return the specialNotes
      */
@@ -93,13 +93,9 @@ public class ProjectOffboardingDto implements Serializable {
         this.specialNotes = specialNotes;
     }
 
-   
     @Override
     public String toString() {
-        return "ProjectOffboarding{" + "endDate=" + endDate + ", notes=" + notes + ", specialNotes=" + specialNotes + ", projectInPipeline=" + projectInPipeline +'}';
+        return "ProjectOffboarding{" + "endDate=" + endDate + ", notes=" + notes + ", specialNotes=" + specialNotes + ", projectInPipeline=" + projectInPipeline + '}';
     }
 
-    
-
-    
 }

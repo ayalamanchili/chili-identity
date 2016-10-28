@@ -492,7 +492,7 @@ public class ContractDto implements Serializable {
     }
 
     public String getClientContact() {
-        return clientContact;
+        return clientContact.replaceAll("<br/>", ",");
     }
 
     public void setClientContact(String clientContact) {
@@ -668,7 +668,7 @@ public class ContractDto implements Serializable {
     }
 
     public String getVendorRecruiter() {
-        return vendorRecruiter;
+        return vendorRecruiter.replaceAll("<br/>", ",");
     }
 
     public void setVendorRecruiter(String vendorRecruiter) {

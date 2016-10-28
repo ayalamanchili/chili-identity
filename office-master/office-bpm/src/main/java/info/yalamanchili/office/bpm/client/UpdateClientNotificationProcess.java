@@ -31,7 +31,7 @@ import org.activiti.engine.delegate.TaskListener;
  * @author Benarji.v
  */
 public class UpdateClientNotificationProcess implements TaskListener {
-    
+
     @Override
     public void notify(DelegateTask dt) {
         if ("create".equals(dt.getEventName())) {
@@ -40,8 +40,9 @@ public class UpdateClientNotificationProcess implements TaskListener {
     }
 
     private void updateClientNotificationCreated(DelegateTask dt) {
-        notify(dt, Boolean.FALSE, OfficeRoles.OfficeRole.ROLE_CONTRACTS_ADMIN.name(), OfficeRoles.OfficeRole.ROLE_BILLING_ADMIN.name());   
+        notify(dt, Boolean.FALSE, OfficeRoles.OfficeRole.ROLE_CONTRACTS_ADMIN.name(), OfficeRoles.OfficeRole.ROLE_BILLING_ADMIN.name());
     }
+
     public void notify(DelegateTask delegateTask, Boolean notifyEmployee, String... notifyRoles) {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
         Employee currentEmployee = null;
@@ -51,9 +52,8 @@ public class UpdateClientNotificationProcess implements TaskListener {
         Email email = new Email();
         email.setRichText(Boolean.TRUE);
         email.setTos(getEmails(notifyRoles));
-        email.setSubject("Task Created:" + delegateTask.getName());
-
         Client client = (Client) delegateTask.getExecution().getVariable("client");
+        email.setSubject("Task Created:" + delegateTask.getName() + "" + "for" + client.getName());
         List<AuditChangeDto> changes = AuditService.instance().compareWithRecentVersion(client, client.getId());
         Map<String, Object> emailCtx = new HashMap<>();
 
@@ -82,5 +82,5 @@ public class UpdateClientNotificationProcess implements TaskListener {
         }
         return emails;
     }
-    
-    }
+
+}

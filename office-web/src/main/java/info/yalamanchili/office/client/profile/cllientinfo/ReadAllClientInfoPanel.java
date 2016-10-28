@@ -19,6 +19,7 @@ import com.google.gwt.user.client.Window;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
+import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.GenericPopup;
@@ -26,6 +27,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.contracts.ClientInformationStatus;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import info.yalamanchili.office.client.project.offboarding.SubmitProjectOffboardingPanel;
+import info.yalamanchili.office.client.project.offboarding.UpdateProjectOffboardingPanal;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -42,6 +44,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     public static ReadAllClientInfoPanel instance() {
         return instance;
     }
+    private Object clientInfoId;
 
     public ReadAllClientInfoPanel(String parentId) {
         instance = this;
@@ -103,6 +106,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS, Auth.ROLE.ROLE_RECRUITER)) {
             table.setText(0, ++column, getKeyValue("Project Offboarding"));
+
         }
 
     }
@@ -151,7 +155,7 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
 
     @Override
     public void deleteClicked(String entityId) {
-        HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String arg0) {
@@ -214,6 +218,13 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
                     submitProjectOffBoarding(((ClickableLink) event.getSource()).getTitle());
                 });
                 table.setWidget(i, ++column, projectOffboarding);
+            } else if (JSONUtils.toString(entity, "status").equalsIgnoreCase("Pending_Closing")) {
+                ClickableLink UpdateProjectOffboarding = new ClickableLink("Update Project Offboarding");
+                UpdateProjectOffboarding.setTitle(JSONUtils.toString(entity, "id"));
+                UpdateProjectOffboarding.addClickHandler((ClickEvent event) -> {
+                    UpdateProjectOffboardingPanal(((ClickableLink) event.getSource()).getTitle());
+                });
+                table.setWidget(i, ++column, UpdateProjectOffboarding);
             }
 
         }
@@ -222,6 +233,12 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
     protected void submitProjectOffBoarding(String clientInfoId) {
         if (!clientInfoId.isEmpty()) {
             new GenericPopup(new SubmitProjectOffboardingPanel(CreateComposite.CreateCompositeType.CREATE, clientInfoId)).show();
+        }
+    }
+
+    protected void UpdateProjectOffboardingPanal(String clientInfoId) {
+        if (!clientInfoId.isEmpty()) {
+            new GenericPopup(new UpdateProjectOffboardingPanal(CreateComposite.CreateCompositeType.CREATE, clientInfoId)).show();
         }
     }
 
