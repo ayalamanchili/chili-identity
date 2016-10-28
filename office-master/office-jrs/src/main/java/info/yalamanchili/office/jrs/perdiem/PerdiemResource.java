@@ -21,7 +21,6 @@ import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.expense.perdiem.PerDiemService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -51,7 +50,7 @@ public class PerdiemResource extends CRUDResource<PerDiem> {
 
     @Autowired
     public PerDiemDao perDiemDao;
-    
+
     @Autowired
     public PerDiemService perDiemService;
 
@@ -104,7 +103,22 @@ public class PerdiemResource extends CRUDResource<PerDiem> {
     @Transactional(readOnly = true)
     @Override
     public PerDiem read(@PathParam("id") Long id) {
-        return perDiemDao.findById(id);
+        PerDiem perdiem = perDiemDao.findById(id);
+        List<Address> perdiemAddress = new ArrayList();
+        Employee emp = perdiem.getEmployee();
+        if (perdiem.isLive50MilesAway() == true) {
+            List<Address> officeAddr = AddressDao.instance().getAddressByType(emp, "Office");
+            perdiemAddress.add(officeAddr.get(0));
+            List<Address> homeAddr = AddressDao.instance().getAddressByType(emp, "Home");
+            perdiemAddress.add(homeAddr.get(0));
+        } else {
+            List<Address> officeAddr = AddressDao.instance().getAddressByType(emp, "Home");
+            perdiemAddress.add(officeAddr.get(0));
+            List<Address> homeAddr = AddressDao.instance().getAddressByType(emp, "Other");
+            perdiemAddress.add(homeAddr.get(0));
+        }
+        perdiem.setAddresses(perdiemAddress);
+        return perdiem;
     }
 
     @PUT
