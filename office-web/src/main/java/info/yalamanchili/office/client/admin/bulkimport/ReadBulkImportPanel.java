@@ -15,6 +15,7 @@ import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.rpc.HttpService;
+import info.yalamanchili.office.client.TabPanel;
 
 /**
  *
@@ -99,6 +100,7 @@ public class ReadBulkImportPanel extends ReadComposite {
     
     @Override
     protected ReadAllComposite getReadAllPanel() {
+        TabPanel.instance().adminPanel.sidePanelTop.clear();
         return ReadAllBulkImportsPanel.instance;
     }    
 }
