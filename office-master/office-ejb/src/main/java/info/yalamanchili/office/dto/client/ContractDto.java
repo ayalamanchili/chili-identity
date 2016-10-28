@@ -63,7 +63,7 @@ public class ContractDto implements Serializable {
      * DirectClient
      */
     protected Boolean directClient;
-    
+
     protected String bpmProcessId;
     /**
      * Client Contact
@@ -238,7 +238,7 @@ public class ContractDto implements Serializable {
     protected long employeeID;
 
     protected Float vendorFees;
-    
+
     protected Float clientFees;
 
     protected BigDecimal finalBillingRate;
@@ -258,11 +258,12 @@ public class ContractDto implements Serializable {
         this.employeeType = employeeType;
         this.company = company;
     }
-     public ContractDto(Long id, String firstName, String lastName, String client, String vendor, BigDecimal billingRate, BillingDuration billnigDuration, Date startDate, Date endDate, String employeeType, ClientInformationCompany company, BigDecimal payRate, Float payRatePercentage ) {
-         this(id,firstName,lastName,client,vendor,billingRate,billnigDuration,startDate,endDate,employeeType,company);
-         this.payRate = payRate;
-         this.payRatePercentage = payRatePercentage;
-     }
+
+    public ContractDto(Long id, String firstName, String lastName, String client, String vendor, BigDecimal billingRate, BillingDuration billnigDuration, Date startDate, Date endDate, String employeeType, ClientInformationCompany company, BigDecimal payRate, Float payRatePercentage) {
+        this(id, firstName, lastName, client, vendor, billingRate, billnigDuration, startDate, endDate, employeeType, company);
+        this.payRate = payRate;
+        this.payRatePercentage = payRatePercentage;
+    }
 
     public void setPaymentTerms1099(String paymentTerms1099) {
         this.paymentTerms1099 = paymentTerms1099;
@@ -492,7 +493,7 @@ public class ContractDto implements Serializable {
     }
 
     public String getClientContact() {
-        return clientContact.replaceAll("<br/>", ",");
+        return clientContact;
     }
 
     public void setClientContact(String clientContact) {
@@ -562,7 +563,7 @@ public class ContractDto implements Serializable {
     public void setPayRate(BigDecimal payRate) {
         this.payRate = payRate;
     }
-    
+
     public Float getPayRatePercentage() {
         return payRatePercentage;
     }
@@ -668,7 +669,7 @@ public class ContractDto implements Serializable {
     }
 
     public String getVendorRecruiter() {
-        return vendorRecruiter.replaceAll("<br/>", ",");
+        return vendorRecruiter;
     }
 
     public void setVendorRecruiter(String vendorRecruiter) {
@@ -859,13 +860,14 @@ public class ContractDto implements Serializable {
         this.vendorFees = vendorFees;
     }
 
-        public Float getClientFees() {
+    public Float getClientFees() {
         return clientFees;
     }
 
     public void setClientFees(Float clientFees) {
         this.clientFees = clientFees;
     }
+
     /**
      * @return the bpmProcessId
      */
