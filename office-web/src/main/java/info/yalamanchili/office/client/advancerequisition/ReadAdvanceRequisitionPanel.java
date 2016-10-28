@@ -18,12 +18,14 @@ import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.advancetranscation.AdvanceRequisitionStatus;
 import info.yalamanchili.office.client.expense.bnkacct.ReadBankAcctWidget;
 import info.yalamanchili.office.client.expense.check.ReadCheckWidget;
 import info.yalamanchili.office.client.expense.check.ReadCheckWidget.ReadCheckWidgetType;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
+import info.yalamanchili.office.client.profile.employee.EmployeeSidePanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.logging.Logger;
 
@@ -127,6 +129,8 @@ public class ReadAdvanceRequisitionPanel extends ReadComposite {
     
     @Override
      protected ReadAllComposite getReadAllPanel() {
+        TabPanel.instance().expensePanel.sidePanelTop.clear();
+        TabPanel.instance().getExpensePanel().sidePanelTop.add(new AdvanceRequisitionSidePanel());
         return ReadAllAdvanceRequisitionPanel.instance;
      }    
     

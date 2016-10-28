@@ -103,12 +103,10 @@ public class ClientDto implements Serializable {
         dto.setName(entity.getName());
         if (entity.getLocations().size() > 0) {
             for (Address address : entity.getLocations()) {
-                if ((csdto.getCity() != null && csdto.getCity().equals(address.getCity())) || (csdto.getState() != null && csdto.getState().equals(address.getState()))) {
                     dto.setStreet1(address.getStreet1());
                     dto.setStreet2(address.getStreet2());
                     dto.setCity(address.getCity());
                     dto.setState(address.getState());
-                }
             }
         }
         dto.setId(entity.getId());
@@ -120,12 +118,10 @@ public class ClientDto implements Serializable {
         dto.setName(entity.getName());
         if (entity.getLocations().size() > 0) {
             for (Address address : entity.getLocations()) {
-                if ((csdto.getCity() != null && csdto.getCity().equals(address.getCity())) || (csdto.getState() != null && csdto.getState().equals(address.getState()))) {
-                    dto.setStreet1(address.getStreet1());
-                    dto.setStreet2(address.getStreet2());
-                    dto.setCity(address.getCity());
-                    dto.setState(address.getState());
-                }
+                dto.setStreet1(address.getStreet1());
+                dto.setStreet2(address.getStreet2());
+                dto.setCity(address.getCity());
+                dto.setState(address.getState());
             }
         }
         dto.setId(entity.getId());
@@ -137,16 +133,14 @@ public class ClientDto implements Serializable {
         dto.setName(entity.getName());
         if (entity.getLocations().size() > 0) {
             for (Address address : entity.getLocations()) {
-                if ((csdto.getCity() != null && csdto.getCity().equals(address.getCity())) || (csdto.getState() != null && csdto.getState().equals(address.getState()))) {
-                    dto.setStreet1(address.getStreet1());
-                    dto.setStreet2(address.getStreet2());
-                    dto.setCity(address.getCity());
-                    dto.setState(address.getState());
-                }
+                dto.setStreet1(address.getStreet1());
+                dto.setStreet2(address.getStreet2());
+                dto.setCity(address.getCity());
+                dto.setState(address.getState());
             }
         }
         dto.setId(entity.getId());
         return dto;
     }
-    
+
 }

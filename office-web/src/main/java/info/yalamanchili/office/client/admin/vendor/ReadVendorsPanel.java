@@ -120,6 +120,8 @@ public class ReadVendorsPanel extends ReadComposite {
 
     @Override
     protected ReadAllComposite getReadAllPanel() {
+        TabPanel.instance().adminPanel.sidePanelTop.clear();
+        TabPanel.instance().getAdminPanel().sidePanelTop.add(new VendorsSidePanel());
         return ReadAllVendorsPanel.instance;
     }
 

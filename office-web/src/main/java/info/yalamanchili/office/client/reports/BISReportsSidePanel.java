@@ -535,7 +535,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                                 JSONObject resObj = JSONParser.parseLenient(result).isObject();
                                 String key = (String) resObj.keySet().toArray()[0];
                                 JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllSubcontractorLocationsPanel(results));
+                                TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllSubcontractorLocationPanel(results));
                             }
                         }
                     });
