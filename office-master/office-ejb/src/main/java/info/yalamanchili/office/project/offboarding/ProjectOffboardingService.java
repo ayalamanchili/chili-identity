@@ -15,6 +15,7 @@ import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +46,7 @@ public class ProjectOffboardingService {
         vars.put("entity", ci);
         vars.put("employee", ci.getEmployee());
         vars.put("projectOffboardingEntity", ped);
+        vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
         OfficeBPMService.instance().startProcess("associate_project_offboarding_process", vars);
 
     }

@@ -23,7 +23,7 @@
             
             <documentation> 
                 Associate Project Offboarding Contracts Admin Task Details:
-                Project Offboarding has been initiated for this employee. 
+                This project offboarding has been initiated by ${currentEmployee.firstName} ${currentEmployee.lastName}. 
                 Please validate the end date and complete this task.
                 Employee                : ${employee.firstName} ${employee.lastName}
                 Client Name             : ${entity.client.name}
@@ -151,7 +151,7 @@
                   activiti:candidateGroups="ROLE_BILLING_ADMIN">
             <documentation> 
                 Associate Project Offboarding Billing Admin Task Details:
-                Project Offboarding has been initiated for this employee. 
+                This project offboarding has been initiated by ${currentEmployee.firstName} ${currentEmployee.lastName}. 
                 Please process any pending invoices, update the billing records for this employee and complete this task:
                 Employee                : ${employee.firstName} ${employee.lastName}
                 Client Name             : ${entity.client.name}
@@ -200,7 +200,7 @@
                   activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
             <documentation> 
                 Associate Project Offboarding Payroll Dept Task Details:
-                Project Offboarding has been initiated for this employee. 
+                This project offboarding has been initiated by ${currentEmployee.firstName} ${currentEmployee.lastName}. 
                 Please make any necessary payroll systems changes for this employee and complete this task:
                 Employee                : ${employee.firstName} ${employee.lastName}
                 Client Name             : ${entity.client.name}
@@ -247,7 +247,7 @@
                   activiti:candidateGroups="ROLE_ACCOUNTS_PAYABLE">
             <documentation> 
                 Associate Project Offboarding Accounts Payable Dept Task Details:
-                Project Offboarding has been initiated for this employee. 
+                This project offboarding has been initiated by ${currentEmployee.firstName} ${currentEmployee.lastName}. 
                 Please  make sure evrything is taken care of from an accounts payable perspective and complete this task.
                 Employee                : ${employee.firstName} ${employee.lastName}
                 Client Name             : ${entity.client.name}
@@ -294,7 +294,7 @@
                   activiti:candidateGroups="ROLE_ACCOUNTS_RECEIVABLE">
             <documentation> 
                 Associate Project Offboarding Accounts Receivable Dept Task Details:
-                Project Offboarding has been initiated for this employee. 
+                This project offboarding has been initiated by ${currentEmployee.firstName} ${currentEmployee.lastName}. 
                 Please  make sure evrything is taken care of from an accounts receivable perspective and complete this task.
                 Employee                : ${employee.firstName} ${employee.lastName}
                 Client Name             : ${entity.client.name}
@@ -341,7 +341,7 @@
                   activiti:candidateGroups="ROLE_H1B_IMMIGRATION">
             <documentation> 
                 Associate Project Offboarding Immigration Dept Task Details:
-                Project Offboarding has been initiated for this employee. 
+                This project offboarding has been initiated by ${currentEmployee.firstName} ${currentEmployee.lastName}. 
                 Please make any necessary immgiration chnages if required and complete this task.
                 Employee                : ${employee.firstName} ${employee.lastName}
                 Client Name             : ${entity.client.name}
@@ -390,7 +390,7 @@
                   activiti:candidateGroups="ROLE_RECRUITER">
             <documentation> 
                 Associate Project Offboarding Recruiting Dept Task Details:
-                Project Offboarding has been initiated for this employee. 
+                This project offboarding has been initiated by ${currentEmployee.firstName} ${currentEmployee.lastName}. 
                 This employee's current project is ending soon and he/she will be available for recruitment. 
                 Employee                : ${employee.firstName} ${employee.lastName}
                 Client Name             : ${entity.client.name}
@@ -440,7 +440,7 @@
                   name="Project Offboarding Validation Task for ${employee.firstName} ${employee.lastName}">
             <documentation> 
                 Associate Project Offboarding Validation Task Details:
-                Project Offboarding has been initiated for this employee.
+                This project offboarding has been initiated by ${currentEmployee.firstName} ${currentEmployee.lastName}. 
                 Please validate the offboarding details for this employee and complete this task:
                 Employee                : ${employee.firstName} ${employee.lastName}
                 Client Name             : ${entity.client.name}
