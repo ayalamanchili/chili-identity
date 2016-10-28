@@ -116,6 +116,8 @@ public class ReadSubcontractorPanel extends ReadComposite {
 
     @Override
     protected ReadAllComposite getReadAllPanel() {
+        TabPanel.instance().adminPanel.sidePanelTop.clear();
+        TabPanel.instance().getAdminPanel().sidePanelTop.add(new SubcontractorSidePanel());
         return ReadAllSubcontractorsPanel.instance;
     }
 
