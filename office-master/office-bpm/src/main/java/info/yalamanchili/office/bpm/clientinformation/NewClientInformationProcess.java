@@ -55,6 +55,7 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         if (task.getTaskDefinitionKey().equals("newClientInfoContractValidation")) {
             String status = (String) task.getExecution().getVariable("status");
             String nottes = (String) task.getExecution().getVariable("nottes");
+            CommentDao.instance().addComment("New Client Info Contract Validation Task: " + nottes, entity);
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
                 sendNewClieniInformationNotification(entity, nottes, task);
