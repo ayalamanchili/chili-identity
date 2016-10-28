@@ -450,6 +450,13 @@ public class OfficeStartup {
         rule8.setRuleName("employeeIdAssignmentRuleEvaluator");
         rule8.setAttributeData("adminadmin,useruser");
         em.merge(rule8);
+        //client information task rule 
+        BPMTaskDelegateRule rule9 = new BPMTaskDelegateRule();
+        rule9.setBpmProcessId("new_client_info_process");
+        rule9.setBpmTaskId("newClientInfoContractValidation");
+        rule9.setRuleName("employeeIdAssignmentRuleEvaluator");
+        rule9.setAttributeData("adminadmin,useruser");
+        em.merge(rule9);
     }
 
     /**
