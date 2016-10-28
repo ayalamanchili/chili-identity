@@ -58,8 +58,17 @@
                                        required="false"
                                        type="string"/>
             </extensionElements>
-                 </userTask>
-                <sequenceFlow sourceRef="newClientInfoContractValidation" targetRef="newClientInfoInvoicingAndBillingTask" />
+        </userTask>
+        <sequenceFlow sourceRef="newClientInfoContractValidation" targetRef="newClientInfoInvoicingAndBillingTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="newClientInfoContractValidation" targetRef="newClientInfoProcessEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
         <userTask id="newClientInfoInvoicingAndBillingTask" 
                   name="New Client Info Billing/Invoicing Department Task for ${clientInfo.employee.firstName} ${clientInfo.employee.lastName}" 
         >
