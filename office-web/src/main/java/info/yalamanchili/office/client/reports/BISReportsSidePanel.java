@@ -13,7 +13,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -43,7 +42,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.client.SelectClientWidget;
 import info.yalamanchili.office.client.admin.project.SelectProjectWidget;
-import info.yalamanchili.office.client.admin.subcntrlocation.ReadAllSubcontractorLocationsPanel;
 import info.yalamanchili.office.client.admin.subcontractor.SelectSubcontractorWidget;
 import info.yalamanchili.office.client.admin.vendor.SelectVendorWidget;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
@@ -535,7 +533,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
                                 JSONObject resObj = JSONParser.parseLenient(result).isObject();
                                 String key = (String) resObj.keySet().toArray()[0];
                                 JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                                TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllSubcontractorLocationsPanel(results));
+                                TabPanel.instance().reportingPanel.entityPanel.add(new ReadAllSubcontractorLocationPanel(results));
                             }
                         }
                     });
