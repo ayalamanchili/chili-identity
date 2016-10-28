@@ -12,7 +12,6 @@ import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.data.CountryFactory;
-import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
@@ -31,6 +30,7 @@ public class ReadAddressPanel extends ReadComposite {
 
     private static ReadAddressPanel instance;
     private static Logger logger = Logger.getLogger(ReadAddressPanel.class.getName());
+    protected boolean isPerdiemAddress = false;
 
     public enum ReadAddressPanelType {
 
@@ -47,12 +47,19 @@ public class ReadAddressPanel extends ReadComposite {
         this.type = type;
         initReadComposite(entity, "Address", OfficeWelcome.constants);
     }
-    
+
+    public ReadAddressPanel(JSONObject entity, boolean isPerdiemAddress) {
+        instance = this;
+        this.type = type;
+        this.isPerdiemAddress = isPerdiemAddress;
+        initReadComposite(entity, "Address", OfficeWelcome.constants);
+    }
+
     public ReadAddressPanel(JSONObject entity, String className) {
         instance = this;
         this.type = type;
         initReadComposite(entity, className, OfficeWelcome.constants);
-    }    
+    }
 
     public ReadAddressPanel(String id) {
         initReadComposite(id, "Address", OfficeWelcome.constants);
@@ -62,13 +69,13 @@ public class ReadAddressPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info("read ec6 response" + response);
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info("read ec6 response" + response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
     }
 
     protected void populateComments() {
@@ -86,7 +93,9 @@ public class ReadAddressPanel extends ReadComposite {
         if (ReadAddressPanelType.ALL.equals(type)) {
             assignFieldValueFromEntity("addressType", entity, null);
         }
-        populateComments();
+        if (isPerdiemAddress == false) {
+            populateComments();
+        }
     }
 
     @Override
@@ -117,7 +126,11 @@ public class ReadAddressPanel extends ReadComposite {
 
     @Override
     protected boolean enableAudit() {
-        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_HR_ADMINSTRATION);
+        if (isPerdiemAddress == false) {
+            return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_HR, Auth.ROLE.ROLE_HR_ADMINSTRATION);
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -129,12 +142,16 @@ public class ReadAddressPanel extends ReadComposite {
     protected String getAuditUrl() {
         return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.profile.Address" + "/" + getEntityId();
     }
-    
+
     @Override
-   protected boolean enableBack() {
-       return true;
-   }
-    
+    protected boolean enableBack() {
+        if (isPerdiemAddress == false) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllAddressesPanel.instance;
