@@ -129,13 +129,13 @@ public class SearchProjectsPanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "project/search/" + searchText + "/" + start.toString() + "/"
-                + limit.toString());
+        return OfficeWelcome.constants.root_url() + "project/search/" + searchText + "/" + start.toString() + "/"
+                + limit.toString();
     }
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "project/search-project/" + start.toString() + "/"
-                + limit.toString());
+        return OfficeWelcome.constants.root_url() + "project/search-project/" + start.toString() + "/"
+                + limit.toString();
     }
 }

@@ -109,8 +109,8 @@ public class SearchEventPanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "chilli/analytics/search/" + searchText + "/" + start.toString() + "/"
-                + limit.toString());
+        return OfficeWelcome.constants.root_url() + "chilli/analytics/search/" + searchText + "/" + start.toString() + "/"
+                + limit.toString();
 
     }
 
@@ -120,7 +120,7 @@ public class SearchEventPanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "chilli/analytics/events/search");
+        return OfficeWelcome.constants.root_url() + "chilli/analytics/events/search";
     }
 
     private String getNameDropDownUrl() {

@@ -78,6 +78,6 @@ public class EmailGroupsSidePanel extends ALComposite implements ClickHandler {
     }
 
     private String getEmailMenuReportUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "email-groups/type?employee-type=" + employeeTypeList.getValue(employeeTypeList.getSelectedIndex()));
+        return OfficeWelcome.constants.root_url() + "email-groups/type?employee-type=" + employeeTypeList.getValue(employeeTypeList.getSelectedIndex());
     }
 }

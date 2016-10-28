@@ -115,14 +115,14 @@ public class SearchLcaPanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "lca/search/" + searchText + "/" + start.toString() + "/"
-                + limit.toString());
+        return OfficeWelcome.constants.root_url() + "lca/search/" + searchText + "/" + start.toString() + "/"
+                + limit.toString();
     }
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "lca/search-lca/" + start.toString() + "/"
-                + limit.toString());
+        return OfficeWelcome.constants.root_url() + "lca/search-lca/" + start.toString() + "/"
+                + limit.toString();
     }
 
     @Override

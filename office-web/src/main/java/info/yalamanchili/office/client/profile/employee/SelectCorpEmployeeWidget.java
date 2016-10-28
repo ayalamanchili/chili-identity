@@ -26,6 +26,6 @@ public class SelectCorpEmployeeWidget extends SelectEmployeeWidget {
 
     @Override
     protected String getDropDownURL(Integer start, Integer limit, String... columns) {
-        return URL.encode(super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown", start, limit, columns).concat("employee-type=Corporate Employee"));
+        return super.generateDropdownUrl(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown", start, limit, columns).concat("employee-type=Corporate Employee");
     }
 }

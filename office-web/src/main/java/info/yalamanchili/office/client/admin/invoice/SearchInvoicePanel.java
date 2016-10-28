@@ -121,18 +121,18 @@ public class SearchInvoicePanel extends SearchComposite {
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
         if (getKey() != null) {
-            return URL.encode(OfficeWelcome.constants.root_url() + "invoice/search-invoice-by-emp" + "/" + start.toString() + "/"
-                    + limit.toString()) + "?empId=" + getKey();
+            return OfficeWelcome.constants.root_url() + "invoice/search-invoice-by-emp" + "/" + start.toString() + "/"
+                    + limit.toString() + "?empId=" + getKey();
         } else {
-            return URL.encode(OfficeWelcome.constants.root_url() + "invoice/search/" + searchText + "/" + start.toString() + "/"
-                    + limit.toString());
+            return OfficeWelcome.constants.root_url() + "invoice/search/" + searchText + "/" + start.toString() + "/"
+                    + limit.toString();
         }
     }
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "invoice/adv-search/" + start.toString() + "/"
-                + limit.toString());
+        return OfficeWelcome.constants.root_url() + "invoice/adv-search/" + start.toString() + "/"
+                + limit.toString();
     }
 
     @Override
@@ -163,7 +163,7 @@ public class SearchInvoicePanel extends SearchComposite {
     }
 
     protected String getNameDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor&employee-type=W2 Contractor&includeAll=true");
+        return OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor&employee-type=W2 Contractor&includeAll=true";
     }
 
     @Override
@@ -190,7 +190,7 @@ public class SearchInvoicePanel extends SearchComposite {
                 String empUrl = OfficeWelcome.constants.root_url() + "invoice/reports";
                 assignEntityValueFromField("startDate", entity);
                 assignEntityValueFromField("endDate", entity);
-                HttpService.HttpServiceAsync.instance().doPut(URL.encode(empUrl), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                HttpService.HttpServiceAsync.instance().doPut(empUrl, entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {

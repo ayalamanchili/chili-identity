@@ -147,7 +147,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     }
 
     protected String getReadURI(String invitationCode) {
-        return URL.encode(OfficeWelcome.constants.public_url() + "onboarding/getdetails/" + invitationCode);
+        return OfficeWelcome.constants.public_url() + "onboarding/getdetails/" + invitationCode;
     }
 
     @Override

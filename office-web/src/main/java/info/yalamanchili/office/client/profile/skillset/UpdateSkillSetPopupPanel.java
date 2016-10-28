@@ -7,7 +7,6 @@
  */
 package info.yalamanchili.office.client.profile.skillset;
 
-import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -55,12 +54,12 @@ public class UpdateSkillSetPopupPanel extends UpdateSkillSetPanel {
 
     @Override
     protected String addTagUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "skillsettag/add-tag/" + tagsSB.getValue());
+        return OfficeWelcome.constants.root_url() + "skillsettag/add-tag/" + tagsSB.getValue();
     }
 
     @Override
     protected String removeTagUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "skillsettag/remove-tag/" + tagsSB.getValue());
+        return OfficeWelcome.constants.root_url() + "skillsettag/remove-tag/" + tagsSB.getValue();
     }
 
     @Override
@@ -70,12 +69,12 @@ public class UpdateSkillSetPopupPanel extends UpdateSkillSetPanel {
 
     @Override
     protected String addSkillUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "skillset/skills/add/" + skillSB.getValue());
+        return OfficeWelcome.constants.root_url() + "skillset/skills/add/" + skillSB.getValue();
     }
 
     @Override
     protected String removeSkillUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "skillset/skills/remove/" + skillSB.getValue());
+        return OfficeWelcome.constants.root_url() + "skillset/skills/remove/" + skillSB.getValue();
     }
 
     protected String getSkillsUrl() {
@@ -84,12 +83,12 @@ public class UpdateSkillSetPopupPanel extends UpdateSkillSetPanel {
 
     @Override
     protected String addCertUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "skillset/certifications/add/" + certSB.getValue());
+        return OfficeWelcome.constants.root_url() + "skillset/certifications/add/" + certSB.getValue();
     }
 
     @Override
     protected String removeCertUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "skillset/certifications/remove/" + certSB.getValue());
+        return OfficeWelcome.constants.root_url() + "skillset/certifications/remove/" + certSB.getValue();
     }
 
     @Override

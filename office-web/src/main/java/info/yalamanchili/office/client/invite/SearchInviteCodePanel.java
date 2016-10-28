@@ -96,7 +96,7 @@ public class SearchInviteCodePanel extends SearchComposite {
     
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "invitecode/search");
+        return OfficeWelcome.constants.root_url() + "invitecode/search";
     }
 
     @Override

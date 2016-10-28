@@ -78,7 +78,7 @@ public class ConsultantEmpLeaveRequestCancelPanel extends ALComposite implements
     }
 
     protected String getCancelLeaveRequestUrl() {
-        return URL.encode(OfficeWelcome.instance().constants.root_url() + "consultant-timesheet/cancel-leave-request/" + timeSheetId + "?cancelReason="
-                + cancelReasonF.getValue());
+        return OfficeWelcome.instance().constants.root_url() + "consultant-timesheet/cancel-leave-request/" + timeSheetId + "?cancelReason="
+                + cancelReasonF.getValue();
     }
 }

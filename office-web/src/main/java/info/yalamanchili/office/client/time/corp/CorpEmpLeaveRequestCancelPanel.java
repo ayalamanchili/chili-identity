@@ -81,7 +81,7 @@ public class CorpEmpLeaveRequestCancelPanel extends ALComposite implements Click
     }
 
     protected String getCancelLeaveRequestUrl() {
-        return URL.encode(OfficeWelcome.instance().constants.root_url() + "corporate-timesheet/cancel-leave-request/" + timeSheetId + "?cancelReason="
-                + cancelReasonF.getValue());
+        return OfficeWelcome.instance().constants.root_url() + "corporate-timesheet/cancel-leave-request/" + timeSheetId + "?cancelReason="
+                + cancelReasonF.getValue();
     }
 }

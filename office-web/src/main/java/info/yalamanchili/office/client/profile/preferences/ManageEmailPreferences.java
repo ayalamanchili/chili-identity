@@ -77,7 +77,7 @@ public class ManageEmailPreferences extends ALComposite implements ClickHandler 
     }
 
     private String getEmailPreferencesRulesUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "email_preferencerule/dropdown");
+        return OfficeWelcome.constants.root_url() + "email_preferencerule/dropdown";
     }
 
     @Override
@@ -88,20 +88,20 @@ public class ManageEmailPreferences extends ALComposite implements ClickHandler 
     public void createClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getAddRuleUrl(), emailRulesSB.getSelectedObject().toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        emailRulesSB.setValue("");
-                        new ResponseStatusWidget().show("Email rule added.");
-                        readAllUserEmailRules.refresh();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                emailRulesSB.setValue("");
+                new ResponseStatusWidget().show("Email rule added.");
+                readAllUserEmailRules.refresh();
+            }
+        });
     }
 
     private String getAddRuleUrl() {
         if (TabPanel.instance().myOfficePanel.isVisible()) {
-            return URL.encode(OfficeWelcome.constants.root_url() + "email_preferencerule/add?employeeId=" + JSONUtils.toString(TreeEmployeePanel.instance().getEntity(), "employeeId"));
+            return OfficeWelcome.constants.root_url() + "email_preferencerule/add?employeeId=" + JSONUtils.toString(TreeEmployeePanel.instance().getEntity(), "employeeId");
         } else {
-            return URL.encode(OfficeWelcome.constants.root_url() + "email_preferencerule/add");
+            return OfficeWelcome.constants.root_url() + "email_preferencerule/add";
         }
     }
 

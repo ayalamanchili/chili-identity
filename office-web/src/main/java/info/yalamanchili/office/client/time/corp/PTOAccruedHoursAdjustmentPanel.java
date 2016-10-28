@@ -97,6 +97,6 @@ public class PTOAccruedHoursAdjustmentPanel extends ALComposite implements Click
     }
 
     protected String adjustHoursURL() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "corporate-timesheet/adjust-hours?adjustmentHours=" + adjustmentHours.getValue() + "&adjustmentReason=" + adjustmentReason.getValue());
+        return OfficeWelcome.constants.root_url() + "corporate-timesheet/adjust-hours?adjustmentHours=" + adjustmentHours.getValue() + "&adjustmentReason=" + adjustmentReason.getValue();
     }
 }

@@ -137,7 +137,7 @@ public class CreateSkillSetTagPanel extends CreateComposite {
     }
 
     protected String getCreateAndAddUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "skillsettag/create-add-tag/" + skillSetId + "/" + nameF.getValue());
+        return OfficeWelcome.constants.root_url() + "skillsettag/create-add-tag/" + skillSetId + "/" + nameF.getValue();
     }
 
     @Override

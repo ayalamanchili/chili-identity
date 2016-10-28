@@ -115,8 +115,7 @@ public class VendorsSidePanel extends ALComposite implements ClickHandler, OpenH
                     String reportUrl = OfficeWelcome.constants.root_url() + "vendor/reports";
                     reportUrl = reportUrl.concat("?coiFromEndDate=" + sdf.format(startDateF.getDate()));
                     reportUrl = reportUrl.concat("&coiToEndDate=" + sdf.format(endDateF.getDate()));
-                    logger.info("The url issssssssss:" + reportUrl);
-                    HttpService.HttpServiceAsync.instance().doGet(URL.encode(reportUrl), OfficeWelcome.instance().getHeaders(), true,
+                    HttpService.HttpServiceAsync.instance().doGet(reportUrl, OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
                                 @Override
                                 public void onResponse(String result) {

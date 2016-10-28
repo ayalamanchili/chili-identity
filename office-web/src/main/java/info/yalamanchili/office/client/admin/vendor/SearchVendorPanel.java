@@ -121,8 +121,8 @@ public class SearchVendorPanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "vendor/search/" + start.toString() + "/"
-                + limit.toString() + "/?text=" + searchText);
+        return OfficeWelcome.constants.root_url() + "vendor/search/" + start.toString() + "/"
+                + limit.toString() + "/?text=" + searchText;
     }
 
     @Override

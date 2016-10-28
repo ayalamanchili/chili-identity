@@ -74,7 +74,7 @@ public class CreateRolesAndResponsibilitiesPanel extends UpdateComposite impleme
     protected String getURI() {
         JSONObject address = (JSONObject) joiningDetails.get("address");
         JSONObject conatct = address.get("contact").isObject();
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee-forms/roles-responsibilities/" + conatct.get("id").isString().stringValue());
+        return OfficeWelcome.constants.root_url() + "employee-forms/roles-responsibilities/" + conatct.get("id").isString().stringValue();
     }
 
     @Override

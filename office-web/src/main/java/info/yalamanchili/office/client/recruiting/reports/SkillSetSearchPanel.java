@@ -73,7 +73,7 @@ public class SkillSetSearchPanel extends SearchComposite {
 
     @Override
     protected void search(String searchText) {
-        HttpService.HttpServiceAsync.instance().doGet(URL.encode(getSearchURI(searchText, 0, 50)),
+        HttpService.HttpServiceAsync.instance().doGet(getSearchURI(searchText, 0, 50),
                 OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {

@@ -95,7 +95,7 @@ public class SearchEmailEventPanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "analytics/email/search");
+        return OfficeWelcome.constants.root_url() + "analytics/email/search";
     }
 
     @Override

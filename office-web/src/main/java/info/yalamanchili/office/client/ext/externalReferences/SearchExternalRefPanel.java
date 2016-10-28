@@ -99,14 +99,14 @@ public class SearchExternalRefPanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "external-ref/search/" + searchText + "/" + start.toString() + "/"
-                + limit.toString());
+        return OfficeWelcome.constants.root_url() + "external-ref/search/" + searchText + "/" + start.toString() + "/"
+                + limit.toString();
     }
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "external-ref/search/" + start.toString() + "/"
-                + limit.toString());
+        return OfficeWelcome.constants.root_url() + "external-ref/search/" + start.toString() + "/"
+                + limit.toString();
     }
 
     @Override
