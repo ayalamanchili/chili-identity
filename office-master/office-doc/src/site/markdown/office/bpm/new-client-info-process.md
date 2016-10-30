@@ -1,4 +1,4 @@
-How To Add Client Information
+Employee Project Onboarding
 ----
 - [Login to Portal](../../office/forgot-password.html "Login")
 - Navigate to **MyOffice** -> **Employees** -> **Employee Tree Panel** -> **Client Information**
