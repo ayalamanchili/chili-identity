@@ -349,11 +349,11 @@ public class UpdateProspectPanel extends UpdateComposite implements ClickHandler
     }
 
     private String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_CORPORATE_EMPLOYEE + "/0/10000");
+        return OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_CORPORATE_EMPLOYEE + "/0/10000";
     }
 
     protected String getNotifyEmployeesDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee");
+        return OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee";
     }
 
     protected void formatTextAreaFields() {

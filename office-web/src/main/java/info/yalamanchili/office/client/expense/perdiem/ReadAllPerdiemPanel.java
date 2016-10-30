@@ -155,7 +155,7 @@ public class ReadAllPerdiemPanel extends CRUDReadAllComposite {
     }
 
     private String getReadAllProspectsURL(Integer start, String tableSize) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "perdiem/" + start.toString() + "/" + tableSize);
+        return OfficeWelcome.constants.root_url() + "perdiem/" + start.toString() + "/" + tableSize;
     }
 
     private String getFormattedDate(String date) {

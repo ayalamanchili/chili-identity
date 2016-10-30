@@ -108,8 +108,8 @@ public class SearchDrivePanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "drive/searchdrive/" + start.toString() + "/"
-                + limit.toString() + "/?text=" + searchText);
+        return OfficeWelcome.constants.root_url() + "drive/searchdrive/" + start.toString() + "/"
+                + limit.toString() + "/?text=" + searchText;
     }
 
     @Override

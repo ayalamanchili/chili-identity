@@ -346,17 +346,17 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                logger.info(arg0.getMessage());
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadReceipts(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadReceipts(arg0);
+            }
+        });
     }
 
     @Override
@@ -469,7 +469,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     }
 
     private String getCorpEmpIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_CORPORATE_EMPLOYEE.name() + "/0/10000");
+        return OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_CORPORATE_EMPLOYEE.name() + "/0/10000";
     }
 
     @Override

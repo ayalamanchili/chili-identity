@@ -70,7 +70,7 @@ public class SearchProspectsPanel extends SearchComposite {
     }
 
     private String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_CORPORATE_EMPLOYEE + "/0/10000");
+        return OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_CORPORATE_EMPLOYEE + "/0/10000";
     }
 
     @Override
@@ -155,13 +155,13 @@ public class SearchProspectsPanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "prospect/search/" + getKey());
+        return OfficeWelcome.constants.root_url() + "prospect/search/" + getKey();
     }
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "prospect/search-prospect/" + start.toString() + "/"
-                + limit.toString());
+        return OfficeWelcome.constants.root_url() + "prospect/search-prospect/" + start.toString() + "/"
+                + limit.toString();
     }
 
     @Override

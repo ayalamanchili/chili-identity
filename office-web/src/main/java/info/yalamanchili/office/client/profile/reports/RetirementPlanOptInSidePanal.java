@@ -90,7 +90,7 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
     }
 
     private String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee");
+        return OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee";
     }
 
     @Override
@@ -168,7 +168,7 @@ public class RetirementPlanOptInSidePanal extends ALComposite implements ClickHa
                     String reportUrl = OfficeWelcome.instance().constants.root_url() + "insurance-enrollment/insurance-report-dates";
                     reportUrl = reportUrl.concat("?createdDateFrom=" + sdf.format(startDateF.getDate()));
                     reportUrl = reportUrl.concat("&createdDateTo=" + sdf.format(endDateF.getDate()));
-                    HttpService.HttpServiceAsync.instance().doGet(URL.encode(reportUrl), OfficeWelcome.instance().getHeaders(), true,
+                    HttpService.HttpServiceAsync.instance().doGet(reportUrl, OfficeWelcome.instance().getHeaders(), true,
                             new ALAsyncCallback<String>() {
                         @Override
                         public void onResponse(String result) {

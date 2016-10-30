@@ -162,7 +162,7 @@ public class CreateLCAPanel extends CreateComposite {
     }
 
     private String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000");
+        return OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000";
     }
     SelectEmployeeWithRoleWidget selectImgW = new SelectEmployeeWithRoleWidget("WorkedBy", Auth.ROLE.ROLE_H1B_IMMIGRATION, false, false, Alignment.HORIZONTAL) {
         @Override

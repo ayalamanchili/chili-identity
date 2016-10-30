@@ -95,7 +95,7 @@ public class ResumeSearchWidget extends ALComposite implements ClickHandler {
         if (Strings.isNullOrEmpty(searchTextSB.getValue())) {
             return;
         }
-        HttpService.HttpServiceAsync.instance().doGet(URL.encode(getResumeSearchUrl()), OfficeWelcome.instance().getHeaders(), true,
+        HttpService.HttpServiceAsync.instance().doGet(getResumeSearchUrl(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {

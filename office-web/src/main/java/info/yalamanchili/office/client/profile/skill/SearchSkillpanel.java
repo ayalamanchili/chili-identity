@@ -113,8 +113,8 @@ public class SearchSkillpanel extends SearchComposite {
 
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "skill/search/" + searchText + "/" + start.toString() + "/"
-                + limit.toString());
+        return OfficeWelcome.constants.root_url() + "skill/search/" + searchText + "/" + start.toString() + "/"
+                + limit.toString();
     }
 
     @Override

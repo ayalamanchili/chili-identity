@@ -96,7 +96,7 @@ public class InvoiceSidePanel extends ALComposite implements ClickHandler, OpenH
             String empUrl = OfficeWelcome.constants.root_url() + "invoice/missing-invoice-report";
             empUrl = empUrl.concat("?startDate=" + sdf.format(invoiceStartDate.getDate()));
             empUrl = empUrl.concat("&endDate=" + sdf.format(invoiceEndDate.getDate()));
-            HttpService.HttpServiceAsync.instance().doGet(URL.encode(empUrl), OfficeWelcome.instance().getHeaders(), true,
+            HttpService.HttpServiceAsync.instance().doGet(empUrl, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
                         @Override
                         public void onResponse(String result) {
@@ -110,7 +110,7 @@ public class InvoiceSidePanel extends ALComposite implements ClickHandler, OpenH
             String empUrl = OfficeWelcome.constants.root_url() + "invoice/search-missing-invoices/0/10000";
             empUrl = empUrl.concat("?startDate=" + sdf.format(invoiceStartDate.getDate()));
             empUrl = empUrl.concat("&endDate=" + sdf.format(invoiceEndDate.getDate()));
-            HttpService.HttpServiceAsync.instance().doGet(URL.encode(empUrl), OfficeWelcome.instance().getHeaders(), true,
+            HttpService.HttpServiceAsync.instance().doGet(empUrl, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
                         @Override
                         public void onResponse(String result) {

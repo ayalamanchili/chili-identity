@@ -225,7 +225,7 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
     }
 
     private String getEmployeeReadUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/" + JSONUtils.toString(employeeSB.getSelectedObject(), "id"));
+        return OfficeWelcome.constants.root_url() + "employee/" + JSONUtils.toString(employeeSB.getSelectedObject(), "id");
     }
 
     @Override
@@ -248,7 +248,7 @@ public class UpdateImmigrationCheckRequisitionPanel extends UpdateComposite impl
     }
 
     private String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000");
+        return OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000";
     }
 
     @Override

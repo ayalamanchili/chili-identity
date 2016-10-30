@@ -129,18 +129,18 @@ public class SearchEmployeeOnBoardingPanel extends SearchComposite {
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
         if (getKey() != null) {
-            return URL.encode(OfficeWelcome.constants.root_url() + "on-board-employee/search-onboarding" + "/" + start.toString() + "/"
-                    + limit.toString()) + "?empId=" + getKey();
+            return OfficeWelcome.constants.root_url() + "on-board-employee/search-onboarding" + "/" + start.toString() + "/"
+                    + limit.toString()+ "?empId=" + getKey();
         } else {
-            return URL.encode(OfficeWelcome.constants.root_url() + "on-board-employee/search/" + searchText + "/" + start.toString() + "/"
-                    + limit.toString());
+            return OfficeWelcome.constants.root_url() + "on-board-employee/search/" + searchText + "/" + start.toString() + "/"
+                    + limit.toString();
         }
     }
 
     @Override
     protected String getSearchURI(Integer start, Integer limit) {
-        return URL.encode(OfficeWelcome.constants.root_url() + "on-board-employee/search-onboarding/" + start.toString() + "/"
-                + limit.toString());
+        return OfficeWelcome.constants.root_url() + "on-board-employee/search-onboarding/" + start.toString() + "/"
+                + limit.toString();
     }
 
     @Override
@@ -166,7 +166,7 @@ public class SearchEmployeeOnBoardingPanel extends SearchComposite {
                 entity.put("endDate", new JSONString(DateUtils.toDateString(endDate.getDate())));
                 TabPanel.instance().getAdminPanel().entityPanel.clear();
                 String empUrl = OfficeWelcome.constants.root_url() + "on-board-employee/reports";
-                HttpService.HttpServiceAsync.instance().doPut(URL.encode(empUrl), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                HttpService.HttpServiceAsync.instance().doPut(empUrl, entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {

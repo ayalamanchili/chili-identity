@@ -150,7 +150,7 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
     }
 
     private String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000");
+        return OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000";
     }
 
     SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("WorkedBy", Auth.ROLE.ROLE_RECRUITER, false, true, Alignment.HORIZONTAL) {
@@ -230,7 +230,7 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
     }
 
     private String getLCAReadUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "lca/dropdown/" + JSONUtils.toString(employeeSB.getSelectedObject(), "id"));
+        return OfficeWelcome.constants.root_url() + "lca/dropdown/" + JSONUtils.toString(employeeSB.getSelectedObject(), "id");
     }
 
     protected void populatePassport() {
@@ -253,7 +253,7 @@ public class CreatePetitionPanel extends CreateComposite implements ClickHandler
     }
 
     private String getPassportReadUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "passport/dropdown/" + JSONUtils.toString(employeeSB.getSelectedObject(), "id"));
+        return OfficeWelcome.constants.root_url() + "passport/dropdown/" + JSONUtils.toString(employeeSB.getSelectedObject(), "id");
     }
 
     @Override

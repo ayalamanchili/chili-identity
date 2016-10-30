@@ -80,6 +80,15 @@ public class SkillResource extends CRUDResource<Skill> {
     }
 
     @GET
+    @Path("/search/{searchText}/{start}/{limit}")
+    @Transactional(readOnly = true)
+    @Override
+    public List<Skill> search(@PathParam("searchText") String searchText, @PathParam("start") int start,
+            @PathParam("limit") int limit, @QueryParam("column") List<String> columns) {
+        return getDao().search(searchText, start, limit, columns, true, true);
+    }
+
+    @GET
     @Path("/dropdown/{start}/{limit}")
     @Transactional(propagation = Propagation.NEVER)
     @Cacheable(OfficeCacheKeys.SKILL)

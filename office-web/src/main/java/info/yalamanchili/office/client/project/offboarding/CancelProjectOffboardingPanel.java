@@ -72,20 +72,17 @@ public class CancelProjectOffboardingPanel extends ALComposite implements ClickH
             GenericPopup.instance().hide();
             HttpService.HttpServiceAsync.instance().doGet(getCancelRequestUrl(), OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String result) {
-                            new ResponseStatusWidget().show("Cancel request has been submitted");
-                            
-                            }
-                    });
+                @Override
+                public void onResponse(String result) {
+                    new ResponseStatusWidget().show("Cancel request has been submitted");
+
+                }
+            });
         }
     }
 
     private String getCancelRequestUrl() {
-
         return OfficeWelcome.constants.root_url() + "clientinformation/cancel-project-off-boarding/";
-       /** return URL.encode(OfficeWelcome.instance().constants.root_url() + "clientinformation/cancel-project-off-boarding/" + clientInfoId + "?cancelReason="
-                + cancelReasonF.getValue());**/
     }
 
 }

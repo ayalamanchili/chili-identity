@@ -74,7 +74,7 @@ public class CorporateStatusReportSidePanel extends ALComposite implements Click
     }
 
     private String getEmployeeIdsDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee");
+        return OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee";
     }
 
     @Override
@@ -115,31 +115,31 @@ public class CorporateStatusReportSidePanel extends ALComposite implements Click
     protected void sendRemainder() {
         HttpService.HttpServiceAsync.instance().doPut(sendRemainderUrl(), populateEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        new ResponseStatusWidget().show("Remainder Email Sent");
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                new ResponseStatusWidget().show("Remainder Email Sent");
+            }
+        });
     }
 
     protected void search() {
         HttpService.HttpServiceAsync.instance().doPut(searchReportsUrl(), populateEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        clear();
-                        TabPanel.instance().getReportingPanel().entityPanel.clear();
-                        if (result == null || JSONParser.parseLenient(result).isObject() == null) {
-                            new ResponseStatusWidget().show("no results");
-                        } else {
-                            //TODO use size and entities attributes
-                            JSONObject resObj = JSONParser.parseLenient(result).isObject();
-                            String key = (String) resObj.keySet().toArray()[0];
-                            JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
-                            TabPanel.instance().getReportingPanel().entityPanel.add(new ReadAllCorporateStatusReportsPanel("Status Report Results", results));
-                        }
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                clear();
+                TabPanel.instance().getReportingPanel().entityPanel.clear();
+                if (result == null || JSONParser.parseLenient(result).isObject() == null) {
+                    new ResponseStatusWidget().show("no results");
+                } else {
+                    //TODO use size and entities attributes
+                    JSONObject resObj = JSONParser.parseLenient(result).isObject();
+                    String key = (String) resObj.keySet().toArray()[0];
+                    JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                    TabPanel.instance().getReportingPanel().entityPanel.add(new ReadAllCorporateStatusReportsPanel("Status Report Results", results));
+                }
+            }
+        });
     }
 
     protected void clear() {

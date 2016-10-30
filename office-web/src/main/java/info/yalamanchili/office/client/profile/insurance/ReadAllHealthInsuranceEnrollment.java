@@ -62,9 +62,9 @@ public class ReadAllHealthInsuranceEnrollment extends CRUDReadAllComposite {
 
     public String getReadAllInsEnrollmentURL(Integer start, String limit) {
         if (empId != null && !"".equals(empId)) {
-            return URL.encode(OfficeWelcome.constants.root_url() + "insurance-enrollment/" + empId + "/" + start.toString() + "/" + limit);
+            return OfficeWelcome.constants.root_url() + "insurance-enrollment/" + empId + "/" + start.toString() + "/" + limit;
         } else {
-            return URL.encode(OfficeWelcome.constants.root_url() + "insurance-enrollment/" + start.toString() + "/" + limit);
+            return OfficeWelcome.constants.root_url() + "insurance-enrollment/" + start.toString() + "/" + limit;
         }
     }
 

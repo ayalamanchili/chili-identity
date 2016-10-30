@@ -101,7 +101,7 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
             String empUrl = OfficeWelcome.constants.root_url() + "subcontractor/reports";
             empUrl = empUrl.concat("?coiFromEndDate=" + sdf.format(startDateF.getDate()));
             empUrl = empUrl.concat("&coiToEndDate=" + sdf.format(endDateF.getDate()));
-            HttpService.HttpServiceAsync.instance().doGet(URL.encode(empUrl), OfficeWelcome.instance().getHeaders(), true,
+            HttpService.HttpServiceAsync.instance().doGet(empUrl, OfficeWelcome.instance().getHeaders(), true,
                     new ALAsyncCallback<String>() {
                         @Override
                         public void onResponse(String result) {

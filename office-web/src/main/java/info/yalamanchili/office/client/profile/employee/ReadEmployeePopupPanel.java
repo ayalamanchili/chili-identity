@@ -56,6 +56,11 @@ public class ReadEmployeePopupPanel extends ReadEmployeePanel implements ClickHa
     }
 
     @Override
+    protected boolean enableBack() {
+        return false;
+    }
+    
+    @Override
     protected boolean canViewDOBField() {
         return true;
     }

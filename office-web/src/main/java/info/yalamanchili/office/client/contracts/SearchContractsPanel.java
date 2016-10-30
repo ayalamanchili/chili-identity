@@ -121,11 +121,11 @@ public class SearchContractsPanel extends SearchComposite {
     @Override
     protected String getSearchURI(String searchText, Integer start, Integer limit) {
         if (getKey() != null) {
-            return URL.encode(OfficeWelcome.constants.root_url() + "contract/search/" + start.toString() + "/"
-                    + limit.toString() + "?empId=" + getKey());
+            return OfficeWelcome.constants.root_url() + "contract/search/" + start.toString() + "/"
+                    + limit.toString() + "?empId=" + getKey();
         } else {
-            return URL.encode(OfficeWelcome.constants.root_url() + "contract/search/" + start.toString() + "/"
-                    + limit.toString() + "?itemNum=" + searchText);
+            return OfficeWelcome.constants.root_url() + "contract/search/" + start.toString() + "/"
+                    + limit.toString() + "?itemNum=" + searchText;
         }
     }
 
@@ -204,15 +204,15 @@ public class SearchContractsPanel extends SearchComposite {
     }
 
     protected String getNameDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor&employee-type=W2 Contractor&includeAll=true");
+        return OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor&employee-type=W2 Contractor&includeAll=true";
     }
 
     protected String getFirstNameDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor");
+        return OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor";
     }
 
     protected String getLastNameDropDownUrl() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=lastName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor");
+        return OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=lastName&employee-type=Corporate Employee&employee-type=Employee&employee-type=Subcontractor&employee-type=1099 Contractor";
     }
 
     @Override
