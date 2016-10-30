@@ -73,6 +73,13 @@ public class ReadAllClientInfoPopupPanel extends ReadAllClientInfoPanel {
                     submitProjectOffBoarding(((ClickableLink) event.getSource()).getTitle());
                 });
                 table.setWidget(i, ++column, projectOffboarding);
+            }else if (JSONUtils.toString(entity, "status").equalsIgnoreCase("Pending_Closing")) {
+                ClickableLink UpdateProjectOffboarding = new ClickableLink("Update Project Offboarding");
+                UpdateProjectOffboarding.setTitle(JSONUtils.toString(entity, "id"));
+                UpdateProjectOffboarding.addClickHandler((ClickEvent event) -> {
+                    UpdateProjectOffboardingPanal(((ClickableLink) event.getSource()).getTitle());
+                });
+                table.setWidget(i, ++column, UpdateProjectOffboarding);
             }
         }
     }
