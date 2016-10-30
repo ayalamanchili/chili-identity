@@ -10,7 +10,7 @@ Employee Project Offboarding
 
     ![Submit Project Offboarding](../../images/offboarding/submit_project_offboarding.png)
 
-    - Once the employee clicks on _**Submit**_ the project offboarding process is initiated and the status of the project is changed to Pending Closing.
+    - Once the employee clicks on _**Submit**_ the project offboarding process is initiated and the status of the project is changed to Pending Closing. If there is any change use the update offboarding link to update the changes. 
 
     ![Project Offboarding Initiated](../../images/offboarding/project_offboarding_initiated.png)
 
