@@ -2,7 +2,8 @@ Employee Project Onboarding
 ----
 - [Login to Portal](../../office/forgot-password.html "Login")
 - Navigate to **MyOffice** -> **Employees** -> **Employee Tree Panel** -> **Client Information**
-- After the Client information is created, a task is created and assigned to **billing and invoice team**
+- After the Client information is created, a task is created and assigned to **Contracts admin Final Validation**
+- After the Contracts admin Final Validation, a task is created and assigned to **billing and invoice team**
 - After the **billing and invoice team**  completes the assigned task, the  task is created and assigned to the **Payroll department** to enter pay rate percentage and special notes & then assigned to the **HR department** to populate all remaining details,verify, and complete the process.
 - There is a option to create and update the previous project End Date.
 - Role_Contracts_Admin submit the new vendor and  new client request 
@@ -11,7 +12,7 @@ Employee Project Onboarding
 - Once CPD Is Updated billing and invoice team will get the email notification with updated values with item no and etc
 Client Information Process
 =========
-![alt text](../../images/clientinfo/Submit-Client-Information-process.png "New Client Info")
+![alt text](../../images/clientinfo/Submit-Client-Information-process_1.png "New Client Info")
 
 Create New Client Information
 ----
