@@ -108,14 +108,22 @@ public class PerdiemResource extends CRUDResource<PerDiem> {
         Employee emp = perdiem.getEmployee();
         if (perdiem.isLive50MilesAway() == true) {
             List<Address> officeAddr = AddressDao.instance().getAddressByType(emp, "Office");
-            perdiemAddress.add(officeAddr.get(0));
+            if (!officeAddr.isEmpty()) {
+                perdiemAddress.add(officeAddr.get(0));
+            }
             List<Address> homeAddr = AddressDao.instance().getAddressByType(emp, "Home");
-            perdiemAddress.add(homeAddr.get(0));
+            if (!homeAddr.isEmpty()) {
+                perdiemAddress.add(homeAddr.get(0));
+            }
         } else {
-            List<Address> officeAddr = AddressDao.instance().getAddressByType(emp, "Home");
-            perdiemAddress.add(officeAddr.get(0));
-            List<Address> homeAddr = AddressDao.instance().getAddressByType(emp, "Other");
-            perdiemAddress.add(homeAddr.get(0));
+            List<Address> homeAddr = AddressDao.instance().getAddressByType(emp, "Home");
+            if (!homeAddr.isEmpty()) {
+                perdiemAddress.add(homeAddr.get(0));
+            }
+            List<Address> otherAddress = AddressDao.instance().getAddressByType(emp, "Other");
+            if (!otherAddress.isEmpty()) {
+                perdiemAddress.add(otherAddress.get(0));
+            }
         }
         perdiem.setAddresses(perdiemAddress);
         return perdiem;

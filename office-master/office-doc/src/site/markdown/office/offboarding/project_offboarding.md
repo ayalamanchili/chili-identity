@@ -1,4 +1,4 @@
-Project Offboarding
+Employee Project Offboarding
 =========
   
 - To initiate project offboarding, the employee should: 
