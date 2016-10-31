@@ -98,10 +98,10 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
 //            }
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ClientInformationStatus.PENDING_HR_VERIFICATION);
-                if (!payratePercent.equalsIgnoreCase("")) {
+                if (!("").equalsIgnoreCase(payratePercent)) {
                     entity.setPayRatePercentage(Float.valueOf(payratePercent));
                 }
-                if (!payrate.equalsIgnoreCase("")) {
+                if (!("").equalsIgnoreCase(payrate)) {
                     entity.setPayRate(BigDecimal.valueOf(Long.valueOf(payrate)));
                 }
                 if (!StringUtils.isBlank(specialNotes)) {
