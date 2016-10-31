@@ -199,7 +199,7 @@ public class EmployeeOnBoardingService {
 
         if (ContactDao.instance().findByEmail(code.getEmail()) != null) {
             Contact cnt = ContactDao.instance().findByEmail(code.getEmail());
-            List<ClientInformation> cpds = ProspectCPDDao.instance().getAllCpds(cnt.getId());
+            List<ClientInformation> cpds = null;//ProspectCPDDao.instance().getAllCpds(cnt.getId());
             List<ClientInformation> empCpds = new ArrayList();
             if (cpds != null && cpds.size() > 0) {
                 for (ClientInformation cpd : cpds) {
