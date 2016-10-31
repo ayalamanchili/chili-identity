@@ -440,6 +440,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
      * @param empId
      * @param clientInformation
      * @param submitForApproval
+     * @return
      */
     @PUT
     @Validate
@@ -447,8 +448,7 @@ public class EmployeeResource extends CRUDResource<Employee> {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_RECRUITER','ROLE_CONTRACTS_ADMIN')")
     public ClientInformationDto addClientInformation(@PathParam("empId") Long empId, ClientInformationDto clientInformation, @QueryParam("submitForApproval") Boolean submitForApproval) {
         ClientInformationService clientInformationService = (ClientInformationService) SpringContext.getBean("clientInformationService");
-        return clientInformationService.addClientInformation(empId, clientInformation, submitForApproval);
-
+        return clientInformationService.addClientInformation(empId, clientInformation, submitForApproval, false);
     }
 
     /* Emergency Contact */
