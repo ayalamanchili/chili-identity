@@ -27,6 +27,7 @@ import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.onboarding.InitiateOnBoardingPanel;
+import info.yalamanchili.office.client.profile.cllientinfo.CreateClientInfoPanel;
 import java.util.logging.Logger;
 
 /**
@@ -94,8 +95,11 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         table.setText(0, 6, getKeyValue("Phone Number"));
         if (isClosedWon == true && isOnAllTab == false) {
             table.setText(0, 7, getKeyValue("OnBoarding Invitation"));
+            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
+                table.setText(0, 8, getKeyValue("Create CPD"));
+            }
             if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER, Auth.ROLE.ROLE_ON_BOARDING_MGR, Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
-                table.setText(0, 8, getKeyValue("Request for onboarding"));
+                table.setText(0, 9, getKeyValue("Request for onboarding"));
             }
         } else if (isClosedWon == false && isOnAllTab == true) {
             table.setText(0, 7, getKeyValue("Status"));
@@ -123,13 +127,21 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
                             getOnBoardInviteCode(((ClickableLink) event.getSource()).getTitle());
                         });
                         table.setWidget(i, 7, invitationLink);
+                        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
+                            ClickableLink createCPDLink = new ClickableLink("Create CPD");
+                            createCPDLink.setTitle(JSONUtils.toString(entity, "id"));
+                            createCPDLink.addClickHandler((ClickEvent event) -> {
+                                createCPD(((ClickableLink) event.getSource()).getTitle());
+                            });
+                            table.setWidget(i, 8, createCPDLink);
+                        }
                         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER)) {
                             ClickableLink onboardingRequestLink = new ClickableLink("Request For OnBoarding");
                             onboardingRequestLink.setTitle(JSONUtils.toString(entity, "id"));
                             onboardingRequestLink.addClickHandler((ClickEvent event) -> {
                                 getOnBoardRequestCode(((ClickableLink) event.getSource()).getTitle());
                             });
-                            table.setWidget(i, 8, onboardingRequestLink);
+                            table.setWidget(i, 9, onboardingRequestLink);
                         }
                     }
                 }
@@ -155,6 +167,12 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
     protected void getOnBoardInviteCode(String entityId) {
         if (!entityId.isEmpty()) {
             new GenericPopup(new InitiateOnBoardingPanel(getEntity(entityId))).show();
+        }
+    }
+
+    protected void createCPD(String entityId) {
+        if (!entityId.isEmpty()) {
+            new GenericPopup(new CreateClientInfoPanel(CreateComposite.CreateCompositeType.ADD, getEntity(entityId))).show();
         }
     }
 
@@ -241,6 +259,8 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
         } else if ((ProspectStatus.RECRUITING.name().equals(status) || ProspectStatus.BENCH.name().equals(status)) && Auth.hasAnyOfRoles(ROLE.ROLE_RECRUITER)) {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE);
         } else if (Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION, ROLE.ROLE_RECRUITER)) {
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ);
+        } else if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
             createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ);
         }
     }

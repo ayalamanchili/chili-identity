@@ -34,7 +34,7 @@ public class MyOfficeMenu extends CMenuBar {
         if (Auth.isCorporateEmployee() && Auth.hasAnyOfRoles(ROLE.ROLE_ON_BOARDING_MGR, ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_E_VERIFY_MGR, ROLE.ROLE_BACKGROUND_SCREENING_MGR, ROLE.ROLE_SYSTEM_AND_NETWORK_ADMIN, ROLE.ROLE_PAYROLL_AND_BENIFITS)) {
             addMenuItem("OnBoarding", "OnBoarding", onBoardingInfo);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_PROSPECTS_MANAGER, ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION, ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_PROSPECTS_MANAGER, ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION, ROLE.ROLE_RECRUITER, Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
             addMenuItem("Prospects", "Prospects", prospectsMaintainenceCmd);
         }
         if (Auth.isAdmin()) {
@@ -94,7 +94,7 @@ public class MyOfficeMenu extends CMenuBar {
         TabPanel.instance().getMyOfficePanel().entityPanel.clear();
         TabPanel.instance().getMyOfficePanel().sidePanelTop.clear();
         TabPanel.instance().getMyOfficePanel().entityPanel.add(new ProspectMenu());
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllProspectsPanel());
             TabPanel.instance().getMyOfficePanel().sidePanelTop.add(new ProspectsSidePanel());
         } else if (Auth.hasAnyOfRoles(ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION, ROLE.ROLE_RECRUITER)) {
