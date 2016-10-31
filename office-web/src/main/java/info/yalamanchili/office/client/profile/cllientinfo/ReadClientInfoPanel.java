@@ -60,6 +60,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
     SelectPracticeWidget selectPractiseWidgetF = new SelectPracticeWidget(true, false, Alignment.HORIZONTAL);
     protected boolean isSubOr1099 = false;
     protected boolean active = false;
+    protected boolean isProspectCPD = false;
 
     public ReadClientInfoPanel(JSONObject entity) {
         instance = this;
@@ -72,13 +73,18 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         initReadComposite(entity, "ClientInfo", OfficeWelcome.constants2);
     }
 
+    public ReadClientInfoPanel(JSONObject entity, boolean active, boolean isProspectCPD) {
+        instance = this;
+        this.active = active;
+        this.isProspectCPD = isProspectCPD;
+        initReadComposite(entity, "ClientInfo", OfficeWelcome.constants2);
+    }
+
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("consultantJobTitle", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("company", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("client", entity, null);
-//        assignFieldValueFromEntity("clientFeeApplicable", entity, DataType.BOOLEAN_FIELD);
-//        assignFieldValueFromEntity("directClient", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("clientAPContacts", entity, null);
         assignFieldValueFromEntity("clientLocation", entity, null);
         assignFieldValueFromEntity("clientContact", entity, null);
@@ -99,15 +105,15 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         assignFieldValueFromEntity("isEndDateConfirmed", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("recruiters", entity, null);
         if (Auth.hasAnyOfRoles(ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_ADMIN)) {
-             assignFieldValueFromEntity("payRatePercentage", entity, DataType.FLOAT_FIELD);
-             assignFieldValueFromEntity("overTimePayRatePercentage", entity, DataType.FLOAT_FIELD);
-        }       
+            assignFieldValueFromEntity("payRatePercentage", entity, DataType.FLOAT_FIELD);
+            assignFieldValueFromEntity("overTimePayRatePercentage", entity, DataType.FLOAT_FIELD);
+        }
         if (checkPermission()) {
             assignFieldValueFromEntity("itemNumber", entity, DataType.STRING_FIELD);
             assignFieldValueFromEntity("billingRate", entity, DataType.CURRENCY_FIELD);
-            assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);           
+            assignFieldValueFromEntity("billingRateDuration", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("overTimeBillingRate", entity, DataType.CURRENCY_FIELD);
-            assignFieldValueFromEntity("overTimeRateDuration", entity, DataType.ENUM_FIELD);           
+            assignFieldValueFromEntity("overTimeRateDuration", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("invoiceFrequency", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("invoiceDeliveryMethod", entity, DataType.ENUM_FIELD);
             assignFieldValueFromEntity("joiningReport", entity, DataType.TEXT_AREA_FIELD);
@@ -117,7 +123,8 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
             assignFieldValueFromEntity("w4Filled", entity, DataType.BOOLEAN_FIELD);
             assignFieldValueFromEntity("logisticsPreparation", entity, DataType.BOOLEAN_FIELD);
             assignFieldValueFromEntity("hrOrientation", entity, DataType.BOOLEAN_FIELD);
-            if (Auth.isSubContractor(getEmployee())) {
+            logger.info("is prospect cpd .... "+isProspectCPD);
+            if (isProspectCPD == false && Auth.isSubContractor(getEmployee())) {
                 assignFieldValueFromEntity("subcontractor", entity, null);
                 assignFieldValueFromEntity("subcontractorContact", entity, null);
                 assignFieldValueFromEntity("subcontractorPayRate", entity, DataType.CURRENCY_FIELD);
@@ -131,7 +138,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
                     assignFieldValueFromEntity("subContractorWorkOrderNo", project, DataType.STRING_FIELD);
                 }
             }
-            if (Auth.is1099(getEmployee())) {
+            if (isProspectCPD == false && Auth.is1099(getEmployee())) {
                 assignFieldValueFromEntity("payRate1099", entity, DataType.CURRENCY_FIELD);
                 assignFieldValueFromEntity("overTimePayrate1099", entity, DataType.CURRENCY_FIELD);
                 assignFieldValueFromEntity("paymentTerms1099", entity, DataType.TEXT_AREA_FIELD);
@@ -158,7 +165,11 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
     }
 
     protected JSONObject getEmployee() {
-        return TreeEmployeePanel.instance().getEntity();
+        if (isProspectCPD == false) {
+            return TreeEmployeePanel.instance().getEntity();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -193,7 +204,6 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         addEnumField("company", true, true, ClientInformationCompany.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Client Information"));
         addDropDown("client", new SelectClientWidget(true, false, Alignment.HORIZONTAL));
-//        addField("directClient", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addDropDown("clientLocation", new SelectClientLocationWidget(true, false, Alignment.HORIZONTAL));
         addDropDown("clientContact", new SelectClientContactWidget(true, false, Alignment.HORIZONTAL));
         selectClientAcctPayContact = new SelectClientAcctPayContact(false, false, Alignment.HORIZONTAL) {
@@ -203,7 +213,6 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
             }
         };
         addDropDown("clientAPContacts", selectClientAcctPayContact);
-//        addField("clientFeeApplicable", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("clientPaymentTerms", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Middle Vendor Information"));
         addDropDown("middleVendor", new SelectMiddleVendorWidget(true, false, Alignment.HORIZONTAL));
@@ -235,11 +244,13 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         if (checkPermission()) {
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
             addField("itemNumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-            if ((Auth.isSubContractor(getEmployee())) || (Auth.is1099(getEmployee()))) {
+            if (isProspectCPD == false && ((Auth.isSubContractor(getEmployee())) || (Auth.is1099(getEmployee())))) {
                 isSubOr1099 = true;
             }
             addField("billingRate", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-            entityFieldsPanel.add(ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntity(), isSubOr1099));
+            if (isProspectCPD == false) {
+                entityFieldsPanel.add(ReadAllUpdateBillingRatePanel.renderBillingRateHistory(getEntity(), isSubOr1099));
+            }
             if (Auth.hasAnyOfRoles(ROLE.ROLE_BILLING_ADMIN, ROLE.ROLE_CONTRACTS_ADMIN)) {
                 renderUpdateBillingRateFieldLink();
             }
@@ -255,7 +266,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
             }
             addEnumField("invoiceFrequency", true, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
             addEnumField("invoiceDeliveryMethod", true, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
-            if (Auth.isSubContractor(getEmployee())) {
+            if (isProspectCPD == false && Auth.isSubContractor(getEmployee())) {
                 entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
                 addDropDown("subcontractor", new SelectSubcontractorWidget(true, false, Alignment.HORIZONTAL));
                 addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(true, false, Alignment.HORIZONTAL));
@@ -267,7 +278,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
                 addField("subcontractCOI", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
                 addField("subContractorWorkOrderNo", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
             }
-            if (Auth.is1099(getEmployee())) {
+            if (isProspectCPD == false && Auth.is1099(getEmployee())) {
                 entityFieldsPanel.add(getLineSeperatorTag("1099 Contractor"));
                 addField("payRate1099", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
                 addField("overTimePayrate1099", true, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
@@ -293,7 +304,7 @@ public class ReadClientInfoPanel extends ReadComposite implements ClickHandler {
         addDropDown("practice", selectPractiseWidgetF);
         addField("sectorsAndBUs", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("notes", true, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        if (TreeEmployeePanel.instance() != null && TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
+        if (isProspectCPD == false && TreeEmployeePanel.instance() != null && TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
             StringField jobTitleF = (StringField) fields.get("employeeType");
             jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
         }
