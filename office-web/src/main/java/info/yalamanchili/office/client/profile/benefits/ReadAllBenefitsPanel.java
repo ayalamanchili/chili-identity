@@ -19,7 +19,6 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -27,24 +26,24 @@ import java.util.logging.Logger;
  * @author Hemanth
  */
 public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickHandler {
-    
-     private static Logger logger = Logger.getLogger(ReadAllBenefitsPanel.class.getName());
-     public static ReadAllBenefitsPanel instance;
+
+    private static Logger logger = Logger.getLogger(ReadAllBenefitsPanel.class.getName());
+    public static ReadAllBenefitsPanel instance;
 
     public ReadAllBenefitsPanel(String entityId) {
         instance = this;
         this.parentId = entityId;
         initTable("Benefits", OfficeWelcome.constants2);
     }
-    
+
     public ReadAllBenefitsPanel(JSONArray result) {
         instance = this;
         initTable("Benefits", result, OfficeWelcome.constants2);
     }
 
-     @Override
+    @Override
     public void preFetchTable(int start) {
-       HttpService.HttpServiceAsync.instance().doGet(getEmployeeBenefitsURL(parentId, start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
+        HttpService.HttpServiceAsync.instance().doGet(getEmployeeBenefitsURL(parentId, start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String result) {
@@ -53,7 +52,7 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
                     }
                 });
     }
-    
+
     @Override
     public void viewClicked(String entityId) {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
@@ -90,13 +89,12 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
         table.setText(0, 1, getKeyValue("Benefit Type"));
         table.setText(0, 2, getKeyValue("Year"));
         table.setText(0, 3, getKeyValue("Enrolled"));
-       
 
     }
 
     @Override
     public void fillData(JSONArray entities) {
-         for (int i = 1; i <= entities.size(); i++) {
+        for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "benefitType"));
@@ -121,14 +119,14 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
     }
 
     private String getEmployeeBenefitsURL(String employeeId, Integer start, String limit) {
-         return OfficeWelcome.constants.root_url() + "benefit/" + employeeId + "/"  + start.toString() + "/" + limit.toString();
+        return OfficeWelcome.constants.root_url() + "benefit/" + employeeId + "/" + start.toString() + "/" + limit.toString();
     }
 
     private String getDeleteURL(String entityId) {
-         return OfficeWelcome.instance().constants.root_url() + "benefit/delete/" + entityId;
+        return OfficeWelcome.instance().constants.root_url() + "benefit/delete/" + entityId;
     }
-    
-     @Override
+
+    @Override
     protected void configureCreateButton() {
         if (TabPanel.instance().myOfficePanel.isVisible()) {
             if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HEALTH_INSURANCE_MANAGER)) {
@@ -137,9 +135,9 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
             } else {
                 createButton.setVisible(false);
             }
-        } 
+        }
     }
-    
+
     @Override
     protected void createButtonClicked() {
         if (TabPanel.instance().myOfficePanel.isVisible()) {
@@ -147,7 +145,7 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
             TabPanel.instance().myOfficePanel.entityPanel.add(new CreateBenefitPanel(CreateCompositeType.ADD));
         } else if (TabPanel.instance().profilePanel.isVisible()) {
             new GenericPopup(new CreateBenefitPanel(CreateCompositeType.ADD)).show();
-    
+
         }
     }
 }
