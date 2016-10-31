@@ -50,8 +50,7 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         //Notes
         String notes = (String) task.getExecution().getVariable("notes");
         CommentDao.instance().addComment(notes, entity);
-        
-        
+
         if (task.getTaskDefinitionKey().equals("newClientInfoContractValidation")) {
             String status = (String) task.getExecution().getVariable("status");
             String nottes = (String) task.getExecution().getVariable("nottes");
@@ -98,13 +97,13 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
 //            }
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ClientInformationStatus.PENDING_HR_VERIFICATION);
-                if (!("").equalsIgnoreCase(payratePercent)) {
+                if (StringUtils.isNotEmpty((payratePercent))) {
                     entity.setPayRatePercentage(Float.valueOf(payratePercent));
                 }
-                if (!("").equalsIgnoreCase(payrate)) {
+                if (!StringUtils.isNotEmpty((payrate))) {
                     entity.setPayRate(BigDecimal.valueOf(Long.valueOf(payrate)));
                 }
-                if (!StringUtils.isBlank(specialNotes)) {
+                if (!StringUtils.isNotEmpty(specialNotes)) {
                     CommentDao.instance().addComment("New Client Info Payroll Department Task: " + specialNotes, entity);
                 }
             } else {
