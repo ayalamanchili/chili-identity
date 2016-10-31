@@ -100,10 +100,10 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
                 if (StringUtils.isNotEmpty((payratePercent))) {
                     entity.setPayRatePercentage(Float.valueOf(payratePercent));
                 }
-                if (!StringUtils.isNotEmpty((payrate))) {
+                if (StringUtils.isNotEmpty((payrate))) {
                     entity.setPayRate(BigDecimal.valueOf(Long.valueOf(payrate)));
                 }
-                if (!StringUtils.isNotEmpty(specialNotes)) {
+                if (StringUtils.isNotEmpty(specialNotes)) {
                     CommentDao.instance().addComment("New Client Info Payroll Department Task: " + specialNotes, entity);
                 }
             } else {
