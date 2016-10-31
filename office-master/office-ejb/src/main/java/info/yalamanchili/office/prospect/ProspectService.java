@@ -225,7 +225,7 @@ public class ProspectService {
             dto.setTrfEmpType(null);
             dto.setPetitionFiledFor(null);
         }
-        dto.setCpds(ProspectCPDDao.instance().getAllCpds(ec.getContact().getId()));
+//        dto.setCpds(ProspectCPDDao.instance().getAllCpds(ec.getContact().getId()));
         return dto;
     }
 
