@@ -29,6 +29,7 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
+import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPanel;
 import java.util.logging.Logger;
 
 /**
@@ -76,6 +77,15 @@ public class ReadProspectsPanel extends ReadComposite {
                             populateExpenseReceipt(resumeURL);
                         }
                         populateComments();
+                        if (entity.containsKey("cpds")) {
+                            if (entity.get("cpds") instanceof JSONObject) {
+                                JSONArray cpdArray = new JSONArray();
+                                cpdArray.set(0, entity.get("cpds").isObject());
+                                entityActionsPanel.add(new ReadAllClientInfoPanel(cpdArray, true));
+                            } else if (entity.get("cpds") instanceof JSONArray) {
+                                entityActionsPanel.add(new ReadAllClientInfoPanel(entity.get("cpds").isArray(), true));
+                            }
+                        }
                     }
                 });
     }
