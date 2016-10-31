@@ -98,7 +98,7 @@ public class OfficeServiceConfiguration {
     /**
      * List of emails to send error logs
      */
-    protected String errorLogsEmailList = "yphanikumar@gmail.com,prasanthi.p@sstech.mobi,anu@yalamanchili.info,radhika.mukkala@sstech.us,Kiranmai.Ramisetti@sstech.us,Ramana.Lukalapu@sstech.us,hemalatha.duggirala@sstech.us";
+    protected String errorLogsEmailList = "yphanikumar@gmail.com,prasanthi.p@sstech.mobi,anu@yalamanchili.info,radhika.mukkala@sstech.us,Kiranmai.Ramisetti@sstech.us,Ramana.Lukalapu@sstech.us,hemalatha.duggirala@sstech.us,sandeep.sunchu@sstech.us";
     /**
      * file path used by data loader tool
      */
