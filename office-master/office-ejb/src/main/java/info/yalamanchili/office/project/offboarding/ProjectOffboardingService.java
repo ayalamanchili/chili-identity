@@ -15,8 +15,10 @@ import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
+import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.ClientInformation;
+import info.yalamanchili.office.entity.profile.Employee;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.context.annotation.Scope;
@@ -32,6 +34,7 @@ public class ProjectOffboardingService {
 
     public void startProjectOffboardingTask(ProjectOffboardingDto ped) {
         ClientInformation ci = ClientInformationDao.instance().findById(ped.getClientInformtaionId());
+        Employee employee = EmployeeDao.instance().findById(ci.getEmployee().getId());
         CommentDao.instance().addComment("Project Offboarding-> Reason for Project End: " + ped.getNotes(), ci);
         if (ped.getProjectInPipeline()) {
             CommentDao.instance().addComment("Project Offboarding-> New Project in Pipeline: Yes", ci);
@@ -44,7 +47,8 @@ public class ProjectOffboardingService {
         Map<String, Object> vars = new HashMap<>();
         vars.put("entityId", ped.getClientInformtaionId());
         vars.put("entity", ci);
-        vars.put("employee", ci.getEmployee());
+        vars.put("employee", employee);
+        vars.put("employeeType", employee.getEmployeeType());
         vars.put("projectOffboardingEntity", ped);
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
         OfficeBPMService.instance().startProcess("associate_project_offboarding_process", vars);

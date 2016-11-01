@@ -71,77 +71,91 @@
                       targetRef="gateway" />
         
         <exclusiveGateway id="gateway"/>
-            <sequenceFlow id="flow1" sourceRef="gateway" targetRef="fork1">
+            <sequenceFlow id="subcontractorFlow" sourceRef="gateway" targetRef="subcontractorFork">
+                <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor" }]]>
+                </conditionExpression>
+            </sequenceFlow>
+            <sequenceFlow id="employeeFlow1" sourceRef="gateway" targetRef="employeeFork1">
                 <conditionExpression xsi:type="tFormalExpression">
                     <![CDATA[${projectOffboardingEntity.projectInPipeline!=true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
                 </conditionExpression>
             </sequenceFlow>
-            <sequenceFlow id="flow2" sourceRef="gateway" targetRef="fork2">
+            <sequenceFlow id="employeeFlow2" sourceRef="gateway" targetRef="employeeFork2">
                 <conditionExpression xsi:type="tFormalExpression">
                     <![CDATA[${projectOffboardingEntity.projectInPipeline==true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
                 </conditionExpression>
             </sequenceFlow>
-            <sequenceFlow id="flow3" sourceRef="gateway" targetRef="fork3">
+            <sequenceFlow id="employeeFlow3" sourceRef="gateway" targetRef="employeeFork3">
                 <conditionExpression xsi:type="tFormalExpression">
                     <![CDATA[${projectOffboardingEntity.projectInPipeline!=true && employee.workStatus!="H1B" && employee.workStatus!="OPT" }]]>
                 </conditionExpression>
             </sequenceFlow>
-            <sequenceFlow id="flow4" sourceRef="gateway" targetRef="fork4">
+            <sequenceFlow id="employeeFlow4" sourceRef="gateway" targetRef="employeeFork4">
                 <conditionExpression xsi:type="tFormalExpression">
                     <![CDATA[${projectOffboardingEntity.projectInPipeline==true &&  employee.workStatus!="H1B" && employee.workStatus!="OPT" }]]>
                 </conditionExpression>
             </sequenceFlow>
             
-        <parallelGateway id="fork1" />
+        <parallelGateway id="subcontractorFork" />
         
-        <sequenceFlow sourceRef="fork1" 
+        <sequenceFlow sourceRef="subcontractorFork" 
                       targetRef="projectOffboardingBillingAdminTask" />
-        <sequenceFlow sourceRef="fork1" 
-                      targetRef="projectOffboardingPayrollDeptTask" />
-        <sequenceFlow sourceRef="fork1" 
+        <sequenceFlow sourceRef="subcontractorFork" 
                       targetRef="projectOffboardingAccountsPayableTask" />
-        <sequenceFlow sourceRef="fork1" 
+        <sequenceFlow sourceRef="subcontractorFork" 
                       targetRef="projectOffboardingAccountsReceivableTask" />
-        <sequenceFlow sourceRef="fork1" 
+        
+        <parallelGateway id="employeeFork1" />
+        
+        <sequenceFlow sourceRef="employeeFork1" 
+                      targetRef="projectOffboardingBillingAdminTask" />
+        <sequenceFlow sourceRef="employeeFork1" 
+                      targetRef="projectOffboardingPayrollDeptTask" />
+        <sequenceFlow sourceRef="employeeFork1" 
+                      targetRef="projectOffboardingAccountsPayableTask" />
+        <sequenceFlow sourceRef="employeeFork1" 
+                      targetRef="projectOffboardingAccountsReceivableTask" />
+        <sequenceFlow sourceRef="employeeFork1" 
                       targetRef="projectOffboardingImmigrationDeptTask" />
-        <sequenceFlow sourceRef="fork1" 
+        <sequenceFlow sourceRef="employeeFork1" 
                       targetRef="projectOffboardingRecruitingDeptTask" />
         
-        <parallelGateway id="fork2" />
+        <parallelGateway id="employeeFork2" />
         
-        <sequenceFlow sourceRef="fork2" 
+        <sequenceFlow sourceRef="employeeFork2" 
                       targetRef="projectOffboardingBillingAdminTask" />
-        <sequenceFlow sourceRef="fork2" 
+        <sequenceFlow sourceRef="employeeFork2" 
                       targetRef="projectOffboardingPayrollDeptTask" />
-        <sequenceFlow sourceRef="fork2" 
+        <sequenceFlow sourceRef="employeeFork2" 
                       targetRef="projectOffboardingAccountsPayableTask" />
-        <sequenceFlow sourceRef="fork2" 
+        <sequenceFlow sourceRef="employeeFork2" 
                       targetRef="projectOffboardingAccountsReceivableTask" />
-        <sequenceFlow sourceRef="fork2" 
+        <sequenceFlow sourceRef="employeeFork2" 
                       targetRef="projectOffboardingImmigrationDeptTask" />
         
-        <parallelGateway id="fork3" />
+        <parallelGateway id="employeeFork3" />
         
-        <sequenceFlow sourceRef="fork3" 
+        <sequenceFlow sourceRef="employeeFork3" 
                       targetRef="projectOffboardingBillingAdminTask" />
-        <sequenceFlow sourceRef="fork3" 
+        <sequenceFlow sourceRef="employeeFork3" 
                       targetRef="projectOffboardingPayrollDeptTask" />
-        <sequenceFlow sourceRef="fork3" 
+        <sequenceFlow sourceRef="employeeFork3" 
                       targetRef="projectOffboardingAccountsPayableTask" />
-        <sequenceFlow sourceRef="fork3" 
+        <sequenceFlow sourceRef="employeeFork3" 
                       targetRef="projectOffboardingAccountsReceivableTask" />
-        <sequenceFlow sourceRef="fork3" 
+        <sequenceFlow sourceRef="employeeFork3" 
                       targetRef="projectOffboardingRecruitingDeptTask" />
         
-        <parallelGateway id="fork4" />
+        <parallelGateway id="employeeFork4" />
         
-        <sequenceFlow sourceRef="fork4" 
+        <sequenceFlow sourceRef="employeeFork4" 
                       targetRef="projectOffboardingBillingAdminTask" />
-        <sequenceFlow sourceRef="fork4" 
+        <sequenceFlow sourceRef="employeeFork4" 
                       targetRef="projectOffboardingPayrollDeptTask" />
-        <sequenceFlow sourceRef="fork4" 
+        <sequenceFlow sourceRef="employeeFork4" 
                       targetRef="projectOffboardingAccountsPayableTask" />
-        <sequenceFlow sourceRef="fork4" 
+        <sequenceFlow sourceRef="employeeFork4" 
                       targetRef="projectOffboardingAccountsReceivableTask" />
             
         

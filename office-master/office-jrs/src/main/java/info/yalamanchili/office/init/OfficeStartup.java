@@ -1038,6 +1038,12 @@ public class OfficeStartup {
     public Subcontractor sstechSubcontractor() {
         Subcontractor subcntr = new Subcontractor();
         subcntr.setName("sstech sub contractor");
+        
+        Contact subcontractorContact = new Contact();
+        subcontractorContact.setFirstName("Subcontractor Contact");
+        subcontractorContact.setLastName("Subcontractor Contact");
+        subcntr.addContact(subcontractorContact);
+        
         return em.merge(subcntr);
     }
 
