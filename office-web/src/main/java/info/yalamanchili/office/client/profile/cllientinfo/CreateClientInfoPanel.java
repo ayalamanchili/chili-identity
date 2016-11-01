@@ -108,9 +108,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         initCreateComposite("ClientInfo", OfficeWelcome.constants2);
     }
 
-    BooleanField endPreviousProjectFlagField = new BooleanField(OfficeWelcome.constants2, "endPreviousProject", "ClientInfo", false, false, Alignment.HORIZONTAL);
-    DateField previousProjectEndDate = new DateField(OfficeWelcome.constants2, "previousProjectEndDate", "ClientInfo", false, false, Alignment.HORIZONTAL);
-    TextAreaField reason = new TextAreaField(OfficeWelcome.constants2, "reason", "ClientInfo", false, true, Alignment.HORIZONTAL);
     EnumField servicesF;
     EnumField sectorsF;
     DateField endDateF;
@@ -124,7 +121,9 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         assignEntityValueFromField("consultantJobTitle", clientInfo);
         assignEntityValueFromField("company", clientInfo);
         assignEntityValueFromField("client", clientInfo);
+//        assignEntityValueFromField("clientFeeApplicable", clientInfo);
         assignEntityValueFromField("clientFee", clientInfo);
+//        assignEntityValueFromField("directClient", clientInfo);        
         assignEntityValueFromField("clientContact", clientInfo);
         assignEntityValueFromField("clientAPContacts", clientInfo);
         assignEntityValueFromField("clientLocation", clientInfo);
@@ -140,13 +139,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         if (isEndDateConfirmedF.isVisible() == true) {
             isEndDateConfirmedF.getValue();
             clientInfo.put("isEndDateConfirmed", new JSONString(isEndDateConfirmedF.getValue().toString()));
-        }
-        if (prospect == null) {
-            if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
-                clientInfo.put("endPreviousProject", new JSONString(endPreviousProjectFlagField.getValue().toString()));
-                clientInfo.put("previousProjectEndDate", new JSONString(DateUtils.toDateString(previousProjectEndDate.getDate())));
-                clientInfo.put("reason", new JSONString(reason.getValue()));
-            }
         }
         clientInfo.put("recruiters", selectRecruiterW.getSelectedObjects());
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
@@ -254,27 +246,16 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         submitForApprovalF.getBox().addClickHandler(this);
         selectVendorWidgetF.getListBox().addChangeHandler(this);
         selectClientWidgetF.getListBox().addChangeHandler(this);
-        if (endPreviousProjectFlagField != null) {
-            endPreviousProjectFlagField.getBox().addClickHandler(this);
-        }
         selectPractiseWidgetF.getListBox().addChangeHandler(this);
         endDateF = (DateField) fields.get("endDate");
         if (endDateF != null) {
             endDateF.getDatePicker().addValueChangeHandler(this);
         }
+//        isClientFeeApplicable.getBox().addClickHandler(this);
     }
 
     @Override
     protected void configure() {
-        if (prospect == null) {
-            if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
-                endPreviousProjectFlagField.setValue(Boolean.TRUE);
-                entityFieldsPanel.insert(previousProjectEndDate, entityFieldsPanel.getWidgetIndex(endPreviousProjectFlagField) + 1);
-                entityFieldsPanel.insert(reason, entityFieldsPanel.getWidgetIndex(previousProjectEndDate) + 1);
-                previousProjectEndDate.setVisible(Boolean.TRUE);
-                reason.setVisible(Boolean.TRUE);
-            }
-        }
         setButtonText("Submit");
     }
 
@@ -301,6 +282,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         entityFieldsPanel.add(getLineSeperatorTag("Client Information"));
         addDropDown("client", selectClientWidgetF);
         entityFieldsPanel.add(addClientL);
+
+//        addField("directClient", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addDropDown("clientLocation", new SelectClientLocationWidget(false, true, Alignment.HORIZONTAL));
         entityFieldsPanel.add(addClientLocation);
         addDropDown("clientContact", new SelectClientContactWidget(false, false, Alignment.HORIZONTAL));
@@ -313,6 +296,11 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         };
         addDropDown("clientAPContacts", selectClientAcctPayContact);
         entityFieldsPanel.add(addClientAcctPayContact);
+//        addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+//        isClientFeeApplicable = (BooleanField) fields.get("clientFeeApplicable");
+//        addField("clientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL); 
+//        clientFee = (FloatField) fields.get("clientFee");
+//        clientFee.setVisible(false);
         addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Middle Vendor Information"));
         addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
@@ -342,13 +330,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("endDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("isEndDateConfirmed", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        if (prospect == null) {
-            if (ReadAllClientInfoPanel.instance().numberOfRecords > 0) {
-                entityFieldsPanel.add(endPreviousProjectFlagField);
-                entityFieldsPanel.add(previousProjectEndDate);
-                entityFieldsPanel.add(reason);
-            }
-        }
         addDropDown("recruiter", selectRecruiterW);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             entityFieldsPanel.add(getLineSeperatorTag("Billing Information"));
@@ -440,6 +421,11 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 new GenericPopup(new CreateClientAcctPayCntPanel(selectClientWidgetF.getSelectedObjectId(), CreateCompositeType.ADD), 400, 100).show();
             }
         }
+//        if (event.getSource().equals(isClientFeeApplicable.getBox()) && isClientFeeApplicable.getValue()) {
+//            clientFee.setVisible(true);
+//        } else {
+//            clientFee.setVisible(false);
+//        }
         if (event.getSource().equals(addVendorL)) {
             if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
                 new GenericPopup(new CreateVendorPanel(CreateCompositeType.CREATE), 350, 10).show();
@@ -463,12 +449,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             }
         }
 
-        if (prospect == null) {
-            if ((ReadAllClientInfoPanel.instance().numberOfRecords > 0) && (event.getSource().equals(endPreviousProjectFlagField.getBox()))) {
-                previousProjectEndDate.setVisible(endPreviousProjectFlagField.getValue());
-                reason.setVisible(endPreviousProjectFlagField.getValue());
-            }
-        }
         if (submitForApprovalF.getValue()) {
             setButtonText("Submit");
         } else {
@@ -514,6 +494,11 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                         JSONObject client = (JSONObject) JSONParser.parseLenient(response);
                         TextAreaField payTermF = (TextAreaField) fields.get("clientPaymentTerms");
                         payTermF.setValue(JSONUtils.toString(client, "paymentTerms"));
+//                        BooleanField directClientB=(BooleanField) fields.get("directClient");
+//                        directClientB.setValue(JSONUtils.toBoolean(client, "directClient"));
+//                        FloatField clientFee=(FloatField) fields.get("clientFee");
+//                        clientFee.setValue(JSONUtils.toString(client, "clientFee"));
+
                     }
                 });
     }
@@ -600,14 +585,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 CurrencyField pay1099 = (CurrencyField) fields.get("payRate1099");
                 if (pay1099.getCurrency() == null) {
                     pay1099.setMessage("PayRate may not be null");
-                    valid = false;
-                }
-            }
-        }
-        if (prospect == null) {
-            if ((ReadAllClientInfoPanel.instance().numberOfRecords > 0) && endPreviousProjectFlagField.isVisible() == true && endPreviousProjectFlagField.getValue() == true) {
-                if (reason.getValue() == null || "".equals(reason.getValue())) {
-                    reason.setMessage("Reason Required");
                     valid = false;
                 }
             }
