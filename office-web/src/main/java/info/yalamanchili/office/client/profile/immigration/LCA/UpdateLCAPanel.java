@@ -11,7 +11,6 @@ package info.yalamanchili.office.client.profile.immigration.LCA;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.crud.UpdateComposite;
@@ -53,11 +52,12 @@ public class UpdateLCAPanel extends UpdateComposite {
     boolean isLCASecAddAvail = false;
 
     public UpdateLCAPanel(JSONObject entity) {
-        initUpdateComposite(entity, "LCA", OfficeWelcome.constants);
+        initUpdateComposite(entity, "LCA", OfficeWelcome.constants2);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
+        assignEntityValueFromField("candidateNames", entity);
         assignEntityValueFromField("lcaNumber", entity);
         assignEntityValueFromField("lcaFiledDate", entity);
         assignEntityValueFromField("lcaValidFromDate", entity);
@@ -106,20 +106,21 @@ public class UpdateLCAPanel extends UpdateComposite {
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("candidateNames", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lcaNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lcaFiledDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("lcaValidFromDate", entity, DataType.DATE_FIELD);
@@ -164,6 +165,7 @@ public class UpdateLCAPanel extends UpdateComposite {
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated LCA");
         TabPanel.instance().immigrationPanel.entityPanel.clear();
+        TabPanel.instance().immigrationPanel.entityPanel.add(new LcaMenu());
         TabPanel.instance().immigrationPanel.entityPanel.add(new ReadAllLCAPanel());
     }
 
@@ -185,6 +187,7 @@ public class UpdateLCAPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
+        addField("candidateNames", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("lcaNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("totalWorkingPositions", false, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addEnumField("visaClassification", false, true, VisaClassificationType.names(), Alignment.HORIZONTAL);

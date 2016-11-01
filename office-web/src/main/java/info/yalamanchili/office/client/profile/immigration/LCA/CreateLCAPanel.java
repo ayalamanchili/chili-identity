@@ -52,7 +52,7 @@ import java.util.logging.Logger;
 public class CreateLCAPanel extends CreateComposite {
 
     private static Logger logger = Logger.getLogger(CreatePassportPanel.class.getName());
-    
+
     FlowPanel lcapanel = new FlowPanel();
     protected BooleanField addAddress = new BooleanField(OfficeWelcome.constants, "Add LCA Secondary Address", "LCA", false, false, Alignment.HORIZONTAL);
     CreateAddressWidget createAddressWidget1 = new CreateAddressWidget(CreateAddressPanel.CreateAddressPanelType.MIN);
@@ -66,7 +66,7 @@ public class CreateLCAPanel extends CreateComposite {
 
     public CreateLCAPanel(CreateComposite.CreateCompositeType type) {
         super(type);
-        initCreateComposite("LCA", OfficeWelcome.constants);
+        initCreateComposite("LCA", OfficeWelcome.constants2);
     }
 
     @Override
@@ -116,38 +116,39 @@ public class CreateLCAPanel extends CreateComposite {
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
     protected void addButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added LCA");
         TabPanel.instance().immigrationPanel.entityPanel.clear();
+        TabPanel.instance().immigrationPanel.entityPanel.add(new LcaMenu());
         TabPanel.instance().immigrationPanel.entityPanel.add(new ReadAllLCAPanel());
     }
 

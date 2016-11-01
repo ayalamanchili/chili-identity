@@ -85,7 +85,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Addresses", ADDRESS_NODE);
         addFirstChildLink("Emails", EMAIL_NODE);
         addFirstChildLink("Phones", PHONE_NODE);
-        addFirstChildLink("Project Information", PROJECT_NODE, projectInformationPanel);
+        addFirstChildLink("Client Project ", PROJECT_NODE, projectInformationPanel);
         addFirstChildLink("Contacts", EMPLOYEE_CONTACTS, empContactsPanel);
         if (Auth.isEmployee(entity)) {
             addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetPanel);
