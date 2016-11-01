@@ -35,7 +35,7 @@
         <menu name="Overview">
             <item name="Introduction" href="/office/index.html"/>
             <item name="Social" href="/office/social.html"/>
-            <item name="Manage Employees" href="office/my-office.html" collapse="true">
+            <item name="Manage Employees" href="/office/manage-employees/create-deactivate-employee.html" collapse="true">
                 <item name="Create/Delete/Deactivate Employee" href="/office/manage-employees/create-deactivate-employee.html"/>
                 <item name="Internal Company Transfer" href="/office/manage-employees/internal-company-transfer.html"/>
                 <item name="Department Transfer" href="/office/manage-employees/department-transfer.html"/>
@@ -43,8 +43,8 @@
                 <item name="Employee Information" href="/office/manage-employees/update-employee-info.html"/>
                 <item name="Company Contacts" href="/office/manage-employees/manage-company-contacts.html"/>
             </item>
-            <item name="Billing and Contracts" href="office/my-office.html" collapse="true">
-                <item name="Client information" href="/office/bpm/new-client-info-process.html" collapse="true">
+            <item name="Billing and Contracts" href="/office/bpm/new-client-info-process.html" collapse="true">
+                <item name="Employee Project Onboarding" href="/office/bpm/new-client-info-process.html" collapse="true">
                     <item name="Update Billrate" href="/office/updatebillingrate.html"/>
                     <item name="Client information Reports" href="/office/contracts-reports.html"/>
                     <item name="Submit Project End Details" href="/office/project-offboarding.html"/>
@@ -54,11 +54,12 @@
                     <item name="Search Invoice" href="/office/invoice/search-invoice.html" collapse="true"/>
                     <item name="Submit Invoice" href="/office/invoice/submit-invoice.html" collapse="true"/>
                 </item>
+                <item name="Employee Project Offboarding" href="office/offboarding/project_offboarding.html"/>
             </item>
-            <item name="Project Offboarding" href="office/offboarding/project_offboarding.html"/>
             <item name="Prospects" href="/office/prospects/prospects.html" collapse="true">
                 <item name="Prospect Reports" href="/office/prospects/prospect-reports.html"/>
                 <item name="Prospect Graphs" href="/office/prospects/prospect-graphs.html"/>
+                <item name="Prospect Onboarding" href="/office/prospects/prospect_onboarding.html"/>
             </item>
             <item name="Employee OnBoarding" href="/office/onboarding/employee-onboarding.html" collapse="true">
                 <item name="Onboarding Search" href="/office/onboarding/onboarding-search.html"/>
@@ -144,6 +145,9 @@
                 <item name="Submit Self Review" href="/office/perf-eval/corp-submit-review.html"/>
                 <item name="Corporate Review Process" href="/office/perf-eval/corp-approval-process.html"/>
                 <item name="Probation Period Evaluation Process" href="/office/perf-eval/probation-period-evaluation-process.html"/>
+            </item>
+            <item name="Reports"  href="/office/reports/payrate_report.html" collapse="true">
+                <item name="PayRate Reports" href="/office/reports/payrate_report.html"/>
             </item>
             <item name="Email Addresses Reports" href="/office/reports/emailreports.html" collapse="true">
                 <item name="Import email Contacts" href="/office/reports/import-email-contacts-to-outlook.html"/>

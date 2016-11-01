@@ -22,6 +22,7 @@ import info.yalamanchili.office.OfficeRoles;
 import static info.yalamanchili.office.bpm.prospect.ProspectEmailEscalation.PROSPECT_ESCALATION_NOTIFICATION_GROUP;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.ext.CommentDao;
+import info.yalamanchili.office.dao.hr.ProspectCPDDao;
 import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.dao.hr.ProspectReportDto;
 import info.yalamanchili.office.dao.hr.ResumeDao;
@@ -224,6 +225,7 @@ public class ProspectService {
             dto.setTrfEmpType(null);
             dto.setPetitionFiledFor(null);
         }
+//        dto.setCpds(ProspectCPDDao.instance().getAllCpds(ec.getContact().getId()));
         return dto;
     }
 

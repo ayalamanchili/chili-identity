@@ -50,8 +50,7 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         //Notes
         String notes = (String) task.getExecution().getVariable("notes");
         CommentDao.instance().addComment(notes, entity);
-        
-        
+
         if (task.getTaskDefinitionKey().equals("newClientInfoContractValidation")) {
             String status = (String) task.getExecution().getVariable("status");
             String nottes = (String) task.getExecution().getVariable("nottes");
@@ -79,32 +78,32 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
             String payratePercent = (String) task.getExecution().getVariable("payratePercent");
             String payrate = (String) task.getExecution().getVariable("payrate");
             String specialNotes = (String) task.getExecution().getVariable("specialNotes");
-            Integer payratePercentNum;
-            if ((!Strings.isNullOrEmpty(payrate) && !Strings.isNullOrEmpty(payratePercent)) || ((Strings.isNullOrEmpty(payrate) && Strings.isNullOrEmpty(payratePercent)))) {
-                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "task.invalid", "Please enter either payrate or payrate percentage. You can not enter both");
-            }
-            if (!StringUtils.isNumeric(payrate)) {
-                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "payrate.invalid", "Please enter valid payrate");
-            }
-            if (!StringUtils.isNumeric(payratePercent)) {
-                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "payratepercentage.invalid", "Please enter valid percentage");
-            }
-            if (!Strings.isNullOrEmpty(payratePercent)) {
-                payratePercentNum = Integer.valueOf(payratePercent);
-
-                if (payratePercentNum > 100 || payratePercentNum < 0) {
-                    throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "payratepercentage.not.number", "Please enter valid percentage between 0 and 100 eg: 80");
-                }
-            }
+//            Integer payratePercentNum;
+//            if ((!Strings.isNullOrEmpty(payrate) && !Strings.isNullOrEmpty(payratePercent)) || ((Strings.isNullOrEmpty(payrate) && Strings.isNullOrEmpty(payratePercent)))) {
+//                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "task.invalid", "Please enter either payrate or payrate percentage. You can not enter both");
+//            }
+//            if (!StringUtils.isNumeric(payrate)) {
+//                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "payrate.invalid", "Please enter valid payrate");
+//            }
+//            if (!StringUtils.isNumeric(payratePercent)) {
+//                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "payratepercentage.invalid", "Please enter valid percentage");
+//            }
+//            if (!Strings.isNullOrEmpty(payratePercent)) {
+//                payratePercentNum = Integer.valueOf(payratePercent);
+//
+//                if (payratePercentNum > 100 || payratePercentNum < 0) {
+//                    throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "payratepercentage.not.number", "Please enter valid percentage between 0 and 100 eg: 80");
+//                }
+//            }
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ClientInformationStatus.PENDING_HR_VERIFICATION);
-                if (!payratePercent.equalsIgnoreCase("")) {
+                if (StringUtils.isNotEmpty((payratePercent))) {
                     entity.setPayRatePercentage(Float.valueOf(payratePercent));
                 }
-                if (!payrate.equalsIgnoreCase("")) {
+                if (StringUtils.isNotEmpty((payrate))) {
                     entity.setPayRate(BigDecimal.valueOf(Long.valueOf(payrate)));
                 }
-                if (!StringUtils.isBlank(specialNotes)) {
+                if (StringUtils.isNotEmpty(specialNotes)) {
                     CommentDao.instance().addComment("New Client Info Payroll Department Task: " + specialNotes, entity);
                 }
             } else {

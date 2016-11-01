@@ -18,7 +18,9 @@ import info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcessBean;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.expense.BankAccountDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
+import info.yalamanchili.office.dao.hr.ProspectCPDDao;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
+import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.EmployeeDocumentDao;
@@ -34,6 +36,7 @@ import info.yalamanchili.office.dto.profile.EmergencyContactDto;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.expense.BankAccount;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.DocumentType;
 import info.yalamanchili.office.entity.profile.Email;
@@ -100,7 +103,7 @@ public class EmployeeOnBoardingService {
             onboarding.setStartedBy(OfficeSecurityService.instance().getCurrentUserName());
             onboarding.setStartedDate(dto.getStartDate());
             onboarding.setStatus(OnBoardingStatus.Pending_Initial_Document_Submission);
-            onboarding.setEmpName(dto.getFirstName()+" "+dto.getLastName()+" - "+EmployeeTypeDao.instance().findById(dto.getEmployeeType().getId()).getName().trim()+" - "+dto.getJobTitle().trim());
+            onboarding.setEmpName(dto.getFirstName() + " " + dto.getLastName() + " - " + EmployeeTypeDao.instance().findById(dto.getEmployeeType().getId()).getName().trim() + " - " + dto.getJobTitle().trim());
             onboarding = em.merge(onboarding);
             InviteCodeGeneratorService.instance().sendInviteCodeEmail(code, dto);
             processBean.notifyBackgroundCheckTeam(EmployeeOnBoardingDao.instance().save(onboarding));
@@ -108,7 +111,7 @@ public class EmployeeOnBoardingService {
                 CommentDao.instance().addComment(dto.getComment(), onboarding);
             }
         }
-        
+
     }
 
     public OnBoardingEmployeeDto getOnboardingInfo(String invitationCode) {
@@ -141,7 +144,7 @@ public class EmployeeOnBoardingService {
             account.setAccountFirstName(cnt.getFirstName());
             account.setAccountLastName(cnt.getLastName());
             res.setBankAccount(account);
-        } 
+        }
         return res;
     }
 
@@ -193,6 +196,21 @@ public class EmployeeOnBoardingService {
 
         emp = EmployeeDao.instance().save(emp);
         emp = em.merge(emp);
+
+        if (ContactDao.instance().findByEmail(code.getEmail()) != null) {
+            Contact cnt = ContactDao.instance().findByEmail(code.getEmail());
+            List<ClientInformation> cpds = null;//ProspectCPDDao.instance().getAllCpds(cnt.getId());
+            List<ClientInformation> empCpds = new ArrayList();
+            if (cpds != null && cpds.size() > 0) {
+                for (ClientInformation cpd : cpds) {
+                    cpd.setEmployee(emp);
+                    empCpds.add(ClientInformationDao.instance().getEntityManager().merge(cpd));
+                }
+            }
+            if (empCpds.size() > 0) {
+                emp.setClientInformations(empCpds);
+            }
+        }
 
         //Update Emergency Contact for Employee
         for (EmergencyContactDto ec : dto.getEmergencyContact()) {
@@ -332,7 +350,7 @@ public class EmployeeOnBoardingService {
         String[] columnOrder = new String[]{"employee", "employeeType", "startDate", "email", "company", "branch"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(resultDtos, "Onboarding Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
-    
+
     private EmailType getPersonalEmailType() {
         Query getEmailType = em.createQuery("from " + EmailType.class.getCanonicalName()
                 + " where emailType=:emailTypeParam");
@@ -345,7 +363,7 @@ public class EmployeeOnBoardingService {
             return em.merge(homeEmailType);
         }
     }
-    
+
     private PhoneType getCellPhoneType() {
         Query getCellPhoneType = em.createQuery("from " + PhoneType.class.getCanonicalName()
                 + " where phoneType=:phoneTypeParam");

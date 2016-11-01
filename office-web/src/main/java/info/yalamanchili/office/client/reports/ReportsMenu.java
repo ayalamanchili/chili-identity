@@ -34,7 +34,7 @@ public class ReportsMenu extends CMenuBar {
     protected void configureMenu() {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
             addMenuItem("Contracts", "Contracts", contractingMaintainenceCmd);
-        }       
+        }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_INVOICE_MANAGER)) {
             addMenuItem("Invoices", "Invoices", invoicereportsMaintainenceCmd);
         }
@@ -51,7 +51,7 @@ public class ReportsMenu extends CMenuBar {
             addMenuItem("Probation Period", "Probation Period", probperformanceEvaluationsReportsMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_HEALTH_INSURANCE_MANAGER)) {
-            addMenuItem("Retirement Plan", "Retirement Plan", retirementPlanReportsMaintainenceCmd);
+            addMenuItem("Benefit Enrollment", "Benefit Enrollment", retirementPlanReportsMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             addMenuItem("Email Groups", "Email Groups", emailMenuMaintainenceCmd);
@@ -84,13 +84,13 @@ public class ReportsMenu extends CMenuBar {
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new InvoiceSidePanel());
         }
     };
-    
+
     public static Command contractReportsMaintainenceCmd = new Command() {
         @Override
         public void execute() {
             TabPanel.instance().getReportingPanel().entityPanel.clear();
             TabPanel.instance().getReportingPanel().sidePanelTop.clear();
-            if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_BILLING_ADMIN,ROLE.ROLE_CONTRACTS_ADMIN)) {
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_BILLING_ADMIN, ROLE.ROLE_CONTRACTS_ADMIN)) {
                 TabPanel.instance().getReportingPanel().entityPanel.add(new ReadAllBisContractsPanel());
             }
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new BISReportsSidePanel());

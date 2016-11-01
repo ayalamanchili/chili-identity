@@ -18,6 +18,7 @@ import info.yalamanchili.office.entity.hr.ProspectStatus;
 import info.yalamanchili.office.entity.hr.Resume;
 import info.yalamanchili.office.entity.hr.TransferEmployeeType;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Sex;
 import java.io.Serializable;
@@ -114,6 +115,8 @@ public class ProspectDto implements Serializable {
     protected Company company;
 
     protected List<Long> employees;
+    
+    protected List<ClientInformation> cpds;
 
     //for report purpose only
     protected String caseManagerName;
@@ -447,6 +450,15 @@ public class ProspectDto implements Serializable {
         this.createdDate = createdDate;
     }
 
+    @XmlElement
+    public List<ClientInformation> getCpds() {
+        return cpds;
+    }
+
+    public void setCpds(List<ClientInformation> cpds) {
+        this.cpds = cpds;
+    }
+    
     @Override
     public String toString() {
         return "ProspectDto{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", startDate=" + startDate + ", screenedBy=" + screenedBy + ", referredBy=" + referredBy + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", status=" + status + ", processDocSentDate=" + processDocSentDate + '}';

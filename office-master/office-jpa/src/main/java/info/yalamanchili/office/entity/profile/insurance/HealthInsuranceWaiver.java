@@ -9,6 +9,7 @@
 package info.yalamanchili.office.entity.profile.insurance;
 
 import info.chili.jpa.AbstractHandleEntity;
+import info.yalamanchili.office.entity.profile.benefits.BenefitEnrollment;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -20,7 +21,6 @@ import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
-import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -38,15 +38,13 @@ public class HealthInsuranceWaiver extends AbstractHandleEntity {
     protected String fileUrl;
 
     @OneToOne(cascade = CascadeType.ALL)
-    protected InsuranceEnrollment insuranceEnrollment;
+    protected BenefitEnrollment benefitEnrollment;
 
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date submittedDate;
-    
-    @NotEmpty(message = "{waivingCoverageFor.not.empty.msg}")
+
     protected String waivingCoverageFor;
-    
-    @NotEmpty(message = "{waivingCoverageDueTo.not.empty.msg}")
+
     protected String waivingCoverageDueTo;
 
     protected String spouseName;
@@ -56,7 +54,7 @@ public class HealthInsuranceWaiver extends AbstractHandleEntity {
     protected String spouseNameOfCarrier;
 
     protected String otherNameOfCarrier;
-    
+
     protected String waiverYear;
 
     @Enumerated(EnumType.STRING)
@@ -75,20 +73,6 @@ public class HealthInsuranceWaiver extends AbstractHandleEntity {
      */
     public void setFileUrl(String fileUrl) {
         this.fileUrl = fileUrl;
-    }
-
-    /**
-     * @return the insuranceEnrollment
-     */
-    public InsuranceEnrollment getInsuranceEnrollment() {
-        return insuranceEnrollment;
-    }
-
-    /**
-     * @param insuranceEnrollment the insuranceEnrollment to set
-     */
-    public void setInsuranceEnrollment(InsuranceEnrollment insuranceEnrollment) {
-        this.insuranceEnrollment = insuranceEnrollment;
     }
 
     /**
@@ -210,9 +194,24 @@ public class HealthInsuranceWaiver extends AbstractHandleEntity {
     public void setWaiverYear(String waiverYear) {
         this.waiverYear = waiverYear;
     }
-    
+
+    /**
+     * @return the benefitEnrollment
+     */
+    public BenefitEnrollment getBenefitEnrollment() {
+        return benefitEnrollment;
+    }
+
+    /**
+     * @param benefitEnrollment the benefitEnrollment to set
+     */
+    public void setBenefitEnrollment(BenefitEnrollment benefitEnrollment) {
+        this.benefitEnrollment = benefitEnrollment;
+    }
+
     @Override
     public String toString() {
-        return "HealthInsuranceWaiver{" + "fileUrl=" + fileUrl + ", insuranceEnrollment=" + insuranceEnrollment + ", submittedDate=" + submittedDate + ", waivingCoverageFor=" + waivingCoverageFor + ", waivingCoverageDueTo=" + waivingCoverageDueTo + ", spouseName=" + spouseName + ", dependentName=" + dependentName + ", spouseNameOfCarrier=" + spouseNameOfCarrier + ", otherNameOfCarrier=" + otherNameOfCarrier + ", otherCarrierType=" + otherCarrierType + '}';
+        return "HealthInsuranceWaiver{" + "fileUrl=" + fileUrl + ", benefitEnrollment=" + benefitEnrollment + ", submittedDate=" + submittedDate + ", waivingCoverageFor=" + waivingCoverageFor + ", waivingCoverageDueTo=" + waivingCoverageDueTo + ", spouseName=" + spouseName + ", dependentName=" + dependentName + ", spouseNameOfCarrier=" + spouseNameOfCarrier + ", otherNameOfCarrier=" + otherNameOfCarrier + ", waiverYear=" + waiverYear + ", otherCarrierType=" + otherCarrierType + '}';
     }
+
 }

@@ -20,6 +20,7 @@ import info.chili.gwt.crud.TCreateComposite;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -54,6 +55,12 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
     DateField submittedDate = new DateField(OfficeWelcome.constants2, "submittedDate", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
 
     EnumField othercoverageType = new EnumField(OfficeWelcome.constants2, "otherCarrierType", "HealthInsuranceWaiver", false, true, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
+    protected FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants2, "HealthInsuranceWaiver", "fileUrl", "HealthInsuranceWaiver/fileUrl", false, true) {
+        @Override
+        public void onUploadComplete(String res) {
+            uploadDoc(null);
+        }
+    };
 
     public HealthInsuranceWaiverPanel() {
         super(TCreateComposite.CreateCompositeType.CREATE);
@@ -103,9 +110,14 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
         if (submittedDate.getDate() != null) {
             entity.put("submittedDate", new JSONString(DateUtils.toDateString(submittedDate.getDate())));
         }
+        entity.put("fileUrl", resumeUploadPanel.getFileName());
         entity.put("targetEntityName", new JSONString("targetEntityName"));
         entity.put("targetEntityId", new JSONString("0"));
         return entity;
+    }
+
+    protected void uploadDoc(String entityId) {
+        resumeUploadPanel.upload(entityId.trim());
     }
 
     @Override
@@ -146,6 +158,7 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
         entityFieldsPanel.setWidget(7, 1, myspousesplan);
         entityFieldsPanel.setWidget(8, 1, othercoverage);
         entityFieldsPanel.setWidget(10, 1, submittedDate);
+        entityFieldsPanel.setWidget(11, 1, resumeUploadPanel);
         entityActionsPanel.setVisible(false);
     }
 
@@ -231,7 +244,7 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
             otherNameOfCarrier.setMessage("Other Name Of Carrier can not be empty");
             valid = false;
         }
-        if (othercoverage.isChecked() == true &&  (othercoverageType.listBox.getSelectedValue().equals("Select") || (othercoverageType.listBox.getSelectedValue() == null || othercoverageType.listBox.getSelectedValue().isEmpty()))) {
+        if (othercoverage.isChecked() == true && (othercoverageType.listBox.getSelectedValue().equals("Select") || (othercoverageType.listBox.getSelectedValue() == null || othercoverageType.listBox.getSelectedValue().isEmpty()))) {
             othercoverageType.setMessage("Other Coverage Type can not be empty");
             valid = false;
         }

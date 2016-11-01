@@ -8,7 +8,6 @@
  */
 package info.yalamanchili.office.client.profile.immigration.LCA;
 
-import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Timer;
@@ -18,9 +17,6 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.gwt.SearchComposite;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.widgets.SuggestBox;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -32,7 +28,7 @@ public class SearchLcaPanel extends SearchComposite {
     private static Logger logger = Logger.getLogger(SearchLcaPanel.class.getName());
 
     public SearchLcaPanel() {
-        init("Search", "LCA", OfficeWelcome.constants);
+        init("Search", "LCA", OfficeWelcome.constants2);
         advancedSearchDP.setOpen(true);
     }
 
@@ -46,21 +42,9 @@ public class SearchLcaPanel extends SearchComposite {
     protected void populateSearchSuggestBox() {
     }
 
-    protected String getnameDropDownUrl() {
-        //TODO think about the limit
-        return OfficeWelcome.constants.root_url() + "employee/dropdown/0/10000?column=id&column=firstName";
-    }
-
     @Override
     protected void populateAdvancedSuggestBoxes() {
-        HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                Map<Integer, String> values = JSONUtils.convertKeyValuePairs(entityString);
-                SuggestBox sb = (SuggestBox) fields.get("employee");
-                sb.loadData(values.values());
-            }
-        });
+
     }
 
     @Override
@@ -76,17 +60,15 @@ public class SearchLcaPanel extends SearchComposite {
 
     @Override
     protected void addWidgets() {
-        addField("employee", DataType.STRING_FIELD);
+        addField("candidateNames", DataType.STRING_FIELD);
         addEnumField("status", false, false, LCAStatus.names());
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        JSONObject employee = new JSONObject();
-        assignEntityValueFromField("employee", employee, "firstName");
+        assignEntityValueFromField("candidateNames", entity);
         assignEntityValueFromField("status", entity);
-        entity.put("employee", employee);
         logger.info(entity.toString());
         return entity;
     }
@@ -127,7 +109,7 @@ public class SearchLcaPanel extends SearchComposite {
 
     @Override
     protected boolean disableRegularSearch() {
-        return false;
+        return true;
     }
 
     @Override

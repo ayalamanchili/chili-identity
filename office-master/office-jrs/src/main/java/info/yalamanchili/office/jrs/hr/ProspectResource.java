@@ -15,6 +15,7 @@ import info.chili.jpa.validation.Validate;
 import info.chili.reporting.ReportGenerator;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
+import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
@@ -24,12 +25,14 @@ import info.yalamanchili.office.dao.hr.ProspectReportDto;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.profile.ClientInformationService;
 import info.yalamanchili.office.prospect.ProspectService;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -89,7 +92,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
 
     @GET
     @Path("/{start}/{limit}")
-    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER','ROLE_ON_BOARDING_MGR', 'ROLE_HR_ADMINSTRATION')")
+    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER','ROLE_ON_BOARDING_MGR', 'ROLE_HR_ADMINSTRATION', 'ROLE_CONTRACTS_ADMIN')")
     @Cacheable(OfficeCacheKeys.PROSPECT)
     public ProspectResource.ProspectTable table(@PathParam("start") int start, @PathParam("limit") int limit) {
         List<ProspectDto> res = new ArrayList<>();
@@ -177,7 +180,7 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
     @GET
     @Override
     @Path("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER', 'ROLE_RECRUITER', 'ROLE_H1B_IMMIGRATION', 'ROLE_GC_IMMIGRATION', 'ROLE_ON_BOARDING_MGR', 'ROLE_HR_ADMINSTRATION')")
+    @PreAuthorize("hasAnyRole('ROLE_PROSPECTS_MANAGER', 'ROLE_RECRUITER', 'ROLE_H1B_IMMIGRATION', 'ROLE_GC_IMMIGRATION', 'ROLE_ON_BOARDING_MGR', 'ROLE_HR_ADMINSTRATION', 'ROLE_CONTRACTS_ADMIN')")
     public ProspectDto read(@PathParam("id") Long id) {
         return prospectService.read(id);
     }
@@ -390,5 +393,19 @@ public class ProspectResource extends CRUDResource<ProspectDto> {
             prospects.add(prospectDao.findById(dto.getId()));
         }
         prospectService.getProspectsStageProgressReport(prospects);
+    }
+
+    /**
+     * Add Client Information
+     *
+     * @param prospectId
+     */
+    @PUT
+    @Validate
+    @PreAuthorize("hasAnyRole('ROLE_CONTRACTS_ADMIN')")
+    @Path("/add-cpd/{prospectId}")
+    public ClientInformationDto addCPDToProspect(@PathParam("prospectId") Long prospectId, ClientInformationDto cpdDto) {
+        ClientInformationService clientInformationService = (ClientInformationService) SpringContext.getBean("clientInformationService");
+        return clientInformationService.addCPDToProspect(prospectId, cpdDto);
     }
 }

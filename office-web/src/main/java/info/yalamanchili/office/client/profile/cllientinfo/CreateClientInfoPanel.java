@@ -45,6 +45,8 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.composite.SelectComposite;
+import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.fields.FloatField;
@@ -56,6 +58,7 @@ import info.yalamanchili.office.client.admin.clientcontact.CreateClientContactPa
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.CreateClientLocationPanel;
+import info.yalamanchili.office.client.admin.hr.ReadAllProspectsPanel;
 import info.yalamanchili.office.client.admin.vendorcontact.CreateVendorAcctPayCntPanel;
 import info.yalamanchili.office.client.admin.vendorcontact.CreateVendorContactPanel;
 import info.yalamanchili.office.client.admin.vendorlocation.CreateVendorLocationsPanel;
@@ -80,6 +83,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected boolean isSub = false;
     protected boolean is1099 = false;
     protected boolean active = false;
+    protected JSONObject prospect = null;
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants2, "ClientInformation", "cidocument", "CIDocument/fileURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
@@ -89,6 +93,12 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
     public CreateClientInfoPanel(CreateCompositeType type) {
         super(type);
+        initCreateComposite("ClientInfo", OfficeWelcome.constants2);
+    }
+
+    public CreateClientInfoPanel(CreateCompositeType type, JSONObject prospect) {
+        super(type);
+        this.prospect = prospect;
         initCreateComposite("ClientInfo", OfficeWelcome.constants2);
     }
 
@@ -138,19 +148,21 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             assignEntityValueFromField("overTimeRateDuration", clientInfo);
             assignEntityValueFromField("invoiceFrequency", clientInfo);
             assignEntityValueFromField("invoiceDeliveryMethod", clientInfo);
-            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
-                assignEntityValueFromField("subcontractor", clientInfo);
-                assignEntityValueFromField("subcontractorContact", clientInfo);
-                assignEntityValueFromField("subcontractorPayRate", clientInfo);
-                assignEntityValueFromField("subcontractorOvertimePayRate", clientInfo);
-                assignEntityValueFromField("subcontractorinvoiceFrequency", clientInfo);
-                assignEntityValueFromField("subcontractorpaymentTerms", clientInfo);
-            }
-            if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
-                assignEntityValueFromField("payRate1099", clientInfo);
-                assignEntityValueFromField("overTimePayrate1099", clientInfo);
-                assignEntityValueFromField("paymentTerms1099", clientInfo);
-                assignEntityValueFromField("invoiceFrequency1099", clientInfo);
+            if (prospect == null) {
+                if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+                    assignEntityValueFromField("subcontractor", clientInfo);
+                    assignEntityValueFromField("subcontractorContact", clientInfo);
+                    assignEntityValueFromField("subcontractorPayRate", clientInfo);
+                    assignEntityValueFromField("subcontractorOvertimePayRate", clientInfo);
+                    assignEntityValueFromField("subcontractorinvoiceFrequency", clientInfo);
+                    assignEntityValueFromField("subcontractorpaymentTerms", clientInfo);
+                }
+                if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+                    assignEntityValueFromField("payRate1099", clientInfo);
+                    assignEntityValueFromField("overTimePayrate1099", clientInfo);
+                    assignEntityValueFromField("paymentTerms1099", clientInfo);
+                    assignEntityValueFromField("invoiceFrequency1099", clientInfo);
+                }
             }
         }
         assignEntityValueFromField("terminationNotice", clientInfo);
@@ -196,24 +208,29 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected void addButtonClicked() {
         HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                uploadDocuments(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadDocuments(arg0);
+                    }
+                });
     }
 
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Client Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId(), active));
+        if (prospect == null) {
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId(), active));
+        } else {
+            GenericPopup.hideIfOpen();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel());
+        }
     }
 
     @Override
@@ -256,7 +273,11 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     @Override
     protected void addWidgets() {
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("employeeType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        if (prospect == null) {
+            addField("employeeType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        } else {
+            addField("employeeType", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        }
         addEnumField("company", false, true, ClientInformationCompany.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Client Information"));
         addDropDown("client", selectClientWidgetF);
@@ -319,40 +340,44 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             addEnumField("overTimeRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
             addEnumField("invoiceFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
             addEnumField("invoiceDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
-            if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
-                entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
-                addDropDown("subcontractor", new SelectSubcontractorWidget(false, true, Alignment.HORIZONTAL));
-                addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, true, Alignment.HORIZONTAL));
-                addField("subcontractorPayRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-                addField("subcontractorOvertimePayRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-                addEnumField("subcontractorinvoiceFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
-                addField("subcontractorpaymentTerms", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-                isSub = true;
-            }
-            if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
-                entityFieldsPanel.add(getLineSeperatorTag("1099 Contractor Information"));
-                addField("payRate1099", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-                addField("overTimePayrate1099", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-                addField("paymentTerms1099", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-                addEnumField("invoiceFrequency1099", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
-                is1099 = true;
+            if (prospect == null) {
+                if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+                    entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
+                    addDropDown("subcontractor", new SelectSubcontractorWidget(false, true, Alignment.HORIZONTAL));
+                    addDropDown("subcontractorContact", new SelectSubcontractorContactWidget(false, true, Alignment.HORIZONTAL));
+                    addField("subcontractorPayRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+                    addField("subcontractorOvertimePayRate", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+                    addEnumField("subcontractorinvoiceFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+                    addField("subcontractorpaymentTerms", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+                    isSub = true;
+                }
+                if (Auth.is1099(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
+                    entityFieldsPanel.add(getLineSeperatorTag("1099 Contractor Information"));
+                    addField("payRate1099", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+                    addField("overTimePayrate1099", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+                    addField("paymentTerms1099", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+                    addEnumField("invoiceFrequency1099", false, false, InvoiceFrequency.names(), Alignment.HORIZONTAL);
+                    is1099 = true;
+                }
             }
         }
         entityFieldsPanel.add(getLineSeperatorTag("Other Information"));
         addField("visaStatus", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addDropDown("practice", selectPractiseWidgetF);
-        if (TreeEmployeePanel.instance().getEntity().get("workStatus") != null) {
-            StringField employeeVisaStatusF = (StringField) fields.get("visaStatus");
-            employeeVisaStatusF.setValue(TreeEmployeePanel.instance().getEntity().get("workStatus").isString().stringValue());
-        }
-        if (TreeEmployeePanel.instance().getEntity().get("jobTitle") != null) {
-            StringField jobTitleF = (StringField) fields.get("consultantJobTitle");
-            jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("jobTitle").isString().stringValue());
-        }
-        if (TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
-            StringField employeeTypeF = (StringField) fields.get("employeeType");
-            employeeTypeF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
+        if (prospect == null) {
+            if (TreeEmployeePanel.instance().getEntity().get("workStatus") != null) {
+                StringField employeeVisaStatusF = (StringField) fields.get("visaStatus");
+                employeeVisaStatusF.setValue(TreeEmployeePanel.instance().getEntity().get("workStatus").isString().stringValue());
+            }
+            if (TreeEmployeePanel.instance().getEntity().get("jobTitle") != null) {
+                StringField jobTitleF = (StringField) fields.get("consultantJobTitle");
+                jobTitleF.setValue(TreeEmployeePanel.instance().getEntity().get("jobTitle").isString().stringValue());
+            }
+            if (TreeEmployeePanel.instance().getEntity().get("employeeType") != null) {
+                StringField employeeTypeF = (StringField) fields.get("employeeType");
+                employeeTypeF.setValue(TreeEmployeePanel.instance().getEntity().get("employeeType").isObject().get("name").isString().stringValue());
+            }
         }
         addEnumField("sectorsAndBUs", false, true, ConsultingServices.getSectorsAndBusinessUnits().toArray(new String[0]), Alignment.HORIZONTAL);
         addField("notes", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
@@ -370,7 +395,6 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        // TODO Auto-generated method stub
     }
 
     @Override
@@ -437,25 +461,25 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     public void loadVendor(String vendorEntityId) {
         HttpService.HttpServiceAsync.instance().doGet(getVendor(vendorEntityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
-                TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
-                payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
-                EnumField invDelv = (EnumField) fields.get("invoiceDeliveryMethod");
-                if (vendor.get("vendorinvDeliveryMethod") != null) {
-                    invDelv.selectValue(JSONUtils.toString(vendor, "vendorinvDeliveryMethod"));
-                } else {
-                    invDelv.setSelectedIndex(0);
-                }
-                EnumField invFrequencyv = (EnumField) fields.get("invoiceFrequency");
-                if (vendor.get("vendorinvFrequency") != null) {
-                    invFrequencyv.selectValue(JSONUtils.toString(vendor, "vendorinvFrequency"));
-                } else {
-                    invFrequencyv.setSelectedIndex(0);
-                }
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject vendor = (JSONObject) JSONParser.parseLenient(response);
+                        TextAreaField payTermF = (TextAreaField) fields.get("vendorPaymentTerms");
+                        payTermF.setValue(JSONUtils.toString(vendor, "paymentTerms"));
+                        EnumField invDelv = (EnumField) fields.get("invoiceDeliveryMethod");
+                        if (vendor.get("vendorinvDeliveryMethod") != null) {
+                            invDelv.selectValue(JSONUtils.toString(vendor, "vendorinvDeliveryMethod"));
+                        } else {
+                            invDelv.setSelectedIndex(0);
+                        }
+                        EnumField invFrequencyv = (EnumField) fields.get("invoiceFrequency");
+                        if (vendor.get("vendorinvFrequency") != null) {
+                            invFrequencyv.selectValue(JSONUtils.toString(vendor, "vendorinvFrequency"));
+                        } else {
+                            invFrequencyv.setSelectedIndex(0);
+                        }
+                    }
+                });
     }
 
     protected String getVendor(String vendorEntityId) {
@@ -465,18 +489,18 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     public void loadClient(String clientEntityId) {
         HttpService.HttpServiceAsync.instance().doGet(getClient(clientEntityId), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                JSONObject client = (JSONObject) JSONParser.parseLenient(response);
-                TextAreaField payTermF = (TextAreaField) fields.get("clientPaymentTerms");
-                payTermF.setValue(JSONUtils.toString(client, "paymentTerms"));
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject client = (JSONObject) JSONParser.parseLenient(response);
+                        TextAreaField payTermF = (TextAreaField) fields.get("clientPaymentTerms");
+                        payTermF.setValue(JSONUtils.toString(client, "paymentTerms"));
 //                        BooleanField directClientB=(BooleanField) fields.get("directClient");
 //                        directClientB.setValue(JSONUtils.toBoolean(client, "directClient"));
 //                        FloatField clientFee=(FloatField) fields.get("clientFee");
 //                        clientFee.setValue(JSONUtils.toString(client, "clientFee"));
 
-            }
-        });
+                    }
+                });
     }
 
     protected String getClient(String clientEntityId) {
@@ -529,7 +553,11 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "employee/clientinformation/" + TreeEmployeePanel.instance().getEntityId() + "?submitForApproval=" + submitForApprovalF.getValue();
+        if (prospect == null) {
+            return OfficeWelcome.constants.root_url() + "employee/clientinformation/" + TreeEmployeePanel.instance().getEntityId() + "?submitForApproval=" + submitForApprovalF.getValue();
+        } else {
+            return OfficeWelcome.constants.root_url() + "prospect/add-cpd/" + prospect.get("id").isString().stringValue() + "?submitForApproval=" + submitForApprovalF.getValue();
+        }
     }
 
     @Override
@@ -568,7 +596,37 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             valid = false;
         }
 
+        if (prospect != null) {
+            SelectComposite clientLocation = (SelectComposite) fields.get("clientLocation");
+            if (clientLocation.getSelectedObject() == null) {
+                clientLocation.setMessage("may not be null");
+                valid = false;
+            }
+            SelectComposite vendorLocation = (SelectComposite) fields.get("vendorLocation");
+            if (vendorLocation.getSelectedObject() == null) {
+                vendorLocation.setMessage("may not be null");
+                valid = false;
+            }
+            DateField endDate = (DateField) fields.get("endDate");
+            if (endDate.getDate() == null) {
+                endDate.setMessage("may not be null");
+                valid = false;
+            }
+            CurrencyField billRate = (CurrencyField) fields.get("billingRate");
+            if (billRate.getValue() == null || billRate.getValue().isEmpty()) {
+                billRate.setMessage("may not be null");
+            }
+            EnumField invoiceFrequency = (EnumField) fields.get("invoiceFrequency");
+            if (invoiceFrequency.getValue() == null || invoiceFrequency.getValue().isEmpty()) {
+                invoiceFrequency.setMessage("may not be null");
+                valid = false;
+            }
+            TextAreaField vendorPayTerms = (TextAreaField) fields.get("vendorPaymentTerms");
+            if (vendorPayTerms.getValue() == null || vendorPayTerms.getValue().isEmpty()) {
+                vendorPayTerms.setMessage("may not be null");
+                valid = false;
+            }
+        }
         return valid;
     }
-
 }

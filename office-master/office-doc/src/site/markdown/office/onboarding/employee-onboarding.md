@@ -2,7 +2,7 @@
 ----
 - [Login to Portal](../../office/forgot-password.html "Login").
 - Only **OnBoarding Manager** can initiate OnBoarding by navigating through **My Office** -> **OnBoarding** -> **Employee Onboarding**.
-- Or **Prospects Manager** can initiate OnBoarding by navigating Through **My Office** -> **Prospects**
+- **OnBoarding Manager** Or **Prospects Manager** can initiate OnBoarding by navigating Through **My Office** -> **Prospects**
     - If a prospect status is **Closed Won**, Prospect Manager can initiate OnBoarding By Clicking on **Onboarding InviteCode** link.
 - **OnBoarding Manager** will fill the required information of the candidate to whom he/she onBoard and click on **Create**
 - The OnBoarding record status is **Pending_Initial_Document_Submission**.
@@ -40,7 +40,7 @@ Onboarding Manager Will Navigate To My Office -> OnBoarding -> Employee OnBoardi
 ------
  ![alt text](../../images/onboarding/initiate-onboarding-panel.png "Employee Onboarding")
 
-Prospect Manager will navigate to My Office -> Prospect
+Onboarding Manager or Prospect Manager will navigate to My Office -> Prospect --> CLOSED_WON
 ----
  ![alt text](../../images/onboarding/initiate-onboarding-from-prospect.png "Employee Onboarding")
 

@@ -354,8 +354,10 @@ public class ContractService {
             }
             if (!(ci.getClientFeeApplicable() != null && ci.getClientFeeApplicable()) && vi.getVendorFees() != null) {
                 BigDecimal value = new BigDecimal(vi.getVendorFees());
-                BigDecimal vendorFee = value.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
-                dto.setFinalBillingRate(dto.getBillingRate().subtract(calculateMargin(vendorFee, vi.getMaxFees(), vi.getMinFees())));
+                if (dto.getBillingRate() != null) {
+                    BigDecimal vendorFee = value.divide(new BigDecimal(100)).multiply(dto.getBillingRate());
+                    dto.setFinalBillingRate(dto.getBillingRate().subtract(calculateMargin(vendorFee, vi.getMaxFees(), vi.getMinFees())));
+                }
             } else if (!(ci.getClientFeeApplicable() != null && ci.getClientFeeApplicable()) && vi.getVendorFees() == null) {
                 dto.setFinalBillingRate(dto.getBillingRate());
             }

@@ -110,7 +110,7 @@ public class ProspectMenu extends CMenuBar {
         if (TabPanel.instance().getMyOfficePanel().entityPanel.getWidgetCount() > 0) {
             TabPanel.instance().getMyOfficePanel().entityPanel.remove(1);
         }
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER,Auth.ROLE.ROLE_ON_BOARDING_MGR,Auth.ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
             JSONObject entity = new JSONObject();
             entity.put("status", new JSONString("CLOSED_WON"));
             getProspects(entity);

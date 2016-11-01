@@ -8,18 +8,28 @@
  */
 package info.yalamanchili.office.client.profile.insurance;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.TReadComposite;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.FileField;
 import info.chili.gwt.fields.StringField;
+import info.chili.gwt.resources.ChiliImages;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.ClickableImage;
 import info.yalamanchili.office.client.OfficeWelcome;
 import java.util.logging.Logger;
 
@@ -27,7 +37,7 @@ import java.util.logging.Logger;
  *
  * @author prasanthi.p
  */
-public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
+public class ReadHealthInsuranceWaiverWidget extends TReadComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(ReadHealthInsuranceWaiverWidget.class.getName());
 
@@ -49,6 +59,10 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
     StringField dependentName = new StringField(OfficeWelcome.constants2, "dependentName", "HealthInsuranceWaiver", true, false, Alignment.HORIZONTAL);
 
     EnumField otherCarrierType = new EnumField(OfficeWelcome.constants2, "otherCarrierType", "HealthInsuranceWaiver", true, false, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
+    DateField submittedDate = new DateField(OfficeWelcome.constants2, "submittedDate", "HealthInsuranceWaiver", true, false, Alignment.HORIZONTAL);
+    HTML emptyLine = new HTML("<br/>");
+
+    ClickableImage printIcn = new ClickableImage("print", ChiliImages.INSTANCE.printIcon_16_16());
 
     public ReadHealthInsuranceWaiverWidget(JSONObject entity) {
         initReadComposite(entity, "HealthInsuranceWaiver", OfficeWelcome.constants2);
@@ -107,10 +121,19 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
         if (entity.containsKey("otherCarrierType")) {
             otherCarrierType.setValue(entity.get("otherCarrierType").isString().stringValue());
         }
+        if (entity.containsKey("submittedDate")) {
+            submittedDate.setValue(entity.get("submittedDate").isString().stringValue());
+        }
+        Label resumeLabel = new Label("File Name");
+        entityFieldsPanel.setWidget(11, 1, resumeLabel);
+        String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
+        FileField fileField = new FileField(fileURL);
+        entityFieldsPanel.setWidget(11, 2, fileField);
     }
 
     @Override
     protected void addListeners() {
+        printIcn.addClickHandler(this);
     }
 
     @Override
@@ -132,6 +155,8 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
         entityFieldsPanel.setWidget(8, 1, othercoverage);
         entityFieldsPanel.setWidget(9, 1, otherNameOfCarrier);
         entityFieldsPanel.setWidget(9, 2, otherCarrierType);
+        entityFieldsPanel.setWidget(10, 1, submittedDate);
+        entityFieldsPanel.setWidget(12, 1, printIcn);
         alignFields();
     }
 
@@ -141,9 +166,9 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "insurance-enrollment/" + getEntityId();
+        return OfficeWelcome.constants.root_url() + "benefit/" + getEntityId();
     }
-    
+
     @Override
     protected boolean enableBack() {
         return true;
@@ -152,5 +177,12 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite {
     @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllHealthInsuranceWaiverPanel.instance;
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(printIcn)) {
+            Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + "benefit/benefitenrollment-print" + "&passthrough=true" + "&id=" + getEntityId(), "_blank", "");
+        }
     }
 }

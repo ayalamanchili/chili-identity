@@ -8,18 +8,20 @@
  */
 package info.yalamanchili.office.jrs.profile.immigration;
 
+import info.chili.commons.SearchUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
-import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.immigration.LCADao;
 import info.yalamanchili.office.entity.immigration.LCA;
 import info.yalamanchili.office.entity.immigration.LCADto;
-import info.yalamanchili.office.entity.immigration.Petition;
+import info.yalamanchili.office.entity.immigration.LCAReportDto;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.immigration.LCAService;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -29,7 +31,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -103,6 +104,29 @@ public class LCAResource extends CRUDResource<LCA> {
     @Override
     public CRUDDao getDao() {
         return lcaDao;
+    }
+
+    @PUT
+    @Path("/lca-status-search")
+    @Transactional(readOnly = true)
+    public List<LCADto> prospectStatusSearch(LCAReportDto entity) {
+        List<LCADto> res = new ArrayList();
+
+        return res;
+    }
+
+    @PUT
+    @Path("/search-lca/{start}/{limit}")
+    @Transactional(readOnly = true)
+    public List<LCA> search(LCA entity, @PathParam("start") int start, @PathParam("limit") int limit) {
+        List<LCA> res = new ArrayList();
+        Query searchQuery = SearchUtils.getSearchQuery(lcaDao.getEntityManager(), entity, new SearchUtils.SearchCriteria());
+        searchQuery.setFirstResult(start);
+        searchQuery.setMaxResults(limit);
+        for (Object p : searchQuery.getResultList()) {
+            res.add((LCA) p);
+        }
+        return res;
     }
 
     @XmlRootElement

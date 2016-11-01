@@ -47,7 +47,6 @@ public class ProfileBenefitsPanelWidget extends ALComposite implements ClickHand
     @Override
     protected void addWidgets() {
         flowmainPanels.add(benefitsPanel);
-        flowmainPanels.add(healthInsuranceL);
         scrollpanel.add(flowmainPanels);
     }
 

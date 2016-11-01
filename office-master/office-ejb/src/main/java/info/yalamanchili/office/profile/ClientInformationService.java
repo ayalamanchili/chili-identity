@@ -9,7 +9,9 @@ package info.yalamanchili.office.profile;
 
 import com.google.common.base.Strings;
 import info.chili.commons.BeanMapper;
+import info.chili.email.Email;
 import info.chili.service.jrs.exception.ServiceException;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
 import info.yalamanchili.office.client.ContractService;
 import info.yalamanchili.office.dao.client.ClientDao;
@@ -17,6 +19,8 @@ import info.yalamanchili.office.dao.client.ProjectDao;
 import info.yalamanchili.office.dao.client.SubcontractorDao;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
+import info.yalamanchili.office.dao.hr.ProspectCPDDao;
+import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.dao.practice.PracticeDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
 import info.yalamanchili.office.dao.profile.BillingRateDao;
@@ -28,10 +32,13 @@ import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.profile.ClientInformationDto;
 import info.yalamanchili.office.dto.profile.ClientInformationSaveDto;
+import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Project;
 import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.client.Vendor;
+import info.yalamanchili.office.entity.hr.Prospect;
+import info.yalamanchili.office.entity.hr.ProspectStatus;
 import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.CIDocument;
 import info.yalamanchili.office.entity.profile.ClientInformation;
@@ -41,6 +48,8 @@ import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
+import info.yalamanchili.office.entity.profile.ProspectCPD;
+import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.service.ServiceInterceptor;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -82,15 +91,21 @@ public class ClientInformationService {
     @Autowired
     protected VendorDao vendorDao;
 
-    public ClientInformationDto addClientInformation(Long empId, ClientInformationDto ciDto, Boolean submitForApproval) {
+    public ClientInformationDto addClientInformation(Long empId, ClientInformationDto ciDto, Boolean submitForApproval, Boolean isProspectCPD) {
         ClientInformation ci = mapper.map(ciDto, ClientInformation.class);
 
         Client client = null;
         Vendor vendor = null;
         Vendor middleVendor = null;
         Project project = new Project();
-        Employee emp = (Employee) em.find(Employee.class, empId);
-        validate(ci, emp, submitForApproval);
+        Employee emp = null;
+        Prospect prospect = null;
+        if (isProspectCPD == false) {
+            emp = (Employee) em.find(Employee.class, empId);
+            validate(ci, emp, submitForApproval);
+        } else {
+            prospect = em.find(Prospect.class, empId);
+        }
         String abbreviation = getCompanyAbbreviation(ciDto.getCompany());
         if (abbreviation == null || abbreviation.isEmpty()) {
             abbreviation = "SSTL";
@@ -202,7 +217,16 @@ public class ClientInformationService {
             }
         }
         ci = clientInformationDao.save(ci);
-        emp.addClientInformation(ci);
+        if (emp != null) {
+            emp.addClientInformation(ci);
+        } else if (prospect != null) {
+            ProspectCPD cpd = new ProspectCPD();
+            cpd.setClientInfoId(ci.getId());
+            cpd.setContactId(prospect.getContact().getId());
+            cpd.setTargetEntityId(ci.getId());
+            cpd.setTargetEntityName(ClientInformation.class.getCanonicalName());
+            ProspectCPDDao.instance().save(cpd);
+        }
         if (ciDto.getReason() != null) {
             CommentDao.instance().addComment("End Previous Project Reason: " + ciDto.getReason(), ci);
         }
@@ -556,5 +580,34 @@ public class ClientInformationService {
         ClientInformation entity = clientInformationDao.findById(id);
         OfficeBPMTaskService.instance().deleteAllTasksForProcessId(entity.getBpmProcessId(), true);
         clientInformationDao.delete(id);
+    }
+
+    public ClientInformationDto addCPDToProspect(Long prospectId, ClientInformationDto cpdDto) {
+        ClientInformationDto dto = addClientInformation(prospectId, cpdDto, false, true);
+        notifyContractsAdminTeam(dto, prospectId);
+        return dto;
+    }
+
+    private void notifyContractsAdminTeam(ClientInformationDto dto, Long prospectId) {
+        Prospect prospect = ProspectDao.instance().findById(prospectId);
+        Client client = ClientDao.instance().findById(dto.getClient().getId());
+        Vendor vendor = VendorDao.instance().findById(dto.getVendor().getId());
+        Email email = new Email();
+        email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
+        email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_CONTRACTS_ADMIN.name()));
+        email.setSubject("New CPD has created for prospect : " + prospect.getContact().getFirstName() + " " + prospect.getContact().getLastName());
+        String messageText = "New CPD has created for prospect : " + prospect.getContact().getFirstName() + " " + prospect.getContact().getLastName();
+        messageText = messageText.concat("<table border='0'>");
+        messageText = messageText.concat("<tr><td><b>Prospect Name </b></td> <td>" + prospect.getContact().getFirstName() + " " + prospect.getContact().getLastName() + "</td></tr>");
+        messageText = messageText.concat("<tr><td><b>Prospect Status </b></td> <td>" + ProspectStatus.CLOSED_WON.name() + "</td></tr>");
+        messageText = messageText.concat("<tr><td><b>Client <b></td> <td>" + client.getName() + "</td></tr>");
+        messageText = messageText.concat("<tr><td><b>Vendor </b> </td> <td>" + vendor.getName() + "</td></tr>");
+        messageText = messageText.concat("<tr><td><b>Project Start Date </b> </td> <td>" + dto.getStartDate() + "</td></tr>");
+        if (dto.getEndDate() != null) {
+            messageText = messageText.concat("<tr><td><b>Project End Date </b> </td> <td>" + dto.getEndDate() + "</td></tr>");
+        }
+        email.setBody(messageText);
+        MessagingService.instance().sendEmail(email);
     }
 }

@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Scope("prototype")
 public class LCADao extends CRUDDao<LCA> {
-    
+
     @PersistenceContext
     protected EntityManager em;
 
@@ -39,5 +39,5 @@ public class LCADao extends CRUDDao<LCA> {
     public EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

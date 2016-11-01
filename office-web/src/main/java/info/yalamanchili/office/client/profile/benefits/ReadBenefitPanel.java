@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -14,6 +17,8 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
+import info.yalamanchili.office.client.profile.insurance.ReadHealthInsuranceWaiverWidget;
 import java.util.logging.Logger;
 
 /**
@@ -21,7 +26,7 @@ import java.util.logging.Logger;
  * @author Hemanth
  */
 public class ReadBenefitPanel extends ReadComposite {
-   
+
     private static ReadBenefitPanel instance;
 
     private static Logger logger = Logger.getLogger(ReadBenefitPanel.class.getName());
@@ -48,8 +53,13 @@ public class ReadBenefitPanel extends ReadComposite {
                         logger.info("read ec6 response" + response);
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
+                        populateComments();
                     }
                 });
+    }
+
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.profile.benefits.BenefitEnrollment"));
     }
 
     @Override
@@ -57,6 +67,10 @@ public class ReadBenefitPanel extends ReadComposite {
         assignFieldValueFromEntity("benefitType", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("year", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("enrolled", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("affectiveDate", entity, DataType.DATE_FIELD);
+        if (entity.containsKey("healthInsuranceWaiver")) {
+            entityFieldsPanel.add(new ReadHealthInsuranceWaiverWidget(entity.get("healthInsuranceWaiver").isObject()));
+        }
     }
 
     @Override
@@ -71,7 +85,8 @@ public class ReadBenefitPanel extends ReadComposite {
     protected void addWidgets() {
         addField("benefitType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("year", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("enrolled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);      
+        addField("enrolled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("affectiveDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
     }
 
     @Override
@@ -79,17 +94,17 @@ public class ReadBenefitPanel extends ReadComposite {
     }
 
     @Override
-   protected boolean enableBack() {
-       return true;
-   }
-    
+    protected boolean enableBack() {
+        return true;
+    }
+
     @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllBenefitsPanel.instance;
-    }    
-    
+    }
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "benefit/" + entityId;
-    } 
+    }
 }

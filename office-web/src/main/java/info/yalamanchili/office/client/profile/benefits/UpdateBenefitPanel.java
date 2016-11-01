@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,16 +9,21 @@
 package info.yalamanchili.office.client.profile.benefits;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.date.DateUtils;
+import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.DateField;
+import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
+import info.yalamanchili.office.client.profile.insurance.HealthInsuranceWaiverPanel;
 import java.util.logging.Logger;
 
 /**
@@ -23,8 +31,14 @@ import java.util.logging.Logger;
  * @author Hemanth
  */
 public class UpdateBenefitPanel extends UpdateComposite {
-    
+
     private static Logger logger = Logger.getLogger(UpdateBenefitPanel.class.getName());
+    BooleanField enrolledFlagField = new BooleanField(OfficeWelcome.constants2, "enrolled", "Benefit", false, false, Alignment.HORIZONTAL);
+    DateField requestedDate = new DateField(OfficeWelcome.constants2, "affectiveDate", "Benefit", false, false, Alignment.HORIZONTAL);
+    EnumField benefitType = new EnumField(OfficeWelcome.constants, "benefitType", "Benefit", false, false, BenefitType.names(), Alignment.HORIZONTAL);
+    protected String empId;
+
+    HealthInsuranceWaiverPanel insuranceWaiver = new HealthInsuranceWaiverPanel();
 
     public UpdateBenefitPanel(JSONObject entity) {
         initUpdateComposite(entity, "Benefit", OfficeWelcome.constants2);
@@ -32,9 +46,17 @@ public class UpdateBenefitPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        assignEntityValueFromField("benefitType", entity);
+        entity.put("benefitType", new JSONString(benefitType.getValue()));
+        if (insuranceWaiver != null) {
+            JSONObject waiver = insuranceWaiver.populateEntityFromFields();
+            entity.put("healthInsuranceWaiver", insuranceWaiver.populateEntityFromFields());
+        }
+        entity.put("enrolled", new JSONString(enrolledFlagField.getValue().toString()));
         assignEntityValueFromField("year", entity);
-        assignEntityValueFromField("enrolled", entity);
+        if (requestedDate.getDate() != null) {
+            entity.put("affectiveDate", new JSONString(DateUtils.toDateString(requestedDate.getDate())));
+        }
+
         return entity;
     }
 

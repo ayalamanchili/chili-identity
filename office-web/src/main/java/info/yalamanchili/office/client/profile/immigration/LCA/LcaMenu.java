@@ -63,6 +63,7 @@ public class LcaMenu extends CMenuBar {
             entity.put("status", new JSONString("Pending"));
             getLcas(entity);
         } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION, Auth.ROLE.ROLE_RECRUITER)) {
+            TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new LcaSidePanel());
             TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new SearchLcaPanel());
         }
     };

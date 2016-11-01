@@ -65,14 +65,20 @@ public class ReadAllClientInfoPopupPanel extends ReadAllClientInfoPanel {
             table.setText(i, ++column, DateUtils.formatDate(JSONUtils.toString(entity, "startDate")));
             table.setText(i, ++column, DateUtils.formatDate(JSONUtils.toString(entity, "endDate")));
             setEnumColumn(i, ++column, entity, ClientInformationStatus.class.getSimpleName(), "status");
-            if (JSONUtils.toString(entity, "status").equalsIgnoreCase("Completed")
-                    && new Date().before(DateUtils.toDate(JSONUtils.toString(entity, "endDate")))) {
+            if (JSONUtils.toString(entity, "status").equalsIgnoreCase("Completed")) {
                 ClickableLink projectOffboarding = new ClickableLink("Initiate Project Offboarding");
                 projectOffboarding.setTitle(JSONUtils.toString(entity, "id"));
                 projectOffboarding.addClickHandler((ClickEvent event) -> {
                     submitProjectOffBoarding(((ClickableLink) event.getSource()).getTitle());
                 });
                 table.setWidget(i, ++column, projectOffboarding);
+            } else if (JSONUtils.toString(entity, "status").equalsIgnoreCase("Pending_Closing")) {
+                ClickableLink UpdateProjectOffboarding = new ClickableLink("Update Project Offboarding");
+                UpdateProjectOffboarding.setTitle(JSONUtils.toString(entity, "id"));
+                UpdateProjectOffboarding.addClickHandler((ClickEvent event) -> {
+                    UpdateProjectOffboardingPanal(((ClickableLink) event.getSource()).getTitle());
+                });
+                table.setWidget(i, ++column, UpdateProjectOffboarding);
             }
         }
     }
