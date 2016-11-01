@@ -10,7 +10,6 @@ import info.yalamanchili.office.client.profile.address.AddressOptionsPanel;
 import info.yalamanchili.office.client.profile.address.ReadAllAddressesPanel;
 import info.yalamanchili.office.client.profile.email.ReadAllEmailsPanel;
 import info.yalamanchili.office.client.profile.phone.ReadAllPhonesPanel;
-import info.yalamanchili.office.client.profile.cllientinfo.ReadAllClientInfoPanel;
 
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.utils.JSONUtils;
@@ -19,6 +18,7 @@ import info.yalamanchili.office.client.profile.role.MultiSelectRoleWidget;
 import info.yalamanchili.office.client.profile.skillset.SkillSetPanel;
 import info.yalamanchili.office.client.Auth.ROLE;
 import info.yalamanchili.office.client.profile.benefits.ReadAllBenefitsPanel;
+import info.yalamanchili.office.client.profile.cllientinfo.TreeEmpProjectInformationPanel;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
 import java.util.logging.Logger;
 
@@ -33,9 +33,9 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected static final String ADDRESS_NODE = "address";
     protected static final String EMAIL_NODE = "email";
     protected static final String PHONE_NODE = "phone";
-    protected static final String CLIENT_INFO_NODE = "clientInfo";
     protected static final String SKILL_SET_NODE = "skillset";
     protected static final String IMMIGRATION_NODE = "immigration";
+    protected static final String PROJECT_NODE = "projectInformation";
     protected static final String SETTINGS_NODE = "settings";
     protected static final String REPORTS_NODE = "reports";
     protected static final String SELF_SERVICE_NODE = "selfService";
@@ -49,7 +49,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
     protected TreeEmpContactsPanel empContactsPanel;
     protected TreeEmpSettingsPanel empSettingsPanel;
     protected TreeEmployeeImmigrationPanel empImmigrationPanel;
-    protected boolean active = false;
+    protected TreeEmpProjectInformationPanel projectInformationPanel;
 
     public TreeEmployeePanel(JSONObject emp) {
         super();
@@ -58,10 +58,10 @@ public class TreeEmployeePanel extends TreePanelComposite {
         skillSetPanel = new SkillSetPanel(getEntityId());
         empReportsPanel = new TreeEmpReportsPanel(getEntityId());
         empImmigrationPanel = new TreeEmployeeImmigrationPanel(getEntityId());
+        projectInformationPanel = new TreeEmpProjectInformationPanel(getEntity());
         empDocsPanel = new TreeEmpFormsPanel(emp);
         empSettingsPanel = new TreeEmpSettingsPanel(emp);
         empContactsPanel = new TreeEmpContactsPanel(emp);
-        active = JSONUtils.toBoolean(emp, "status");
         String name = JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName");
         init(name, OfficeWelcome.constants);
     }
@@ -85,7 +85,7 @@ public class TreeEmployeePanel extends TreePanelComposite {
         addFirstChildLink("Addresses", ADDRESS_NODE);
         addFirstChildLink("Emails", EMAIL_NODE);
         addFirstChildLink("Phones", PHONE_NODE);
-        addFirstChildLink("Client Information", CLIENT_INFO_NODE);
+        addFirstChildLink("Client Project ", PROJECT_NODE, projectInformationPanel);
         addFirstChildLink("Contacts", EMPLOYEE_CONTACTS, empContactsPanel);
         if (Auth.isEmployee(entity)) {
             addFirstChildLink("Skill Set", SKILL_SET_NODE, skillSetPanel);
@@ -129,10 +129,8 @@ public class TreeEmployeePanel extends TreePanelComposite {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllPhonesPanel(getEntityId()));
         }
-        if (CLIENT_INFO_NODE.equals(entityNodeKey)) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(getEntityId(), active));
-//            TabPanel.instance().myOfficePanel.entityPanel.add(new ClientInfoOptionsPanel());
+        if (projectInformationPanel != null) {
+            projectInformationPanel.treeNodeSelected(entityNodeKey);
         }
         if (SKILL_SET_NODE.equals(entityNodeKey)) {
             //TODO mode this to comp

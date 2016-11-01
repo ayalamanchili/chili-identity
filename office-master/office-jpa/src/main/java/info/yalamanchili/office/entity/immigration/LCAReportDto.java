@@ -8,14 +8,26 @@
  */
 package info.yalamanchili.office.entity.immigration;
 
+import info.yalamanchili.office.entity.hr.ProspectStatus;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
  *
- * @author Madhu.Badiginchala
+ * @author prasanthi.p
  */
 @XmlRootElement
 @XmlType
-public class LCADto extends LCA {
+public class LCAReportDto {
+
+    protected ProspectStatus status;
+
+    public ProspectStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ProspectStatus status) {
+        this.status = status;
+    }
+
 }
