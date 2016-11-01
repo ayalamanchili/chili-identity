@@ -43,11 +43,12 @@ public class ReadLCAPanel extends TReadComposite {
 
     public ReadLCAPanel(JSONObject entity) {
         instance = this;
-        initReadComposite(entity, "LCA", OfficeWelcome.constants);
+        initReadComposite(entity, "LCA", OfficeWelcome.constants2);
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        assignFieldValueFromEntity("candidateNames", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lcaNumber", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("lcaFiledDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("lcaValidFromDate", entity, DataType.DATE_FIELD);
@@ -97,8 +98,9 @@ public class ReadLCAPanel extends TReadComposite {
     @Override
     protected void addWidgets() {
         logger.info("entity read : " + entity);
-        addField("lcaNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
-        addEnumField("visaClassification", true, true, VisaClassificationType.names(), Alignment.HORIZONTAL, 1, 2);
+        addField("candidateNames", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
+        addField("lcaNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
+        addEnumField("visaClassification", true, true, VisaClassificationType.names(), Alignment.HORIZONTAL, 1, 3);
         entityFieldsPanel.getFlexCellFormatter().setColSpan(2, 1, 2);
         addDropDown("workedByEmployees", selectRecruiterW, 3, 1);
         addDropDown("company", selectCompanyWidget, 3, 2);
