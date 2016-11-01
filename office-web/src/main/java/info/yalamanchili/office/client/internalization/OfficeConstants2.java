@@ -7,6 +7,15 @@ package info.yalamanchili.office.client.internalization;
 public interface OfficeConstants2 extends com.google.gwt.i18n.client.ConstantsWithLookup {
   
   /**
+   * Translated "Effective Date  ".
+   * 
+   * @return translated "Effective Date  "
+   */
+  @DefaultStringValue("Effective Date  ")
+  @Key("Benefit_affectiveDate")
+  String Benefit_affectiveDate();
+
+  /**
    * Translated "Benefit Type".
    * 
    * @return translated "Benefit Type"
@@ -14,6 +23,15 @@ public interface OfficeConstants2 extends com.google.gwt.i18n.client.ConstantsWi
   @DefaultStringValue("Benefit Type")
   @Key("Benefit_benefitType")
   String Benefit_benefitType();
+
+  /**
+   * Translated "Comments".
+   * 
+   * @return translated "Comments"
+   */
+  @DefaultStringValue("Comments")
+  @Key("Benefit_comments")
+  String Benefit_comments();
 
   /**
    * Translated "Enrolled ?".
@@ -4237,6 +4255,24 @@ public interface OfficeConstants2 extends com.google.gwt.i18n.client.ConstantsWi
   String Fill_the_form_and_complete_the_task_notes_info();
 
   /**
+   * Translated "Notes ".
+   * 
+   * @return translated "Notes "
+   */
+  @DefaultStringValue("Notes ")
+  @Key("Fill_the_form_and_complete_the_task_nottes")
+  String Fill_the_form_and_complete_the_task_nottes();
+
+  /**
+   * Translated "Notes ".
+   * 
+   * @return translated "Notes "
+   */
+  @DefaultStringValue("Notes ")
+  @Key("Fill_the_form_and_complete_the_task_nottes_info")
+  String Fill_the_form_and_complete_the_task_nottes_info();
+
+  /**
    * Translated "Password".
    * 
    * @return translated "Password"
@@ -4255,6 +4291,15 @@ public interface OfficeConstants2 extends com.google.gwt.i18n.client.ConstantsWi
   String Fill_the_form_and_complete_the_task_password_info();
 
   /**
+   * Translated "Pay Rate ".
+   * 
+   * @return translated "Pay Rate "
+   */
+  @DefaultStringValue("Pay Rate ")
+  @Key("Fill_the_form_and_complete_the_task_payrate")
+  String Fill_the_form_and_complete_the_task_payrate();
+
+  /**
    * Translated "Payrate %".
    * 
    * @return translated "Payrate %"
@@ -4271,6 +4316,15 @@ public interface OfficeConstants2 extends com.google.gwt.i18n.client.ConstantsWi
   @DefaultStringValue("Payrate %")
   @Key("Fill_the_form_and_complete_the_task_payratePercent_info")
   String Fill_the_form_and_complete_the_task_payratePercent_info();
+
+  /**
+   * Translated "Pay Rate ".
+   * 
+   * @return translated "Pay Rate "
+   */
+  @DefaultStringValue("Pay Rate ")
+  @Key("Fill_the_form_and_complete_the_task_payrate_info")
+  String Fill_the_form_and_complete_the_task_payrate_info();
 
   /**
    * Translated "Payroll DeptNotes".
@@ -5533,6 +5587,258 @@ public interface OfficeConstants2 extends com.google.gwt.i18n.client.ConstantsWi
   String Invoice_vendor_info();
 
   /**
+   * Translated "Employee Names".
+   * 
+   * @return translated "Employee Names"
+   */
+  @DefaultStringValue("Employee Names")
+  @Key("LCA_candidateNames")
+  String LCA_candidateNames();
+
+  /**
+   * Translated "Certified LCA To Consultant".
+   * 
+   * @return translated "Certified LCA To Consultant"
+   */
+  @DefaultStringValue("Certified LCA To Consultant")
+  @Key("LCA_certifiedLcaSentConsultant")
+  String LCA_certifiedLcaSentConsultant();
+
+  /**
+   * Translated "Client Name".
+   * 
+   * @return translated "Client Name"
+   */
+  @DefaultStringValue("Client Name")
+  @Key("LCA_clientName")
+  String LCA_clientName();
+
+  /**
+   * Translated "Job Title".
+   * 
+   * @return translated "Job Title"
+   */
+  @DefaultStringValue("Job Title")
+  @Key("LCA_jobTitle")
+  String LCA_jobTitle();
+
+  /**
+   * Translated "LCA Curr Max Wage".
+   * 
+   * @return translated "LCA Curr Max Wage"
+   */
+  @DefaultStringValue("LCA Curr Max Wage")
+  @Key("LCA_lcaCurrMaxWage")
+  String LCA_lcaCurrMaxWage();
+
+  /**
+   * Translated "LCA Curr Min Wage".
+   * 
+   * @return translated "LCA Curr Min Wage"
+   */
+  @DefaultStringValue("LCA Curr Min Wage")
+  @Key("LCA_lcaCurrMinWage")
+  String LCA_lcaCurrMinWage();
+
+  /**
+   * Translated "LCA Curr Wage Level".
+   * 
+   * @return translated "LCA Curr Wage Level"
+   */
+  @DefaultStringValue("LCA Curr Wage Level")
+  @Key("LCA_lcaCurrWageLvl")
+  String LCA_lcaCurrWageLvl();
+
+  /**
+   * Translated "LCA Filed With DOL".
+   * 
+   * @return translated "LCA Filed With DOL"
+   */
+  @DefaultStringValue("LCA Filed With DOL")
+  @Key("LCA_lcaFiledDate")
+  String LCA_lcaFiledDate();
+
+  /**
+   * Translated "LCA Filed In PIF".
+   * 
+   * @return translated "LCA Filed In PIF"
+   */
+  @DefaultStringValue("LCA Filed In PIF")
+  @Key("LCA_lcaFiledInPIF")
+  String LCA_lcaFiledInPIF();
+
+  /**
+   * Translated "LCA Number".
+   * 
+   * @return translated "LCA Number"
+   */
+  @DefaultStringValue("LCA Number")
+  @Key("LCA_lcaNumber")
+  String LCA_lcaNumber();
+
+  /**
+   * Translated "LCA Posting SSTech Location".
+   * 
+   * @return translated "LCA Posting SSTech Location"
+   */
+  @DefaultStringValue("LCA Posting SSTech Location")
+  @Key("LCA_lcaPostingSSTLocation")
+  String LCA_lcaPostingSSTLocation();
+
+  /**
+   * Translated "LCA Posting Sent To Vendor".
+   * 
+   * @return translated "LCA Posting Sent To Vendor"
+   */
+  @DefaultStringValue("LCA Posting Sent To Vendor")
+  @Key("LCA_lcaPostingSentToVendor")
+  String LCA_lcaPostingSentToVendor();
+
+  /**
+   * Translated "LCA Prev Max Wage".
+   * 
+   * @return translated "LCA Prev Max Wage"
+   */
+  @DefaultStringValue("LCA Prev Max Wage")
+  @Key("LCA_lcaPrevMaxWage")
+  String LCA_lcaPrevMaxWage();
+
+  /**
+   * Translated "LCA Prev Min Wage".
+   * 
+   * @return translated "LCA Prev Min Wage"
+   */
+  @DefaultStringValue("LCA Prev Min Wage")
+  @Key("LCA_lcaPrevMinWage")
+  String LCA_lcaPrevMinWage();
+
+  /**
+   * Translated "LCA Prev Wage Level ".
+   * 
+   * @return translated "LCA Prev Wage Level "
+   */
+  @DefaultStringValue("LCA Prev Wage Level ")
+  @Key("LCA_lcaPrevWageLvl")
+  String LCA_lcaPrevWageLvl();
+
+  /**
+   * Translated "Valid From Date".
+   * 
+   * @return translated "Valid From Date"
+   */
+  @DefaultStringValue("Valid From Date")
+  @Key("LCA_lcaValidFromDate")
+  String LCA_lcaValidFromDate();
+
+  /**
+   * Translated "Valid To Date".
+   * 
+   * @return translated "Valid To Date"
+   */
+  @DefaultStringValue("Valid To Date")
+  @Key("LCA_lcaValidToDate")
+  String LCA_lcaValidToDate();
+
+  /**
+   * Translated "Non Displacement".
+   * 
+   * @return translated "Non Displacement"
+   */
+  @DefaultStringValue("Non Displacement")
+  @Key("LCA_nonDisplacement")
+  String LCA_nonDisplacement();
+
+  /**
+   * Translated "Reminder Email".
+   * 
+   * @return translated "Reminder Email"
+   */
+  @DefaultStringValue("Reminder Email")
+  @Key("LCA_reminderEmail")
+  String LCA_reminderEmail();
+
+  /**
+   * Translated "Response on LCA Posting".
+   * 
+   * @return translated "Response on LCA Posting"
+   */
+  @DefaultStringValue("Response on LCA Posting")
+  @Key("LCA_responseOnLcaPosting")
+  String LCA_responseOnLcaPosting();
+
+  /**
+   * Translated "SOC Codes & Occupation".
+   * 
+   * @return translated "SOC Codes & Occupation"
+   */
+  @DefaultStringValue("SOC Codes & Occupation")
+  @Key("LCA_socCodesAndOccupations")
+  String LCA_socCodesAndOccupations();
+
+  /**
+   * Translated "Status".
+   * 
+   * @return translated "Status"
+   */
+  @DefaultStringValue("Status")
+  @Key("LCA_status")
+  String LCA_status();
+
+  /**
+   * Translated "Total Pending Positions".
+   * 
+   * @return translated "Total Pending Positions"
+   */
+  @DefaultStringValue("Total Pending Positions")
+  @Key("LCA_totalPendingPositions")
+  String LCA_totalPendingPositions();
+
+  /**
+   * Translated "Total Working Positions".
+   * 
+   * @return translated "Total Working Positions"
+   */
+  @DefaultStringValue("Total Working Positions")
+  @Key("LCA_totalWorkingPositions")
+  String LCA_totalWorkingPositions();
+
+  /**
+   * Translated "Vendor Name".
+   * 
+   * @return translated "Vendor Name"
+   */
+  @DefaultStringValue("Vendor Name")
+  @Key("LCA_vendorName")
+  String LCA_vendorName();
+
+  /**
+   * Translated "Visa Classification".
+   * 
+   * @return translated "Visa Classification"
+   */
+  @DefaultStringValue("Visa Classification")
+  @Key("LCA_visaClassification")
+  String LCA_visaClassification();
+
+  /**
+   * Translated "Withdrawn LCA Number".
+   * 
+   * @return translated "Withdrawn LCA Number"
+   */
+  @DefaultStringValue("Withdrawn LCA Number")
+  @Key("LCA_withdrawnLCANumber")
+  String LCA_withdrawnLCANumber();
+
+  /**
+   * Translated "Worked By".
+   * 
+   * @return translated "Worked By"
+   */
+  @DefaultStringValue("Worked By")
+  @Key("LCA_workedByEmployees")
+  String LCA_workedByEmployees();
+
+  /**
    * Translated "End Date".
    * 
    * @return translated "End Date"
@@ -6539,6 +6845,573 @@ public interface OfficeConstants2 extends com.google.gwt.i18n.client.ConstantsWi
   @DefaultStringValue("Vendor Name")
   @Key("ProjectOffboarding_vendorName_info")
   String ProjectOffboarding_vendorName_info();
+
+  /**
+   * Translated "Bench".
+   * 
+   * @return translated "Bench"
+   */
+  @DefaultStringValue("Bench")
+  @Key("ProspectStatus_BENCH")
+  String ProspectStatus_BENCH();
+
+  /**
+   * Translated "Closed Lost".
+   * 
+   * @return translated "Closed Lost"
+   */
+  @DefaultStringValue("Closed Lost")
+  @Key("ProspectStatus_CLOSED_LOST")
+  String ProspectStatus_CLOSED_LOST();
+
+  /**
+   * Translated "Closed Onboarding Requested".
+   * 
+   * @return translated "Closed Onboarding Requested"
+   */
+  @DefaultStringValue("Closed Onboarding Requested")
+  @Key("ProspectStatus_CLOSED_ONBOARDING_REQUESTED")
+  String ProspectStatus_CLOSED_ONBOARDING_REQUESTED();
+
+  /**
+   * Translated "Closed Won".
+   * 
+   * @return translated "Closed Won"
+   */
+  @DefaultStringValue("Closed Won")
+  @Key("ProspectStatus_CLOSED_WON")
+  String ProspectStatus_CLOSED_WON();
+
+  /**
+   * Translated "In Progress".
+   * 
+   * @return translated "In Progress"
+   */
+  @DefaultStringValue("In Progress")
+  @Key("ProspectStatus_IN_PROGRESS")
+  String ProspectStatus_IN_PROGRESS();
+
+  /**
+   * Translated "New".
+   * 
+   * @return translated "New"
+   */
+  @DefaultStringValue("New")
+  @Key("ProspectStatus_NEW")
+  String ProspectStatus_NEW();
+
+  /**
+   * Translated "On Hold".
+   * 
+   * @return translated "On Hold"
+   */
+  @DefaultStringValue("On Hold")
+  @Key("ProspectStatus_ONHOLD")
+  String ProspectStatus_ONHOLD();
+
+  /**
+   * Translated "Recruiting".
+   * 
+   * @return translated "Recruiting"
+   */
+  @DefaultStringValue("Recruiting")
+  @Key("ProspectStatus_RECRUITING")
+  String ProspectStatus_RECRUITING();
+
+  /**
+   * Translated "Assigned To".
+   * 
+   * @return translated "Assigned To"
+   */
+  @DefaultStringValue("Assigned To")
+  @Key("Prospect_assignedTo")
+  String Prospect_assignedTo();
+
+  /**
+   * Translated "City".
+   * 
+   * @return translated "City"
+   */
+  @DefaultStringValue("City")
+  @Key("Prospect_city")
+  String Prospect_city();
+
+  /**
+   * Translated "City".
+   * 
+   * @return translated "City"
+   */
+  @DefaultStringValue("City")
+  @Key("Prospect_city_info")
+  String Prospect_city_info();
+
+  /**
+   * Translated "Comment".
+   * 
+   * @return translated "Comment"
+   */
+  @DefaultStringValue("Comment")
+  @Key("Prospect_comment")
+  String Prospect_comment();
+
+  /**
+   * Translated "Comment".
+   * 
+   * @return translated "Comment"
+   */
+  @DefaultStringValue("Comment")
+  @Key("Prospect_comment_info")
+  String Prospect_comment_info();
+
+  /**
+   * Translated "Country".
+   * 
+   * @return translated "Country"
+   */
+  @DefaultStringValue("Country")
+  @Key("Prospect_country")
+  String Prospect_country();
+
+  /**
+   * Translated "Country code".
+   * 
+   * @return translated "Country code"
+   */
+  @DefaultStringValue("Country code")
+  @Key("Prospect_countryCode")
+  String Prospect_countryCode();
+
+  /**
+   * Translated "Country".
+   * 
+   * @return translated "Country"
+   */
+  @DefaultStringValue("Country")
+  @Key("Prospect_country_info")
+  String Prospect_country_info();
+
+  /**
+   * Translated "Created Date From".
+   * 
+   * @return translated "Created Date From"
+   */
+  @DefaultStringValue("Created Date From")
+  @Key("Prospect_createdDateFrom")
+  String Prospect_createdDateFrom();
+
+  /**
+   * Translated "Created Date To".
+   * 
+   * @return translated "Created Date To"
+   */
+  @DefaultStringValue("Created Date To")
+  @Key("Prospect_createdDateTo")
+  String Prospect_createdDateTo();
+
+  /**
+   * Translated "Date Of Birth".
+   * 
+   * @return translated "Date Of Birth"
+   */
+  @DefaultStringValue("Date Of Birth")
+  @Key("Prospect_dateOfBirth")
+  String Prospect_dateOfBirth();
+
+  /**
+   * Translated "Date Of Birth".
+   * 
+   * @return translated "Date Of Birth"
+   */
+  @DefaultStringValue("Date Of Birth")
+  @Key("Prospect_dateOfBirth_info")
+  String Prospect_dateOfBirth_info();
+
+  /**
+   * Translated "Date Of Joining".
+   * 
+   * @return translated "Date Of Joining"
+   */
+  @DefaultStringValue("Date Of Joining")
+  @Key("Prospect_dateOfJoining")
+  String Prospect_dateOfJoining();
+
+  /**
+   * Translated "Date Of Joining".
+   * 
+   * @return translated "Date Of Joining"
+   */
+  @DefaultStringValue("Date Of Joining")
+  @Key("Prospect_dateOfJoining_info")
+  String Prospect_dateOfJoining_info();
+
+  /**
+   * Translated "Email".
+   * 
+   * @return translated "Email"
+   */
+  @DefaultStringValue("Email")
+  @Key("Prospect_email")
+  String Prospect_email();
+
+  /**
+   * Translated "Email".
+   * 
+   * @return translated "Email"
+   */
+  @DefaultStringValue("Email")
+  @Key("Prospect_email_info")
+  String Prospect_email_info();
+
+  /**
+   * Translated "Extension".
+   * 
+   * @return translated "Extension"
+   */
+  @DefaultStringValue("Extension")
+  @Key("Prospect_extension")
+  String Prospect_extension();
+
+  /**
+   * Translated "First Name".
+   * 
+   * @return translated "First Name"
+   */
+  @DefaultStringValue("First Name")
+  @Key("Prospect_firstName")
+  String Prospect_firstName();
+
+  /**
+   * Translated "First Name".
+   * 
+   * @return translated "First Name"
+   */
+  @DefaultStringValue("First Name")
+  @Key("Prospect_firstName_info")
+  String Prospect_firstName_info();
+
+  /**
+   * Translated "Joining Date From".
+   * 
+   * @return translated "Joining Date From"
+   */
+  @DefaultStringValue("Joining Date From")
+  @Key("Prospect_joiningDateFrom")
+  String Prospect_joiningDateFrom();
+
+  /**
+   * Translated "Joining Date To".
+   * 
+   * @return translated "Joining Date To"
+   */
+  @DefaultStringValue("Joining Date To")
+  @Key("Prospect_joiningDateTo")
+  String Prospect_joiningDateTo();
+
+  /**
+   * Translated "Last Name".
+   * 
+   * @return translated "Last Name"
+   */
+  @DefaultStringValue("Last Name")
+  @Key("Prospect_lastName")
+  String Prospect_lastName();
+
+  /**
+   * Translated "Last Name".
+   * 
+   * @return translated "Last Name"
+   */
+  @DefaultStringValue("Last Name")
+  @Key("Prospect_lastName_info")
+  String Prospect_lastName_info();
+
+  /**
+   * Translated "Middle Initial".
+   * 
+   * @return translated "Middle Initial"
+   */
+  @DefaultStringValue("Middle Initial")
+  @Key("Prospect_middleInitial")
+  String Prospect_middleInitial();
+
+  /**
+   * Translated "Middle Initial".
+   * 
+   * @return translated "Middle Initial"
+   */
+  @DefaultStringValue("Middle Initial")
+  @Key("Prospect_middleInitial_info")
+  String Prospect_middleInitial_info();
+
+  /**
+   * Translated "Petition Filed For".
+   * 
+   * @return translated "Petition Filed For"
+   */
+  @DefaultStringValue("Petition Filed For")
+  @Key("Prospect_petitionFiledFor")
+  String Prospect_petitionFiledFor();
+
+  /**
+   * Translated "Petition Filed For".
+   * 
+   * @return translated "Petition Filed For"
+   */
+  @DefaultStringValue("Petition Filed For")
+  @Key("Prospect_petitionFiledFor_info")
+  String Prospect_petitionFiledFor_info();
+
+  /**
+   * Translated "Phone Number".
+   * 
+   * @return translated "Phone Number"
+   */
+  @DefaultStringValue("Phone Number")
+  @Key("Prospect_phoneNumber")
+  String Prospect_phoneNumber();
+
+  /**
+   * Translated "Phone Number".
+   * 
+   * @return translated "Phone Number"
+   */
+  @DefaultStringValue("Phone Number")
+  @Key("Prospect_phoneNumber_info")
+  String Prospect_phoneNumber_info();
+
+  /**
+   * Translated "Placed By".
+   * 
+   * @return translated "Placed By"
+   */
+  @DefaultStringValue("Placed By")
+  @Key("Prospect_placedBy")
+  String Prospect_placedBy();
+
+  /**
+   * Translated "Placed By".
+   * 
+   * @return translated "Placed By"
+   */
+  @DefaultStringValue("Placed By")
+  @Key("Prospect_placedBy_info")
+  String Prospect_placedBy_info();
+
+  /**
+   * Translated "Process Doc Sent Date".
+   * 
+   * @return translated "Process Doc Sent Date"
+   */
+  @DefaultStringValue("Process Doc Sent Date")
+  @Key("Prospect_processDocSentDate")
+  String Prospect_processDocSentDate();
+
+  /**
+   * Translated "Process Doc Sent Date".
+   * 
+   * @return translated "Process Doc Sent Date"
+   */
+  @DefaultStringValue("Process Doc Sent Date")
+  @Key("Prospect_processDocSentDate_info")
+  String Prospect_processDocSentDate_info();
+
+  /**
+   * Translated "Referred By".
+   * 
+   * @return translated "Referred By"
+   */
+  @DefaultStringValue("Referred By")
+  @Key("Prospect_referredBy")
+  String Prospect_referredBy();
+
+  /**
+   * Translated "Referred By".
+   * 
+   * @return translated "Referred By"
+   */
+  @DefaultStringValue("Referred By")
+  @Key("Prospect_referredBy_info")
+  String Prospect_referredBy_info();
+
+  /**
+   * Translated "Resume URL".
+   * 
+   * @return translated "Resume URL"
+   */
+  @DefaultStringValue("Resume URL")
+  @Key("Prospect_resumeURL")
+  String Prospect_resumeURL();
+
+  /**
+   * Translated "Resume URL".
+   * 
+   * @return translated "Resume URL"
+   */
+  @DefaultStringValue("Resume URL")
+  @Key("Prospect_resumeURL_info")
+  String Prospect_resumeURL_info();
+
+  /**
+   * Translated "Screened By".
+   * 
+   * @return translated "Screened By"
+   */
+  @DefaultStringValue("Screened By")
+  @Key("Prospect_screenedBy")
+  String Prospect_screenedBy();
+
+  /**
+   * Translated "Screened By".
+   * 
+   * @return translated "Screened By"
+   */
+  @DefaultStringValue("Screened By")
+  @Key("Prospect_screenedBy_info")
+  String Prospect_screenedBy_info();
+
+  /**
+   * Translated "Gender".
+   * 
+   * @return translated "Gender"
+   */
+  @DefaultStringValue("Gender")
+  @Key("Prospect_sex")
+  String Prospect_sex();
+
+  /**
+   * Translated "Gender of the employee".
+   * 
+   * @return translated "Gender of the employee"
+   */
+  @DefaultStringValue("Gender of the employee")
+  @Key("Prospect_sex_info")
+  String Prospect_sex_info();
+
+  /**
+   * Translated "Start Date".
+   * 
+   * @return translated "Start Date"
+   */
+  @DefaultStringValue("Start Date")
+  @Key("Prospect_startDate")
+  String Prospect_startDate();
+
+  /**
+   * Translated "Start Date".
+   * 
+   * @return translated "Start Date"
+   */
+  @DefaultStringValue("Start Date")
+  @Key("Prospect_startDate_info")
+  String Prospect_startDate_info();
+
+  /**
+   * Translated "State".
+   * 
+   * @return translated "State"
+   */
+  @DefaultStringValue("State")
+  @Key("Prospect_state")
+  String Prospect_state();
+
+  /**
+   * Translated "State".
+   * 
+   * @return translated "State"
+   */
+  @DefaultStringValue("State")
+  @Key("Prospect_state_info")
+  String Prospect_state_info();
+
+  /**
+   * Translated "Status".
+   * 
+   * @return translated "Status"
+   */
+  @DefaultStringValue("Status")
+  @Key("Prospect_status")
+  String Prospect_status();
+
+  /**
+   * Translated "Status".
+   * 
+   * @return translated "Status"
+   */
+  @DefaultStringValue("Status")
+  @Key("Prospect_status_info")
+  String Prospect_status_info();
+
+  /**
+   * Translated "Street1".
+   * 
+   * @return translated "Street1"
+   */
+  @DefaultStringValue("Street1")
+  @Key("Prospect_street1")
+  String Prospect_street1();
+
+  /**
+   * Translated "Street1".
+   * 
+   * @return translated "Street1"
+   */
+  @DefaultStringValue("Street1")
+  @Key("Prospect_street1_info")
+  String Prospect_street1_info();
+
+  /**
+   * Translated "Street2".
+   * 
+   * @return translated "Street2"
+   */
+  @DefaultStringValue("Street2")
+  @Key("Prospect_street2")
+  String Prospect_street2();
+
+  /**
+   * Translated "Street2".
+   * 
+   * @return translated "Street2"
+   */
+  @DefaultStringValue("Street2")
+  @Key("Prospect_street2_info")
+  String Prospect_street2_info();
+
+  /**
+   * Translated "Transfer Employee Type".
+   * 
+   * @return translated "Transfer Employee Type"
+   */
+  @DefaultStringValue("Transfer Employee Type")
+  @Key("Prospect_trfEmpType")
+  String Prospect_trfEmpType();
+
+  /**
+   * Translated "Transfer Employee Type".
+   * 
+   * @return translated "Transfer Employee Type"
+   */
+  @DefaultStringValue("Transfer Employee Type")
+  @Key("Prospect_trfEmpType_info")
+  String Prospect_trfEmpType_info();
+
+  /**
+   * Translated "Zip".
+   * 
+   * @return translated "Zip"
+   */
+  @DefaultStringValue("Zip")
+  @Key("Prospect_zip")
+  String Prospect_zip();
+
+  /**
+   * Translated "Zip".
+   * 
+   * @return translated "Zip"
+   */
+  @DefaultStringValue("Zip")
+  @Key("Prospect_zip_info")
+  String Prospect_zip_info();
 
   /**
    * Translated "Details".
@@ -8377,6 +9250,123 @@ public interface OfficeConstants2 extends com.google.gwt.i18n.client.ConstantsWi
   String payTimeDuration1099_WEEK();
 
   /**
+   * Translated "Client Project".
+   * 
+   * @return translated "Client Project"
+   */
+  @DefaultStringValue("Client Project")
+  @Key("petitionFiledFor_Client_Project")
+  String petitionFiledFor_Client_Project();
+
+  /**
+   * Translated "In House".
+   * 
+   * @return translated "In House"
+   */
+  @DefaultStringValue("In House")
+  @Key("petitionFiledFor_In_House")
+  String petitionFiledFor_In_House();
+
+  /**
+   * Translated "By Recruiter".
+   * 
+   * @return translated "By Recruiter"
+   */
+  @DefaultStringValue("By Recruiter")
+  @Key("placedBy_By_Recruiter")
+  String placedBy_By_Recruiter();
+
+  /**
+   * Translated "Solutions Team".
+   * 
+   * @return translated "Solutions Team"
+   */
+  @DefaultStringValue("Solutions Team")
+  @Key("placedBy_Corporate_Solutions_Team")
+  String placedBy_Corporate_Solutions_Team();
+
+  /**
+   * Translated "Own Placements".
+   * 
+   * @return translated "Own Placements"
+   */
+  @DefaultStringValue("Own Placements")
+  @Key("placedBy_Own_Placement")
+  String placedBy_Own_Placement();
+
+  /**
+   * Translated "Bench".
+   * 
+   * @return translated "Bench"
+   */
+  @DefaultStringValue("Bench")
+  @Key("status_BENCH")
+  String status_BENCH();
+
+  /**
+   * Translated "Closed Lost".
+   * 
+   * @return translated "Closed Lost"
+   */
+  @DefaultStringValue("Closed Lost")
+  @Key("status_CLOSED_LOST")
+  String status_CLOSED_LOST();
+
+  /**
+   * Translated "Closed Onboarding Requested".
+   * 
+   * @return translated "Closed Onboarding Requested"
+   */
+  @DefaultStringValue("Closed Onboarding Requested")
+  @Key("status_CLOSED_ONBOARDING_REQUESTED")
+  String status_CLOSED_ONBOARDING_REQUESTED();
+
+  /**
+   * Translated "Closed Won".
+   * 
+   * @return translated "Closed Won"
+   */
+  @DefaultStringValue("Closed Won")
+  @Key("status_CLOSED_WON")
+  String status_CLOSED_WON();
+
+  /**
+   * Translated "In Progress".
+   * 
+   * @return translated "In Progress"
+   */
+  @DefaultStringValue("In Progress")
+  @Key("status_IN_PROGRESS")
+  String status_IN_PROGRESS();
+
+  /**
+   * Translated "New".
+   * 
+   * @return translated "New"
+   */
+  @DefaultStringValue("New")
+  @Key("status_NEW")
+  String status_NEW();
+
+  /**
+   * Translated "On Hold".
+   * 
+   * @return translated "On Hold"
+   */
+  @DefaultStringValue("On Hold")
+  @Key("status_ONHOLD")
+  String status_ONHOLD();
+
+  /**
+   * Translated "Recruiting".
+   * 
+   * @return translated "Recruiting"
+   */
+  @DefaultStringValue("Recruiting")
+  @Key("status_RECRUITING")
+  String status_RECRUITING();
+
+  /**
    * Translated "Bi-Weekly".
    * 
    * @return translated "Bi-Weekly"
@@ -8663,6 +9653,24 @@ public interface OfficeConstants2 extends com.google.gwt.i18n.client.ConstantsWi
   @DefaultStringValue("Weekly To Be Uploaded")
   @Key("subcontractorinvoiceFrequency_WEEKLY_TO_BE_UPLOADED")
   String subcontractorinvoiceFrequency_WEEKLY_TO_BE_UPLOADED();
+
+  /**
+   * Translated "Corporate Employee".
+   * 
+   * @return translated "Corporate Employee"
+   */
+  @DefaultStringValue("Corporate Employee")
+  @Key("trfEmpType_Corporate_Employee")
+  String trfEmpType_Corporate_Employee();
+
+  /**
+   * Translated "Associate Employee".
+   * 
+   * @return translated "Associate Employee"
+   */
+  @DefaultStringValue("Associate Employee")
+  @Key("trfEmpType_Field_Employee")
+  String trfEmpType_Field_Employee();
 
   /**
    * Translated "Sub Contractor".

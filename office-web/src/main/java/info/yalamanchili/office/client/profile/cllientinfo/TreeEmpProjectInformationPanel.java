@@ -12,10 +12,6 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.invoice.ReadAllInvoicePanel;
 import info.yalamanchili.office.client.admin.project.ReadAllProjectsPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
-import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
-import info.yalamanchili.office.client.profile.statusreport.ReadAllStatusReportPanel;
-import info.yalamanchili.office.client.time.consultant.ConsultantTimeSummaryPanel;
-import info.yalamanchili.office.client.time.consultant.ReadAllConsultantTimeSheetsPanel;
 import java.util.logging.Logger;
 
 /**
@@ -66,7 +62,6 @@ public class TreeEmpProjectInformationPanel extends TreePanelComposite {
     @Override
     protected void addWidgets() {
         addFirstChildLink("Client Information", Client_Information);
-        addFirstChildLink("Projects", Projects_Information);
         addFirstChildLink("Invoices", Invoices_Information);
         addFirstChildLink("TimeSheets", Timesheets_Information);
         addFirstChildLink("TimeSummary", TimeSummary_Information);
@@ -89,12 +84,12 @@ public class TreeEmpProjectInformationPanel extends TreePanelComposite {
         }
         if (Timesheets_Information.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllStatusReportPanel(employeeId));
+//            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllStatusReportPanel(employeeId));
         }
         if (TimeSummary_Information.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ConsultantTimeSummaryPanel(employeeId));
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllConsultantTimeSheetsPanel(employeeId));
+//            TabPanel.instance().myOfficePanel.entityPanel.add(new ConsultantTimeSummaryPanel(employeeId));
+//            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllConsultantTimeSheetsPanel(employeeId));
         }
 
     }
