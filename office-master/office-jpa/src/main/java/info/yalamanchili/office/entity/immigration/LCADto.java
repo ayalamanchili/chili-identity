@@ -8,9 +8,6 @@
  */
 package info.yalamanchili.office.entity.immigration;
 
-import info.yalamanchili.office.entity.profile.Employee;
-import java.util.HashSet;
-import java.util.Set;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 

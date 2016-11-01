@@ -43,7 +43,7 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
     protected FlowPanel panel = new FlowPanel();
     BooleanField enrolledFlagField = new BooleanField(OfficeWelcome.constants2, "enrolled", "Benefit", false, false, Alignment.HORIZONTAL);
     DateField requestedDate = new DateField(OfficeWelcome.constants2, "affectiveDate", "Benefit", false, false, Alignment.HORIZONTAL);
-    EnumField benefitType = new EnumField(OfficeWelcome.constants, "benefitType", "Benefit", false, false, BenefitType.names(), Alignment.HORIZONTAL);
+    EnumField benefitType = new EnumField(OfficeWelcome.constants2, "benefitType", "Benefit", false, false, BenefitType.names(), Alignment.HORIZONTAL);
     protected String empId;
 //    protected FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants2, "HealthInsuranceWaiver", "fileUrl", "HealthInsuranceWaiver/fileUrl", false, true) {
 //        @Override
@@ -100,7 +100,6 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
 //    protected void uploadDoc(String entityId) {
 //        resumeUploadPanel.upload(entityId.trim());
 //    }
-
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Benefit.");
@@ -128,7 +127,7 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
 
     @Override
     protected void addWidgets() {
-        benefitType = new EnumField(OfficeWelcome.constants,
+        benefitType = new EnumField(OfficeWelcome.constants2,
                 "benefitType", "Benefit", false, false, BenefitType.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(benefitType);
         addEnumField("year", false, false, YearType.names(), Alignment.HORIZONTAL);
