@@ -17,11 +17,13 @@ import info.yalamanchili.office.dao.profile.EmployeeDao.EmployeeTable;
 import info.yalamanchili.office.dao.profile.EmployeeDto;
 import info.yalamanchili.office.dao.profile.EmployeeLocationDto;
 import info.yalamanchili.office.dao.profile.EmployeeLocationReportDto;
+import info.yalamanchili.office.dto.client.ClientMasterReportDto;
 import info.yalamanchili.office.dto.client.ProjectRevenueForecastReportDto;
 import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.dto.client.PayRateReportDto;
+import info.yalamanchili.office.dto.client.VendorMasterReportDto;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
@@ -216,6 +218,16 @@ public class ContractReportService {
         return q.getResultList();
     }
     
+    public List<ClientMasterReportDto> getAllActiveCPDWithValidSMSA() {
+        TypedQuery<ClientMasterReportDto> q = em.createQuery("SELECT DISTINCT NEW " + ClientMasterReportDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName, ci.employee.lastName, employee.employeeType.name, ci.client.name, ci.client.clientInvDeliveryMethod, ci.client.terminationNoticePeriod,  ci.client.msaValDate, ci.client.msaExpDate) from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate > Now() AND ci.client.msaExpDate > NOW()", ClientMasterReportDto.class);
+        return q.getResultList();
+    }
+    
+    public List<VendorMasterReportDto> getAllActiveCPDWithValidSMSAs() {
+        TypedQuery<VendorMasterReportDto> q = em.createQuery("SELECT DISTINCT NEW " + VendorMasterReportDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName, ci.employee.lastName, employee.employeeType.name, ci.vendor.name, ci.vendor.coiEndDate) from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate > Now() AND ci.client.msaExpDate > NOW()", VendorMasterReportDto.class);
+        return q.getResultList();
+    }
+
     private List<ContractDto> getAllActiveCPDsPayRateSummary() {
         TypedQuery<ContractDto> q = em.createQuery("SELECT DISTINCT NEW " + ContractDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName,ci.employee.lastName, ci.client.name, ci.vendor.name,ci.billingRate,ci.billingRateDuration, ci.startDate, ci.endDate, ci.employee.employeeType.name, ci.company, ci.payRate, ci.payRatePercentage) from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate > Now()", ContractDto.class);
         return q.getResultList();

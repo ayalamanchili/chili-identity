@@ -14,6 +14,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.VendorDao;
+import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.client.VendorMasterReportDto;
 import info.yalamanchili.office.email.MailUtils;
@@ -58,33 +59,15 @@ public class VendorService {
     public void generateActiveVendorsInfoReport(String email) {
 
         String[] types = {EmployeeType.CORPORATE_EMPLOYEE, EmployeeType.EMPLOYEE, EmployeeType.SUBCONTRACTOR, EmployeeType.W2_CONTRACTOR, EmployeeType._1099_CONTRACTOR};
-        List<Employee> emps = EmployeeDao.instance().getEmployeesByType(types);
-        List<ClientInformation> clientInfos = new ArrayList();
-        for (Employee emp : emps) {
-            if (emp.getClientInformations() != null) {
-                for (ClientInformation ci : emp.getClientInformations()) {
-                    if (ci.getEndDate() != null) {
-                        if ((ci.getEndDate().after(new Date())) || (ci.getEndDate().equals(new Date()))) {
-                            clientInfos.add(ci);
-                        }
-                    } else {
-                        clientInfos.add(ci);
-                    }
-                }
-            }
+        List<VendorMasterReportDto> res= new ArrayList();
+        for(VendorMasterReportDto dto:ContractReportService.instance().getAllActiveCPDWithValidSMSAs()){
+            ClientInformation ci=ClientInformationDao.instance().findById(dto.getId());
+            Vendor vendor = VendorDao.instance().findById(ci.getVendor().getId());
+            dto.setCoiEndDate(vendor.getCoiEndDate());
+            res.add(dto);
         }
-        List<VendorMasterReportDto> dtos = new ArrayList();
-        for (ClientInformation ci : clientInfos) {
-            if (ci.getVendor() != null) {
-                Vendor vi1 = VendorDao.instance().findById(ci.getVendor().getId());
-                VendorMasterReportDto dtoss = populateVendorInfo(vi1);
-                dtoss.setEmployeeName(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
-                dtoss.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
-                dtos.add(dtoss);
-            }
-        }
-        String[] columnOrder = new String[]{"employeeName", "employeeType", "vendorName", "webSite", "coiEndDate", "vendorType", "vendorFees", "vendorLocations", "recruiterContact", "acctPayContact"};
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(dtos, "Active Vendors Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+        String[] columnOrder = new String[]{"employeeName", "employeeType", "vendorName", "coiEndDate"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Active Vendors Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
     public VendorMasterReportDto populateVendorInfo(Vendor vn) {

@@ -14,8 +14,10 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.ClientDao;
+import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.client.ClientMasterReportDto;
+import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.profile.Address;
@@ -56,34 +58,18 @@ public class ClientService {
     @Async
     @Transactional
     public void generateActiveClientsInfoReport(String email) {
-
-        String[] types = {EmployeeType.CORPORATE_EMPLOYEE, EmployeeType.EMPLOYEE, EmployeeType.SUBCONTRACTOR, EmployeeType.W2_CONTRACTOR, EmployeeType._1099_CONTRACTOR, EmployeeType.INTERN_SEASONAL_EMPLOYEE};
-        List<Employee> emps = EmployeeDao.instance().getEmployeesByType(types);
-        List<ClientInformation> clientInfos = new ArrayList();
-        for (Employee emp : emps) {
-            if (emp.getClientInformations() != null) {
-                for (ClientInformation ci : emp.getClientInformations()) {
-                    if (ci.getEndDate() != null) {
-                        if ((ci.getEndDate().after(new Date())) || (ci.getEndDate().equals(new Date()))) {
-                            clientInfos.add(ci);
-                        }
-
-                    } else {
-                        clientInfos.add(ci);
-                    }
-                }
-            }
+        List<ClientMasterReportDto> res= new ArrayList();
+        for(ClientMasterReportDto dto:ContractReportService.instance().getAllActiveCPDWithValidSMSA()){
+            ClientInformation ci=ClientInformationDao.instance().findById(dto.getId());
+            Client client = ClientDao.instance().findById(ci.getClient().getId());
+            dto.setClientInvDeliveryMethod(client.getClientInvDeliveryMethod().name().toLowerCase().replaceAll("_", " "));
+            dto.setTerminationNoticePeriod(client.getTerminationNoticePeriod().toString());
+            dto.setMsaValDate(client.getMsaValDate());
+            dto.setMsaExpDate(client.getMsaExpDate());
+                    res.add(dto);
         }
-        List<ClientMasterReportDto> dtos = new ArrayList();
-        for (ClientInformation ci : clientInfos) {
-            Client ci1 = ClientDao.instance().findById(ci.getClient().getId());
-            ClientMasterReportDto dtoss = populateClientInfo(ci1);
-            dtoss.setEmployeeName(ci.getEmployee().getFirstName() + " " + ci.getEmployee().getLastName());
-            dtoss.setEmployeeType(ci.getEmployee().getEmployeeType().getName());
-            dtos.add(dtoss);
-        }
-        String[] columnOrder = new String[]{"employeeName", "employeeType", "clientName", "webSite", "clientInvDeliveryMethod", "terminationNoticePeriod", "clientLocations", "recruiterContact", "acctPayContact"};
-        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(dtos, "Active Clients Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
+        String[] columnOrder = new String[]{"employeeName", "employeeType", "clientName", "clientInvDeliveryMethod", "terminationNoticePeriod", "msaValDate", "msaExpDate"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Active Clients Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
 
     }
 
