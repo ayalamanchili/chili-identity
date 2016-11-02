@@ -23,7 +23,12 @@ import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.widgets.GenericPopup;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.benefits.ReadAllBenefitsPanel;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -55,10 +60,18 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
     DateField submittedDate = new DateField(OfficeWelcome.constants2, "submittedDate", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
 
     EnumField othercoverageType = new EnumField(OfficeWelcome.constants2, "otherCarrierType", "HealthInsuranceWaiver", false, true, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
-    protected FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants2, "HealthInsuranceWaiver", "fileUrl", "HealthInsuranceWaiver/fileUrl", false, true) {
+    public FileuploadField waiverUploadPanel = new FileuploadField(OfficeWelcome.constants2, "HealthInsuranceWaiver", "fileUrl", "HealthInsuranceWaiver/fileUrl", false, true) {
         @Override
         public void onUploadComplete(String res) {
-            uploadDoc(null);
+            new ResponseStatusWidget().show("Successfully Added Benefit.");
+            GenericPopup.hideIfOpen();
+            if (TabPanel.instance().profilePanel.isVisible()) {
+                TabPanel.instance().profilePanel.entityPanel.clear();
+                TabPanel.instance().profilePanel.entityPanel.add(new ReadAllBenefitsPanel(OfficeWelcome.instance().employeeId));
+            } else {
+                TabPanel.instance().myOfficePanel.entityPanel.clear();
+                TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBenefitsPanel(TreeEmployeePanel.instance().getEntityId()));
+            }
         }
     };
 
@@ -110,14 +123,14 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
         if (submittedDate.getDate() != null) {
             entity.put("submittedDate", new JSONString(DateUtils.toDateString(submittedDate.getDate())));
         }
-        entity.put("fileUrl", resumeUploadPanel.getFileName());
+        entity.put("fileUrl", waiverUploadPanel.getFileName());
         entity.put("targetEntityName", new JSONString("targetEntityName"));
         entity.put("targetEntityId", new JSONString("0"));
         return entity;
     }
 
     protected void uploadDoc(String entityId) {
-        resumeUploadPanel.upload(entityId.trim());
+        waiverUploadPanel.upload(entityId.trim());
     }
 
     @Override
@@ -158,7 +171,7 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
         entityFieldsPanel.setWidget(7, 1, myspousesplan);
         entityFieldsPanel.setWidget(8, 1, othercoverage);
         entityFieldsPanel.setWidget(10, 1, submittedDate);
-        entityFieldsPanel.setWidget(11, 1, resumeUploadPanel);
+        entityFieldsPanel.setWidget(11, 1, waiverUploadPanel);
         entityActionsPanel.setVisible(false);
     }
 

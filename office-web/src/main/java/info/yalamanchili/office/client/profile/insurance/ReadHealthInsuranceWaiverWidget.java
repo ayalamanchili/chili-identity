@@ -76,59 +76,61 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite implements C
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                populateFieldsFromEntity(entity);
+            }
+        });
 
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        String waivingCoverageFor = entity.get("waivingCoverageFor").isString().stringValue();
-        if (waivingCoverageFor.contains("MySelf")) {
-            myself.setValue(true);
+        if (entity.containsKey("waivingCoverageFor")) {
+            String waivingCoverageFor = entity.get("waivingCoverageFor").isString().stringValue();
+            if (waivingCoverageFor.contains("MySelf")) {
+                myself.setValue(true);
+            }
+            if (waivingCoverageFor.contains("Spouse")) {
+                spouse.setValue(true);
+            }
+            if (entity.containsKey("spouseName")) {
+                spouseName.setValue(entity.get("spouseName").isString().stringValue());;
+            }
+            if (waivingCoverageFor.contains("Dependent")) {
+                dependent.setValue(true);
+            }
+            if (entity.containsKey("dependentName")) {
+                dependentName.setValue(entity.get("dependentName").isString().stringValue());
+            }
+            if (entity.get("waivingCoverageDueTo").isString().stringValue().equals("NoCoverage")) {
+                mypreferencenottohavecoverage.setValue(true);
+            }
+            if (entity.get("waivingCoverageDueTo").isString().stringValue().equals("SpousePlan")) {
+                myspousesplan.setValue(true);
+            }
+            if (entity.containsKey("spouseNameOfCarrier")) {
+                spouseNameOfCarrier.setValue(entity.get("spouseNameOfCarrier").isString().stringValue());
+            }
+            if (entity.get("waivingCoverageDueTo").isString().stringValue().equals("Other")) {
+                othercoverage.setValue(true);
+            }
+            if (entity.containsKey("otherNameOfCarrier")) {
+                otherNameOfCarrier.setValue(entity.get("otherNameOfCarrier").isString().stringValue());
+            }
+            if (entity.containsKey("otherCarrierType")) {
+                otherCarrierType.setValue(entity.get("otherCarrierType").isString().stringValue());
+            }
+            if (entity.containsKey("submittedDate")) {
+                submittedDate.setValue(entity.get("submittedDate").isString().stringValue());
+            }
+            Label resumeLabel = new Label("File Name");
+            entityFieldsPanel.setWidget(11, 1, resumeLabel);
+            String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
+            FileField fileField = new FileField(fileURL);
+            entityFieldsPanel.setWidget(11, 2, fileField);
         }
-        if (waivingCoverageFor.contains("Spouse")) {
-            spouse.setValue(true);
-        }
-        if (entity.containsKey("spouseName")) {
-            spouseName.setValue(entity.get("spouseName").isString().stringValue());;
-        }
-        if (waivingCoverageFor.contains("Dependent")) {
-            dependent.setValue(true);
-        }
-        if (entity.containsKey("dependentName")) {
-            dependentName.setValue(entity.get("dependentName").isString().stringValue());
-        }
-        if (entity.get("waivingCoverageDueTo").isString().stringValue().equals("NoCoverage")) {
-            mypreferencenottohavecoverage.setValue(true);
-        }
-        if (entity.get("waivingCoverageDueTo").isString().stringValue().equals("SpousePlan")) {
-            myspousesplan.setValue(true);
-        }
-        if (entity.containsKey("spouseNameOfCarrier")) {
-            spouseNameOfCarrier.setValue(entity.get("spouseNameOfCarrier").isString().stringValue());
-        }
-        if (entity.get("waivingCoverageDueTo").isString().stringValue().equals("Other")) {
-            othercoverage.setValue(true);
-        }
-        if (entity.containsKey("otherNameOfCarrier")) {
-            otherNameOfCarrier.setValue(entity.get("otherNameOfCarrier").isString().stringValue());
-        }
-        if (entity.containsKey("otherCarrierType")) {
-            otherCarrierType.setValue(entity.get("otherCarrierType").isString().stringValue());
-        }
-        if (entity.containsKey("submittedDate")) {
-            submittedDate.setValue(entity.get("submittedDate").isString().stringValue());
-        }
-        Label resumeLabel = new Label("File Name");
-        entityFieldsPanel.setWidget(11, 1, resumeLabel);
-        String fileURL = ChiliClientConfig.instance().getFileDownloadUrl() + JSONUtils.toString(entity, "fileUrl") + "&entityId=" + JSONUtils.toString(entity, "id");
-        FileField fileField = new FileField(fileURL);
-        entityFieldsPanel.setWidget(11, 2, fileField);
     }
 
     @Override
