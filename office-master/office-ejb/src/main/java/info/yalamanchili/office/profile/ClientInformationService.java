@@ -19,7 +19,7 @@ import info.yalamanchili.office.dao.client.ProjectDao;
 import info.yalamanchili.office.dao.client.SubcontractorDao;
 import info.yalamanchili.office.dao.client.VendorDao;
 import info.yalamanchili.office.dao.ext.CommentDao;
-import info.yalamanchili.office.dao.hr.ProspectCPDDao;
+import info.yalamanchili.office.dao.hr.ClientInfoHandleEntityDao;
 import info.yalamanchili.office.dao.hr.ProspectDao;
 import info.yalamanchili.office.dao.practice.PracticeDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
@@ -41,6 +41,7 @@ import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.hr.ProspectStatus;
 import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.CIDocument;
+import info.yalamanchili.office.entity.profile.ClientInfoHandleEntity;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.ClientInformationCompany;
 import info.yalamanchili.office.entity.profile.ClientInformationStatus;
@@ -48,7 +49,6 @@ import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.profile.notification.ProfileNotificationService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
-import info.yalamanchili.office.entity.profile.ProspectCPD;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.service.ServiceInterceptor;
 import java.text.Format;
@@ -91,7 +91,7 @@ public class ClientInformationService {
     @Autowired
     protected VendorDao vendorDao;
 
-    public ClientInformationDto addClientInformation(Long empId, ClientInformationDto ciDto, Boolean submitForApproval, Boolean isProspectCPD) {
+    public ClientInformationDto addClientInformation(Long empId, ClientInformationDto ciDto, Boolean submitForApproval, Long sourceId, String sourceName) {
         ClientInformation ci = mapper.map(ciDto, ClientInformation.class);
 
         Client client = null;
@@ -99,13 +99,10 @@ public class ClientInformationService {
         Vendor middleVendor = null;
         Project project = new Project();
         Employee emp = null;
-        Prospect prospect = null;
-        if (isProspectCPD == false) {
+        if (empId != null) {
             emp = (Employee) em.find(Employee.class, empId);
             validate(ci, emp, submitForApproval);
-        } else {
-            prospect = em.find(Prospect.class, empId);
-        }
+        } 
         String abbreviation = getCompanyAbbreviation(ciDto.getCompany());
         if (abbreviation == null || abbreviation.isEmpty()) {
             abbreviation = "SSTL";
@@ -219,13 +216,14 @@ public class ClientInformationService {
         ci = clientInformationDao.save(ci);
         if (emp != null) {
             emp.addClientInformation(ci);
-        } else if (prospect != null) {
-            ProspectCPD cpd = new ProspectCPD();
-            cpd.setClientInfoId(ci.getId());
-            cpd.setContactId(prospect.getContact().getId());
+        } 
+        if (!Strings.isNullOrEmpty(sourceName)) {
+            ClientInfoHandleEntity cpd = new ClientInfoHandleEntity();
+            cpd.setSourceEntityId(sourceId);
+            cpd.setSourceEntityName(sourceName);
             cpd.setTargetEntityId(ci.getId());
             cpd.setTargetEntityName(ClientInformation.class.getCanonicalName());
-            ProspectCPDDao.instance().save(cpd);
+            ClientInfoHandleEntityDao.instance().save(cpd);
         }
         if (ciDto.getReason() != null) {
             CommentDao.instance().addComment("End Previous Project Reason: " + ciDto.getReason(), ci);
@@ -582,24 +580,26 @@ public class ClientInformationService {
         clientInformationDao.delete(id);
     }
 
-    public ClientInformationDto addCPDToProspect(Long prospectId, ClientInformationDto cpdDto) {
-        ClientInformationDto dto = addClientInformation(prospectId, cpdDto, false, true);
-        notifyContractsAdminTeam(dto, prospectId);
+    public ClientInformationDto addCPDToProspect(Long sourceId, String sourceName, ClientInformationDto cpdDto) {
+        ClientInformationDto dto = addClientInformation(null, cpdDto, false, sourceId, sourceName);
+        //pass source name in future if cpd tied to company, project etc..
+        notifyContractsAdminTeam(dto, sourceId);
         return dto;
     }
 
-    private void notifyContractsAdminTeam(ClientInformationDto dto, Long prospectId) {
-        Prospect prospect = ProspectDao.instance().findById(prospectId);
+    private void notifyContractsAdminTeam(ClientInformationDto dto, Long sourceId) {
+        //use swich case with source name to findv whether the contact, company, project etc...
+        Contact contact = ContactDao.instance().findById(sourceId);
         Client client = ClientDao.instance().findById(dto.getClient().getId());
         Vendor vendor = VendorDao.instance().findById(dto.getVendor().getId());
         Email email = new Email();
         email.setHtml(Boolean.TRUE);
         email.setRichText(Boolean.TRUE);
         email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_CONTRACTS_ADMIN.name()));
-        email.setSubject("New CPD has created for prospect : " + prospect.getContact().getFirstName() + " " + prospect.getContact().getLastName());
-        String messageText = "New CPD has created for prospect : " + prospect.getContact().getFirstName() + " " + prospect.getContact().getLastName();
+        email.setSubject("New CPD has created for prospect : " + contact.getFirstName() + " " + contact.getLastName());
+        String messageText = "New CPD has created for prospect : " + contact.getFirstName() + " " + contact.getLastName();
         messageText = messageText.concat("<table border='0'>");
-        messageText = messageText.concat("<tr><td><b>Prospect Name </b></td> <td>" + prospect.getContact().getFirstName() + " " + prospect.getContact().getLastName() + "</td></tr>");
+        messageText = messageText.concat("<tr><td><b>Prospect Name </b></td> <td>" + contact.getFirstName() + " " + contact.getLastName() + "</td></tr>");
         messageText = messageText.concat("<tr><td><b>Prospect Status </b></td> <td>" + ProspectStatus.CLOSED_WON.name() + "</td></tr>");
         messageText = messageText.concat("<tr><td><b>Client <b></td> <td>" + client.getName() + "</td></tr>");
         messageText = messageText.concat("<tr><td><b>Vendor </b> </td> <td>" + vendor.getName() + "</td></tr>");
