@@ -83,7 +83,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected boolean isSub = false;
     protected boolean is1099 = false;
     protected boolean active = false;
-    protected JSONObject prospect = null;
+    protected String sourceId = null;
+    protected String sourceName = null;
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants2, "ClientInformation", "cidocument", "CIDocument/fileURL", false, true) {
         @Override
         public void onUploadComplete(String res) {
@@ -96,9 +97,10 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         initCreateComposite("ClientInfo", OfficeWelcome.constants2);
     }
 
-    public CreateClientInfoPanel(CreateCompositeType type, JSONObject prospect) {
+    public CreateClientInfoPanel(CreateCompositeType type, String sourceId, String sourceName) {
         super(type);
-        this.prospect = prospect;
+        this.sourceId = sourceId;
+        this.sourceName = sourceName;
         initCreateComposite("ClientInfo", OfficeWelcome.constants2);
     }
 
@@ -148,7 +150,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             assignEntityValueFromField("overTimeRateDuration", clientInfo);
             assignEntityValueFromField("invoiceFrequency", clientInfo);
             assignEntityValueFromField("invoiceDeliveryMethod", clientInfo);
-            if (prospect == null) {
+            if (sourceId == null) {
                 if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                     assignEntityValueFromField("subcontractor", clientInfo);
                     assignEntityValueFromField("subcontractorContact", clientInfo);
@@ -225,7 +227,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Client Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        if (prospect == null) {
+        if (sourceId == null) {
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId(), active));
         } else {
             GenericPopup.hideIfOpen();
@@ -273,7 +275,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
     @Override
     protected void addWidgets() {
         addField("consultantJobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        if (prospect == null) {
+        if (sourceId == null) {
             addField("employeeType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         } else {
             addField("employeeType", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -340,7 +342,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             addEnumField("overTimeRateDuration", false, false, billingDuration, Alignment.HORIZONTAL);
             addEnumField("invoiceFrequency", false, true, InvoiceFrequency.names(), Alignment.HORIZONTAL);
             addEnumField("invoiceDeliveryMethod", false, false, InvoiceDeliveryMethod.names(), Alignment.HORIZONTAL);
-            if (prospect == null) {
+            if (sourceId == null) {
                 if (Auth.isSubContractor(TreeEmployeePanel.instance().getEntity() == null ? OfficeWelcome.instance().employee : TreeEmployeePanel.instance().getEntity())) {
                     entityFieldsPanel.add(getLineSeperatorTag("Subcontractor Information"));
                     addDropDown("subcontractor", new SelectSubcontractorWidget(false, true, Alignment.HORIZONTAL));
@@ -365,7 +367,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         addField("visaStatus", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("terminationNotice", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addDropDown("practice", selectPractiseWidgetF);
-        if (prospect == null) {
+        if (sourceId == null) {
             if (TreeEmployeePanel.instance().getEntity().get("workStatus") != null) {
                 StringField employeeVisaStatusF = (StringField) fields.get("visaStatus");
                 employeeVisaStatusF.setValue(TreeEmployeePanel.instance().getEntity().get("workStatus").isString().stringValue());
@@ -553,10 +555,10 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
 
     @Override
     protected String getURI() {
-        if (prospect == null) {
+        if (sourceId == null) {
             return OfficeWelcome.constants.root_url() + "employee/clientinformation/" + TreeEmployeePanel.instance().getEntityId() + "?submitForApproval=" + submitForApprovalF.getValue();
         } else {
-            return OfficeWelcome.constants.root_url() + "prospect/add-cpd/" + prospect.get("id").isString().stringValue() + "?submitForApproval=" + submitForApprovalF.getValue();
+            return OfficeWelcome.constants.root_url() + "clientinformation/add-cpd/" + sourceId + "/" + sourceName;
         }
     }
 
@@ -596,7 +598,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             valid = false;
         }
 
-        if (prospect != null) {
+        if (sourceId != null) {
             SelectComposite clientLocation = (SelectComposite) fields.get("clientLocation");
             if (clientLocation.getSelectedObject() == null) {
                 clientLocation.setMessage("may not be null");
