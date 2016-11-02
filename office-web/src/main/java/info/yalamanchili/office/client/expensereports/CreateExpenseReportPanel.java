@@ -13,7 +13,8 @@ import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.http.client.URL;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -33,6 +34,7 @@ import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TCRUDComposite;
 import info.chili.gwt.fields.BooleanField;
+import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
@@ -52,6 +54,7 @@ import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.expenseitem.CreateExpenseItemPanel;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +64,7 @@ import java.util.logging.Logger;
  *
  * @author Prasanthi.p
  */
-public class CreateExpenseReportPanel extends CreateComposite implements ChangeHandler, BlurHandler {
+public class CreateExpenseReportPanel extends CreateComposite implements ChangeHandler, BlurHandler, ValueChangeHandler {
 
     private Logger logger = Logger.getLogger(CreateExpenseReportPanel.class.getName());
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
@@ -75,6 +78,9 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     boolean isGeneralExpenseItem = false;
     CheckBox confrmCB = new CheckBox();
     HorizontalPanel hPanel = new HorizontalPanel();
+    CurrencyField totalPersonalCardExpenses = new CurrencyField(OfficeWelcome.constants2, "totalPersonalCardExpenses", "ExpenseReport", true, false, Alignment.HORIZONTAL);
+    CurrencyField totalCorporateCardExpenses = new CurrencyField(OfficeWelcome.constants2, "totalCorporateCardExpenses", "ExpenseReport", true, false, Alignment.HORIZONTAL);
+    CurrencyField totalExpenses = new CurrencyField(OfficeWelcome.constants2, "totalExpenses", "ExpenseReport", true, false, Alignment.HORIZONTAL);
 
     FileuploadField fileUploadPanel = new FileuploadField(OfficeWelcome.constants2, "ExpenseReceipt", "", "ExpenseReceipt/fileURL", false, true) {
         @Override
@@ -137,6 +143,8 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     EnumField departmentType;
     StringField otherDepartment;
     IntegerField payrollFileNumber;
+    CreateExpenseItemPanel panel = null;
+    boolean readyOnly;
 
     protected static CreateExpenseReportPanel instance;
     FileUpload fileUpload = new FileUpload();
@@ -199,12 +207,14 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         otherDepartment = (StringField) fields.get(OTHERDEPARTMENT);
         addField(COMMENTS, false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(expenseItemsInfo);
-        CreateExpenseItemPanel panel = null;
         entityActionsPanel.add(addItemL);
         panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem);
         expenseItemPanels.add(panel);
         entityFieldsPanel.add(panel);
         entityActionsPanel.add(receiptsInfo);
+        entityActionsPanel.insert(totalExpenses, entityActionsPanel.getWidgetIndex(receiptsInfo));
+        entityActionsPanel.insert(totalCorporateCardExpenses, entityActionsPanel.getWidgetIndex(totalExpenses));
+        entityActionsPanel.insert(totalPersonalCardExpenses, entityActionsPanel.getWidgetIndex(totalCorporateCardExpenses));
         entityActionsPanel.add(fileUploadPanel);
         entityActionsPanel.add(Acknowledgement);
         hPanel.add(confrmCB);
@@ -254,6 +264,9 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         String mimeType = "application/pdf,image/jpeg,image/pjpegs";
         fileUploadPanel.getFileUpload().getElement().setAttribute("multiple", "multiple");
         fileUploadPanel.getFileUpload().getElement().setPropertyString("accept", mimeType);
+        totalPersonalCardExpenses.setValue(BigDecimal.ZERO.negate(), readOnly);
+        totalCorporateCardExpenses.setValue(BigDecimal.ZERO.negate(), readOnly);
+        totalExpenses.setValue(BigDecimal.ZERO.negate(), readOnly);
     }
 
     SelectEmployeeWidget otherEmployees = new SelectEmployeeWidget(OTHEREMPLOYEES, false, false, Alignment.HORIZONTAL) {
@@ -274,6 +287,10 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         addItemL.addClickHandler(this);
         forsomeone.addClickHandler(this);
         foryourself.addClickHandler(this);
+        panel.expensePaymentMode.listBox.addBlurHandler(this);
+        panel.amount.getTextbox().addValueChangeHandler(this);
+        totalPersonalCardExpenses.getTextbox().addChangeHandler(this);
+        totalCorporateCardExpenses.getTextbox().addChangeHandler(this);
     }
 
     @Override
@@ -338,6 +355,9 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
                 i++;
             }
         }
+        entity.put("totalPersonalCardExpenses", new JSONString(totalPersonalCardExpenses.getCurrency().toString()));
+        entity.put("totalCorporateCardExpenses", new JSONString(totalCorporateCardExpenses.getCurrency().toString()));
+        entity.put("totalExpenses", new JSONString(totalExpenses.getCurrency().toString()));
         entity.put(EXPENSE_RECEIPT, expenseReceipts);
         return entity;
     }
@@ -346,17 +366,17 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                uploadReceipts(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadReceipts(arg0);
+                    }
+                });
     }
 
     @Override
@@ -376,10 +396,21 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addItemL)) {
-            CreateExpenseItemPanel panel = null;
+            onChange();
             panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem);
             expenseItemPanels.add(panel);
             entityFieldsPanel.add(panel);
+            panel.expensePaymentMode.listBox.addBlurHandler(this);
+            panel.amount.getTextbox().addValueChangeHandler(this);
+            onChange();
+        }
+
+        if (event.getSource().equals(panel.deleteB)) {
+            String amount = panel.amount.getValue();
+            if (amount != null && !amount.isEmpty()) {
+                totalPersonalCardExpenses.setValue(totalPersonalCardExpenses.getCurrency().subtract(new BigDecimal(amount)).toString());
+            }
+            onChange();
         }
         if (event.getSource().equals(forsomeone)) {
             otherEmployees.setVisible(true);
@@ -458,10 +489,69 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
                 otherDepartment.setVisible(false);
             }
         }
+        if (event.getSource().equals(totalPersonalCardExpenses.getTextbox()) || event.getSource().equals(totalCorporateCardExpenses.getTextbox())) {
+            onChange();
+        }
     }
 
     @Override
     public void onBlur(BlurEvent event) {
+        if (panel.expensePaymentMode.listBox.getName() != null) {
+            onChange();
+        }
+    }
+
+    public void onChange() {
+        String amountV = "";
+        totalPersonalCardExpenses.setValue("");
+        String amountC = "";
+        totalCorporateCardExpenses.setValue("");
+        BigDecimal finalExpenses = BigDecimal.ZERO;
+        if (expenseItemPanels.size() > 0) {
+            for (int i = 0; i < expenseItemPanels.size(); i++) {
+                CreateExpenseItemPanel itemPanel = expenseItemPanels.get(i);
+                if (itemPanel.amount.getCurrency() != null && itemPanel.expensePaymentMode.getValue().equalsIgnoreCase("Personal_Card")) {
+                    amountV = itemPanel.amount.getValue();
+                    if (!totalPersonalCardExpenses.getValue().isEmpty()) {
+                        BigDecimal finalAmt = totalPersonalCardExpenses.getCurrency().add(new BigDecimal(amountV));
+                        totalPersonalCardExpenses.setValue(finalAmt, readyOnly);
+                        amountV = "";
+                    } else {
+                        totalPersonalCardExpenses.setValue(new BigDecimal(amountV), readyOnly);
+                        amountV = "";
+                    }
+                } else if (itemPanel.amount.getCurrency() != null && itemPanel.expensePaymentMode.getValue().equalsIgnoreCase("Corporate_Card")) {
+                    amountC = itemPanel.amount.getValue();
+                    if (!totalCorporateCardExpenses.getValue().isEmpty()) {
+                        BigDecimal finalAmt = totalCorporateCardExpenses.getCurrency().add(new BigDecimal(amountC));
+                        totalCorporateCardExpenses.setValue(finalAmt, readyOnly);
+                        amountC = "";
+                    } else {
+                        totalCorporateCardExpenses.setValue(new BigDecimal(amountC), readyOnly);
+                        amountC = "";
+                    }
+                }
+            }
+
+            if (totalCorporateCardExpenses.getValue().isEmpty() && totalPersonalCardExpenses.getValue().isEmpty()) {
+                totalPersonalCardExpenses.setValue(BigDecimal.ZERO.negate(), readOnly);
+                totalCorporateCardExpenses.setValue(BigDecimal.ZERO.negate(), readOnly);
+                totalExpenses.setValue(BigDecimal.ZERO.negate(), readOnly);
+            } else if (totalCorporateCardExpenses.getValue().isEmpty()) {
+                finalExpenses = totalPersonalCardExpenses.getCurrency();
+                totalCorporateCardExpenses.setValue(BigDecimal.ZERO.negate(), readOnly);
+            } else if (totalPersonalCardExpenses.getValue().isEmpty()) {
+                finalExpenses = totalCorporateCardExpenses.getCurrency();
+                totalPersonalCardExpenses.setValue(BigDecimal.ZERO.negate(), readOnly);
+            } else {
+                finalExpenses = totalPersonalCardExpenses.getCurrency().add(totalCorporateCardExpenses.getCurrency());
+            }
+            totalExpenses.setValue(finalExpenses, readOnly);
+        } else {
+            totalPersonalCardExpenses.setValue(finalExpenses.negate(), readOnly);
+            totalCorporateCardExpenses.setValue(finalExpenses.negate(), readOnly);
+            totalExpenses.setValue(finalExpenses.negate(), readOnly);
+        }
     }
 
     protected String getUploadUrl() {
@@ -498,9 +588,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         if (expenseItemPanels.size() > 0 && (fileUploadPanel.getFileNames().size() <= 0 || fileUploadPanel.getFileNames().get(0).stringValue().isEmpty())) {
             return Window.confirm("Your expense report does not have any receipts attached so will not be processed. Are you sure you still want to submit?");
         }
-
         return valid;
-
     }
 
     @Override
@@ -513,4 +601,8 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         return OfficeWelcome.constants.root_url() + "expensereport/submit?submitForApproval=" + submitForApprovalF.getValue();
     }
 
+    @Override
+    public void onValueChange(ValueChangeEvent event) {
+        onChange();
+    }
 }

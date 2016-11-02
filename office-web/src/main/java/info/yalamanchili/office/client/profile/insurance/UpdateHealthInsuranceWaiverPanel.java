@@ -1,6 +1,3 @@
-/**
- * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
- */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -9,34 +6,32 @@
 package info.yalamanchili.office.client.profile.insurance;
 
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RadioButton;
-import info.chili.gwt.crud.TCreateComposite;
+import info.chili.gwt.crud.TUpdateComposite;
 import info.chili.gwt.date.DateUtils;
+import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.fields.StringField;
+import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.widgets.GenericPopup;
-import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.TabPanel;
-import info.yalamanchili.office.client.profile.benefits.ReadAllBenefitsPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.Date;
 import java.util.logging.Logger;
 
 /**
  *
- * @author prasanthi.p
+ * @author hemalatha.duggirala
  */
-public class HealthInsuranceWaiverPanel extends TCreateComposite implements ClickHandler {
+public class UpdateHealthInsuranceWaiverPanel extends TUpdateComposite {
 
     protected String url;
 
@@ -44,7 +39,8 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
     CheckBox myself = new CheckBox("MySelf");
     protected CheckBox spouse = new CheckBox("Spouse");
     protected CheckBox dependent = new CheckBox("Dependent");
-
+    BooleanField enrolledFlagField = new BooleanField(OfficeWelcome.constants2, "enrolled", "Benefit", false, false, Alignment.HORIZONTAL);
+    DateField requestedDate = new DateField(OfficeWelcome.constants2, "affectiveDate", "Benefit", false, false, Alignment.HORIZONTAL);
     RadioButton mypreferencenottohavecoverage = new RadioButton("mypreferencenottohavecoverage", "My preference not to have coverage");
     RadioButton myspousesplan = new RadioButton("myspousesplan", "Coverage under my spouse's plan");
     RadioButton othercoverage = new RadioButton("othercoverage", "Other coverage");
@@ -60,29 +56,23 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
     DateField submittedDate = new DateField(OfficeWelcome.constants2, "submittedDate", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
 
     EnumField othercoverageType = new EnumField(OfficeWelcome.constants2, "otherCarrierType", "HealthInsuranceWaiver", false, true, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
-    public FileuploadField waiverUploadPanel = new FileuploadField(OfficeWelcome.constants2, "HealthInsuranceWaiver", "fileUrl", "HealthInsuranceWaiver/fileUrl", false, true) {
+    protected FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants2, "HealthInsuranceWaiver", "fileUrl", "HealthInsuranceWaiver/fileUrl", false, true) {
         @Override
         public void onUploadComplete(String res) {
-            new ResponseStatusWidget().show("Successfully Added Benefit.");
-            GenericPopup.hideIfOpen();
-            if (TabPanel.instance().profilePanel.isVisible()) {
-                TabPanel.instance().profilePanel.entityPanel.clear();
-                TabPanel.instance().profilePanel.entityPanel.add(new ReadAllBenefitsPanel(OfficeWelcome.instance().employeeId));
-            } else {
-                TabPanel.instance().myOfficePanel.entityPanel.clear();
-                TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBenefitsPanel(TreeEmployeePanel.instance().getEntityId()));
-            }
+            uploadDoc(null);
         }
     };
 
-    public HealthInsuranceWaiverPanel() {
-        super(TCreateComposite.CreateCompositeType.CREATE);
-        initCreateComposite("HealthInsuranceWaiver", OfficeWelcome.constants2);
+    public UpdateHealthInsuranceWaiverPanel(JSONObject entity) {
+        initUpdateComposite(entity, "HealthInsuranceWaiver", OfficeWelcome.constants2);
+    }
+
+    public UpdateHealthInsuranceWaiverPanel() {
+        initUpdateComposite(entity, "HealthInsuranceWaiver", OfficeWelcome.constants2);
     }
 
     @Override
     public JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();
         //waivingCoverageFor
         String waivingCoverageForS = "";
         if (myself.getValue() == true) {
@@ -123,26 +113,39 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
         if (submittedDate.getDate() != null) {
             entity.put("submittedDate", new JSONString(DateUtils.toDateString(submittedDate.getDate())));
         }
-        entity.put("fileUrl", waiverUploadPanel.getFileName());
+        entity.put("fileUrl", resumeUploadPanel.getFileName());
         entity.put("targetEntityName", new JSONString("targetEntityName"));
         entity.put("targetEntityId", new JSONString("0"));
         return entity;
     }
 
     protected void uploadDoc(String entityId) {
-        waiverUploadPanel.upload(entityId.trim());
+        resumeUploadPanel.upload(entityId.trim());
     }
 
     @Override
-    protected void createButtonClicked() {
+    protected void updateButtonClicked() {
+        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
+                OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
+
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     @Override
-    protected void addButtonClicked() {
+    public void populateFieldsFromEntity(JSONObject entity) {
+
     }
 
     @Override
-    protected void postCreateSuccess(String result) {
+    protected void postUpdateSuccess(String result) {
     }
 
     @Override
@@ -157,7 +160,7 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
 
     @Override
     protected void configure() {
-        create.setVisible(false);
+
     }
 
     @Override
@@ -170,8 +173,8 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
         entityFieldsPanel.setWidget(6, 1, mypreferencenottohavecoverage);
         entityFieldsPanel.setWidget(7, 1, myspousesplan);
         entityFieldsPanel.setWidget(8, 1, othercoverage);
-        entityFieldsPanel.setWidget(10, 1, submittedDate);
-        entityFieldsPanel.setWidget(11, 1, waiverUploadPanel);
+        entityFieldsPanel.setWidget(9, 1, submittedDate);
+        entityFieldsPanel.setWidget(10, 1, resumeUploadPanel);
         entityActionsPanel.setVisible(false);
     }
 
@@ -181,7 +184,7 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
 
     @Override
     protected String getURI() {
-        return "";
+        return OfficeWelcome.constants.root_url() + "benefit/save/" + TreeEmployeePanel.instance().getEntityId();
     }
 
     @Override
