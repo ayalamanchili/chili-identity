@@ -91,6 +91,8 @@ public class ProspectDto implements Serializable {
     protected String comment;
 
     protected String bpmProcessId;
+    
+    protected Long contactId;
 
     @Valid
     private Address address;
@@ -458,6 +460,14 @@ public class ProspectDto implements Serializable {
     public void setCpds(List<ClientInformation> cpds) {
         this.cpds = cpds;
     }
+
+    public Long getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(Long contactId) {
+        this.contactId = contactId;
+    }
     
     @Override
     public String toString() {
@@ -521,6 +531,7 @@ public class ProspectDto implements Serializable {
         }
         prospectContact.setStatus(entity.getStatus());
         prospectContact.setStage(entity.getStatus().name());
+        prospectContact.setContactId(entity.getContact().getId());
         prospectContact.setId(entity.getId());
         return prospectContact;
     }
