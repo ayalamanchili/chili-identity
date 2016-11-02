@@ -45,12 +45,7 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
     DateField requestedDate = new DateField(OfficeWelcome.constants2, "affectiveDate", "Benefit", false, false, Alignment.HORIZONTAL);
     EnumField benefitType = new EnumField(OfficeWelcome.constants2, "benefitType", "Benefit", false, false, BenefitType.names(), Alignment.HORIZONTAL);
     protected String empId;
-//    protected FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants2, "HealthInsuranceWaiver", "fileUrl", "HealthInsuranceWaiver/fileUrl", false, true) {
-//        @Override
-//        public void onUploadComplete(String res) {
-//            uploadDoc(res);
-//        }
-//    };
+
     HealthInsuranceWaiverPanel insuranceWaiver = new HealthInsuranceWaiverPanel();
 
     public CreateBenefitPanel(CreateComposite.CreateCompositeType type) {
@@ -97,9 +92,6 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
                 });
     }
 
-//    protected void uploadDoc(String entityId) {
-//        resumeUploadPanel.upload(entityId.trim());
-//    }
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Benefit.");

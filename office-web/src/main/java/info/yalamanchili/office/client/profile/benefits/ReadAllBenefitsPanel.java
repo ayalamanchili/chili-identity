@@ -55,8 +55,14 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
 
     @Override
     public void viewClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadBenefitPanel((entityId)));
+        if (TabPanel.instance().profilePanel.isVisible()) {
+            TabPanel.instance().profilePanel.entityPanel.clear();
+            TabPanel.instance().profilePanel.entityPanel.add(new ReadBenefitPanel((entityId)));
+        } else {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadBenefitPanel((entityId)));
+        }
+
     }
 
     @Override
@@ -79,8 +85,12 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateBenefitPanel(getEntity(entityId)));
+        if (TabPanel.instance().profilePanel.isVisible()) {
+            new GenericPopup(new UpdateBenefitPanel(getEntity(entityId))).show();
+        } else {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateBenefitPanel(getEntity(entityId)));
+        }
     }
 
     @Override
@@ -114,7 +124,7 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HEALTH_INSURANCE_MANAGER)) {
             createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
         } else {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ, row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
         }
     }
 

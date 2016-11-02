@@ -1,6 +1,3 @@
-/**
- * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
- */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -9,21 +6,16 @@
 package info.yalamanchili.office.client.profile.benefits;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
-import info.chili.gwt.date.DateUtils;
-import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.DateField;
-import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
-import info.yalamanchili.office.client.profile.insurance.HealthInsuranceWaiverPanel;
 import java.util.logging.Logger;
 
 /**
@@ -33,12 +25,6 @@ import java.util.logging.Logger;
 public class UpdateBenefitPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateBenefitPanel.class.getName());
-    BooleanField enrolledFlagField = new BooleanField(OfficeWelcome.constants2, "enrolled", "Benefit", false, false, Alignment.HORIZONTAL);
-    DateField requestedDate = new DateField(OfficeWelcome.constants2, "affectiveDate", "Benefit", false, false, Alignment.HORIZONTAL);
-    EnumField benefitType = new EnumField(OfficeWelcome.constants, "benefitType", "Benefit", false, false, BenefitType.names(), Alignment.HORIZONTAL);
-    protected String empId;
-
-    HealthInsuranceWaiverPanel insuranceWaiver = new HealthInsuranceWaiverPanel();
 
     public UpdateBenefitPanel(JSONObject entity) {
         initUpdateComposite(entity, "Benefit", OfficeWelcome.constants2);
@@ -46,17 +32,10 @@ public class UpdateBenefitPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        entity.put("benefitType", new JSONString(benefitType.getValue()));
-        if (insuranceWaiver != null) {
-            JSONObject waiver = insuranceWaiver.populateEntityFromFields();
-            entity.put("healthInsuranceWaiver", insuranceWaiver.populateEntityFromFields());
-        }
-        entity.put("enrolled", new JSONString(enrolledFlagField.getValue().toString()));
+        assignEntityValueFromField("benefitType", entity);
         assignEntityValueFromField("year", entity);
-        if (requestedDate.getDate() != null) {
-            entity.put("affectiveDate", new JSONString(DateUtils.toDateString(requestedDate.getDate())));
-        }
-
+        assignEntityValueFromField("enrolled", entity);
+        assignEntityValueFromField("comments", entity);
         return entity;
     }
 
@@ -79,8 +58,14 @@ public class UpdateBenefitPanel extends UpdateComposite {
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Benefit Information");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBenefitsPanel(TreeEmployeePanel.instance().getEntityId()));
+        GenericPopup.hideIfOpen();
+        if (TabPanel.instance().profilePanel.isVisible()) {
+            TabPanel.instance().profilePanel.entityPanel.clear();
+            TabPanel.instance().profilePanel.entityPanel.add(new ReadAllBenefitsPanel(OfficeWelcome.instance().employeeId));
+        } else {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBenefitsPanel(TreeEmployeePanel.instance().getEntityId()));
+        }
     }
 
     @Override
@@ -88,6 +73,7 @@ public class UpdateBenefitPanel extends UpdateComposite {
         assignFieldValueFromEntity("benefitType", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("year", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("enrolled", entity, DataType.BOOLEAN_FIELD);
+        assignFieldValueFromEntity("comments", entity, DataType.RICH_TEXT_AREA);
     }
 
     @Override
@@ -103,13 +89,19 @@ public class UpdateBenefitPanel extends UpdateComposite {
         addEnumField("benefitType", false, false, BenefitType.names(), Alignment.HORIZONTAL);
         addEnumField("year", false, false, YearType.names(), Alignment.HORIZONTAL);
         addField("enrolled", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("comments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
     }
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
 
+    @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "benefit/save/" + TreeEmployeePanel.instance().getEntityId();
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            return OfficeWelcome.constants.root_url() + "benefit/save/" + TreeEmployeePanel.instance().getEntityId();
+        } else {
+            return OfficeWelcome.constants.root_url() + "benefit/save/" + OfficeWelcome.instance().employeeId;
+        }
     }
 }
