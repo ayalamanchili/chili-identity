@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
+import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
@@ -24,6 +25,7 @@ import info.chili.gwt.fields.IntegerField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -48,6 +50,9 @@ public class ReadExpenseReportPanel extends ReadComposite {
     protected List<ReadExpenseItemPanel> readItemsPanels = new ArrayList<ReadExpenseItemPanel>();
     protected HorizontalPanel attachmentsPanel = new HorizontalPanel();
     protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, false, Alignment.HORIZONTAL);
+    CurrencyField totalPersonalCardExpenses = new CurrencyField(OfficeWelcome.constants2, "totalPersonalCardExpenses", "ExpenseReport", true, true, Alignment.HORIZONTAL);
+    CurrencyField totalCorporateCardExpenses = new CurrencyField(OfficeWelcome.constants2, "totalCorporateCardExpenses", "ExpenseReport", true, true, Alignment.HORIZONTAL);
+    CurrencyField totalExpenses = new CurrencyField(OfficeWelcome.constants2, "totalExpenses", "ExpenseReport", true, true, Alignment.HORIZONTAL);
 
     FormPanel formPanel = new FormPanel();
 //    protected static HTML travelInfo = new HTML("\n"
@@ -152,6 +157,9 @@ public class ReadExpenseReportPanel extends ReadComposite {
         addField(OTHERDEPARTMENT, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         otherDepartment = (StringField) fields.get(OTHERDEPARTMENT);
         entityFieldsPanel.add(expenseInfo);
+        entityFieldsPanel.add(totalExpenses);
+        entityFieldsPanel.add(totalPersonalCardExpenses);
+        entityFieldsPanel.add(totalCorporateCardExpenses);
         alignFields();
     }
 
@@ -188,17 +196,17 @@ public class ReadExpenseReportPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                if (ExpenseFormType.GENERAL_EXPENSE.name().equals(JSONUtils.toString(getEntity(), EXPENSE_FORM_TYPE))) {
-                    addGeneralExpenseFields();
-                }
-                logger.info(entity.toString());
-                populateFieldsFromEntity(entity);
-                populateComments();
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        if (ExpenseFormType.GENERAL_EXPENSE.name().equals(JSONUtils.toString(getEntity(), EXPENSE_FORM_TYPE))) {
+                            addGeneralExpenseFields();
+                        }
+                        logger.info(entity.toString());
+                        populateFieldsFromEntity(entity);
+                        populateComments();
+                    }
+                });
     }
 
     @Override
@@ -216,6 +224,15 @@ public class ReadExpenseReportPanel extends ReadComposite {
         assignFieldValueFromEntity(DEPARTMENTTYPE, entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity(OTHERDEPARTMENT, entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity(COMPANY, entity, null);
+        if (entity.containsKey("totalPersonalCardExpenses")) {
+            totalPersonalCardExpenses.setValue(FormatUtils.formarCurrency(entity.get("totalPersonalCardExpenses").isString().stringValue()));
+        }
+        if (entity.containsKey("totalCorporateCardExpenses")) {
+            totalCorporateCardExpenses.setValue(FormatUtils.formarCurrency(entity.get("totalCorporateCardExpenses").isString().stringValue()));
+        }
+        if (entity.containsKey("totalExpenses")) {
+            totalExpenses.setValue(FormatUtils.formarCurrency(entity.get("totalExpenses").isString().stringValue()));
+        }
         JSONArray expenseItems = JSONUtils.toJSONArray(entity.get(EXPENSE_ITEMS));
         populateExpenseItems(expenseItems);
         JSONArray expenseReceipts = JSONUtils.toJSONArray(entity.get(EXPENSE_RECEIPT));

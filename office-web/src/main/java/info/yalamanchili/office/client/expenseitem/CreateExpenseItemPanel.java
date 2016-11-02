@@ -16,7 +16,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDComposite;
@@ -48,14 +47,14 @@ public class CreateExpenseItemPanel extends TCreateComposite implements ChangeHa
 
     private Logger logger = Logger.getLogger(CreateExpenseItemPanel.class.getName());
     SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true);
-    EnumField expensePaymentMode;
+    public EnumField expensePaymentMode;
     DateField expenseDate;
     StringField purpose;
     StringField description;
-    CurrencyField amount;
+    public CurrencyField amount;
     boolean isGeneralExpenseItem = false;
     CurrencyField expenseMiles;
-    ClickableLink deleteB = new ClickableLink("Remove Item");
+    public ClickableLink deleteB = new ClickableLink("Remove Item");
     CRUDComposite parent;
 
     public CreateExpenseItemPanel(CRUDComposite parent, boolean isGeneralExpenseItem) {
@@ -88,7 +87,7 @@ public class CreateExpenseItemPanel extends TCreateComposite implements ChangeHa
             addField(DESCRIPTION, false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 7);
             description = (StringField) fields.get(DESCRIPTION);
         }
-        entityFieldsPanel.setWidget(1,8, deleteB);
+        entityFieldsPanel.setWidget(1, 8, deleteB);
         entityActionsPanel.setVisible(false);
     }
 
@@ -149,17 +148,17 @@ public class CreateExpenseItemPanel extends TCreateComposite implements ChangeHa
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -209,18 +208,20 @@ public class CreateExpenseItemPanel extends TCreateComposite implements ChangeHa
             this.removeFromParent();
             if (parent instanceof CreateExpenseReportPanel) {
                 CreateExpenseReportPanel.instance().expenseItemPanels.remove(this);
+                CreateExpenseReportPanel.instance().onChange();
             } else if (parent instanceof UpdateExpenseReportPanel) {
                 UpdateExpenseReportPanel.instance().updateItemPanels.remove(this);
+                UpdateExpenseReportPanel.instance().onChange();
             }
-            if (!getEntityId().isEmpty()) {
+            if (getEntityId() != null && !getEntityId().isEmpty()) {
                 HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
                         OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
 
-                    @Override
-                    public void onResponse(String arg0) {
-                        new ResponseStatusWidget().show("Successfully Deleted Employee ExpenseItem Information");
-                    }
-                });
+                            @Override
+                            public void onResponse(String arg0) {
+                                new ResponseStatusWidget().show("Successfully Deleted Employee ExpenseItem Information");
+                            }
+                        });
             }
 
         }
