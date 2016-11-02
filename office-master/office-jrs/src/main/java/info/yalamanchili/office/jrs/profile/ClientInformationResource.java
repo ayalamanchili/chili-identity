@@ -181,6 +181,14 @@ public class ClientInformationResource extends CRUDResource<ClientInformation> {
     public String getPrevProjEndDate(@PathParam("id") Long id, @PathParam("endPrevProj") Boolean endprevProj) {
         return clientInformationDao.queryForPrevProjEndDate(id);
     }
+    
+    @PUT
+    @Validate
+    @PreAuthorize("hasAnyRole('ROLE_CONTRACTS_ADMIN')")
+    @Path("/add-cpd/{sourceId}/{sourceName}")
+    public ClientInformationDto addCPDToProspect(@PathParam("sourceId") Long sourceId,  @PathParam("sourceName") String sourceName, ClientInformationDto cpdDto) {
+        return clientInformationService.addCPDToProspect(sourceId, sourceName, cpdDto);
+    }
 
     @XmlRootElement
     @XmlType
