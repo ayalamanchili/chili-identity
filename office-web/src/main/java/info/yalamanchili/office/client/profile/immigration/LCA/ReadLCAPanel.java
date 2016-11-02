@@ -98,10 +98,10 @@ public class ReadLCAPanel extends TReadComposite {
     @Override
     protected void addWidgets() {
         logger.info("entity read : " + entity);
-        addField("candidateNames", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
+        addField("candidateNames", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
         addField("lcaNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
-        addEnumField("visaClassification", true, true, VisaClassificationType.names(), Alignment.HORIZONTAL, 1, 3);
-        entityFieldsPanel.getFlexCellFormatter().setColSpan(2, 1, 2);
+        addEnumField("visaClassification", true, true, VisaClassificationType.names(), Alignment.HORIZONTAL, 2, 1);
+        entityFieldsPanel.getFlexCellFormatter().setColSpan(2, 2, 2);
         addDropDown("workedByEmployees", selectRecruiterW, 3, 1);
         addDropDown("company", selectCompanyWidget, 3, 2);
         addField("jobTitle", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 4, 1);
@@ -134,6 +134,21 @@ public class ReadLCAPanel extends TReadComposite {
         addField("withdrawnLCANumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 16, 1);
         alignFields();
 
+    }
+
+    @Override
+    protected boolean enableAudit() {
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS, Auth.ROLE.ROLE_RECRUITER);
+    }
+
+    @Override
+    protected String getAuditUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.immigration.LCA" + "/" + getEntityId();
+    }
+
+    @Override
+    protected boolean enableBack() {
+        return true;
     }
 
     @Override

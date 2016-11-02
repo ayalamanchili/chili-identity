@@ -87,7 +87,7 @@ public class LcaMenu extends CMenuBar {
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             JSONObject entity = new JSONObject();
-            entity.put("status", new JSONString("CertifiedSpare"));
+            entity.put("status", new JSONString("Certified_Spare"));
             getLcas(entity);
         } else if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION, Auth.ROLE.ROLE_RECRUITER)) {
             TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new SearchLcaPanel());

@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.client.profile.immigration.LCA;
 
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Timer;
@@ -23,7 +24,7 @@ import java.util.logging.Logger;
  *
  * @author raghu
  */
-public class SearchLcaPanel extends SearchComposite {
+public class SearchLcaPanel extends SearchComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(SearchLcaPanel.class.getName());
 
@@ -35,7 +36,6 @@ public class SearchLcaPanel extends SearchComposite {
     @Override
     protected void onOpenAdvancedSearch() {
         super.onOpenAdvancedSearch();
-        TabPanel.instance().immigrationPanel.sidePanelTop.setHeight("100%");
     }
 
     @Override
@@ -61,14 +61,13 @@ public class SearchLcaPanel extends SearchComposite {
     @Override
     protected void addWidgets() {
         addField("candidateNames", DataType.STRING_FIELD);
-        addEnumField("status", false, false, LCAStatus.names());
+
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("candidateNames", entity);
-        assignEntityValueFromField("status", entity);
         logger.info(entity.toString());
         return entity;
     }
@@ -114,5 +113,7 @@ public class SearchLcaPanel extends SearchComposite {
 
     @Override
     protected void addListeners() {
+
     }
+
 }

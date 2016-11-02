@@ -50,7 +50,7 @@ public class ImmigrationMenu extends CMenuBar {
     static Command immigrationpetitionCmd = new Command() {
         public void execute() {
             TabPanel.instance().getImmigrationPanel().entityPanel.clear();
-            TabPanel.instance().getImmigrationPanel().sidePanel.clear();
+            TabPanel.instance().getImmigrationPanel().sidePanelTop.clear();
             TabPanel.instance().getImmigrationPanel().entityPanel.add(new ReadAllPetitionsPanel());
         }
     };

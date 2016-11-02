@@ -11,10 +11,13 @@ package info.yalamanchili.office.dao.profile.immigration;
 import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.immigration.LCA;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -40,4 +43,13 @@ public class LCADao extends CRUDDao<LCA> {
         return em;
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<LCA> query(int start, int limit) {
+        Query findAllQuery = getEntityManager().createQuery("from " + LCA.class.getCanonicalName() + "  order by upper(candidateNames) ASC", entityCls);
+        findAllQuery.setFirstResult(start);
+        findAllQuery.setMaxResults(limit);
+        return findAllQuery.getResultList();
+
+    }
 }

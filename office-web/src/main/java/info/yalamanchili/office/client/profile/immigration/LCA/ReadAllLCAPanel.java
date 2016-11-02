@@ -11,7 +11,6 @@ package info.yalamanchili.office.client.profile.immigration.LCA;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.CreateComposite;
@@ -70,12 +69,12 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
         logger.info(getReadAllLCAsURL(start, OfficeWelcome.constants.tableSize()));
         HttpService.HttpServiceAsync.instance().doGet(getReadAllLCAsURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), false,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info(result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info(result);
+                        postFetchTable(result);
+                    }
+                });
     }
 
     private String getReadAllLCAsURL(Integer start, String tableSize) {
@@ -191,11 +190,11 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
     ) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     private String getDeleteURL(String entityId) {

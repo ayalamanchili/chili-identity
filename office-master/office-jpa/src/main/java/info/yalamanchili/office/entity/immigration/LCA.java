@@ -81,7 +81,6 @@ public class LCA extends AbstractEntity {
     @NotNull(message = "{lca.lcaCurrMinWage.not.empty.msg}")
     protected BigDecimal lcaCurrMinWage;
 
-    @NotNull(message = "{lca.lcaCurrMaxWage.not.empty.msg}")
     protected BigDecimal lcaCurrMaxWage;
 
     @NotNull(message = "{lca.jobTitle.not.empty.msg}")

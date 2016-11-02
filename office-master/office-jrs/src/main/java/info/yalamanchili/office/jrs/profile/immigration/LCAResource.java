@@ -14,9 +14,9 @@ import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.immigration.LCADao;
+import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.immigration.LCA;
 import info.yalamanchili.office.entity.immigration.LCADto;
-import info.yalamanchili.office.entity.immigration.LCAReportDto;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.immigration.LCAService;
 import java.util.ArrayList;
@@ -109,9 +109,12 @@ public class LCAResource extends CRUDResource<LCA> {
     @PUT
     @Path("/lca-status-search")
     @Transactional(readOnly = true)
-    public List<LCADto> prospectStatusSearch(LCAReportDto entity) {
-        List<LCADto> res = new ArrayList();
-
+    public List<LCA> prospectStatusSearch(LCA entity) {
+        List<LCA> res = new ArrayList();
+        Query searchQuery = SearchUtils.getSearchQuery(lcaDao.getEntityManager(), entity, new SearchUtils.SearchCriteria());
+        for (Object p : searchQuery.getResultList()) {
+            res.add((LCA) p);
+        }
         return res;
     }
 
@@ -127,6 +130,12 @@ public class LCAResource extends CRUDResource<LCA> {
             res.add((LCA) p);
         }
         return res;
+    }
+
+    @GET
+    @Path("/lca-report")
+    public void lcaReport() {
+        lcaService.generateLcaReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
     @XmlRootElement
