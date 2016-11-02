@@ -14,6 +14,7 @@ import info.chili.gwt.fields.DataType;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.chili.gwt.crud.ReadComposite;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.admin.clientcontact.ReadAllClientContactPanel;
 import info.yalamanchili.office.client.admin.subcntrcontact.ReadAllSubcontractorContactsPanel;
 import info.yalamanchili.office.client.profile.phone.ReadPhonePanel;
@@ -91,6 +92,16 @@ public class ReadContactPanel extends ReadComposite {
     @Override
     protected boolean enableBack() {
         return true;
+    }
+
+    @Override
+    protected boolean enableAudit() {
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN);
+    }
+
+    @Override
+    protected String getAuditUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.profile.Contact" + "/" + getEntityId() + "?ingoreField=imageURL&ingoreField=dateOfBirth";
     }
 
     @Override

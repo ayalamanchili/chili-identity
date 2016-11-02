@@ -8,6 +8,8 @@ package info.yalamanchili.office.client.admin.vendorlocation;
 import com.google.gwt.json.client.JSONObject;
 import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.fields.DataType;
+import info.yalamanchili.office.client.Auth;
+import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.address.ReadAddressPanel;
 
 /**
@@ -17,7 +19,7 @@ import info.yalamanchili.office.client.profile.address.ReadAddressPanel;
 class ReadVendorLocationPanel extends ReadAddressPanel {
 
     private static ReadVendorLocationPanel instance;
-    
+
     public static ReadAddressPanel instance() {
         return instance;
     }
@@ -26,7 +28,7 @@ class ReadVendorLocationPanel extends ReadAddressPanel {
         super(entity);
         instance = this;
     }
-    
+
     public ReadVendorLocationPanel(String id) {
         super(id);
         instance = this;
@@ -44,7 +46,12 @@ class ReadVendorLocationPanel extends ReadAddressPanel {
 
     @Override
     protected boolean enableAudit() {
-        return false;
+        return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_ADMIN);
+    }
+
+    @Override
+    protected String getAuditUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "audit/changes/" + "info.yalamanchili.office.entity.profile.Address" + "/" + getEntityId() + "?ingoreField=changeNotes";
     }
 
     @Override
