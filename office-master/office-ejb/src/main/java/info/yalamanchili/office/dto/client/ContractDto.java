@@ -201,10 +201,18 @@ public class ContractDto implements Serializable {
      * subContractorContactName
      */
     protected String subContractorContactName;
+
     /**
      * subcontractor Address
      */
     protected String subcontractorAddress;
+
+    protected String subContractorContactEmail;
+
+    protected String subContractorContactPhone;
+
+    protected String subcontractorContact;
+
     protected BigDecimal subcontractorPayRate;
     /**
      * subcontractorOvertimePayRate
@@ -353,7 +361,12 @@ public class ContractDto implements Serializable {
     }
 
     public String getSubContractorContactName() {
-        return subContractorContactName;
+        if (subContractorContactName == null) {
+            return subContractorContactName;
+        } else {
+            return subContractorContactName.replaceAll("<br/>", ", ");
+        }
+
     }
 
     public BigDecimal getSubcontractorPayRate() {
@@ -493,10 +506,11 @@ public class ContractDto implements Serializable {
     }
 
     public String getClientContact() {
-       if(clientContact == null){ 
-           return clientContact;      
-       }
-       else return clientContact.replaceAll("<br/>", ", ");
+        if (clientContact == null) {
+            return clientContact;
+        } else {
+            return clientContact.replaceAll("<br/>", ", ");
+        }
     }
 
     public void setClientContact(String clientContact) {
@@ -672,10 +686,11 @@ public class ContractDto implements Serializable {
     }
 
     public String getVendorRecruiter() {
-       if(vendorRecruiter == null){ 
-           return vendorRecruiter;
-         }
-       else return vendorRecruiter.replaceAll("<br/>", ", ");
+        if (vendorRecruiter == null) {
+            return vendorRecruiter;
+        } else {
+            return vendorRecruiter.replaceAll("<br/>", ", ");
+        }
     }
 
     public void setVendorRecruiter(String vendorRecruiter) {
