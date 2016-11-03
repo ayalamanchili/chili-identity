@@ -67,36 +67,36 @@
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>
         
-        <sequenceFlow sourceRef="projectOffboardingContractsAdminTask" 
-                      targetRef="gateway" />
-        
-        <exclusiveGateway id="gateway"/>
-            <sequenceFlow id="subcontractorFlow" sourceRef="gateway" targetRef="subcontractorFork">
-                <conditionExpression xsi:type="tFormalExpression">
+        <!--Workflow for Subcontractor and 1099 Contractor-->
+        <sequenceFlow id="subcontractorFlow" sourceRef="projectOffboardingContractsAdminTask" targetRef="subcontractorFork">
+            <conditionExpression xsi:type="tFormalExpression">
                     <![CDATA[${employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor" }]]>
-                </conditionExpression>
-            </sequenceFlow>
-            <sequenceFlow id="employeeFlow1" sourceRef="gateway" targetRef="employeeFork1">
-                <conditionExpression xsi:type="tFormalExpression">
-                    <![CDATA[${projectOffboardingEntity.projectInPipeline!=true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
-                </conditionExpression>
-            </sequenceFlow>
-            <sequenceFlow id="employeeFlow2" sourceRef="gateway" targetRef="employeeFork2">
-                <conditionExpression xsi:type="tFormalExpression">
-                    <![CDATA[${projectOffboardingEntity.projectInPipeline==true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
-                </conditionExpression>
-            </sequenceFlow>
-            <sequenceFlow id="employeeFlow3" sourceRef="gateway" targetRef="employeeFork3">
-                <conditionExpression xsi:type="tFormalExpression">
-                    <![CDATA[${projectOffboardingEntity.projectInPipeline!=true && employee.workStatus!="H1B" && employee.workStatus!="OPT" }]]>
-                </conditionExpression>
-            </sequenceFlow>
-            <sequenceFlow id="employeeFlow4" sourceRef="gateway" targetRef="employeeFork4">
-                <conditionExpression xsi:type="tFormalExpression">
-                    <![CDATA[${projectOffboardingEntity.projectInPipeline==true &&  employee.workStatus!="H1B" && employee.workStatus!="OPT" }]]>
-                </conditionExpression>
-            </sequenceFlow>
-            
+            </conditionExpression>
+        </sequenceFlow>
+        
+        <!--Workflow for employee and W2 Contractor-->
+        <sequenceFlow id="employeeFlow1" sourceRef="projectOffboardingContractsAdminTask" targetRef="employeeFork1">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline!=true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="employeeFlow2" sourceRef="projectOffboardingContractsAdminTask" targetRef="employeeFork2">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline==true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="employeeFlow3" sourceRef="projectOffboardingContractsAdminTask" targetRef="employeeFork3">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline!=true && !(employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="employeeFlow4" sourceRef="projectOffboardingContractsAdminTask" targetRef="employeeFork4">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline==true && !(employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        
+        
         <parallelGateway id="subcontractorFork" />
         
         <sequenceFlow sourceRef="subcontractorFork" 
@@ -204,8 +204,31 @@
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>
         
-        <sequenceFlow sourceRef="projectOffboardingBillingAdminTask" 
-                      targetRef="join" />
+        <sequenceFlow sourceRef="projectOffboardingBillingAdminTask" targetRef="subcontractorJoin">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor" }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="projectOffboardingBillingAdminTask" targetRef="employeeJoin1">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline!=true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="projectOffboardingBillingAdminTask" targetRef="employeeJoin2">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline==true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="projectOffboardingBillingAdminTask" targetRef="employeeJoin3">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline!=true && !(employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="projectOffboardingBillingAdminTask" targetRef="employeeJoin4">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline==true && !(employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
 
         
         <!-- Project Offboarding task for Payroll Dept-->
@@ -219,7 +242,7 @@
                 Employee                : ${employee.firstName} ${employee.lastName}
                 Client Name             : ${entity.client.name}
                 Vendor Name             : ${entity.vendor.name}
-                End Date                : ${entity.endDate}
+                End Date                : ${projectOffboardingEntity.endDate}
                 Reason                  : ${projectOffboardingEntity.notes}               
             </documentation>
             <extensionElements>
@@ -252,9 +275,27 @@
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>
         
-        <sequenceFlow sourceRef="projectOffboardingPayrollDeptTask" 
-                      targetRef="join" />
-        
+        <sequenceFlow sourceRef="projectOffboardingPayrollDeptTask" targetRef="employeeJoin1">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline!=true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="projectOffboardingPayrollDeptTask" targetRef="employeeJoin2">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline==true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="projectOffboardingPayrollDeptTask" targetRef="employeeJoin3">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline!=true && !(employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="projectOffboardingPayrollDeptTask" targetRef="employeeJoin4">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline==true && !(employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+
         <!-- Project Offboarding task for Accounts Payable Dept-->
         <userTask id="projectOffboardingAccountsPayableTask" 
                   name="Project Offboarding Accounts Payable Task for ${employee.firstName} ${employee.lastName}" 
@@ -299,8 +340,31 @@
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>
         
-        <sequenceFlow sourceRef="projectOffboardingAccountsPayableTask" 
-                      targetRef="join" />
+        <sequenceFlow sourceRef="projectOffboardingAccountsPayableTask" targetRef="subcontractorJoin">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor" }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="projectOffboardingAccountsPayableTask" targetRef="employeeJoin1">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline!=true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="projectOffboardingAccountsPayableTask" targetRef="employeeJoin2">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline==true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="projectOffboardingAccountsPayableTask" targetRef="employeeJoin3">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline!=true && !(employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="projectOffboardingAccountsPayableTask" targetRef="employeeJoin4">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline==true && !(employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
         
         <!-- Project Offboarding task for Accounts Receivable Dept-->
         <userTask id="projectOffboardingAccountsReceivableTask" 
@@ -346,8 +410,31 @@
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>
         
-        <sequenceFlow sourceRef="projectOffboardingAccountsReceivableTask" 
-                      targetRef="join" />
+        <sequenceFlow sourceRef="projectOffboardingAccountsReceivableTask" targetRef="subcontractorJoin">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor" }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="projectOffboardingAccountsReceivableTask" targetRef="employeeJoin1">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline!=true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="projectOffboardingAccountsReceivableTask" targetRef="employeeJoin2">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline==true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="projectOffboardingAccountsReceivableTask" targetRef="employeeJoin3">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline!=true && !(employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="projectOffboardingAccountsReceivableTask" targetRef="employeeJoin4">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline==true && !(employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
 
         <!-- Project Offboarding task for Immigration Dept-->
         <userTask id="projectOffboardingImmigrationDeptTask" 
@@ -394,8 +481,16 @@
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>
         
-        <sequenceFlow sourceRef="projectOffboardingImmigrationDeptTask" 
-                      targetRef="join" />
+        <sequenceFlow sourceRef="projectOffboardingImmigrationDeptTask" targetRef="employeeJoin1">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline!=true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="projectOffboardingImmigrationDeptTask" targetRef="employeeJoin2">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline==true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
 
         
         <!-- Project Offboarding task for Recruiting Dept-->
@@ -442,16 +537,36 @@
             activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
         </serviceTask>
         
-        <sequenceFlow sourceRef="projectOffboardingRecruitingDeptTask" 
-                      targetRef="join" />
+        <sequenceFlow sourceRef="projectOffboardingRecruitingDeptTask" targetRef="employeeJoin1">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline!=true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="projectOffboardingRecruitingDeptTask" targetRef="employeeJoin3">
+            <conditionExpression xsi:type="tFormalExpression">
+                    <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline!=true && !(employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
+            </conditionExpression>
+        </sequenceFlow>
 
-        <parallelGateway id="join" />
-        
-        <sequenceFlow sourceRef="join" 
+        <parallelGateway id="subcontractorJoin" />
+        <sequenceFlow sourceRef="subcontractorJoin" 
+                      targetRef="projectOffboardingValidationTask" />
+        <parallelGateway id="employeeJoin1" />
+        <sequenceFlow sourceRef="employeeJoin1" 
+                      targetRef="projectOffboardingValidationTask" />
+        <parallelGateway id="employeeJoin2" />
+        <sequenceFlow sourceRef="employeeJoin2" 
+                      targetRef="projectOffboardingValidationTask" />
+        <parallelGateway id="employeeJoin3" />
+        <sequenceFlow sourceRef="employeeJoin3" 
+                      targetRef="projectOffboardingValidationTask" />
+        <parallelGateway id="employeeJoin4" />
+        <sequenceFlow sourceRef="employeeJoin4" 
                       targetRef="projectOffboardingValidationTask" />
         
         <userTask id="projectOffboardingValidationTask"
-                  name="Project Offboarding Validation Task for ${employee.firstName} ${employee.lastName}">
+                  name="Project Offboarding Validation Task for ${employee.firstName} ${employee.lastName}"
+                  activiti:candidateGroups="ROLE_CONTRACTS_ADMIN">
             <documentation> 
                 Associate Project Offboarding Validation Task Details:
                 This project offboarding has been initiated by ${currentEmployee.firstName} ${currentEmployee.lastName}. 
