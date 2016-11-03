@@ -457,6 +457,13 @@ public class OfficeStartup {
         rule9.setRuleName("employeeIdAssignmentRuleEvaluator");
         rule9.setAttributeData("adminadmin,useruser");
         em.merge(rule9);
+        //project Offboarding task rule 
+        BPMTaskDelegateRule rule10 = new BPMTaskDelegateRule();
+        rule10.setBpmProcessId("associate_project_offboarding_process");
+        rule10.setBpmTaskId("projectOffboardingValidationTask");
+        rule10.setRuleName("employeeIdAssignmentRuleEvaluator");
+        rule10.setAttributeData("adminadmin,useruser");
+        em.merge(rule10);
     }
 
     /**
