@@ -8,29 +8,17 @@
  */
 package info.yalamanchili.office.client.profile.immigration.LCA;
 
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.http.client.URL;
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.TextArea;
-import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
-import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
@@ -42,7 +30,6 @@ import info.yalamanchili.office.client.profile.immigration.Passport.CreatePasspo
 import info.yalamanchili.office.client.profile.immigration.Polar;
 import info.yalamanchili.office.client.profile.immigration.SOCCodesAndOccupations;
 import info.yalamanchili.office.client.profile.immigration.VisaClassificationType;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -108,7 +95,7 @@ public class CreateLCAPanel extends CreateComposite {
         assignEntityValueFromField("certifiedLcaSentConsultant", lca);
         assignEntityValueFromField("lcaPostingSSTLocation", lca);
         assignEntityValueFromField("lcaFiledInPIF", lca);
-        logger.info("entity : " + lca);
+        assignEntityValueFromField("comment", lca);
         return lca;
     }
 
@@ -162,9 +149,6 @@ public class CreateLCAPanel extends CreateComposite {
         setButtonText("Submit");
     }
 
-    private String getEmployeeIdsDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "employee/employees-by-role/dropdown/" + Auth.ROLE.ROLE_USER.name() + "/0/10000";
-    }
     SelectEmployeeWithRoleWidget selectImgW = new SelectEmployeeWithRoleWidget("WorkedBy", Auth.ROLE.ROLE_H1B_IMMIGRATION, false, false, Alignment.HORIZONTAL) {
         @Override
         public boolean enableMultiSelect() {
@@ -201,6 +185,7 @@ public class CreateLCAPanel extends CreateComposite {
         addField("lcaFiledDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("lcaFiledInPIF", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("withdrawnLCANumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("comment", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(lcaAddress1);
         entityFieldsPanel.add(createAddressWidget1);
         entityActionsPanel.add(addAddress);

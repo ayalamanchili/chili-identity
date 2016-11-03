@@ -99,6 +99,8 @@ public class UpdateLCAPanel extends UpdateComposite {
         }
         JSONArray employees = new JSONArray();
         int i = 0;
+        assignEntityValueFromField("comment", entity);
+
         return entity;
     }
 
@@ -159,6 +161,7 @@ public class UpdateLCAPanel extends UpdateComposite {
             entityFieldsPanel.add(updateAddressWidget2);
             entityActionsPanel.remove(addAddress);
         }
+        assignFieldValueFromEntity("comment", entity, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -215,6 +218,7 @@ public class UpdateLCAPanel extends UpdateComposite {
         addField("lcaPostingSSTLocation", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("lcaFiledInPIF", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("withdrawnLCANumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("comment", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityActionsPanel.add(addAddress);
         addAddress.setValue(false);
         alignFields();
