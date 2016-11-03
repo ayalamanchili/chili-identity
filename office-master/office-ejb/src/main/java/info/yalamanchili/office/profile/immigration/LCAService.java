@@ -100,7 +100,7 @@ public class LCAService {
         for (LCA lca : lcaDao.query(0, 2000)) {
             res.add(populateLcaInfo(lca));
         }
-        String[] columnOrder = new String[]{"candidateNames", "totalWorkingPositions", "totalPendingPositions"};
+        String[] columnOrder = new String[]{"candidateNames", "totalWorkingPositions", "totalPendingPositions", "visaClassification", "socCodesAndOccupations", "workedByEmployees", "company", "lcaAddress1", "lcaAddress2", "lcaCurrWageLvl", "lcaCurrMinWage", "lcaCurrMaxWage", "jobTitle", "withdrawnLCANumber", "lcaNumber", "lcaFiledDate", "lcaValidFromDate", "lcaValidToDate", "status", "clientName", "vendorName", "lcaPostingSentToVendor", "responseOnLcaPosting", "reminderEmail", "certifiedLcaSentConsultant", "lcaPostingSSTLocation", "lcaFiledInPIF", "nonDisplacement"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "LCA Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
@@ -115,6 +115,74 @@ public class LCAService {
         }
         if (lca.getTotalPendingPositions() != null) {
             dto.setTotalPendingPositions(lca.getTotalPendingPositions());
+        }
+        dto.setVisaClassification(lca.getVisaClassification().name());
+        if (lca.getSocCodesAndOccupations() != null) {
+            dto.setSocCodesAndOccupations(lca.getSocCodesAndOccupations().name());
+        }
+        if (lca.getCandidateNames() != null) {
+            dto.setCandidateNames(lca.getCandidateNames());
+        }
+        if (lca.getCompany() != null) {
+            dto.setCompany(lca.getCompany().getName());
+        }
+        if (lca.getLcaAddress1() != null) {
+            dto.setLcaAddress1(lca.getLcaAddress1().getStreet1() + "-" + lca.getLcaAddress1().getStreet2() + "-" + lca.getLcaAddress1().getCity() + "-" + lca.getLcaAddress1().getState() + "-" + lca.getLcaAddress1().getCountry() + "-" + lca.getLcaAddress1().getZip());
+        }
+        if (lca.getLcaAddress2() != null) {
+            dto.setLcaAddress2(lca.getLcaAddress2().getStreet1() + "-" + lca.getLcaAddress2().getStreet2() + "-" + lca.getLcaAddress2().getCity() + "-" + lca.getLcaAddress2().getState() + "-" + lca.getLcaAddress2().getCountry() + "-" + lca.getLcaAddress2().getZip());
+        }
+        dto.setLcaCurrWageLvl(lca.getLcaCurrWageLvl().name());
+        dto.setLcaCurrMinWage(lca.getLcaCurrMinWage());
+        dto.setLcaCurrMaxWage(lca.getLcaCurrMaxWage());
+        dto.setJobTitle(lca.getJobTitle());
+        if (lca.getWithdrawnLCANumber() != null) {
+            dto.setWithdrawnLCANumber(lca.getWithdrawnLCANumber());
+        }
+        if (lca.getLcaFiledDate() != null) {
+            dto.setLcaFiledDate(lca.getLcaFiledDate());
+        }
+        dto.setLcaValidFromDate(lca.getLcaValidFromDate());
+        dto.setLcaValidToDate(lca.getLcaValidToDate());
+        if (lca.getStatus() != null) {
+            dto.setStatus(lca.getStatus().name());
+        }
+        if (lca.getClientName() != null) {
+            dto.setClientName(lca.getClientName());
+        }
+        if (lca.getVendorName() != null) {
+            dto.setVendorName(lca.getVendorName());
+        }
+        if (lca.getLcaPostingSentToVendor() != null) {
+            dto.setLcaPostingSentToVendor(lca.getLcaPostingSentToVendor());
+        }
+        if (lca.getResponseOnLcaPosting() != null) {
+            dto.setResponseOnLcaPosting(lca.getResponseOnLcaPosting());
+        }
+        if (lca.getReminderEmail() != null) {
+            dto.setReminderEmail(lca.getReminderEmail());
+        }
+        if (lca.getCertifiedLcaSentConsultant() != null) {
+            dto.setCertifiedLcaSentConsultant(lca.getCertifiedLcaSentConsultant());
+        }
+        if (lca.getLcaPostingSSTLocation() != null) {
+            dto.setLcaPostingSSTLocation(lca.getLcaPostingSSTLocation());
+        }
+        if (lca.getLcaFiledInPIF() != null) {
+            dto.setLcaFiledInPIF(lca.getLcaFiledInPIF());
+        }
+        if (lca.getNonDisplacement() != null) {
+            dto.setNonDisplacement(lca.getNonDisplacement().name());
+        }
+        if (lca.getNonDisplacement() != null) {
+            dto.setNonDisplacement(lca.getNonDisplacement().name());
+        }
+        StringBuilder recruiters = new StringBuilder();
+        for (Employee rec : lca.getWorkedByEmployees()) {
+            recruiters.append(rec.getFirstName()).append(" ").append(rec.getLastName()).append(" , ");
+        }
+        if (!recruiters.toString().isEmpty()) {
+            dto.setWorkedByEmployees(recruiters.substring(0, recruiters.length() - 2));
         }
         return dto;
     }
