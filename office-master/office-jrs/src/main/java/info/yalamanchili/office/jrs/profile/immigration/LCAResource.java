@@ -138,6 +138,14 @@ public class LCAResource extends CRUDResource<LCA> {
         lcaService.generateLcaReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
+    @GET
+    @Path("/{id}")
+    @Transactional(readOnly = true)
+    @Override
+    public LCA read(@PathParam("id") Long id) {
+        return lcaDao.findById(id);
+    }
+
     @XmlRootElement
     @XmlType
     public static class LCATable implements java.io.Serializable {

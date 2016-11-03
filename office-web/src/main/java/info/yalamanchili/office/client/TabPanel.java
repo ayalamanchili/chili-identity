@@ -93,7 +93,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
         tabPanel.add(drivePanel, "Drive", false);
         tabPanel.add(socialPanel, "Social", false);
         tabPanel.add(profilePanel, "Profile", false);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_EXPENSE, ROLE.ROLE_BULK_IMPORT, ROLE.ROLE_CONTRACTS_ADMIN, ROLE.ROLE_BILLING_AND_INVOICING, ROLE.ROLE_CONTRACTS, ROLE.ROLE_BILLING_ADMIN)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_EXPENSE, ROLE.ROLE_BULK_IMPORT, ROLE.ROLE_CONTRACTS_ADMIN, ROLE.ROLE_BILLING_AND_INVOICING, ROLE.ROLE_CONTRACTS, ROLE.ROLE_BILLING_ADMIN, ROLE.ROLE_CONTRACTS_FULL_VIEW)) {
             tabPanel.add(adminPanel, "Admin", false);
         }
 

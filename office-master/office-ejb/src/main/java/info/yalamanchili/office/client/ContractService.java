@@ -434,6 +434,7 @@ public class ContractService {
         if (ci.getSubcontractorContact() != null) {
             dto.setSubContractorContactName(ci.getSubcontractorContact().details());
         }
+
         if (ci.getStatus() != null) {
             dto.setStatus(ci.getStatus().toString());
         }
@@ -500,8 +501,8 @@ public class ContractService {
     @Transactional
     public void generateSubCReport(ContractSearchDto dto, String email) {
         ContractTable table = getResultForReport(dto);
-        String[] columnOrder = new String[]{"employee", "client", "vendor", "clientProject", "billingRate", "overTimeBillingRate", "startDate", "endDate"};
-        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employees From SubContractor " + dto.getSubContractorName(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "clientProject", "billingRate", "overTimeBillingRate", "startDate", "endDate", "subContractorContactName"};
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employees Working Under SubContractor " + dto.getSubContractorName(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, email);
     }
 
