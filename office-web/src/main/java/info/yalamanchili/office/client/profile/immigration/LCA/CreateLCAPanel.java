@@ -159,7 +159,7 @@ public class CreateLCAPanel extends CreateComposite {
     @Override
     protected void addWidgets() {
         addField("lcaNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("candidateNames", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("candidateNames", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("totalWorkingPositions", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addEnumField("visaClassification", false, true, VisaClassificationType.names(), Alignment.HORIZONTAL);
         addDropDown("company", selectCompanyWidget);
@@ -172,7 +172,7 @@ public class CreateLCAPanel extends CreateComposite {
         entityFieldsPanel.add(wagesInfo);
         addEnumField("lcaCurrWageLvl", false, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
         addField("lcaCurrMinWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addField("lcaCurrMaxWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("lcaCurrMaxWage", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(addInfo);
         addField("clientName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("vendorName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
