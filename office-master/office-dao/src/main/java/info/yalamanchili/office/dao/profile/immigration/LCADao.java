@@ -43,6 +43,15 @@ public class LCADao extends CRUDDao<LCA> {
         return em;
     }
 
+    @Override
+    public LCA findById(Long id) {
+        LCA entity = super.findById(id);
+        if (entity == null) {
+            return null;
+        }
+        return entity;
+    }
+
     @Transactional(readOnly = true)
     @Override
     public List<LCA> query(int start, int limit) {

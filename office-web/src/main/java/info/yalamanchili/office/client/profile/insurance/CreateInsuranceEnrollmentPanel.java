@@ -41,14 +41,6 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
     VerticalPanel addrWidgetPanel = new VerticalPanel();
     EnumField yearsF;
     protected String empId;
-
-    protected FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants2, "HealthInsuranceWaiver", "fileUrl", "HealthInsuranceWaiver/fileUrl", false, true) {
-        @Override
-        public void onUploadComplete(String res) {
-            postCreateSuccessForWaiver(res);
-        }
-    };
-
     HealthInsuranceWaiverPanel insuranceWaiver = new HealthInsuranceWaiverPanel();
     InsuranceEnrollmentPanel insuranceEnrollment = new InsuranceEnrollmentPanel();
 
@@ -72,9 +64,6 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
         }
         if (enrolledNo.getValue()) {
             JSONObject insuranceWaiverEntity = insuranceWaiver.populateEntityFromFields();
-            if (resumeUploadPanel.getFileName() != null) {
-                insuranceWaiverEntity.put("fileUrl", resumeUploadPanel.getFileName());
-            }
             entity.put("healthInsuranceWaiver", insuranceWaiverEntity);
         }
         return entity;
@@ -83,28 +72,23 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
 
     @Override
     protected void createButtonClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
-
-                    @Override
-                    public void onSuccess(String arg0) {
-                        JSONObject waiverEntity = (JSONObject) JSONParser.parseLenient(arg0);
-                        if (waiverEntity.get("enrolled").isString().stringValue().equals("false")) {
-                            uploadDoc(waiverEntity.get("id").isString().stringValue());
-                        } else {
-                            postCreateSuccess(arg0);
-                        }
-                    }
-                });
-    }
-
-    protected void uploadDoc(String entityId) {
-        resumeUploadPanel.upload(entityId.trim());
+//        HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+//                new AsyncCallback<String>() {
+//            @Override
+//            public void onFailure(Throwable arg0) {
+//                logger.info(arg0.getMessage());
+//                handleErrorResponse(arg0);
+//            }
+//
+//            @Override
+//            public void onSuccess(String arg0) {
+//                JSONObject waiverEntity = (JSONObject) JSONParser.parseLenient(arg0);
+//                if (waiverEntity.get("enrolled").isString().stringValue().equals("false")) {
+//                } else {
+//                    postCreateSuccess(arg0);
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -196,7 +180,6 @@ public class CreateInsuranceEnrollmentPanel extends CreateComposite implements C
             insuranceWaiver = new HealthInsuranceWaiverPanel();
             entityFieldsPanel.add(insuranceWaiver);
         }
-        entityFieldsPanel.add(resumeUploadPanel);
         entityFieldsPanel.add(create);
         entityFieldsPanel.add(new ReadAllHealthInsuranceWaiverPanel(empId));
     }

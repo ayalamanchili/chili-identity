@@ -136,6 +136,10 @@ public class ExpenseReport extends AbstractEntity {
     private DepartmentType departmentType;
 
     private BigDecimal totalExpenses;
+    
+    private BigDecimal totalPersonalCardExpenses;
+    
+    private BigDecimal totalCorporateCardExpenses;
 
     @OneToMany(mappedBy = "expenseReport", cascade = CascadeType.ALL)
     protected Set<ExpenseReceipt> expenseReceipts;
@@ -376,6 +380,22 @@ public class ExpenseReport extends AbstractEntity {
         this.approvalManagerId = approvalManagerId;
     }
 
+    public BigDecimal getTotalPersonalCardExpenses() {
+        return totalPersonalCardExpenses;
+    }
+
+    public void setTotalPersonalCardExpenses(BigDecimal totalPersonalCardExpenses) {
+        this.totalPersonalCardExpenses = totalPersonalCardExpenses;
+    }
+
+    public BigDecimal getTotalCorporateCardExpenses() {
+        return totalCorporateCardExpenses;
+    }
+
+    public void setTotalCorporateCardExpenses(BigDecimal totalCorporateCardExpenses) {
+        this.totalCorporateCardExpenses = totalCorporateCardExpenses;
+    }
+    
     @XmlElement
     public Company getCompany() {
         return company;

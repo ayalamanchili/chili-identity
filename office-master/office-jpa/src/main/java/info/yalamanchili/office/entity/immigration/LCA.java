@@ -134,6 +134,16 @@ public class LCA extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     protected Polar nonDisplacement;
 
+    protected String comment;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     public Address getLcaAddress1() {
         return lcaAddress1;
     }
@@ -378,7 +388,7 @@ public class LCA extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "LCA{" + "visaClassification=" + visaClassification + ", socCodesAndOccupations=" + socCodesAndOccupations + ", employee=" + employee + ", lcaEmployeeName=" + candidateNames + ", totalWorkingPositions=" + totalWorkingPositions + ", totalPendingPositions=" + totalPendingPositions + ", workedByEmployees=" + workedByEmployees + ", company=" + company + ", lcaAddress1=" + lcaAddress1 + ", lcaAddress2=" + lcaAddress2 + ", lcaCurrWageLvl=" + lcaCurrWageLvl + ", lcaCurrMinWage=" + lcaCurrMinWage + ", lcaCurrMaxWage=" + lcaCurrMaxWage + ", jobTitle=" + jobTitle + ", withdrawnLCANumber=" + withdrawnLCANumber + ", lcaNumber=" + lcaNumber + ", lcaFiledDate=" + lcaFiledDate + ", lcaValidFromDate=" + lcaValidFromDate + ", lcaValidToDate=" + lcaValidToDate + ", status=" + status + ", clientName=" + clientName + ", vendorName=" + vendorName + ", lcaPostingSentToVendor=" + lcaPostingSentToVendor + ", responseOnLcaPosting=" + responseOnLcaPosting + ", reminderEmail=" + reminderEmail + ", certifiedLcaSentConsultant=" + certifiedLcaSentConsultant + ", lcaPostingSSTLocation=" + lcaPostingSSTLocation + ", lcaFiledInPIF=" + lcaFiledInPIF + ", nonDisplacement=" + nonDisplacement + '}';
+        return "LCA{" + "visaClassification=" + visaClassification + ", socCodesAndOccupations=" + socCodesAndOccupations + ", employee=" + employee + ", candidateNames=" + candidateNames + ", totalWorkingPositions=" + totalWorkingPositions + ", totalPendingPositions=" + totalPendingPositions + ", workedByEmployees=" + workedByEmployees + ", company=" + company + ", lcaAddress1=" + lcaAddress1 + ", lcaAddress2=" + lcaAddress2 + ", lcaCurrWageLvl=" + lcaCurrWageLvl + ", lcaCurrMinWage=" + lcaCurrMinWage + ", lcaCurrMaxWage=" + lcaCurrMaxWage + ", jobTitle=" + jobTitle + ", withdrawnLCANumber=" + withdrawnLCANumber + ", lcaNumber=" + lcaNumber + ", lcaFiledDate=" + lcaFiledDate + ", lcaValidFromDate=" + lcaValidFromDate + ", lcaValidToDate=" + lcaValidToDate + ", status=" + status + ", clientName=" + clientName + ", vendorName=" + vendorName + ", lcaPostingSentToVendor=" + lcaPostingSentToVendor + ", responseOnLcaPosting=" + responseOnLcaPosting + ", reminderEmail=" + reminderEmail + ", certifiedLcaSentConsultant=" + certifiedLcaSentConsultant + ", lcaPostingSSTLocation=" + lcaPostingSSTLocation + ", lcaFiledInPIF=" + lcaFiledInPIF + ", nonDisplacement=" + nonDisplacement + ", comment=" + comment + '}';
     }
 
 }

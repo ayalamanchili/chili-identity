@@ -99,6 +99,8 @@ public class UpdateLCAPanel extends UpdateComposite {
         }
         JSONArray employees = new JSONArray();
         int i = 0;
+        assignEntityValueFromField("comment", entity);
+
         return entity;
     }
 
@@ -159,6 +161,7 @@ public class UpdateLCAPanel extends UpdateComposite {
             entityFieldsPanel.add(updateAddressWidget2);
             entityActionsPanel.remove(addAddress);
         }
+        assignFieldValueFromEntity("comment", entity, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -202,19 +205,20 @@ public class UpdateLCAPanel extends UpdateComposite {
         entityFieldsPanel.add(wagesInfo);
         addEnumField("lcaCurrWageLvl", false, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
         addField("lcaCurrMinWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addField("lcaCurrMaxWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("lcaCurrMaxWage", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(addInfo);
-        addField("clientName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("vendorName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("lcaFiledDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addEnumField("nonDisplacement", false, true, Polar.names(), Alignment.HORIZONTAL);
-        addField("lcaPostingSentToVendor", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("responseOnLcaPosting", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("reminderEmail", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("certifiedLcaSentConsultant", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("lcaPostingSSTLocation", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("lcaFiledInPIF", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("withdrawnLCANumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("clientName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("vendorName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("lcaFiledDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("nonDisplacement", false, false, Polar.names(), Alignment.HORIZONTAL);
+        addField("lcaPostingSentToVendor", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("responseOnLcaPosting", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("reminderEmail", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("certifiedLcaSentConsultant", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("lcaPostingSSTLocation", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("lcaFiledInPIF", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("withdrawnLCANumber", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("comment", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityActionsPanel.add(addAddress);
         addAddress.setValue(false);
         alignFields();

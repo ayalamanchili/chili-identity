@@ -40,13 +40,13 @@ import java.math.BigDecimal;
 public class UpdateExpenseItemPanel extends TUpdateComposite implements BlurHandler {
 
     SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true);
-    EnumField expensePaymentMode;
+    public EnumField expensePaymentMode;
     DateField expenseDate;
     StringField purpose;
     StringField description;
-    CurrencyField amount;
+    public CurrencyField amount;
     CurrencyField expenseMiles;
-    ClickableLink deleteB = new ClickableLink("Remove Item");
+    public ClickableLink deleteB = new ClickableLink("Remove Item");
     protected String parentId;
     boolean isGeneralExpenseItem = false;
 
@@ -74,16 +74,16 @@ public class UpdateExpenseItemPanel extends TUpdateComposite implements BlurHand
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -181,13 +181,13 @@ public class UpdateExpenseItemPanel extends TUpdateComposite implements BlurHand
             } else if (Window.confirm("Are you sure to delete the expense item?")) {
                 HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
                         OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        new ResponseStatusWidget().show("Successfully Deleted ExpenseItem Information");
-                        TabPanel.instance().expensePanel.entityPanel.clear();
-                        TabPanel.instance().expensePanel.entityPanel.add(new UpdateExpenseReportPanel(parentId));
-                    }
-                });
+                            @Override
+                            public void onResponse(String arg0) {
+                                new ResponseStatusWidget().show("Successfully Deleted ExpenseItem Information");
+                                TabPanel.instance().expensePanel.entityPanel.clear();
+                                TabPanel.instance().expensePanel.entityPanel.add(new UpdateExpenseReportPanel(parentId));
+                            }
+                        });
             }
         }
         super.onClick(event);

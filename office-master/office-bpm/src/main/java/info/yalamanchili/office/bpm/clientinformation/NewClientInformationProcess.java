@@ -54,10 +54,12 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         if (task.getTaskDefinitionKey().equals("newClientInfoContractValidation")) {
             String status = (String) task.getExecution().getVariable("status");
             String nottes = (String) task.getExecution().getVariable("nottes");
-            CommentDao.instance().addComment("New Client Info Contract Validation Task: " + nottes, entity);
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
                 sendNewClieniInformationNotification(entity, nottes, task);
+                if (StringUtils.isNotEmpty(nottes)) {
+                    CommentDao.instance().addComment("New Client Info Contract Validation Task: " + nottes, entity);
+                }
             } else {
                 entity.setStatus(ClientInformationStatus.CANCELED);
             }
@@ -78,23 +80,23 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
             String payratePercent = (String) task.getExecution().getVariable("payratePercent");
             String payrate = (String) task.getExecution().getVariable("payrate");
             String specialNotes = (String) task.getExecution().getVariable("specialNotes");
-//            Integer payratePercentNum;
-//            if ((!Strings.isNullOrEmpty(payrate) && !Strings.isNullOrEmpty(payratePercent)) || ((Strings.isNullOrEmpty(payrate) && Strings.isNullOrEmpty(payratePercent)))) {
-//                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "task.invalid", "Please enter either payrate or payrate percentage. You can not enter both");
-//            }
-//            if (!StringUtils.isNumeric(payrate)) {
-//                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "payrate.invalid", "Please enter valid payrate");
-//            }
-//            if (!StringUtils.isNumeric(payratePercent)) {
-//                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "payratepercentage.invalid", "Please enter valid percentage");
-//            }
-//            if (!Strings.isNullOrEmpty(payratePercent)) {
-//                payratePercentNum = Integer.valueOf(payratePercent);
-//
-//                if (payratePercentNum > 100 || payratePercentNum < 0) {
-//                    throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "payratepercentage.not.number", "Please enter valid percentage between 0 and 100 eg: 80");
-//                }
-//            }
+            Integer payratePercentNum;
+            if ((!Strings.isNullOrEmpty(payrate) && !Strings.isNullOrEmpty(payratePercent)) || ((Strings.isNullOrEmpty(payrate) && Strings.isNullOrEmpty(payratePercent)))) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "task.invalid", "Please enter either payrate or payrate percentage. You can not enter both");
+            }
+            if (!StringUtils.isNumeric(payrate)) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "payrate.invalid", "Please enter valid payrate");
+            }
+            if (!StringUtils.isNumeric(payratePercent)) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "payratepercentage.invalid", "Please enter valid percentage");
+            }
+            if (!Strings.isNullOrEmpty(payratePercent)) {
+                payratePercentNum = Integer.valueOf(payratePercent);
+
+                if (payratePercentNum > 100 || payratePercentNum < 0) {
+                    throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "payratepercentage.not.number", "Please enter valid percentage between 0 and 100 eg: 80");
+                }
+            }
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ClientInformationStatus.PENDING_HR_VERIFICATION);
                 if (StringUtils.isNotEmpty((payratePercent))) {

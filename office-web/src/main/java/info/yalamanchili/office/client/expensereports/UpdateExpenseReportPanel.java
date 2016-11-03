@@ -8,9 +8,13 @@
 package info.yalamanchili.office.client.expensereports;
 
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -27,6 +31,7 @@ import info.chili.gwt.crud.TCRUDComposite;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.BooleanField;
+import info.chili.gwt.fields.CurrencyField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
@@ -47,6 +52,7 @@ import static info.yalamanchili.office.client.expensereports.CreateExpenseReport
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +62,7 @@ import java.util.logging.Logger;
  *
  * @author Prasanthi.p
  */
-public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeHandler {
+public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeHandler, BlurHandler, ValueChangeHandler {
 
     private Logger logger = Logger.getLogger(UpdateExpenseReportPanel.class.getName());
     public List<TCRUDComposite> updateItemPanels = new ArrayList<>();
@@ -122,9 +128,13 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
     DateField submittedDate = new DateField(OfficeWelcome.constants2, SUBMITTEDDATE, "ExpenseReport", false, false, Alignment.HORIZONTAL);
     EnumField departmentType;
     StringField otherDepartment;
+    boolean readyOnly;
 
     JSONArray expenseReceipts = new JSONArray();
     BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants2, "Submit", "ExpenseReport", false, false, Alignment.HORIZONTAL);
+    CurrencyField totalPersonalCardExpenses = new CurrencyField(OfficeWelcome.constants2, "totalPersonalCardExpenses", "ExpenseReport", true, false, Alignment.HORIZONTAL);
+    CurrencyField totalCorporateCardExpenses = new CurrencyField(OfficeWelcome.constants2, "totalCorporateCardExpenses", "ExpenseReport", true, false, Alignment.HORIZONTAL);
+    CurrencyField totalExpenses = new CurrencyField(OfficeWelcome.constants2, "totalExpenses", "ExpenseReport", true, false, Alignment.HORIZONTAL);
 
     protected static UpdateExpenseReportPanel instance;
 
@@ -146,20 +156,21 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                logger.info(response);
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                if (ExpenseFormType.GENERAL_EXPENSE.name().equals(JSONUtils.toString(getEntity(), EXPENSE_FORM_TYPE))) {
-                    addGeneralExpenseFields();
-                }
-                if ("Other".equals(JSONUtils.toString(getEntity(), DEPARTMENTTYPE))) {
-                    otherDepartment.setVisible(true);
-                }
-                populateFieldsFromEntity(entity);
-                populateComments();
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info(response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        if (ExpenseFormType.GENERAL_EXPENSE.name().equals(JSONUtils.toString(getEntity(), EXPENSE_FORM_TYPE))) {
+                            addGeneralExpenseFields();
+                        }
+                        if ("Other".equals(JSONUtils.toString(getEntity(), DEPARTMENTTYPE))) {
+                            otherDepartment.setVisible(true);
+                        }
+                        populateFieldsFromEntity(entity);
+                        populateComments();
+                        onChange();
+                    }
+                });
     }
 
     protected String getReadURI() {
@@ -180,6 +191,9 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
         assignEntityValueFromField(COMMENTS, entity);
         assignEntityValueFromField(COMPANY, entity);
         assignEntityValueFromField(DEPARTMENTTYPE, entity);
+        entity.put("totalPersonalCardExpenses", new JSONString(totalPersonalCardExpenses.getCurrency().toString()));
+        entity.put("totalCorporateCardExpenses", new JSONString(totalCorporateCardExpenses.getCurrency().toString()));
+        entity.put("totalExpenses", new JSONString(totalExpenses.getCurrency().toString()));
         JSONArray items = new JSONArray();
         int i = 0;
         for (TCRUDComposite panel : updateItemPanels) {
@@ -249,16 +263,16 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                uploadReceipts(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadReceipts(arg0);
+                    }
+                });
     }
 
     protected void uploadReceipts(String postString) {
@@ -287,6 +301,15 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
         assignFieldValueFromEntity(COMPANY, entity, null);
         assignFieldValueFromEntity(DEPARTMENTTYPE, entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity(COMMENTS, entity, DataType.TEXT_AREA_FIELD);
+        if (entity.containsKey("totalPersonalCardExpenses")) {
+            totalPersonalCardExpenses.setValue(entity.get("totalPersonalCardExpenses").isString().stringValue());
+        }
+        if (entity.containsKey("totalCorporateCardExpenses")) {
+            totalCorporateCardExpenses.setValue(entity.get("totalCorporateCardExpenses").isString().stringValue());
+        }
+        if (entity.containsKey("totalExpenses")) {
+            totalExpenses.setValue(entity.get("totalExpenses").isString().stringValue());
+        }
         expenseReceipts = JSONUtils.toJSONArray(entity.get(EXPENSE_RECEIPT));
         if (expenseReceipts.size() > 0) {
             if (expenseReceipts != null) {
@@ -320,12 +343,16 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
         // populateComments();
     }
 
+    UpdateExpenseItemPanel updateItempanel = null;
+
     protected void populateExpenseItems(JSONArray items) {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).isObject() != null) {
-                UpdateExpenseItemPanel panel = new UpdateExpenseItemPanel(getEntityId(), items.get(i).isObject(), isGeneralExpenseItem());
-                updateItemPanels.add(panel);
-                entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(expenseItemsInfo) + 1);
+                updateItempanel = new UpdateExpenseItemPanel(getEntityId(), items.get(i).isObject(), isGeneralExpenseItem());
+                updateItemPanels.add(updateItempanel);
+                entityFieldsPanel.insert(updateItempanel, entityFieldsPanel.getWidgetIndex(expenseItemsInfo) + 1);
+                updateItempanel.expensePaymentMode.listBox.addBlurHandler(this);
+                updateItempanel.amount.getTextbox().addValueChangeHandler(this);
             }
         }
     }
@@ -347,6 +374,8 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
         expenseReimbursePaymentMode.listBox.addChangeHandler(this);
         departmentType.listBox.addChangeHandler(this);
         submitForApprovalF.getBox().addClickHandler(this);
+        totalPersonalCardExpenses.getTextbox().addChangeHandler(this);
+        totalCorporateCardExpenses.getTextbox().addChangeHandler(this);
     }
 
     @Override
@@ -404,6 +433,9 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
         entityFieldsPanel.add(expenseItemsInfo);
         entityActionsPanel.add(addItemL);
         entityActionsPanel.add(Acknowledgement);
+        entityActionsPanel.insert(totalExpenses, entityActionsPanel.getWidgetIndex(Acknowledgement));
+        entityActionsPanel.insert(totalCorporateCardExpenses, entityActionsPanel.getWidgetIndex(totalExpenses));
+        entityActionsPanel.insert(totalPersonalCardExpenses, entityActionsPanel.getWidgetIndex(totalCorporateCardExpenses));
         hPanel.add(confrmCB);
         confrmCB.setValue(true);
         hPanel.add(tac);
@@ -436,12 +468,18 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
         }
     }
 
+    CreateExpenseItemPanel createPanel = null;
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addItemL)) {
-            CreateExpenseItemPanel panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem());
-            updateItemPanels.add(panel);
-            entityFieldsPanel.add(panel);
+            onChange();
+            createPanel = new CreateExpenseItemPanel(this, isGeneralExpenseItem());
+            updateItemPanels.add(createPanel);
+            entityFieldsPanel.add(createPanel);
+            createPanel.expensePaymentMode.listBox.addBlurHandler(this);
+            createPanel.amount.getTextbox().addValueChangeHandler(this);
+            onChange();
         }
         if (submitForApprovalF.getValue()) {
             setButtonText("Submit");
@@ -472,6 +510,96 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
                 otherDepartment.setVisible(true);
             } else {
                 otherDepartment.setVisible(false);
+            }
+        }
+        if (event.getSource().equals(totalPersonalCardExpenses.getTextbox()) || event.getSource().equals(totalCorporateCardExpenses.getTextbox())) {
+            onChange();
+        }
+    }
+
+    @Override
+    public void onBlur(BlurEvent event) {
+        if (createPanel != null) {
+            if (createPanel.expensePaymentMode.listBox.getName() != null) {
+                onChange();
+            }
+        }
+        if (updateItempanel.expensePaymentMode.listBox.getName() != null) {
+            onChange();
+        }
+    }
+
+    public void onChange() {
+        totalPersonalCardExpenses.setValue("");
+        totalCorporateCardExpenses.setValue("");
+        BigDecimal finalExpenses = BigDecimal.ZERO;
+        if (updateItemPanels.size() > 0) {
+            for (int i = 0; i < updateItemPanels.size(); i++) {
+                UpdateExpenseItemPanel updatePanel;
+                CreateExpenseItemPanel createPanel;
+                if (updateItemPanels.get(i) instanceof CreateExpenseItemPanel) {
+                    createPanel = (CreateExpenseItemPanel) updateItemPanels.get(i);
+                    updateTotal(createPanel.amount.getCurrency(), createPanel.expensePaymentMode.getValue());
+                } else if (updateItemPanels.get(i) instanceof UpdateExpenseItemPanel) {
+                    updatePanel = (UpdateExpenseItemPanel) updateItemPanels.get(i);
+                    updateTotal(updatePanel.amount.getCurrency(), updatePanel.expensePaymentMode.getValue());
+                }
+                if (totalCorporateCardExpenses.getValue().isEmpty() && totalPersonalCardExpenses.getValue().isEmpty()) {
+                    totalPersonalCardExpenses.setValue(BigDecimal.ZERO.negate(), readOnly);
+                    totalCorporateCardExpenses.setValue(BigDecimal.ZERO.negate(), readOnly);
+                    totalExpenses.setValue(BigDecimal.ZERO.negate(), readOnly);
+                } else if (totalCorporateCardExpenses.getValue().isEmpty()) {
+                    finalExpenses = totalPersonalCardExpenses.getCurrency();
+                    totalCorporateCardExpenses.setValue(BigDecimal.ZERO.negate(), readOnly);
+                } else if (totalPersonalCardExpenses.getValue().isEmpty()) {
+                    finalExpenses = totalCorporateCardExpenses.getCurrency();
+                    totalPersonalCardExpenses.setValue(BigDecimal.ZERO.negate(), readOnly);
+                } else {
+                    finalExpenses = totalPersonalCardExpenses.getCurrency().add(totalCorporateCardExpenses.getCurrency());
+                }
+                totalExpenses.setValue(finalExpenses, readOnly);
+            }
+        } else {
+            totalPersonalCardExpenses.setValue(finalExpenses.negate(), readOnly);
+            totalCorporateCardExpenses.setValue(finalExpenses.negate(), readOnly);
+            totalExpenses.setValue(finalExpenses.negate(), readOnly);
+        }
+    }
+
+    @Override
+    public void onValueChange(ValueChangeEvent event) {
+        if (createPanel != null) {
+            if (createPanel.amount.getTextbox().getValue() != null) {
+                onChange();
+            }
+        }
+        if (updateItempanel.amount.getTextbox().getValue() != null) {
+            onChange();
+        }
+    }
+
+    private void updateTotal(BigDecimal amount, String paymentMode) {
+        String amountV = "";
+        String amountC = "";
+        if (amount != null && paymentMode.equalsIgnoreCase("Personal_Card")) {
+            amountV = amount.toString();
+            if (!totalPersonalCardExpenses.getValue().isEmpty()) {
+                BigDecimal finalAmt = totalPersonalCardExpenses.getCurrency().add(new BigDecimal(amountV));
+                totalPersonalCardExpenses.setValue(finalAmt, readyOnly);
+                amountV = "";
+            } else {
+                totalPersonalCardExpenses.setValue(new BigDecimal(amountV), readyOnly);
+                amountV = "";
+            }
+        } else if (amount != null && paymentMode.equalsIgnoreCase("Corporate_Card")) {
+            amountC = amount.toString();
+            if (!totalCorporateCardExpenses.getValue().isEmpty()) {
+                BigDecimal finalAmt = totalCorporateCardExpenses.getCurrency().add(new BigDecimal(amountC));
+                totalCorporateCardExpenses.setValue(finalAmt, readyOnly);
+                amountC = "";
+            } else {
+                totalCorporateCardExpenses.setValue(new BigDecimal(amountC), readyOnly);
+                amountC = "";
             }
         }
     }
