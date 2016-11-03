@@ -205,7 +205,7 @@ public class UpdateLCAPanel extends UpdateComposite {
         entityFieldsPanel.add(wagesInfo);
         addEnumField("lcaCurrWageLvl", false, true, LCAWageLevels.names(), Alignment.HORIZONTAL);
         addField("lcaCurrMinWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
-        addField("lcaCurrMaxWage", false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
+        addField("lcaCurrMaxWage", false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(addInfo);
         addField("clientName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("vendorName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
