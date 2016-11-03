@@ -38,22 +38,28 @@ public class AdminMenu extends CMenuBar {
 
     @Override
     protected void configureMenu() {
-        addMenuItem("Clients", "Clients", clientsMaintainenceCmd);
-        addMenuItem("Projects", "Projects", projectsMaintainenceCmd);
-        addMenuItem("Vendors", "Vendors", vendorsMaintainenceCmd);
-        addMenuItem("Subcontractors", "Subcontractors", subcontractorsMaintainenceCmd);
-        addMenuItem("SOW's", "SOW's", sowMaintainenceCmd);
-        addMenuItem("Notification Groups", "Notification Groups", notificationGroupMaintainenceCmd);
-        addMenuItem("Question", "Question", questionMaintainenceCmd);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_BULK_IMPORT, ROLE.ROLE_ADMIN)) {
-            addMenuItem("External Refs", "External Refs", externalReferencesMaintainenceCmd);
-            addMenuItem("Bulk Import", "Bulk Import", bulkImportMaintainenceCmd);
-        }
-        if (Auth.isAdmin()) {
-            addMenuItem("Activity", "Activity", activityMaintainenceCmd);
-        }
-        if (Auth.isAdmin()) {
-            addMenuItem("Company", "Company", companyMaintainenceCmd);
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ACCOUNTS_PAYABLE, ROLE.ROLE_ACCOUNTS_RECEIVABLE, ROLE.ROLE_ADMIN)) {
+            addMenuItem("Clients", "Clients", clientsMaintainenceCmd);
+            addMenuItem("Vendors", "Vendors", vendorsMaintainenceCmd);
+            addMenuItem("Subcontractors", "Subcontractors", subcontractorsMaintainenceCmd);
+        } else {
+            addMenuItem("Clients", "Clients", clientsMaintainenceCmd);
+            addMenuItem("Projects", "Projects", projectsMaintainenceCmd);
+            addMenuItem("Vendors", "Vendors", vendorsMaintainenceCmd);
+            addMenuItem("Subcontractors", "Subcontractors", subcontractorsMaintainenceCmd);
+            addMenuItem("SOW's", "SOW's", sowMaintainenceCmd);
+            addMenuItem("Notification Groups", "Notification Groups", notificationGroupMaintainenceCmd);
+            addMenuItem("Question", "Question", questionMaintainenceCmd);
+            if (Auth.hasAnyOfRoles(ROLE.ROLE_BULK_IMPORT, ROLE.ROLE_ADMIN)) {
+                addMenuItem("External Refs", "External Refs", externalReferencesMaintainenceCmd);
+                addMenuItem("Bulk Import", "Bulk Import", bulkImportMaintainenceCmd);
+            }
+            if (Auth.isAdmin()) {
+                addMenuItem("Activity", "Activity", activityMaintainenceCmd);
+            }
+            if (Auth.isAdmin()) {
+                addMenuItem("Company", "Company", companyMaintainenceCmd);
+            }
         }
     }
     static Command notificationGroupMaintainenceCmd = new Command() {
