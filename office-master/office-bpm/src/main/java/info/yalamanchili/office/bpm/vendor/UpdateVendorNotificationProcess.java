@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.bpm.vendor;
 
+import com.google.common.base.Strings;
 import info.chili.audit.AuditChangeDto;
 import info.chili.audit.AuditService;
 import info.chili.email.Email;
@@ -18,6 +19,11 @@ import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jms.MessagingService;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -56,8 +62,33 @@ public class UpdateVendorNotificationProcess implements TaskListener {
         email.setSubject("Task Created:" + delegateTask.getName() + " " + "for" + " " + vendor.getName());
         List<AuditChangeDto> changes = AuditService.instance().compareWithRecentVersion(vendor, vendor.getId());
         Map<String, Object> emailCtx = new HashMap<>();
-
-        emailCtx.put("changes", changes);
+        List<AuditChangeDto> newChanges = new ArrayList();
+        for (AuditChangeDto dto : changes) {
+            AuditChangeDto newDto = new AuditChangeDto();
+            newDto.setPropertyName(dto.getPropertyName());
+            String oldValue = dto.getOldValue();
+            String newValue = dto.getNewValue();
+            DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+            if (!Strings.isNullOrEmpty(oldValue)) {
+                try {
+                    Date theDate = (Date) formatter.parse(oldValue);
+                    newDto.setOldValue(dateFormat.format(theDate));
+                } catch (ParseException ex) {
+                    newDto.setOldValue(oldValue);
+                }
+            } else {
+                newDto.setOldValue(oldValue);
+            }
+            try {
+                Date theDate = (Date) formatter.parse(newValue);
+                newDto.setNewValue(dateFormat.format(theDate));
+            } catch (ParseException e) {
+                newDto.setNewValue(newValue);
+            }
+            newChanges.add(newDto);
+        }
+        emailCtx.put("changes", newChanges);
         if (currentEmployee != null) {
             emailCtx.put("updatedBy", currentEmployee.getFirstName() + " " + currentEmployee.getLastName());
         }
