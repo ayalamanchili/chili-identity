@@ -165,7 +165,7 @@ public class EmployeeOnBoardingService {
             emp.setCompany(em.find(Company.class, initiateDto.getCompany().getId()));
         }
         emp.setStartDate(initiateDto.getStartDate());
-        emp.setWorkStatus(dto.getWorkStatus());
+        emp.setWorkStatus(initiateDto.getWorkStatus());
         emp.setSsn(dto.getSsn());
         emp.setBranch(initiateDto.getBranch());
         if (dto.getPhoneNumber() != null) {
