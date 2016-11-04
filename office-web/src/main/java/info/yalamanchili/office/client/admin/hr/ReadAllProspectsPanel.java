@@ -218,14 +218,14 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Prospects Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ProspectMenu());
+//        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ProspectMenu());
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel());
     }
 
     public void postSendNotification() {
         new ResponseStatusWidget().show("Successfully send onboarding request to HR");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ProspectMenu());
+//        TabPanel.instance().getMyOfficePanel().entityPanel.add(new ProspectMenu());
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel());
     }
 
