@@ -58,6 +58,7 @@ import info.yalamanchili.office.client.admin.clientcontact.CreateClientContactPa
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientAcctPayContact;
 import info.yalamanchili.office.client.admin.clientcontact.SelectClientContactWidget;
 import info.yalamanchili.office.client.admin.clientlocation.CreateClientLocationPanel;
+import info.yalamanchili.office.client.admin.hr.ProspectMenu;
 import info.yalamanchili.office.client.admin.hr.ReadAllProspectsPanel;
 import info.yalamanchili.office.client.admin.vendorcontact.CreateVendorAcctPayCntPanel;
 import info.yalamanchili.office.client.admin.vendorcontact.CreateVendorContactPanel;
@@ -231,6 +232,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId(), active));
         } else {
             GenericPopup.hideIfOpen();
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ProspectMenu());
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel());
         }
     }
