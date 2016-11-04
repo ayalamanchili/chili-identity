@@ -47,7 +47,7 @@ public class CreateUpdateBillingRatePanel extends UpdateComposite {
                 isSubOr1099 = true;
             }
         }
-        initUpdateComposite(entity, "UpdateBillingRate", OfficeWelcome.constants);
+        initUpdateComposite(entity, "UpdateBillingRate", OfficeWelcome.constants2);
     }
 
     @Override

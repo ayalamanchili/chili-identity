@@ -516,8 +516,12 @@ public class ClientInformationService {
         ciEntity.setClientProject(project);
         ciEntity.setActive(dto.getActive());
         ciEntity = clientInformationDao.save(ciEntity);
+        if (ClientInformationStatus.CANCELED.equals(ci.getStatus())) {
+            ciEntity.setStatus(ClientInformationStatus.PENDING_CONTRACTS_VALIDATION);
+            ci.setBpmProcessId(ClientInformationProcessBean.instance().startNewClientInfoProcess(ciEntity, OfficeSecurityService.instance().getCurrentUser()));
+        }
         if (ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && submitForApproval) {
-            ciEntity.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
+            ciEntity.setStatus(ClientInformationStatus.PENDING_CONTRACTS_VALIDATION);
             ci.setBpmProcessId(ClientInformationProcessBean.instance().startNewClientInfoProcess(ciEntity, OfficeSecurityService.instance().getCurrentUser()));
         }
         em.flush();

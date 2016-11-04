@@ -1,3 +1,6 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PaylocityConfigurtion {
 
+    public static final String PAYLOCITY = "Paylocity";
     @Value("#{officeExternalServicesProperties['paylocity.token.endpoint']}")
     protected String paylocityTokenEndpoint;
 
@@ -28,6 +32,9 @@ public class PaylocityConfigurtion {
 
     @Value("#{officeExternalServicesProperties['paylocity.clientsecret']}")
     protected String paylocityClientSecret;
+
+    @Value("#{officeExternalServicesProperties['paylocity.publish.enabled']}")
+    protected Boolean enabled;
 
     @ManagedAttribute
     public String getPaylocityTokenEndpoint() {
@@ -63,6 +70,15 @@ public class PaylocityConfigurtion {
 
     public void setPaylocityClientSecret(String paylocityClientSecret) {
         this.paylocityClientSecret = paylocityClientSecret;
+    }
+
+    @ManagedAttribute
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     public static PaylocityConfigurtion instance() {

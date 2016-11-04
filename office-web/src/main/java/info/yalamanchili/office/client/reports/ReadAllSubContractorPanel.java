@@ -66,6 +66,7 @@ public class ReadAllSubContractorPanel extends CRUDReadAllComposite {
         table.setText(0, 7, getKeyValue("Frequency"));
         table.setText(0, 8, getKeyValue("StartDate"));
         table.setText(0, 9, getKeyValue("EndDate"));
+        table.setText(0, 10, getKeyValue("SubContractor Recuiter Contact"));
     }
 
     @Override
@@ -73,6 +74,7 @@ public class ReadAllSubContractorPanel extends CRUDReadAllComposite {
         for (int i = 1; i <= entities.size(); i++) {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
+            String subcontractorContactInfo = JSONUtils.toString(entity, "subContractorContactName").replaceAll("<br/>", ",");
             table.setText(i, 1, JSONUtils.toString(entity, "employee"));
             table.setText(i, 2, JSONUtils.toString(entity, "client"));
             table.setText(i, 3, JSONUtils.toString(entity, "vendor"));
@@ -82,6 +84,8 @@ public class ReadAllSubContractorPanel extends CRUDReadAllComposite {
             setEnumColumn(i, 7, entity, InvoiceFrequency.class.getSimpleName(), "invoiceFrequency");
             table.setText(i, 8, DateUtils.getFormatedDate(JSONUtils.toString(entity, "startDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
             table.setText(i, 9, DateUtils.getFormatedDate(JSONUtils.toString(entity, "endDate"), DateTimeFormat.PredefinedFormat.DATE_SHORT));
+            table.setText(i, 10, subcontractorContactInfo);
+
         }
     }
 
@@ -95,4 +99,3 @@ public class ReadAllSubContractorPanel extends CRUDReadAllComposite {
         return false;
     }
 }
-

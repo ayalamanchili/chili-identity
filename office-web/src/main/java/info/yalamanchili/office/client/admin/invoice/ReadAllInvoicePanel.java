@@ -148,8 +148,8 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
         table.setText(0, 4, getKeyValue("StartDate"));
         table.setText(0, 5, getKeyValue("EndDate"));
         table.setText(0, 6, getKeyValue("Hours"));
-        table.setText(0, 7, getKeyValue("BillingRate"));
-        table.setText(0, 8, getKeyValue("O.T. BillingRate"));
+        table.setText(0, 7, getKeyValue("Bill Rate"));
+        table.setText(0, 8, getKeyValue("O.T. Bill Rate"));
         table.setText(0, 9, getKeyValue("Invoice Status"));
     }
 

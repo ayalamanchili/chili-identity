@@ -75,7 +75,7 @@ public class BISReportsSidePanel extends ALComposite implements ClickHandler, Op
     protected DisclosurePanel masterDataReportsL = new DisclosurePanel("Consultants Master Data");
     protected DisclosurePanel myVendorL = new DisclosurePanel("Working Under Vendor");
     protected DisclosurePanel myClientL = new DisclosurePanel("Working Under Client");
-    protected DisclosurePanel mySubContructorL = new DisclosurePanel("SubContractor Report");
+    protected DisclosurePanel mySubContructorL = new DisclosurePanel("Working Under SubContractor");
     protected DisclosurePanel multipleProjectsL = new DisclosurePanel("Working On Multiple Projects");
     protected DisclosurePanel myJoinedL = new DisclosurePanel("Joined/Left in a Period");
     protected DisclosurePanel recruiterL = new DisclosurePanel("Employee Recruited By");

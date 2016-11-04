@@ -108,7 +108,7 @@ public class AddressResource extends CRUDResource<Address> {
         }
         if (notifyChange == true) {
             if (!Branch.Hyderabad.equals(EmployeeDao.instance().findById(entity.getContact().getId()).getBranch())) {
-                processAddressUpdateNotification(entity, null, notifyHealthInsurance);
+                initiateAddressUpdateProcess(entity, null, notifyHealthInsurance);
             }
         }
         return entity;
@@ -134,7 +134,7 @@ public class AddressResource extends CRUDResource<Address> {
         MessagingService.instance().sendEmail(email);
     }
 
-    public void processAddressUpdateNotification(Address entity, Employee emp, boolean notifyHealthInsurance) {
+    public void initiateAddressUpdateProcess(Address entity, Employee emp, boolean notifyHealthInsurance) {
         validateExistingAddressUpdateRequest(entity.getId());
         if (emp == null) {
             emp = EmployeeDao.instance().findById(entity.getContact().getId());
