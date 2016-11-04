@@ -54,61 +54,65 @@
             h5 {
                 font-family:Tahoma, Geneva, sans-serif; font-size:16px; font-weight:600; color:#636363;
             }
+             table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
         </style>
     </head>
 
     <body>
         <div class="container" ></div>
-            <div class="wrapper" style="width: 720px; margin-left:auto;margin-right:auto; background:#fff; border-radius: 2px;margin-top: 23px; padding: 10px;
-                 border: 1px solid #dddddd; float: left;margin-left: 4%;padding: 1px;">
-                <div class="header" style="width: 693px;height:40px;padding: 1px 8px 0px 19px;/* background-color:#fff; */border-top-right-radius:10px;border-top-left-radius:10px;">
-                    <div class="logo" style="width:200px;height:41px; text-align:center;  padding-top:25px;" >
-                        <img src="https://apps.sstech.us/sst-logo.png" /></div>
-                </div>
-
-
-
-                <div class="content" style="width:700px;background-color:#FFFFFF; padding:10px;float:left;font-family:Tahoma, Geneva, sans-serif;text-align:center;"><div>
-                        <div class="sections-title-h4">
-                            <h4>System Soft Portal Notification</h4>
-                        </div>
-                    </div>
-                    <div>
-                        <div  style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
-                            <span style="font-size:13px; font-family:Tahoma, Geneva, sans-serif; font-weight:600; color:#4CAF50;"> Updated <span  th:text="${entity}"/> Summary: </span>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <td><b>Field</b></td>
-                                        <td><b>Old Value</b></td>
-                                        <td><b>New Value</b></td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr th:each="change : ${changes}">
-                                        <td th:text="${change.getPropertyName()}"></td>
-                                        <td th:text="${change.getOldValue()}"></td>
-                                        <td th:text="${change.getNewValue()}"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <td><b>Updated By</b></td>  
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td th:text="${updatedBy}"></td>  
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="footer"  style="width:700px; margin:0px; padding: 0px;height:50px; margin-left:auto; margin-right:auto;text-align:center; font-family:Tahoma, Geneva, sans-serif;font-size:11px; padding-top:11px; clear:both;border-bottom-right-radius:10px; border-bottom-left-radius:10px;">COPYRIGHT 2016 sstech.us - All Rights Reserved</div>
+        <div class="wrapper" style="width: 720px; margin-left:auto;margin-right:auto; background:#fff; border-radius: 2px;margin-top: 23px; padding: 10px;
+             border: 1px solid #dddddd; float: left;margin-left: 4%;padding: 1px;">
+            <div class="header" style="width: 693px;height:40px;padding: 1px 8px 0px 19px;/* background-color:#fff; */border-top-right-radius:10px;border-top-left-radius:10px;">
+                <div class="logo" style="width:200px;height:41px; text-align:center;  padding-top:25px;" >
+                    <img src="https://apps.sstech.us/sst-logo.png" /></div>
             </div>
+
+
+
+            <div class="content" style="width:700px;background-color:#FFFFFF; padding:10px;float:left;font-family:Tahoma, Geneva, sans-serif;text-align:center;"><div>
+                    <div class="sections-title-h4">
+                        <h4>System Soft Portal Notification</h4>
+                    </div>
+                </div>
+                <div>
+                    <div  style="text-align:left; font-family: Arial,Helvetica,sans-serif; font-size:10pt;" >
+                        <span style="font-size:13px; font-family:Tahoma, Geneva, sans-serif; font-weight:600; color:#4CAF50;"> Updated <span  th:text="${entity}"/> Summary: </span>
+                            <table>
+                            <thead>
+                                <tr>
+                                    <td><b>Field</b></td>
+                                    <td><b>Old Value</b></td>
+                                    <td><b>New Value</b></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="change : ${changes}">
+                                    <td th:text="${change.getPropertyName().substring(0, 1).toUpperCase() + change.getPropertyName().substring(1)}"></td>
+                                    <td th:text="${change.getOldValue()}"></td>
+                                    <td th:text="${change.getNewValue()}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td><b>Updated By</b></td>  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td th:text="${updatedBy}"></td>  
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="footer"  style="width:700px; margin:0px; padding: 0px;height:50px; margin-left:auto; margin-right:auto;text-align:center; font-family:Tahoma, Geneva, sans-serif;font-size:11px; padding-top:11px; clear:both;border-bottom-right-radius:10px; border-bottom-left-radius:10px;">COPYRIGHT 2016 sstech.us - All Rights Reserved</div>
+        </div>
     </body>     
 </html>
