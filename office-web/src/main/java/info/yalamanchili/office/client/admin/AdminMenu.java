@@ -38,28 +38,21 @@ public class AdminMenu extends CMenuBar {
 
     @Override
     protected void configureMenu() {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ACCOUNTS_PAYABLE, ROLE.ROLE_ACCOUNTS_RECEIVABLE, ROLE.ROLE_ADMIN)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_ACCOUNTS_PAYABLE, ROLE.ROLE_ACCOUNTS_RECEIVABLE, ROLE.ROLE_ADMIN, ROLE.ROLE_CONTRACTS_ADMIN, ROLE.ROLE_BILLING_ADMIN, ROLE.ROLE_BILLING_AND_INVOICING)) {
             addMenuItem("Clients", "Clients", clientsMaintainenceCmd);
             addMenuItem("Vendors", "Vendors", vendorsMaintainenceCmd);
             addMenuItem("Subcontractors", "Subcontractors", subcontractorsMaintainenceCmd);
-        } else {
-            addMenuItem("Clients", "Clients", clientsMaintainenceCmd);
-            addMenuItem("Projects", "Projects", projectsMaintainenceCmd);
-            addMenuItem("Vendors", "Vendors", vendorsMaintainenceCmd);
-            addMenuItem("Subcontractors", "Subcontractors", subcontractorsMaintainenceCmd);
+        }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_BULK_IMPORT, ROLE.ROLE_ADMIN)) {
+            addMenuItem("Bulk Import", "Bulk Import", bulkImportMaintainenceCmd);
+        }
+        if (Auth.isAdmin()) {
             addMenuItem("SOW's", "SOW's", sowMaintainenceCmd);
             addMenuItem("Notification Groups", "Notification Groups", notificationGroupMaintainenceCmd);
             addMenuItem("Question", "Question", questionMaintainenceCmd);
-            if (Auth.hasAnyOfRoles(ROLE.ROLE_BULK_IMPORT, ROLE.ROLE_ADMIN)) {
-                addMenuItem("External Refs", "External Refs", externalReferencesMaintainenceCmd);
-                addMenuItem("Bulk Import", "Bulk Import", bulkImportMaintainenceCmd);
-            }
-            if (Auth.isAdmin()) {
-                addMenuItem("Activity", "Activity", activityMaintainenceCmd);
-            }
-            if (Auth.isAdmin()) {
-                addMenuItem("Company", "Company", companyMaintainenceCmd);
-            }
+            addMenuItem("External Refs", "External Refs", externalReferencesMaintainenceCmd);
+            addMenuItem("Company", "Company", companyMaintainenceCmd);
+            addMenuItem("Activity", "Activity", activityMaintainenceCmd);
         }
     }
     static Command notificationGroupMaintainenceCmd = new Command() {
