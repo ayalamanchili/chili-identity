@@ -18,9 +18,9 @@ import org.hibernate.search.annotations.Indexed;
  *
  * @author radhika.mukkala
  */
-@Indexed
-@XmlRootElement
-@Entity
-@Audited
+//@Indexed
+//@XmlRootElement
+//@Entity
+//@Audited
 public class ClientInfoHandleEntity extends AbstractHandleEntity {
 }
