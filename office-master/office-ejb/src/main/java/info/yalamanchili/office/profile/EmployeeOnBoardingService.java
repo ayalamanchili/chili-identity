@@ -197,20 +197,20 @@ public class EmployeeOnBoardingService {
         emp = EmployeeDao.instance().save(emp);
         emp = em.merge(emp);
             //add cpd to emp, when cpd attach to contact in prospects
-//        if (ContactDao.instance().findByEmail(code.getEmail()) != null) {
-//            Contact cnt = ContactDao.instance().findByEmail(code.getEmail());
-//            List<ClientInformation> cpds = ClientInfoHandleEntityDao.instance().getAllCpds(cnt.getId());
-//            List<ClientInformation> empCpds = new ArrayList();
-//            if (cpds != null && cpds.size() > 0) {
-//                for (ClientInformation cpd : cpds) {
-//                    cpd.setEmployee(emp);
-//                    empCpds.add(ClientInformationDao.instance().getEntityManager().merge(cpd));
-//                }
-//            }
-//            if (empCpds.size() > 0) {
-//                emp.setClientInformations(empCpds);
-//            }
-//        }
+        if (ContactDao.instance().findByEmail(code.getEmail()) != null) {
+            Contact cnt = ContactDao.instance().findByEmail(code.getEmail());
+            List<ClientInformation> cpds = ClientInfoHandleEntityDao.instance().getAllCpds(cnt.getId());
+            List<ClientInformation> empCpds = new ArrayList();
+            if (cpds != null && cpds.size() > 0) {
+                for (ClientInformation cpd : cpds) {
+                    cpd.setEmployee(emp);
+                    empCpds.add(ClientInformationDao.instance().getEntityManager().merge(cpd));
+                }
+            }
+            if (empCpds.size() > 0) {
+                emp.setClientInformations(empCpds);
+            }
+        }
 
         //Update Emergency Contact for Employee
         for (EmergencyContactDto ec : dto.getEmergencyContact()) {
