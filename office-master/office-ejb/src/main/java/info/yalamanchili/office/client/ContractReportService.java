@@ -219,12 +219,12 @@ public class ContractReportService {
     }
     
     public List<ClientMasterReportDto> getAllActiveCPDWithValidSMSA() {
-        TypedQuery<ClientMasterReportDto> q = em.createQuery("SELECT DISTINCT NEW " + ClientMasterReportDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName, ci.employee.lastName, employee.employeeType.name, ci.client.name, ci.client.clientInvDeliveryMethod, ci.client.terminationNoticePeriod,  ci.client.msaValDate, ci.client.msaExpDate) from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate > Now() AND ci.client.msaExpDate > NOW()", ClientMasterReportDto.class);
+        TypedQuery<ClientMasterReportDto> q = em.createQuery("SELECT DISTINCT NEW " + ClientMasterReportDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName, ci.employee.lastName, employee.employeeType.name, ci.client.name, ci.client.clientInvDeliveryMethod, ci.client.terminationNoticePeriod, ci.client.msaValDate, ci.client.msaExpDate) from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate > Now() or ci.endDate is null AND ci.client.msaExpDate > NOW() or ci.client.msaExpDate is null", ClientMasterReportDto.class);
         return q.getResultList();
     }
     
     public List<VendorMasterReportDto> getAllActiveCPDWithValidSMSAs() {
-        TypedQuery<VendorMasterReportDto> q = em.createQuery("SELECT DISTINCT NEW " + VendorMasterReportDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName, ci.employee.lastName, employee.employeeType.name, ci.vendor.name, ci.vendor.coiEndDate) from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate > Now() AND ci.client.msaExpDate > NOW()", VendorMasterReportDto.class);
+        TypedQuery<VendorMasterReportDto> q = em.createQuery("SELECT DISTINCT NEW " + VendorMasterReportDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName, ci.employee.lastName, employee.employeeType.name, ci.vendor.name, ci.vendor.msaValDate, ci.vendor.msaExpDate) from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate > Now() or ci.endDate is null AND ci.vendor.msaExpDate > NOW() or ci.vendor.msaExpDate is null", VendorMasterReportDto.class);
         return q.getResultList();
     }
 

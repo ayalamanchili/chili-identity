@@ -15,16 +15,12 @@ import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.ClientDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
-import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dto.client.ClientMasterReportDto;
-import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Contact;
-import info.yalamanchili.office.entity.profile.Employee;
-import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.Phone;
 import info.yalamanchili.office.jms.MessagingService;
 import java.text.SimpleDateFormat;
@@ -58,17 +54,126 @@ public class ClientService {
     @Async
     @Transactional
     public void generateActiveClientsInfoReport(String email) {
-        List<ClientMasterReportDto> res= new ArrayList();
-        for(ClientMasterReportDto dto:ContractReportService.instance().getAllActiveCPDWithValidSMSA()){
-            ClientInformation ci=ClientInformationDao.instance().findById(dto.getId());
+        List<ClientMasterReportDto> res = new ArrayList();
+        for (ClientMasterReportDto dto : ContractReportService.instance().getAllActiveCPDWithValidSMSA()) {
+            ClientInformation ci = ClientInformationDao.instance().findById(dto.getId());
             Client client = ClientDao.instance().findById(ci.getClient().getId());
             dto.setClientInvDeliveryMethod(client.getClientInvDeliveryMethod().name().toLowerCase().replaceAll("_", " "));
             dto.setTerminationNoticePeriod(client.getTerminationNoticePeriod().toString());
             dto.setMsaValDate(client.getMsaValDate());
             dto.setMsaExpDate(client.getMsaExpDate());
-                    res.add(dto);
+            dto.setClientFee(client.getClientFee().toString());
+            dto.setDirectClient(client.getDirectClient());
+            if (client.getWebsite() != null) {
+                dto.setWebSite(client.getWebsite());
+            }
+            if (client.getContacts().size() > 0) {
+                String recContact = "";
+                int countc = client.getContacts().size();
+                for (Contact contact : client.getContacts()) {
+                    contact.describe();
+                    String name = "";
+                    name = name.concat(contact.getFirstName() + " " + contact.getLastName());
+                    recContact = recContact.concat("\n" + name);
+                    if (contact.getEmails().size() > 0) {
+
+                        email = email.concat(contact.getEmails().get(0).getEmail());
+                        recContact = recContact.concat("-" + email);
+                    }
+                    if (contact.getPhones().size() > 0) {
+                        int countp = contact.getPhones().size();
+                        for (Phone rphone : contact.getPhones()) {
+                            String phone = "";
+                            if (rphone.getCountryCode() != null) {
+                                String ccode = "";
+                                ccode = ccode.concat(rphone.getCountryCode());
+                                recContact = recContact.concat("-" + ccode);
+                            }
+                            phone = phone.concat(rphone.getPhoneNumber());
+                            recContact = recContact.concat("-" + phone);
+                            if (rphone.getExtension() != null) {
+                                String ext = "";
+                                ext = ext.concat(rphone.getExtension());
+                                recContact = recContact.concat("-" + ext);
+                            }
+                            if (countp > 1) {
+                                recContact = recContact.concat("--");
+                            }
+                            countp--;
+                        }
+                    }
+                    if (countc > 1) {
+                        recContact = recContact.concat(",");
+                    }
+                    dto.setRecruiterContact(recContact);
+                    countc--;
+                }
+            }
+            if (client.getLocations().size() > 0) {
+                String clientAddressInfo = "";
+                int count = client.getLocations().size();
+                for (Address address : client.getLocations()) {
+                    clientAddressInfo = clientAddressInfo.concat("\n" + address.getStreet1() + "-");
+                    if (address.getStreet2() != null) {
+                        clientAddressInfo = clientAddressInfo.concat(address.getStreet2() + "-");
+                    }
+                    clientAddressInfo = clientAddressInfo.concat(address.getCity() + "-" + address.getState() + "-" + address.getCountry());
+                    if (address.getZip() != null) {
+                        clientAddressInfo = clientAddressInfo.concat("-" + address.getZip());
+                    }
+                    if (count > 1) {
+                        clientAddressInfo = clientAddressInfo.concat(",");
+                    }
+                    dto.setClientLocations(clientAddressInfo);
+                    count--;
+                }
+            }
+            if (client.getClientAcctPayContacts().size() > 0) {
+                String actContact = "";
+                int countap = client.getClientAcctPayContacts().size();
+                for (Contact acpaycnt : client.getClientAcctPayContacts()) {
+                    String acname = "";
+                    acname = acname.concat(acpaycnt.getFirstName() + " " + acpaycnt.getLastName());
+                    actContact = actContact.concat("\n" + acname);
+                    if (acpaycnt.getEmails().size() > 0) {
+                        String acemail = "";
+                        acemail = acemail.concat(acpaycnt.getEmails().get(0).getEmail());
+                        actContact = actContact.concat("-" + acemail);
+                    }
+                    if (acpaycnt.getPhones().size() > 0) {
+                        int countapp = acpaycnt.getPhones().size();
+                        for (Phone acpayphone : acpaycnt.getPhones()) {
+                            String acphone = "";
+                            if (acpayphone.getCountryCode() != null) {
+                                String acccode = "";
+                                acccode = acccode.concat(acpayphone.getCountryCode());
+                                actContact = actContact.concat("-" + acccode);
+                            }
+                            acphone = acphone.concat(acpayphone.getPhoneNumber());
+                            actContact = actContact.concat("-" + acphone);
+                            if (acpayphone.getExtension() != null) {
+                                String acext = "";
+                                acext = acext.concat(acpayphone.getExtension());
+                                actContact = actContact.concat("-" + acext);
+                            }
+                            if (countapp > 1) {
+                                actContact = actContact.concat("--");
+                            }
+                            countapp--;
+                        }
+                    }
+                    if (countap > 1) {
+                        actContact = actContact.concat(",");
+                    }
+                    dto.setAcctPayContact(actContact);
+                    countap--;
+                }
+            }
+
+            res.add(dto);
+
         }
-        String[] columnOrder = new String[]{"employeeName", "employeeType", "clientName", "clientInvDeliveryMethod", "terminationNoticePeriod", "msaValDate", "msaExpDate"};
+        String[] columnOrder = new String[]{"employeeName", "employeeType", "clientName", "webSite", "clientInvDeliveryMethod", "terminationNoticePeriod", "recruiterContact", "acctPayContact", "clientLocations", "msaValDate", "msaExpDate", "directClient", "clientFee"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Active Clients Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
 
     }

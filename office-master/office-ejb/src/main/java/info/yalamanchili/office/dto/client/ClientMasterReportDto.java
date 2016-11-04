@@ -9,11 +9,15 @@
 package info.yalamanchili.office.dto.client;
 
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
-import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.Contact;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.ManyToMany;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -36,6 +40,8 @@ public class ClientMasterReportDto implements Serializable {
     protected Date msaExpDate;
     protected Boolean directClient;
     protected String clientFee;
+    @ManyToMany(cascade = CascadeType.ALL)
+    protected List<Contact> contacts;
     
     public ClientMasterReportDto() {
     }
@@ -44,6 +50,7 @@ public class ClientMasterReportDto implements Serializable {
         this.employeeName = firstName + " " + lastName;
         this.employeeType = employeeType;
         this.clientName = clientName;
+       
     }
 
     public String getClientName() {
@@ -169,5 +176,24 @@ public class ClientMasterReportDto implements Serializable {
      */
     public void setClientFee(String clientFee) {
         this.clientFee = clientFee;
+    }
+    @XmlTransient
+    public List<Contact> getContacts() {
+        if (this.contacts == null) {
+            this.contacts = new ArrayList<Contact>();
+        }
+        return this.contacts;
+    }
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
+    }
+    
+    public void addContact(Contact contact) {
+        if (contact == null) {
+            return;
+        }
+        getContacts().add(contact);
+//      contact.setClient(this);
     }
 }

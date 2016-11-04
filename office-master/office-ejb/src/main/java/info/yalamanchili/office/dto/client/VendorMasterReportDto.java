@@ -8,10 +8,17 @@
  */
 package info.yalamanchili.office.dto.client;
 
+import info.yalamanchili.office.entity.profile.Contact;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.ManyToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,16 +39,23 @@ public class VendorMasterReportDto implements Serializable {
     protected String employeeType;
     protected String vendorPaymentTerms;
     protected Date coiEndDate;
+    @Temporal(TemporalType.DATE)
+    protected Date msaValDate;
+    @Temporal(TemporalType.DATE)
+    protected Date msaExpDate;
+    @ManyToMany(cascade = CascadeType.ALL)
+    protected List<Contact> contacts;
     
     public VendorMasterReportDto() {
     }
     
-    public VendorMasterReportDto(Long id, String firstName, String lastName, String employeeType, String vendorName, Date coiEndDate) {
+    public VendorMasterReportDto(Long id, String firstName, String lastName, String employeeType, String vendorName, Date msaValDate, Date msaExpDate) {
         this.id = id;
         this.employeeName = firstName + " " + lastName;
         this.employeeType = employeeType;
         this.vendorName = vendorName;
-        this.coiEndDate = coiEndDate;
+//        this.msaValDate = msaValDate;
+//        this.msaExpDate = msaExpDate;
     }
 
     public String getVendorName() {
@@ -144,5 +158,52 @@ public class VendorMasterReportDto implements Serializable {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * @return the msaValDate
+     */
+    public Date getMsaValDate() {
+        return msaValDate;
+    }
+
+    /**
+     * @param msaValDate the msaValDate to set
+     */
+    public void setMsaValDate(Date msaValDate) {
+        this.msaValDate = msaValDate;
+    }
+
+    /**
+     * @return the msaExpDate
+     */
+    public Date getMsaExpDate() {
+        return msaExpDate;
+    }
+
+    /**
+     * @param msaExpDate the msaExpDate to set
+     */
+    public void setMsaExpDate(Date msaExpDate) {
+        this.msaExpDate = msaExpDate;
+    }
+
+    @XmlTransient
+    public List<Contact> getContacts() {
+        if (this.contacts == null) {
+            this.contacts = new ArrayList<Contact>();
+        }
+        return this.contacts;
+    }
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
+    }
+
+    public void addContact(Contact contact) {
+        if (contact == null) {
+            return;
+        }
+        getContacts().add(contact);
     }
 }
