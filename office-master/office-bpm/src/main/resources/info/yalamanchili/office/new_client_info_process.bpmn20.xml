@@ -169,6 +169,7 @@
                 Consultant Job Title        : #{clientInfo.consultantJobTitle}
                 Client                      : #{clientInfo.client.name}
                 Client AP Contact           : #{clientAP}
+                Client Location             : #{clientInfo.clientLocation}
                 Vendor                      : #{clientInfo.vendor.name}
                 Vendor AP Contact           : #{vendorAP}
                 Vendor Payment Terms        : #{clientInfo.vendorPaymentTerms}
