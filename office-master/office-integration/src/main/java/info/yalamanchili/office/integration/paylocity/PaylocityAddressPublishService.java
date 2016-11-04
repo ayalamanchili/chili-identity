@@ -23,6 +23,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import org.springframework.http.HttpStatus;
 
 /**
  *
@@ -37,7 +40,7 @@ public class PaylocityAddressPublishService implements AddressPublishService {
     @Autowired
     protected RestTemplate restTemplate;
 
-    protected String token;
+    protected String token = "";
 
     @Override
     public void process(Address address) {
@@ -46,10 +49,34 @@ public class PaylocityAddressPublishService implements AddressPublishService {
             //TODO if company is null should we create a admin task to fix?
             String paylocityCompanyId = ExternalRefDao.instance().getExternalRefId(PaylocityConfigurtion.PAYLOCITY, Company.class, employee.getCompany().getId());
             String paylocityEmployeeId = ExternalRefDao.instance().getExternalRefId(PaylocityConfigurtion.PAYLOCITY, Employee.class, employee.getId());
+            //headers
             MultiValueMap<String, String> headers = new LinkedMultiValueMap();
             headers.add("Authorization", "Bearer " + token);
-            HttpEntity<String> entity = new HttpEntity<>(headers);
-            ResponseEntity<String> response = restTemplate.exchange(paylocityConfigurtion.getPaylocityApiEnpoint() + "company/" + paylocityCompanyId + "/employee/" + paylocityEmployeeId, HttpMethod.GET, entity, String.class);
+            //body
+            JsonObject updateEmployee = new JsonObject();
+            updateEmployee.addProperty("companyId", paylocityCompanyId);
+            updateEmployee.addProperty("employeeId", paylocityEmployeeId);
+            updateEmployee.addProperty("address1", address.getStreet1());
+            updateEmployee.addProperty("address1", address.getStreet2());
+            updateEmployee.addProperty("city", address.getCity());
+            updateEmployee.addProperty("state", address.getState());
+            updateEmployee.addProperty("zip", address.getZip());
+            updateEmployee.addProperty("country", address.getCountry());
+            HttpEntity<JsonObject> entity = new HttpEntity<>(updateEmployee, headers);
+            ResponseEntity<String> response = restTemplate.exchange(paylocityConfigurtion.getPaylocityApiEnpoint() + "company/" + paylocityCompanyId + "/employee/" + paylocityEmployeeId, HttpMethod.POST, entity, String.class);
+            if (null != response.getStatusCode()) {
+                switch (response.getStatusCode()) {
+                    case UNAUTHORIZED:
+                        refreshToken();
+                        break;
+                    case OK:
+                        Gson gson = new Gson();
+                        JsonObject updateEmployeeResp = gson.fromJson(response.getBody(), JsonObject.class);
+                        break;
+                    default:
+                        break;
+                }
+            }
             response.getBody();
         }
 
@@ -66,6 +93,17 @@ public class PaylocityAddressPublishService implements AddressPublishService {
         String body = "scope=WebLinkAPI&grant_type=client_credentials";
         HttpEntity<String> entity = new HttpEntity<>(body, headers);
         ResponseEntity<String> response = restTemplate.exchange(paylocityConfigurtion.getPaylocityTokenEndpoint(), HttpMethod.POST, entity, String.class);
+        if (null != response.getStatusCode()) {
+            switch (response.getStatusCode()) {
+                case OK:
+                    Gson gson = new Gson();
+                    JsonObject tokenObj = gson.fromJson(response.getBody(), JsonObject.class);
+                    token = tokenObj.get("token").getAsString();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
 }
