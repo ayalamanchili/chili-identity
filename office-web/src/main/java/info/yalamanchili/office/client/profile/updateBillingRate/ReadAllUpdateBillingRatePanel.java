@@ -151,7 +151,7 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
      * @return
      */
     public static Widget renderBillingRateHistory(final JSONObject clientInformation, final boolean isSubOr1099) {
-        final DisclosurePanel billingRatesDP = new DisclosurePanel("Billing Rate History");
+        final DisclosurePanel billingRatesDP = new DisclosurePanel("Bill Rate History");
         billingRatesDP.setWidth("100%");
         billingRatesDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
             @Override
@@ -165,7 +165,7 @@ public class ReadAllUpdateBillingRatePanel extends CRUDReadAllComposite {
     }
 
     public static Widget renderBillingRateHistory(final JSONObject clientInformation) {
-        final DisclosurePanel billingRatesDP = new DisclosurePanel("Billing Rate History");
+        final DisclosurePanel billingRatesDP = new DisclosurePanel("Bill Rate History");
         billingRatesDP.setWidth("100%");
         billingRatesDP.addOpenHandler(new OpenHandler<DisclosurePanel>() {
             @Override
