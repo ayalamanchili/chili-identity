@@ -13,6 +13,7 @@ import info.chili.audit.AuditService;
 import info.chili.email.Email;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles;
+import info.yalamanchili.office.bpm.vendor.UpdateVendorNotificationProcess;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.email.MailUtils;
 import info.yalamanchili.office.entity.client.Client;
@@ -45,6 +46,7 @@ public class UpdateClientNotificationProcess implements TaskListener {
 
     public void notify(DelegateTask delegateTask, Boolean notifyEmployee, String... notifyRoles) {
         MessagingService messagingService = (MessagingService) SpringContext.getBean("messagingService");
+        UpdateVendorNotificationProcess process = new UpdateVendorNotificationProcess();
         Employee currentEmployee = null;
         if (delegateTask.getExecution().getVariable("currentEmployee") != null) {
             currentEmployee = (Employee) delegateTask.getExecution().getVariable("currentEmployee");
@@ -56,13 +58,12 @@ public class UpdateClientNotificationProcess implements TaskListener {
         email.setSubject("Task Created:" + delegateTask.getName() + "" + "for" + client.getName());
         List<AuditChangeDto> changes = AuditService.instance().compareWithRecentVersion(client, client.getId());
         Map<String, Object> emailCtx = new HashMap<>();
-
-        emailCtx.put("changes", changes);
+        List<AuditChangeDto> newChanges = process.getChanges(changes);
+        emailCtx.put("changes", newChanges);
         if (currentEmployee != null) {
             emailCtx.put("updatedBy", currentEmployee.getFirstName() + " " + currentEmployee.getLastName());
         }
         emailCtx.put("entity", "Client");
-
         email.setTemplateName("entity_change_template.html");
         email.setContext(emailCtx);
         email.setHtml(Boolean.TRUE);
@@ -82,5 +83,4 @@ public class UpdateClientNotificationProcess implements TaskListener {
         }
         return emails;
     }
-
 }
