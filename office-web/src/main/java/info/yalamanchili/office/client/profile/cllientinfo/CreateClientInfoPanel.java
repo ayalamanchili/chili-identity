@@ -232,7 +232,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(TreeEmployeePanel.instance().getEntityId(), active));
         } else {
             GenericPopup.hideIfOpen();
-//            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ProspectMenu());
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ProspectMenu());
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProspectsPanel());
         }
     }
