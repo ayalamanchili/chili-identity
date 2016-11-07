@@ -204,9 +204,6 @@ public class UpdateEmployeePanel extends UpdateComposite {
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION, Auth.ROLE.ROLE_ON_BOARDING_MGR)) {
             addDropDown("company", selectCompnayWidget);
-            if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ON_BOARDING_MGR)) {
-                selectCompnayWidget.setReadOnly(true);
-            }
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             addField("ssn", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
