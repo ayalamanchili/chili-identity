@@ -62,6 +62,19 @@ public class UpdateVendorNotificationProcess implements TaskListener {
         email.setSubject("Task Created:" + delegateTask.getName() + " " + "for" + " " + vendor.getName());
         List<AuditChangeDto> changes = AuditService.instance().compareWithRecentVersion(vendor, vendor.getId());
         Map<String, Object> emailCtx = new HashMap<>();
+        List<AuditChangeDto> newChanges = getChanges(changes);
+        emailCtx.put("changes", newChanges);
+        if (currentEmployee != null) {
+            emailCtx.put("updatedBy", currentEmployee.getFirstName() + " " + currentEmployee.getLastName());
+        }
+        emailCtx.put("entity", "Vendor");
+        email.setTemplateName("entity_change_template.html");
+        email.setContext(emailCtx);
+        email.setHtml(Boolean.TRUE);
+        messagingService.sendEmail(email);
+    }
+
+    public List<AuditChangeDto> getChanges(List<AuditChangeDto> changes) {
         List<AuditChangeDto> newChanges = new ArrayList();
         for (AuditChangeDto dto : changes) {
             AuditChangeDto newDto = new AuditChangeDto();
@@ -88,16 +101,7 @@ public class UpdateVendorNotificationProcess implements TaskListener {
             }
             newChanges.add(newDto);
         }
-        emailCtx.put("changes", newChanges);
-        if (currentEmployee != null) {
-            emailCtx.put("updatedBy", currentEmployee.getFirstName() + " " + currentEmployee.getLastName());
-        }
-        emailCtx.put("entity", "Vendor");
-
-        email.setTemplateName("entity_change_template.html");
-        email.setContext(emailCtx);
-        email.setHtml(Boolean.TRUE);
-        messagingService.sendEmail(email);
+        return newChanges;
     }
 
     protected String getTaskLink(DelegateTask delegateTask) {
@@ -113,5 +117,4 @@ public class UpdateVendorNotificationProcess implements TaskListener {
         }
         return emails;
     }
-
 }
