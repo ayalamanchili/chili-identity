@@ -130,9 +130,9 @@ public class ReadAllProspectsPanel extends CRUDReadAllComposite {
                         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_CONTRACTS_ADMIN)) {
                             ClickableLink createCPDLink = new ClickableLink("Create CPD");
                             createCPDLink.setTitle(JSONUtils.toString(entity, "id"));
-//                            createCPDLink.addClickHandler((ClickEvent event) -> {
-//                                createCPD(((ClickableLink) event.getSource()).getTitle());
-//                            });
+                            createCPDLink.addClickHandler((ClickEvent event) -> {
+                                createCPD(((ClickableLink) event.getSource()).getTitle());
+                            });
                             table.setWidget(i, 8, createCPDLink);
                         }
                         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_PROSPECTS_MANAGER)) {
