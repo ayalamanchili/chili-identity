@@ -102,7 +102,7 @@ public class ClientInformationService {
         if (empId != null) {
             emp = (Employee) em.find(Employee.class, empId);
             validate(ci, emp, submitForApproval);
-        } 
+        }
         String abbreviation = getCompanyAbbreviation(ciDto.getCompany());
         if (abbreviation == null || abbreviation.isEmpty()) {
             abbreviation = "SSTL";
@@ -216,7 +216,7 @@ public class ClientInformationService {
         ci = clientInformationDao.save(ci);
         if (emp != null) {
             emp.addClientInformation(ci);
-        } 
+        }
         if (!Strings.isNullOrEmpty(sourceName)) {
             ClientInfoHandleEntity cpd = new ClientInfoHandleEntity();
             cpd.setSourceEntityId(sourceId);
@@ -351,11 +351,9 @@ public class ClientInformationService {
         ContractService.instance().sendBillingRateUpdatedEmail(ci, billingRate.getEffectiveDate(), billingRate.getUpdatedBy());
     }
 
-//merge save and addci methods
-    public ClientInformationSaveDto
-            update(ClientInformationSaveDto dto, Boolean submitForApproval) {
-        ClientInformation ci = mapper.map(dto, ClientInformation.class
-        );
+    //merge save and addci methods
+    public ClientInformationSaveDto update(ClientInformationSaveDto dto, Boolean submitForApproval) {
+        ClientInformation ci = mapper.map(dto, ClientInformation.class);
         ClientInformation ciEntity = em.find(ClientInformation.class, ci.getId());
         String abbreviation = getCompanyAbbreviation(ci.getCompany());
         if (!ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && !submitForApproval) {
@@ -373,7 +371,6 @@ public class ClientInformationService {
                 if (ciEntity.getSubcontractorOvertimePayRate() != null) {
                     ci.setSubcontractorOvertimePayRate(ciEntity.getSubcontractorOvertimePayRate());
                 }
-
             }
             if (emp.getEmployeeType().getName().equals(EmployeeType._1099_CONTRACTOR)) {
                 if (ciEntity.getPayRate1099() != null) {
@@ -382,7 +379,6 @@ public class ClientInformationService {
                 if (ciEntity.getOverTimePayrate1099() != null) {
                     ci.setOverTimePayrate1099(ciEntity.getOverTimePayrate1099());
                 }
-
             }
         }
         validate(ci, ci.getEmployee(), submitForApproval);
@@ -525,12 +521,8 @@ public class ClientInformationService {
             ci.setBpmProcessId(ClientInformationProcessBean.instance().startNewClientInfoProcess(ciEntity, OfficeSecurityService.instance().getCurrentUser()));
         }
         em.flush();
-        ci
-                = em.find(ClientInformation.class, ci.getId());
-
-        return mapper.map(ci, ClientInformationSaveDto.class
-        );
-
+        ci = em.find(ClientInformation.class, ci.getId());
+        return mapper.map(ci, ClientInformationSaveDto.class);
     }
 
     protected void validate(ClientInformation ci, Employee emp, Boolean submitForApproval) {
@@ -546,8 +538,7 @@ public class ClientInformationService {
             ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class);
         }
         if (ci.getStatus() != null && !ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && !submitForApproval) {
-            ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class
-            );
+            ServiceInterceptor.instance().validateInput(ci, ClientInformation.SubmitChecks.class);
         }
     }
 
@@ -587,31 +578,33 @@ public class ClientInformationService {
     public ClientInformationDto addCPDToProspect(Long sourceId, String sourceName, ClientInformationDto cpdDto) {
         ClientInformationDto dto = addClientInformation(null, cpdDto, false, sourceId, sourceName);
         //pass source name in future if cpd tied to company, project etc..
-        notifyContractsAdminTeam(dto, sourceId);
+        notifyContractsAdminTeam(dto, sourceId, sourceName);
         return dto;
     }
 
-    private void notifyContractsAdminTeam(ClientInformationDto dto, Long sourceId) {
+    private void notifyContractsAdminTeam(ClientInformationDto dto, Long sourceId, String sourceName) {
         //use swich case with source name to findv whether the contact, company, project etc...
-        Contact contact = ContactDao.instance().findById(sourceId);
-        Client client = ClientDao.instance().findById(dto.getClient().getId());
-        Vendor vendor = VendorDao.instance().findById(dto.getVendor().getId());
-        Email email = new Email();
-        email.setHtml(Boolean.TRUE);
-        email.setRichText(Boolean.TRUE);
-        email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_CONTRACTS_ADMIN.name()));
-        email.setSubject("New CPD has created for prospect : " + contact.getFirstName() + " " + contact.getLastName());
-        String messageText = "New CPD has created for prospect : " + contact.getFirstName() + " " + contact.getLastName();
-        messageText = messageText.concat("<table border='0'>");
-        messageText = messageText.concat("<tr><td><b>Prospect Name </b></td> <td>" + contact.getFirstName() + " " + contact.getLastName() + "</td></tr>");
-        messageText = messageText.concat("<tr><td><b>Prospect Status </b></td> <td>" + ProspectStatus.CLOSED_WON.name() + "</td></tr>");
-        messageText = messageText.concat("<tr><td><b>Client <b></td> <td>" + client.getName() + "</td></tr>");
-        messageText = messageText.concat("<tr><td><b>Vendor </b> </td> <td>" + vendor.getName() + "</td></tr>");
-        messageText = messageText.concat("<tr><td><b>Project Start Date </b> </td> <td>" + dto.getStartDate() + "</td></tr>");
-        if (dto.getEndDate() != null) {
-            messageText = messageText.concat("<tr><td><b>Project End Date </b> </td> <td>" + dto.getEndDate() + "</td></tr>");
+        if (sourceName.equals("info.yalamanchili.office.entity.hr.Prospect")) {
+            Contact contact = ContactDao.instance().findById(sourceId);
+            Client client = ClientDao.instance().findById(dto.getClient().getId());
+            Vendor vendor = VendorDao.instance().findById(dto.getVendor().getId());
+            Email email = new Email();
+            email.setHtml(Boolean.TRUE);
+            email.setRichText(Boolean.TRUE);
+            email.setTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_CONTRACTS_ADMIN.name()));
+            email.setSubject("New CPD has created for prospect : " + contact.getFirstName() + " " + contact.getLastName());
+            String messageText = "New CPD has created for prospect : " + contact.getFirstName() + " " + contact.getLastName();
+            messageText = messageText.concat("<table border='0'>");
+            messageText = messageText.concat("<tr><td><b>Prospect Name </b></td> <td>" + contact.getFirstName() + " " + contact.getLastName() + "</td></tr>");
+            messageText = messageText.concat("<tr><td><b>Prospect Status </b></td> <td>" + ProspectStatus.CLOSED_WON.name() + "</td></tr>");
+            messageText = messageText.concat("<tr><td><b>Client <b></td> <td>" + client.getName() + "</td></tr>");
+            messageText = messageText.concat("<tr><td><b>Vendor </b> </td> <td>" + vendor.getName() + "</td></tr>");
+            messageText = messageText.concat("<tr><td><b>Project Start Date </b> </td> <td>" + dto.getStartDate() + "</td></tr>");
+            if (dto.getEndDate() != null) {
+                messageText = messageText.concat("<tr><td><b>Project End Date </b> </td> <td>" + dto.getEndDate() + "</td></tr>");
+            }
+            email.setBody(messageText);
+            MessagingService.instance().sendEmail(email);
         }
-        email.setBody(messageText);
-        MessagingService.instance().sendEmail(email);
     }
 }
