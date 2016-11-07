@@ -51,22 +51,6 @@
             </extensionElements>         
         </userTask>
         
-        <!--         Task escalation email after 2 days-->
-        <boundaryEvent id="emailEscalationTimer1"
-                       cancelActivity="false" 
-                       attachedToRef="projectOffboardingContractsAdminTask">
-            <timerEventDefinition> 
-                <timeDuration>PT48H</timeDuration> 
-            </timerEventDefinition>
-        </boundaryEvent>
-        <sequenceFlow sourceRef="emailEscalationTimer1" 
-                      targetRef="taskEmailEscalation1" />
-        <serviceTask
-            id="taskEmailEscalation1"
-            name="Task Email Escalation1"
-            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
-        </serviceTask>
-        
         <!--Workflow for Subcontractor and 1099 Contractor-->
         <sequenceFlow id="subcontractorFlow" sourceRef="projectOffboardingContractsAdminTask" targetRef="subcontractorFork">
             <conditionExpression xsi:type="tFormalExpression">
@@ -188,22 +172,6 @@
             </extensionElements>         
         </userTask>
         
-        <!--         Task escalation email after 2 days-->
-        <boundaryEvent id="emailEscalationTimer2"
-                       cancelActivity="false" 
-                       attachedToRef="projectOffboardingBillingAdminTask">
-            <timerEventDefinition> 
-                <timeDuration>PT48H</timeDuration> 
-            </timerEventDefinition>
-        </boundaryEvent>
-        <sequenceFlow sourceRef="emailEscalationTimer2" 
-                      targetRef="taskEmailEscalation2" />
-        <serviceTask
-            id="taskEmailEscalation2"
-            name="Task Email Escalation2"
-            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
-        </serviceTask>
-        
         <sequenceFlow sourceRef="projectOffboardingBillingAdminTask" targetRef="subcontractorJoin">
             <conditionExpression xsi:type="tFormalExpression">
                     <![CDATA[${employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor" }]]>
@@ -259,22 +227,6 @@
             </extensionElements>         
         </userTask>
         
-        <!--         Task escalation email after 2 days-->
-        <boundaryEvent id="emailEscalationTimer3"
-                       cancelActivity="false" 
-                       attachedToRef="projectOffboardingPayrollDeptTask">
-            <timerEventDefinition> 
-                <timeDuration>PT48H</timeDuration> 
-            </timerEventDefinition>
-        </boundaryEvent>
-        <sequenceFlow sourceRef="emailEscalationTimer3" 
-                      targetRef="taskEmailEscalation3" />
-        <serviceTask
-            id="taskEmailEscalation3"
-            name="Task Email Escalation3"
-            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
-        </serviceTask>
-        
         <sequenceFlow sourceRef="projectOffboardingPayrollDeptTask" targetRef="employeeJoin1">
             <conditionExpression xsi:type="tFormalExpression">
                     <![CDATA[${!(employeeType.name=="Subcontractor" || employeeType.name=="1099 Contractor") && projectOffboardingEntity.projectInPipeline!=true && (employee.workStatus=="H1B" || employee.workStatus=="OPT") }]]>
@@ -323,22 +275,6 @@
                                        type="string" />
             </extensionElements>         
         </userTask>
-        
-        <!--         Task escalation email after 2 days-->
-        <boundaryEvent id="emailEscalationTimer4"
-                       cancelActivity="false" 
-                       attachedToRef="projectOffboardingAccountsPayableTask">
-            <timerEventDefinition> 
-                <timeDuration>PT48H</timeDuration> 
-            </timerEventDefinition>
-        </boundaryEvent>
-        <sequenceFlow sourceRef="emailEscalationTimer4" 
-                      targetRef="taskEmailEscalation4" />
-        <serviceTask
-            id="taskEmailEscalation4"
-            name="Task Email Escalation4"
-            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
-        </serviceTask>
         
         <sequenceFlow sourceRef="projectOffboardingAccountsPayableTask" targetRef="subcontractorJoin">
             <conditionExpression xsi:type="tFormalExpression">
@@ -393,22 +329,6 @@
                                        type="string" />
             </extensionElements>         
         </userTask>
-        
-        <!--         Task escalation email after 2 days-->
-        <boundaryEvent id="emailEscalationTimer5"
-                       cancelActivity="false" 
-                       attachedToRef="projectOffboardingAccountsReceivableTask">
-            <timerEventDefinition> 
-                <timeDuration>PT48H</timeDuration> 
-            </timerEventDefinition>
-        </boundaryEvent>
-        <sequenceFlow sourceRef="emailEscalationTimer5" 
-                      targetRef="taskEmailEscalation5" />
-        <serviceTask
-            id="taskEmailEscalation5"
-            name="Task Email Escalation5"
-            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
-        </serviceTask>
         
         <sequenceFlow sourceRef="projectOffboardingAccountsReceivableTask" targetRef="subcontractorJoin">
             <conditionExpression xsi:type="tFormalExpression">
@@ -465,21 +385,6 @@
             </extensionElements>         
         </userTask>
         
-        <!--         Task escalation email after 2 days-->
-        <boundaryEvent id="emailEscalationTimer6"
-                       cancelActivity="false" 
-                       attachedToRef="projectOffboardingImmigrationDeptTask">
-            <timerEventDefinition> 
-                <timeDuration>PT48H</timeDuration> 
-            </timerEventDefinition>
-        </boundaryEvent>
-        <sequenceFlow sourceRef="emailEscalationTimer6" 
-                      targetRef="taskEmailEscalation6" />
-        <serviceTask
-            id="taskEmailEscalation6"
-            name="Task Email Escalation6"
-            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
-        </serviceTask>
         
         <sequenceFlow sourceRef="projectOffboardingImmigrationDeptTask" targetRef="employeeJoin1">
             <conditionExpression xsi:type="tFormalExpression">
@@ -520,22 +425,6 @@
                                        type="string" />
             </extensionElements>         
         </userTask>
-        
-        <!--         Task escalation email after 2 days-->
-        <boundaryEvent id="emailEscalationTimer7"
-                       cancelActivity="false" 
-                       attachedToRef="projectOffboardingRecruitingDeptTask">
-            <timerEventDefinition> 
-                <timeDuration>PT48H</timeDuration> 
-            </timerEventDefinition>
-        </boundaryEvent>
-        <sequenceFlow sourceRef="emailEscalationTimer7" 
-                      targetRef="taskEmailEscalation7" />
-        <serviceTask
-            id="taskEmailEscalation7"
-            name="Task Email Escalation7"
-            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
-        </serviceTask>
         
         <sequenceFlow sourceRef="projectOffboardingRecruitingDeptTask" targetRef="employeeJoin1">
             <conditionExpression xsi:type="tFormalExpression">
@@ -590,21 +479,6 @@
                                        type="string" />
             </extensionElements>         
         </userTask>
-        <!--Task escalation email after 2 days-->
-        <boundaryEvent id="emailEscalationTimer8"
-                       cancelActivity="false" 
-                       attachedToRef="projectOffboardingValidationTask">
-            <timerEventDefinition> 
-                <timeDuration>PT48H</timeDuration> 
-            </timerEventDefinition>
-        </boundaryEvent>
-        <sequenceFlow sourceRef="emailEscalationTimer8" 
-                      targetRef="taskEmailEscalation8" />
-        <serviceTask
-            id="taskEmailEscalation8"
-            name="Task Email Escalation8"
-            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
-        </serviceTask>
         
         <sequenceFlow sourceRef="projectOffboardingValidationTask" 
                       targetRef="projectOffboardingTaskEnd" />
