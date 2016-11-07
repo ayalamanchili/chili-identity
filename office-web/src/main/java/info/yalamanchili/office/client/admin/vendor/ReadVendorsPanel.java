@@ -70,6 +70,7 @@ public class ReadVendorsPanel extends ReadComposite {
 //        assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorType", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("coiEndDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("vendorStatus", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -96,6 +97,7 @@ public class ReadVendorsPanel extends ReadComposite {
         addField("terminationNotice", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
 //        addField("description", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("coiEndDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("vendorStatus", true, false, VendorStatus.names(), Alignment.HORIZONTAL);
         alignFields();
     }
 
