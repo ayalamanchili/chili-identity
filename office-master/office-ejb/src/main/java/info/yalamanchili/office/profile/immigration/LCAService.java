@@ -11,6 +11,7 @@ package info.yalamanchili.office.profile.immigration;
 import info.chili.reporting.ReportGenerator;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.immigration.LCADao;
@@ -66,6 +67,10 @@ public class LCAService {
             }
         }
         lca = lcaDao.save(lca);
+        String comment = lca.getComment();
+        CommentDao.instance().addComment(comment, lca);
+        CommentDao.instance().addComment(lca.getComment(), lca);
+//        lca = lcaDao.save(lca);
         return lca;
     }
 
@@ -85,6 +90,9 @@ public class LCAService {
             }
         }
         lca.setWorkedByEmployees(newRecs);
+        String comment = lca.getComment();
+        CommentDao.instance().addComment(comment, lca);
+        CommentDao.instance().addComment(lca.getComment(), lca);
         lca = em.merge(lca);
         return lca;
     }
@@ -100,7 +108,7 @@ public class LCAService {
         for (LCA lca : lcaDao.query(0, 2000)) {
             res.add(populateLcaInfo(lca));
         }
-        String[] columnOrder = new String[]{"candidateNames", "totalWorkingPositions", "totalPendingPositions", "visaClassification", "socCodesAndOccupations", "workedByEmployees", "company", "lcaAddress1", "lcaAddress2", "lcaCurrWageLvl", "lcaCurrMinWage", "lcaCurrMaxWage", "jobTitle", "withdrawnLCANumber", "lcaNumber", "lcaFiledDate", "lcaValidFromDate", "lcaValidToDate", "status", "clientName", "vendorName", "lcaPostingSentToVendor", "responseOnLcaPosting", "reminderEmail", "certifiedLcaSentConsultant", "lcaPostingSSTLocation", "lcaFiledInPIF", "nonDisplacement"};
+        String[] columnOrder = new String[]{"candidateNames", "totalWorkingPositions", "totalPendingPositions", "visaClassification", "socCodesAndOccupations", "workedByEmployees", "company", "lcaAddress1", "lcaAddress2", "lcaCurrWageLvl", "lcaCurrMinWage", "lcaCurrMaxWage", "jobTitle", "withdrawnLCANumber", "lcaNumber", "lcaFiledDate", "lcaValidFromDate", "lcaValidToDate", "status", "clientName", "vendorName", "lcaPostingSentToVendor", "responseOnLcaPosting", "reminderEmail", "certifiedLcaSentConsultant", "lcaPostingSSTLocation", "lcaFiledInPIF", "nonDisplacement", "comment"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "LCA Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
@@ -118,7 +126,7 @@ public class LCAService {
         }
         dto.setVisaClassification(lca.getVisaClassification().name());
         if (lca.getSocCodesAndOccupations() != null) {
-            dto.setSocCodesAndOccupations(lca.getSocCodesAndOccupations().name());
+            dto.setSocCodesAndOccupations(lca.getSocCodesAndOccupations().name().toLowerCase().replaceAll("_", " "));
         }
         if (lca.getCandidateNames() != null) {
             dto.setCandidateNames(lca.getCandidateNames());
@@ -134,7 +142,9 @@ public class LCAService {
         }
         dto.setLcaCurrWageLvl(lca.getLcaCurrWageLvl().name());
         dto.setLcaCurrMinWage(lca.getLcaCurrMinWage());
-        dto.setLcaCurrMaxWage(lca.getLcaCurrMaxWage());
+        if (lca.getLcaCurrMaxWage() != null) {
+            dto.setLcaCurrMaxWage(lca.getLcaCurrMaxWage());
+        }
         dto.setJobTitle(lca.getJobTitle());
         if (lca.getWithdrawnLCANumber() != null) {
             dto.setWithdrawnLCANumber(lca.getWithdrawnLCANumber());
@@ -174,15 +184,18 @@ public class LCAService {
         if (lca.getNonDisplacement() != null) {
             dto.setNonDisplacement(lca.getNonDisplacement().name());
         }
+        if (lca.getComment() != null) {
+            dto.setComment(lca.getComment());
+        }
         if (lca.getNonDisplacement() != null) {
             dto.setNonDisplacement(lca.getNonDisplacement().name());
         }
-        StringBuilder recruiters = new StringBuilder();
+        StringBuilder workedByEmp = new StringBuilder();
         for (Employee rec : lca.getWorkedByEmployees()) {
-            recruiters.append(rec.getFirstName()).append(" ").append(rec.getLastName()).append(" , ");
+            workedByEmp.append(rec.getFirstName()).append(" ").append(rec.getLastName()).append(" , ");
         }
-        if (!recruiters.toString().isEmpty()) {
-            dto.setWorkedByEmployees(recruiters.substring(0, recruiters.length() - 2));
+        if (!workedByEmp.toString().isEmpty()) {
+            dto.setWorkedByEmployees(workedByEmp.substring(0, workedByEmp.length() - 2));
         }
         return dto;
     }

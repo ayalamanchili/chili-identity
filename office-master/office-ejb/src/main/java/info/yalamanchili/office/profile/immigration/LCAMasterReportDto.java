@@ -77,6 +77,26 @@ public class LCAMasterReportDto implements Serializable {
 
     protected String nonDisplacement;
 
+    protected String comment;
+
+    protected String auditedBy;
+
+    public String getAuditedBy() {
+        return auditedBy;
+    }
+
+    public void setAuditedBy(String auditedBy) {
+        this.auditedBy = auditedBy;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     public LCAMasterReportDto() {
     }
 

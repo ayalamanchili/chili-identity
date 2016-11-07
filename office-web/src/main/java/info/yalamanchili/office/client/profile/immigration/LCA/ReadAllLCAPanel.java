@@ -179,8 +179,7 @@ public class ReadAllLCAPanel extends CRUDReadAllComposite {
     }
 
     @Override
-    public void viewClicked(String entityId
-    ) {
+    public void viewClicked(String entityId) {
         TabPanel.instance().immigrationPanel.entityPanel.clear();
         TabPanel.instance().immigrationPanel.entityPanel.add(new ReadLCAPanel(getEntity(entityId)));
     }

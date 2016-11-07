@@ -47,7 +47,6 @@ public class ReadLCAPanel extends TReadComposite {
 
     public ReadLCAPanel(JSONObject entity) {
         instance = this;
-        populateComments();
         initReadComposite(entity, "LCA", OfficeWelcome.constants2);
     }
 
@@ -101,18 +100,10 @@ public class ReadLCAPanel extends TReadComposite {
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
-                        populateComments();
                     }
                 });
     }
 
-    protected final void populateComments() {
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_ADMIN)) {
-            logger.info("dsdsdsdsad" + getEntityId());
-            entityFieldsPanel.setWidget(18, 1, new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.immigration.LCA"));
-            entityFieldsPanel.getFlexCellFormatter().setColSpan(18, 1, 2);
-        }
-    }
     SelectEmployeeWithRoleWidget selectRecruiterW = new SelectEmployeeWithRoleWidget("WorkedBy", Auth.ROLE.ROLE_RECRUITER, false, false, Alignment.HORIZONTAL) {
         @Override
         public boolean enableMultiSelect() {
@@ -156,8 +147,13 @@ public class ReadLCAPanel extends TReadComposite {
         addField("totalWorkingPositions", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL, 15, 1);
         addEnumField("status", true, false, LCAStatus.names(), Alignment.HORIZONTAL, 15, 2);
         addField("withdrawnLCANumber", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 16, 1);
+        populateComments();
         alignFields();
+    }
 
+    protected final void populateComments() {
+        entityFieldsPanel.getFlexCellFormatter().setColSpan(18, 1, 2);
+        entityFieldsPanel.setWidget(18, 1, new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.immigration.LCA"));
     }
 
     @Override
@@ -182,7 +178,7 @@ public class ReadLCAPanel extends TReadComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "lca/" + entityId;
+        return null;
     }
 
 }
