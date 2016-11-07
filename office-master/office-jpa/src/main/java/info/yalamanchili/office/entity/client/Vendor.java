@@ -11,6 +11,7 @@ import info.chili.jpa.AbstractEntity;
 import info.chili.jpa.validation.Unique;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
+import info.yalamanchili.office.entity.profile.VendorStatus;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -105,6 +106,10 @@ public class Vendor extends AbstractEntity {
 
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date coiEndDate;
+    
+    @Enumerated(EnumType.STRING)
+    @Field
+    protected VendorStatus vendorStatus;
 
     public String getName() {
         return name;
@@ -304,6 +309,20 @@ public class Vendor extends AbstractEntity {
 
     public void setCoiEndDate(Date coiEndDate) {
         this.coiEndDate = coiEndDate;
+    }
+    
+    /**
+     * @return the VendorStatus
+     */
+    public VendorStatus getVendorStatus() {
+        return vendorStatus;
+    }
+
+    /**
+     * @param VendorStatus the VendorStatus to set
+     */
+    public void setVendorStatus(VendorStatus vendorStatus) {
+        this.vendorStatus = vendorStatus;
     }
 
     @Override

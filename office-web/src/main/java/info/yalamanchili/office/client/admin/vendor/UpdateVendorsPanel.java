@@ -56,6 +56,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
 //      assignEntityValueFromField("description", entity);
         assignEntityValueFromField("vendorType", entity);
         assignEntityValueFromField("coiEndDate", entity);
+        assignEntityValueFromField("vendorStatus", entity);
 
         return entity;
     }
@@ -92,6 +93,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
 //      assignFieldValueFromEntity("description", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("vendorType", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("coiEndDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("vendorStatus", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -136,6 +138,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
         addField("terminationNotice", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
 //        addField("description", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("coiEndDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addEnumField("vendorStatus", false, false, VendorStatus.names(), Alignment.HORIZONTAL);
         alignFields();
     }
 
