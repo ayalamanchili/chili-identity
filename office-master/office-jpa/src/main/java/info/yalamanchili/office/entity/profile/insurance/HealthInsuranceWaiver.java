@@ -58,8 +58,6 @@ public class HealthInsuranceWaiver extends AbstractHandleEntity {
 
     protected String otherNameOfCarrier;
 
-    protected String waiverYear;
-
     @Enumerated(EnumType.STRING)
     protected InsuranceCoverageType otherCarrierType;
     //
@@ -190,14 +188,6 @@ public class HealthInsuranceWaiver extends AbstractHandleEntity {
         this.otherCarrierType = otherCarrierType;
     }
 
-    public String getWaiverYear() {
-        return waiverYear;
-    }
-
-    public void setWaiverYear(String waiverYear) {
-        this.waiverYear = waiverYear;
-    }
-
     /**
      * @return the benefitEnrollment
      */
@@ -214,7 +204,7 @@ public class HealthInsuranceWaiver extends AbstractHandleEntity {
 
     @Override
     public String toString() {
-        return "HealthInsuranceWaiver{" + "fileUrl=" + fileUrl + ", benefitEnrollment=" + benefitEnrollment + ", submittedDate=" + submittedDate + ", waivingCoverageFor=" + waivingCoverageFor + ", waivingCoverageDueTo=" + waivingCoverageDueTo + ", spouseName=" + spouseName + ", dependentName=" + dependentName + ", spouseNameOfCarrier=" + spouseNameOfCarrier + ", otherNameOfCarrier=" + otherNameOfCarrier + ", waiverYear=" + waiverYear + ", otherCarrierType=" + otherCarrierType + '}';
+        return "HealthInsuranceWaiver{" + "fileUrl=" + fileUrl + ", benefitEnrollment=" + benefitEnrollment + ", submittedDate=" + submittedDate + ", waivingCoverageFor=" + waivingCoverageFor + ", waivingCoverageDueTo=" + waivingCoverageDueTo + ", spouseName=" + spouseName + ", dependentName=" + dependentName + ", spouseNameOfCarrier=" + spouseNameOfCarrier + ", otherNameOfCarrier=" + otherNameOfCarrier + ", otherCarrierType=" + otherCarrierType + '}';
     }
 
 }

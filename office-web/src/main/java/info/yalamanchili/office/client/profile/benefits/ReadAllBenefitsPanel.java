@@ -19,6 +19,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
 import java.util.logging.Logger;
 
 /**
@@ -80,7 +81,7 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted Address Information");
         TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBenefitsPanel((OfficeWelcome.instance().employeeId)));
+        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBenefitsPanel(TreeEmployeePanel.instance().getEntityId()));
     }
 
     @Override

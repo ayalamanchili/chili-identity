@@ -38,7 +38,7 @@ public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler,
     private static Logger logger = Logger.getLogger(UpdateBenefitPanel.class.getName());
     BooleanField enrolledFlagField = new BooleanField(OfficeWelcome.constants2, "enrolled", "Benefit", false, false, Alignment.HORIZONTAL);
     DateField requestedDate = new DateField(OfficeWelcome.constants2, "affectiveDate", "Benefit", false, false, Alignment.HORIZONTAL);
-    EnumField benefitType = new EnumField(OfficeWelcome.constants, "benefitType", "Benefit", false, false, BenefitType.names(), Alignment.HORIZONTAL);
+    EnumField benefitType = new EnumField(OfficeWelcome.constants2, "benefitType", "Benefit", false, false, BenefitType.names(), Alignment.HORIZONTAL);
     protected String empId;
 
     UpdateHealthInsuranceWaiverPanel insuranceWaiver = new UpdateHealthInsuranceWaiverPanel();

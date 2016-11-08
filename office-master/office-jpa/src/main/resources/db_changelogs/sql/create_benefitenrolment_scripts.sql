@@ -1,3 +1,7 @@
+--
+-- System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+--
+
 DROP TABLE IF EXISTS `benefitenrollment` ;
 
 CREATE TABLE `benefitenrollment` (

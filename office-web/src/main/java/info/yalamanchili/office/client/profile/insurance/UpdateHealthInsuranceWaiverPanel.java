@@ -6,7 +6,6 @@
 package info.yalamanchili.office.client.profile.insurance;
 
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -18,13 +17,13 @@ import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
-import info.chili.gwt.fields.FileuploadField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.profile.benefits.YearType;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 /**
@@ -45,7 +44,7 @@ public class UpdateHealthInsuranceWaiverPanel extends TUpdateComposite {
     RadioButton myspousesplan = new RadioButton("myspousesplan", "Coverage under my spouse's plan");
     RadioButton othercoverage = new RadioButton("othercoverage", "Other coverage");
 
-    HTML tac2 = new HTML("<h4><u>For the plan year " + DateTimeFormat.getFormat("MM/dd/yyyy").format(new Date()).split("/")[2] + ", I am waiving coverage for: \n</u >");
+    HTML tac2 = new HTML("<h4><u>For the plan year " + Arrays.toString(YearType.values()) + ", I am waiving coverage for: \n</u >");
     HTML tac3 = new HTML("<h4><u>I am waiving coverage due to: \n</u>");
 
     protected StringField spouseNameOfCarrier = new StringField(OfficeWelcome.constants2, "spouseNameOfCarrier", "HealthInsuranceWaiver", false, true, Alignment.HORIZONTAL);
@@ -56,12 +55,6 @@ public class UpdateHealthInsuranceWaiverPanel extends TUpdateComposite {
     DateField submittedDate = new DateField(OfficeWelcome.constants2, "submittedDate", "HealthInsuranceWaiver", false, false, Alignment.HORIZONTAL);
 
     EnumField othercoverageType = new EnumField(OfficeWelcome.constants2, "otherCarrierType", "HealthInsuranceWaiver", false, true, InsuranceCoverageType.names(), Alignment.HORIZONTAL);
-    protected FileuploadField resumeUploadPanel = new FileuploadField(OfficeWelcome.constants2, "HealthInsuranceWaiver", "fileUrl", "HealthInsuranceWaiver/fileUrl", false, true) {
-        @Override
-        public void onUploadComplete(String res) {
-            uploadDoc(null);
-        }
-    };
 
     public UpdateHealthInsuranceWaiverPanel(JSONObject entity) {
         initUpdateComposite(entity, "HealthInsuranceWaiver", OfficeWelcome.constants2);
@@ -113,30 +106,25 @@ public class UpdateHealthInsuranceWaiverPanel extends TUpdateComposite {
         if (submittedDate.getDate() != null) {
             entity.put("submittedDate", new JSONString(DateUtils.toDateString(submittedDate.getDate())));
         }
-        entity.put("fileUrl", resumeUploadPanel.getFileName());
         entity.put("targetEntityName", new JSONString("targetEntityName"));
         entity.put("targetEntityId", new JSONString("0"));
         return entity;
-    }
-
-    protected void uploadDoc(String entityId) {
-        resumeUploadPanel.upload(entityId.trim());
     }
 
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -174,7 +162,6 @@ public class UpdateHealthInsuranceWaiverPanel extends TUpdateComposite {
         entityFieldsPanel.setWidget(7, 1, myspousesplan);
         entityFieldsPanel.setWidget(8, 1, othercoverage);
         entityFieldsPanel.setWidget(9, 1, submittedDate);
-        entityFieldsPanel.setWidget(10, 1, resumeUploadPanel);
         entityActionsPanel.setVisible(false);
     }
 

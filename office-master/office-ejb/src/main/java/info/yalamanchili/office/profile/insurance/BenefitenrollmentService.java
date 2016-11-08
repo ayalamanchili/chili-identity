@@ -184,6 +184,9 @@ public class BenefitenrollmentService {
         if (emp.getPhones().size() > 0) {
             dto.setPhoneNumber(emp.getPhones().get(0).getPhoneNumber());
         }
+        if (ins.getBenefitType() != null) {
+            dto.setBenefitType(ins.getBenefitType().name());
+        }
         if (ins.getEnrolled() != null) {
             if (ins.getEnrolled()) {
                 dto.setEnrolled("Yes");
@@ -213,8 +216,6 @@ public class BenefitenrollmentService {
         if (ins.getBenefitType() != null) {
             dto.setBenefitType(ins.getBenefitType().name());
         }
-
-        dto.setYear(ins.getHealthInsuranceWaiver().getWaiverYear());
         if (ins.getEnrolled()) {
             dto.setEnrolled("Enrolled");
         } else {
@@ -231,7 +232,7 @@ public class BenefitenrollmentService {
         List<Employee> notSubmittedEmps = new ArrayList();
         if (dto.getEmployee() != null) {
             Employee emp = EmployeeDao.instance().findById(Long.valueOf(dto.getEmployee()));
-            List<BenefitEnrollment> insurances = benefitEnrollmentDao.queryForEmployee(emp.getId(), 0, 50);
+            List<BenefitEnrollment> insurances = benefitEnrollmentDao.queryForEmployee(emp.getId(), 0, 1000);
             if (insurances == null || insurances.isEmpty()) {
                 notSubmittedEmps.add(emp);
             } else if (insurances.size() > 0) {

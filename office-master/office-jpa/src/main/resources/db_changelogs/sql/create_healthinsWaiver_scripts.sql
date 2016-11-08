@@ -1,3 +1,7 @@
+--
+-- System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+--
+
 DROP TABLE IF EXISTS `healthinsurancewaiver` ;
 
 CREATE TABLE `healthinsurancewaiver` (
@@ -14,7 +18,6 @@ CREATE TABLE `healthinsurancewaiver` (
   `spouseName` varchar(255) DEFAULT NULL,
   `spouseNameOfCarrier` varchar(255) DEFAULT NULL,
   `submittedDate` date DEFAULT NULL,
-  `waiverYear` varchar(255) DEFAULT NULL,
   `waivingCoverageDueTo` varchar(255) NOT NULL,
   `waivingCoverageFor` varchar(255) NOT NULL,
   `benefitEnrollment_id` bigint(20) DEFAULT NULL,
@@ -44,7 +47,6 @@ CREATE TABLE `healthinsurancewaiver_aud` (
   `spouseName` varchar(255) DEFAULT NULL,
   `spouseNameOfCarrier` varchar(255) DEFAULT NULL,
   `submittedDate` date DEFAULT NULL,
-  `waiverYear` varchar(255) DEFAULT NULL,
   `waivingCoverageDueTo` varchar(255) DEFAULT NULL,
   `waivingCoverageFor` varchar(255) DEFAULT NULL,
   `benefitEnrollment_id` bigint(20) DEFAULT NULL,
@@ -52,3 +54,4 @@ CREATE TABLE `healthinsurancewaiver_aud` (
   KEY `FKFD09F4DE5B7A65D066d8a293` (`REV`),
   CONSTRAINT `FKFD09F4DE5B7A65D066d8a293` FOREIGN KEY (`REV`) REFERENCES `auditrevisionentity` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
