@@ -43,6 +43,16 @@ public class HealthInsuranceReportDto implements Serializable {
 
     protected String dental;
 
+    protected String benefitType;
+
+    public String getBenefitType() {
+        return benefitType;
+    }
+
+    public void setBenefitType(String benefitType) {
+        this.benefitType = benefitType;
+    }
+
     public Date getStartDate() {
         return startDate;
     }

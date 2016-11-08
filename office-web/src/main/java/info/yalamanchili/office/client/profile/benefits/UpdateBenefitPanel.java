@@ -34,19 +34,19 @@ import java.util.logging.Logger;
  * @author Hemanth
  */
 public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler, ChangeHandler {
-    
+
     private static Logger logger = Logger.getLogger(UpdateBenefitPanel.class.getName());
     BooleanField enrolledFlagField = new BooleanField(OfficeWelcome.constants2, "enrolled", "Benefit", false, false, Alignment.HORIZONTAL);
     DateField requestedDate = new DateField(OfficeWelcome.constants2, "affectiveDate", "Benefit", false, false, Alignment.HORIZONTAL);
     EnumField benefitType = new EnumField(OfficeWelcome.constants, "benefitType", "Benefit", false, false, BenefitType.names(), Alignment.HORIZONTAL);
     protected String empId;
-    
+
     UpdateHealthInsuranceWaiverPanel insuranceWaiver = new UpdateHealthInsuranceWaiverPanel();
-    
+
     public UpdateBenefitPanel(JSONObject entity) {
         initUpdateComposite(entity, "Benefit", OfficeWelcome.constants2);
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
 //        return null;
@@ -61,23 +61,23 @@ public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler,
         }
         return entity;
     }
-    
+
     @Override
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
-            
-            @Override
-            public void onSuccess(String arg0) {
-                postUpdateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
+
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postUpdateSuccess(arg0);
+                    }
+                });
     }
-    
+
     @Override
     protected void postUpdateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Updated Benefit Information");
@@ -90,7 +90,7 @@ public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler,
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBenefitsPanel(TreeEmployeePanel.instance().getEntityId()));
         }
     }
-    
+
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         String enrolled = entity.get("enrolled").isString().stringValue();
@@ -107,16 +107,16 @@ public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler,
             entityFieldsPanel.add(new UpdateHealthInsuranceWaiverPanel(entity.get("healthInsuranceWaiver").isObject()));
         }
     }
-    
+
     @Override
     protected void addListeners() {
         benefitType.listBox.addChangeHandler(this);
     }
-    
+
     @Override
     protected void configure() {
     }
-    
+
     @Override
     protected void addWidgets() {
         entityFieldsPanel.add(benefitType);
@@ -124,7 +124,7 @@ public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler,
         entityFieldsPanel.add(enrolledFlagField);
         addField("affectiveDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
     }
-    
+
     @Override
     public void onChange(ChangeEvent event) {
         if (event.getSource().equals(benefitType.listBox)) {
@@ -137,7 +137,7 @@ public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler,
             }
         }
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(enrolledFlagField.getBox())) {
@@ -152,11 +152,11 @@ public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler,
         }
         super.onClick(event);
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-    
+
     @Override
     protected String getURI() {
         if (TabPanel.instance().myOfficePanel.isVisible()) {
@@ -164,5 +164,10 @@ public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler,
         } else {
             return OfficeWelcome.constants.root_url() + "benefit/save/" + OfficeWelcome.instance().employeeId;
         }
+    }
+
+    protected boolean checkClientSideValidations(boolean valid) {
+
+        return valid;
     }
 }

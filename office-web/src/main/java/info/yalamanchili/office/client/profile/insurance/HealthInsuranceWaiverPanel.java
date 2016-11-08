@@ -240,7 +240,7 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
         }
     }
 
-    protected boolean checkClientSideValidations(boolean valid) {
+    public boolean checkClientSideValidations(boolean valid) {
         if (spouse.isChecked() == true && spouseName.isVisible() == true && (spouseName.getValue() == null || spouseName.getValue().isEmpty())) {
             spouseName.setMessage("Spouse Name can not be empty");
             valid = false;
