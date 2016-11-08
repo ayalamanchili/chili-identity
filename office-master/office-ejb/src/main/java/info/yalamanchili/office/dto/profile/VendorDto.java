@@ -12,6 +12,7 @@ import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.client.VendorType;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.VendorStatus;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -51,6 +52,8 @@ public class VendorDto implements Serializable {
     protected String terminationNotice;
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date coiEndDate;
+    @Enumerated(EnumType.STRING)
+    protected VendorStatus vendorStatus;
     protected String paymentTerms;
     @Enumerated(EnumType.STRING)
     protected InvoiceFrequency vendorinvFrequency;
@@ -194,6 +197,20 @@ public class VendorDto implements Serializable {
      */
     public void setCoiEndDate(Date coiEndDate) {
         this.coiEndDate = coiEndDate;
+    }
+    
+    /**
+     * @return the vendorStatus
+     */
+    public VendorStatus getVendorStatus() {
+        return vendorStatus;
+    }
+
+    /**
+     * @param vendorStatus the vendorStatus to set
+     */
+    public void setVendorStatus(VendorStatus vendorStatus) {
+        this.vendorStatus = vendorStatus;
     }
 
     /**

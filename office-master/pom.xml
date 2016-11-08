@@ -402,7 +402,7 @@
         <module>office-dao</module>
         <module>office-bpm</module>
         <module>office-ejb</module>
-        <!--<module>office-toolbox</module>-->
+        <module>office-integration</module>
         <module>office-jrs</module>
         <!-- web -->
         <!--<module>../office-web</module> -->

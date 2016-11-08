@@ -21,6 +21,7 @@ import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.envers.Audited;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -43,8 +44,10 @@ public class HealthInsuranceWaiver extends AbstractHandleEntity {
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date submittedDate;
 
+    @NotEmpty(message = "{waivingCoverageFor.not.empty.msg}")
     protected String waivingCoverageFor;
 
+    @NotEmpty(message = "{waivingCoverageDueTo.not.empty.msg}")
     protected String waivingCoverageDueTo;
 
     protected String spouseName;
@@ -54,8 +57,6 @@ public class HealthInsuranceWaiver extends AbstractHandleEntity {
     protected String spouseNameOfCarrier;
 
     protected String otherNameOfCarrier;
-
-    protected String waiverYear;
 
     @Enumerated(EnumType.STRING)
     protected InsuranceCoverageType otherCarrierType;
@@ -187,14 +188,6 @@ public class HealthInsuranceWaiver extends AbstractHandleEntity {
         this.otherCarrierType = otherCarrierType;
     }
 
-    public String getWaiverYear() {
-        return waiverYear;
-    }
-
-    public void setWaiverYear(String waiverYear) {
-        this.waiverYear = waiverYear;
-    }
-
     /**
      * @return the benefitEnrollment
      */
@@ -211,7 +204,7 @@ public class HealthInsuranceWaiver extends AbstractHandleEntity {
 
     @Override
     public String toString() {
-        return "HealthInsuranceWaiver{" + "fileUrl=" + fileUrl + ", benefitEnrollment=" + benefitEnrollment + ", submittedDate=" + submittedDate + ", waivingCoverageFor=" + waivingCoverageFor + ", waivingCoverageDueTo=" + waivingCoverageDueTo + ", spouseName=" + spouseName + ", dependentName=" + dependentName + ", spouseNameOfCarrier=" + spouseNameOfCarrier + ", otherNameOfCarrier=" + otherNameOfCarrier + ", waiverYear=" + waiverYear + ", otherCarrierType=" + otherCarrierType + '}';
+        return "HealthInsuranceWaiver{" + "fileUrl=" + fileUrl + ", benefitEnrollment=" + benefitEnrollment + ", submittedDate=" + submittedDate + ", waivingCoverageFor=" + waivingCoverageFor + ", waivingCoverageDueTo=" + waivingCoverageDueTo + ", spouseName=" + spouseName + ", dependentName=" + dependentName + ", spouseNameOfCarrier=" + spouseNameOfCarrier + ", otherNameOfCarrier=" + otherNameOfCarrier + ", otherCarrierType=" + otherCarrierType + '}';
     }
 
 }

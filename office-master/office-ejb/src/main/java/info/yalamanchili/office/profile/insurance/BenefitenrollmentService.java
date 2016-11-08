@@ -15,6 +15,7 @@ import info.chili.email.Email;
 import info.chili.security.Signature;
 import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
+import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
 import info.yalamanchili.office.dao.profile.CompanyDao;
@@ -26,7 +27,6 @@ import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.benefits.BenefitEnrollment;
-import info.yalamanchili.office.entity.profile.benefits.BenefitType;
 import info.yalamanchili.office.entity.profile.insurance.HealthInsuranceWaiver;
 import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.Cobra;
 import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.EmployerSponsoredGroupPlan;
@@ -43,7 +43,9 @@ import javax.ws.rs.core.Response;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -182,11 +184,15 @@ public class BenefitenrollmentService {
         if (emp.getPhones().size() > 0) {
             dto.setPhoneNumber(emp.getPhones().get(0).getPhoneNumber());
         }
-        if (dto.getEnrolled() != null) {
-            dto.setEnrolled("Yes");
-        } else {
-            dto.setEnrolled("No");
-
+        if (ins.getBenefitType() != null) {
+            dto.setBenefitType(ins.getBenefitType().name());
+        }
+        if (ins.getEnrolled() != null) {
+            if (ins.getEnrolled()) {
+                dto.setEnrolled("Yes");
+            } else {
+                dto.setEnrolled("No");
+            }
         }
         dto.setEmail(emp.getPrimaryEmail().getEmail());
 
@@ -200,38 +206,16 @@ public class BenefitenrollmentService {
         if (emp.getCompany() != null) {
             dto.setCompany(emp.getCompany().getName());
         }
+
         dto.setEmployeeType(emp.getEmployeeType().getName());
         dto.setStartDate(emp.getStartDate());
         if (emp.getPhones().size() > 0) {
             dto.setPhoneNumber(emp.getPhones().get(0).getPhoneNumber());
         }
         dto.setEmail(emp.getPrimaryEmail().getEmail());
-        if (ins.getBenefitType() != null && ins.getBenefitType().equals(BenefitType.Health_Insurance)) {
-            dto.setHealth("yes");
-            dto.setDental("no");
-        } else if (ins.getBenefitType() != null && ins.getBenefitType().equals(BenefitType.Health_Insurance)) {
-            dto.setDental("yes");
-            dto.setHealth("no");
-        } else if (ins.getBenefitType() != null && ins.getBenefitType().equals(BenefitType.Vision_Insurance)) {
-            dto.setDental("yes");
-            dto.setHealth("no");
-        } else if (ins.getBenefitType() != null && ins.getBenefitType().equals(BenefitType.Supplemental_Insurance)) {
-            dto.setDental("yes");
-            dto.setHealth("no");
-        } else if (ins.getBenefitType() != null && ins.getBenefitType().equals(BenefitType.Plan_401K)) {
-            dto.setDental("yes");
-            dto.setHealth("no");
+        if (ins.getBenefitType() != null) {
+            dto.setBenefitType(ins.getBenefitType().name());
         }
-        if (ins.getEnrolled()) {
-            dto.setEnrolled("Enrolled");
-            dto.setWaiver("n/a");
-        } else {
-            dto.setEnrolled("Not Enrolled");
-        }
-        dto.setHealth("n/a");
-        dto.setDental("n/a");
-        dto.setWaiver("yes");
-        dto.setYear(ins.getHealthInsuranceWaiver().getWaiverYear());
         if (ins.getEnrolled()) {
             dto.setEnrolled("Enrolled");
         } else {
@@ -248,7 +232,7 @@ public class BenefitenrollmentService {
         List<Employee> notSubmittedEmps = new ArrayList();
         if (dto.getEmployee() != null) {
             Employee emp = EmployeeDao.instance().findById(Long.valueOf(dto.getEmployee()));
-            List<BenefitEnrollment> insurances = benefitEnrollmentDao.queryForEmployee(emp.getId(), 0, 50);
+            List<BenefitEnrollment> insurances = benefitEnrollmentDao.queryForEmployee(emp.getId(), 0, 1000);
             if (insurances == null || insurances.isEmpty()) {
                 notSubmittedEmps.add(emp);
             } else if (insurances.size() > 0) {
@@ -294,6 +278,22 @@ public class BenefitenrollmentService {
             }
         }
         return falseCount;
+    }
+
+    @Async
+    @Transactional
+    public void sendBenefitEnrollmentCreatedNotification(BenefitEnrollment clnt) {
+        Email email = new Email();
+        email.addTos(MailUtils.instance().getEmailsAddressesForRoles(OfficeRoles.OfficeRole.ROLE_HEALTH_INSURANCE_MANAGER.name(), OfficeRoles.OfficeRole.ROLE_ACCOUNTS_PAYABLE.name(), OfficeRoles.OfficeRole.ROLE_ACCOUNTS_RECEIVABLE.name()));
+        email.setHtml(Boolean.TRUE);
+        email.setRichText(Boolean.TRUE);
+        email.setSubject("Benefit Enrollment " + clnt.getEmployee().getFirstName() + " " + clnt.getEmployee().getLastName() + " Has Created");
+        String messageText = " <b><u>System Soft Tech BenefitEnrollment Notification :</b></u> </br> ";
+        messageText = messageText.concat("</br> <b>Benefit Type &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :</b> " + clnt.getBenefitType().name());
+        messageText = messageText.concat("</br> <b>Benefit Enrollment Year &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :</b> " + clnt.getYear());
+        messageText = messageText.concat("</br> <b>Benefit Enrollment Comment &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :</b> " + clnt.getComments());
+        email.setBody(messageText);
+        MessagingService.instance().sendEmail(email);
     }
 
     protected void notSubmittedEmailNotification(String empEmail, String year) {

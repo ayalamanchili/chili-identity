@@ -134,7 +134,7 @@ public class HealthInsuranceService {
                 }
             }
         }
-         String empCompanyLogo = "";
+        String empCompanyLogo = "";
         if (preparedBy.getCompany() != null) {
             empCompanyLogo = preparedBy.getCompany().getLogoURL().replace("entityId", preparedBy.getCompany().getId().toString());
         } else {
@@ -213,7 +213,6 @@ public class HealthInsuranceService {
         dto.setHealth("n/a");
         dto.setDental("n/a");
         dto.setWaiver("yes");
-        dto.setYear(ins.getHealthInsuranceWaiver().getWaiverYear());
         if (ins.getEnrolled()) {
             dto.setEnrolled("Enrolled");
         } else {

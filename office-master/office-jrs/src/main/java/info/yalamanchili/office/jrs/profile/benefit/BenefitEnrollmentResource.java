@@ -103,6 +103,7 @@ public class BenefitEnrollmentResource extends CRUDResource<BenefitEnrollment> {
         String comment = "Comments:" + benefitEnrollment.getComments();
         CommentDao.instance().addComment(comment, benefitEnrollment);
         getDao().save(benefitEnrollment);
+        BenefitenrollmentService.instance().sendBenefitEnrollmentCreatedNotification(benefitEnrollment);
     }
 
     @GET
@@ -136,7 +137,7 @@ public class BenefitEnrollmentResource extends CRUDResource<BenefitEnrollment> {
         List<HealthInsuranceReportDto> report = new ArrayList<>();
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         report = BenefitenrollmentService.instance().getHealthInsuranceReport(year);
-        String[] columnOrder = new String[]{"employee", "employeeType", "company", "startDate", "waiver", "health", "dental", "phoneNumber", "email", "year", "enrolled"};
+        String[] columnOrder = new String[]{"employee", "employeeType", "company", "startDate", "benefitType", "phoneNumber", "email", "year", "enrolled"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(report, " HealthInsurance-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), emp.getPrimaryEmail().getEmail());
         return report;
     }
@@ -162,7 +163,7 @@ public class BenefitEnrollmentResource extends CRUDResource<BenefitEnrollment> {
             List<BenefitEnrollment> list = new ArrayList();
             list.addAll(table.getEntities());
             List<HealthInsuranceReportDto> healthInsuranceDatesReport = BenefitenrollmentService.instance().getHealthInsuranceDatesReport(list, OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail(), reportName);
-            String[] columnOrder = new String[]{"employee", "employeeType", "company", "startDate", "waiver", "health", "dental", "phoneNumber", "email", "year", "enrolled"};
+            String[] columnOrder = new String[]{"employee", "employeeType", "company", "startDate", "benefitType", "phoneNumber", "email", "year", "enrolled"};
             String fileName = ReportGenerator.generateExcelOrderedReport(healthInsuranceDatesReport, "Health Insurance Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
             MessagingService.instance().emailReport(fileName, OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
         } else {

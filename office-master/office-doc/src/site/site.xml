@@ -170,6 +170,9 @@
                 </item>  
                               
             </item>
+            <item name="Immigration" href="/office/immigration/lca.html" collapse="true">
+                 <item name="LCA" href="/office/immigration/lca.html"/>
+                </item>
             <item name="Trouble Accessing Portal" href="/office/accountresettask.html" collapse="true">
                 <item name="Account Reset" href="/office/accountresettask.html"/>
                 <item name="Forgot Password" href="/office/forgot-password.html"/>

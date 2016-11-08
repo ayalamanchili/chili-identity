@@ -55,7 +55,7 @@ public class LCADao extends CRUDDao<LCA> {
     @Transactional(readOnly = true)
     @Override
     public List<LCA> query(int start, int limit) {
-        Query findAllQuery = getEntityManager().createQuery("from " + LCA.class.getCanonicalName() + "  order by upper(lcaNumber) ASC", entityCls);
+        Query findAllQuery = getEntityManager().createQuery("from " + LCA.class.getCanonicalName() + "  order by lcaNumber ASC", entityCls);
         findAllQuery.setFirstResult(start);
         findAllQuery.setMaxResults(limit);
         return findAllQuery.getResultList();

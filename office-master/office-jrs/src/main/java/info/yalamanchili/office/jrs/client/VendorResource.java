@@ -30,6 +30,7 @@ import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.VendorStatus;
 import info.yalamanchili.office.invoice.GenericsDatesDto;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
@@ -516,7 +517,7 @@ public class VendorResource extends CRUDResource<Vendor> {
     @CacheEvict(value = OfficeCacheKeys.VENDOR, allEntries = true)
     public Vendor createVendor(VendorDto vendorDto) {
         Vendor vendor = mapper.map(vendorDto, Vendor.class);
-
+        vendor.setVendorStatus(VendorStatus.ACTIVE);
         if (vendorDto.getLocation() != null) {
             vendor.addLocations(vendorDto.getLocation());
         }

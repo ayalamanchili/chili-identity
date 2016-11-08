@@ -22,7 +22,7 @@
                 <entry key="bean:name=OfficeSeviceConfiguration" value-ref="officeServiceConfiguration" />
                 <entry key="bean:name=OfficeSecurityConfiguration" value-ref="officeSecurityConfiguration" />
                 <entry key="bean:name=OfficeServiceJobConfiguration" value-ref="officeServiceJobConfiguration" />
-                <entry key="bean:name=ExternalServiceConfiguration" value-ref="externalServiceConfiguration" />
+                <entry key="bean:name=PaylocityConfigurtion" value-ref="paylocityConfigurtion" />
                 <entry key="bean:name=AclDataInit" value-ref="aclDataInit" />
             </map>
         </property>

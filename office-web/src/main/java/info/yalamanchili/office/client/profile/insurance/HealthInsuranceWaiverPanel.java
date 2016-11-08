@@ -28,7 +28,9 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.benefits.ReadAllBenefitsPanel;
+import info.yalamanchili.office.client.profile.benefits.YearType;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -240,7 +242,7 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
         }
     }
 
-    protected boolean checkClientSideValidations(boolean valid) {
+    public boolean checkClientSideValidations(boolean valid) {
         if (spouse.isChecked() == true && spouseName.isVisible() == true && (spouseName.getValue() == null || spouseName.getValue().isEmpty())) {
             spouseName.setMessage("Spouse Name can not be empty");
             valid = false;

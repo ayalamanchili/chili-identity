@@ -124,16 +124,12 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
                         HealthInsuranceWaiver entityWaiver = entity.getHealthInsuranceWaiver();
                         entityWaiver.setTargetEntityId(OfficeSecurityService.instance().getCurrentUser().getId());
                         entityWaiver.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
-                        entityWaiver.setWaiverYear(String.valueOf(DateUtils.getYearFromDate(new Date())));
                         HealthInsuranceWaiver waiverNew = HealthInsuranceWaiverDao.instance().save(entityWaiver);
                         insurance.setHealthInsuranceWaiver(waiverNew);
                     }
                 } else if (ins.getHealthInsuranceWaiver() != null) {
                     if (entity.getInsuranceEnrollment() != null) {
-                        if (ins.getHealthInsuranceWaiver().getId() != null && ins.getHealthInsuranceWaiver().getWaiverYear().equals(entity.getInsuranceEnrollment().getYear())) {
-                            throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "healthwaiver.already.submitted",
-                                    "Health Waiver already submitted with the entered year");
-                        }
+                        
                         InsuranceEnrollment entityEnrollment = entity.getInsuranceEnrollment();
                         entityEnrollment.setTargetEntityId(insurance.getEmployee().getId());
                         entityEnrollment.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
@@ -160,7 +156,6 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
                 HealthInsuranceWaiver entityWaiver = entity.getHealthInsuranceWaiver();
                 entityWaiver.setTargetEntityId(OfficeSecurityService.instance().getCurrentUser().getId());
                 entityWaiver.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
-                entityWaiver.setWaiverYear(String.valueOf(DateUtils.getYearFromDate(new Date())));
                 HealthInsuranceWaiver waiverNew = HealthInsuranceWaiverDao.instance().save(entityWaiver);
                 insurance.setHealthInsuranceWaiver(waiverNew);
             }

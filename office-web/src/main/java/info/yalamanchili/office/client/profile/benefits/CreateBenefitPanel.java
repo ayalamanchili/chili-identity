@@ -37,27 +37,29 @@ import java.util.logging.Logger;
  * @author Hemanth
  */
 public class CreateBenefitPanel extends CreateComposite implements ClickHandler, ChangeHandler {
-    
+
     private static Logger logger = Logger.getLogger(CreateBenefitPanel.class.getName());
-    
+
     protected FlowPanel panel = new FlowPanel();
     BooleanField enrolledFlagField = new BooleanField(OfficeWelcome.constants2, "enrolled", "Benefit", false, false, Alignment.HORIZONTAL);
     DateField requestedDate = new DateField(OfficeWelcome.constants2, "affectiveDate", "Benefit", false, false, Alignment.HORIZONTAL);
     EnumField benefitType = new EnumField(OfficeWelcome.constants2, "benefitType", "Benefit", false, false, BenefitType.names(), Alignment.HORIZONTAL);
     protected String empId;
-    
+
     HealthInsuranceWaiverPanel insuranceWaiver = new HealthInsuranceWaiverPanel();
-    
+
     public CreateBenefitPanel(CreateComposite.CreateCompositeType type) {
         super(type);
         initCreateComposite("Benefit", OfficeWelcome.constants2);
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        entity.put("benefitType", new JSONString(benefitType.getValue()));
-        if (insuranceWaiver != null) {
+        if (benefitType.getValue() != null) {
+            entity.put("benefitType", new JSONString(benefitType.listBox.getSelectedValue()));
+        }
+        if (insuranceWaiver != null && benefitType.getValue().equals(BenefitType.Health_Insurance.name()) && (enrolledFlagField.getValue() == false)) {
             entity.put("healthInsuranceWaiver", insuranceWaiver.populateEntityFromFields());
         }
         entity.put("enrolled", new JSONString(enrolledFlagField.getValue().toString()));
@@ -68,29 +70,29 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
         assignEntityValueFromField("comments", entity);
         return entity;
     }
-    
+
     @Override
     protected void createButtonClicked() {
         enrolledFlagField.getBox().addClickHandler(this);
         benefitType.listBox.addChangeHandler(this);
     }
-    
+
     @Override
     protected void addButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
-            
-            @Override
-            public void onSuccess(String arg0) {
-                insuranceWaiver.waiverUploadPanel.upload(arg0);
-            }
-        });
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
+
+                    @Override
+                    public void onSuccess(String arg0) {
+                        insuranceWaiver.waiverUploadPanel.upload(arg0);
+                    }
+                });
     }
-    
+
     @Override
     public void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Benefit.");
@@ -103,34 +105,34 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBenefitsPanel(TreeEmployeePanel.instance().getEntityId()));
         }
     }
-    
+
     @Override
     protected void addListeners() {
         // TODO Auto-generated method stub
         enrolledFlagField.getBox().addClickHandler(this);
         benefitType.listBox.addChangeHandler(this);
     }
-    
+
     @Override
     protected void configure() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     protected void addWidgets() {
         benefitType = new EnumField(OfficeWelcome.constants2,
-                "benefitType", "Benefit", false, false, BenefitType.names(), Alignment.HORIZONTAL);
+                "benefitType", "Benefit", false, true, BenefitType.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(benefitType);
-        addEnumField("year", false, false, YearType.names(), Alignment.HORIZONTAL);
+        addEnumField("year", false, true, YearType.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(enrolledFlagField);
         addField("comments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
         // TODO Auto-generated method stub
     }
-    
+
     @Override
     public void onChange(ChangeEvent event) {
         if (event.getSource().equals(benefitType.listBox)) {
@@ -142,7 +144,7 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
             }
         }
     }
-    
+
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(enrolledFlagField.getBox())) {
@@ -151,13 +153,12 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
                 entityFieldsPanel.add(requestedDate);
                 entityFieldsPanel.remove(insuranceWaiver);
             } else {
-                entityFieldsPanel.add(insuranceWaiver);
                 entityFieldsPanel.remove(requestedDate);
             }
         }
         super.onClick(event);
     }
-    
+
     @Override
     protected String getURI() {
         if (TabPanel.instance().myOfficePanel.isVisible()) {
@@ -166,5 +167,13 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
             return OfficeWelcome.constants.root_url() + "benefit/save/" + OfficeWelcome.instance().employeeId;
         }
     }
-    
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
+        if (benefitType.getValue().equals(BenefitType.Health_Insurance.name()) && (enrolledFlagField.getValue() == false)) {
+            return insuranceWaiver.checkClientSideValidations(valid);
+        }
+        return true;
+    }
 }

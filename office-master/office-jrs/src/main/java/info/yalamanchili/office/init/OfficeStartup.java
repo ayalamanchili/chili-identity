@@ -54,6 +54,7 @@ import info.yalamanchili.office.entity.profile.TechnologyGroup;
 import info.yalamanchili.office.entity.profile.invite.InvitationType;
 import info.yalamanchili.office.entity.profile.invite.InviteType;
 import info.yalamanchili.office.entity.social.Post;
+import info.yalamanchili.office.config.PaylocityConfigurtion;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
@@ -567,6 +568,20 @@ public class OfficeStartup {
         bisRef.setTargetEntityId(adminEmp.getId());
         bisRef.setTargetEntityName(Employee.class.getCanonicalName());
         em.merge(bisRef);
+
+        ExternalRef paylocityEmployeeExtRef = new ExternalRef();
+        paylocityEmployeeExtRef.setExternalId("1");
+        paylocityEmployeeExtRef.setSource(PaylocityConfigurtion.PAYLOCITY);
+        paylocityEmployeeExtRef.setTargetEntityId(adminEmp.getId());
+        paylocityEmployeeExtRef.setTargetEntityName(Employee.class.getCanonicalName());
+        em.merge(paylocityEmployeeExtRef);
+
+        ExternalRef paylocityCompanyExtRef = new ExternalRef();
+        paylocityCompanyExtRef.setExternalId("s2231");
+        paylocityCompanyExtRef.setSource(PaylocityConfigurtion.PAYLOCITY);
+        paylocityCompanyExtRef.setTargetEntityId(sstechCmp.getId());
+        paylocityCompanyExtRef.setTargetEntityName(Company.class.getCanonicalName());
+        em.merge(paylocityCompanyExtRef);
         //
     }
 
@@ -756,8 +771,8 @@ public class OfficeStartup {
             return em.merge(employeetype);
         }
     }
-    
-        protected EmployeeType getCorporateEmployeeType() {
+
+    protected EmployeeType getCorporateEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
                 + " where name=:nameParam");
         getEmployeeTypeQuery.setParameter("nameParam", EmployeeType.CORPORATE_EMPLOYEE);
@@ -770,7 +785,6 @@ public class OfficeStartup {
             return em.merge(employeetype);
         }
     }
-    
 
     protected EmployeeType getSubContractorEmployeeType() {
         Query getEmployeeTypeQuery = em.createQuery("from " + EmployeeType.class.getCanonicalName()
@@ -1018,7 +1032,7 @@ public class OfficeStartup {
         Vendor techSysVendor = new Vendor();
         techSysVendor.setName("Sstech");
         techSysVendor.setMsaValDate(new Date());
-        techSysVendor.setMsaExpDate(DateUtils.getNextWeek(new Date(),1));
+        techSysVendor.setMsaExpDate(DateUtils.getNextWeek(new Date(), 1));
 
         Address vendorLocation = new Address();
         vendorLocation.setStreet1("2110 wilkes ct");
@@ -1038,19 +1052,19 @@ public class OfficeStartup {
         accountPayContact.setFirstName("Vendor AccPay Contact");
         accountPayContact.setLastName("Vendor AccPay Contact");
         techSysVendor.addAcctPayContact(accountPayContact);
-        
+
         return em.merge(techSysVendor);
     }
 
     public Subcontractor sstechSubcontractor() {
         Subcontractor subcntr = new Subcontractor();
         subcntr.setName("sstech sub contractor");
-        
+
         Contact subcontractorContact = new Contact();
         subcontractorContact.setFirstName("Subcontractor Contact");
         subcontractorContact.setLastName("Subcontractor Contact");
         subcntr.addContact(subcontractorContact);
-        
+
         return em.merge(subcntr);
     }
 

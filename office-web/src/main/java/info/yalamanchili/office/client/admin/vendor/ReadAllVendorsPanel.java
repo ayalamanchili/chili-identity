@@ -68,6 +68,7 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Name"));
         table.setText(0, 2, getKeyValue("Vendor Type"));
         table.setText(0, 3, getKeyValue("MSA Exp Date"));
+        table.setText(0, 4, getKeyValue("Vendor Status"));
     }
 
     @Override
@@ -78,6 +79,7 @@ public class ReadAllVendorsPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             setEnumColumn(i, 2, entity, "vendorType", "vendorType");
             table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "msaExpDate")));
+            setEnumColumn(i, 4, entity, "vendorStatus", "vendorStatus");
         }
     }
 

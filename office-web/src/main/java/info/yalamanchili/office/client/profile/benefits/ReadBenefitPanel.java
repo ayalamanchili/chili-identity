@@ -63,6 +63,7 @@ public class ReadBenefitPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        logger.info("asdasdasdasdasdas" + entity);
         assignFieldValueFromEntity("benefitType", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("year", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("enrolled", entity, DataType.BOOLEAN_FIELD);

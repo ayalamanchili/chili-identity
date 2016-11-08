@@ -31,6 +31,8 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableImage;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.profile.benefits.YearType;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 /**
@@ -49,7 +51,7 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite implements C
     RadioButton myspousesplan = new RadioButton("myspousesplan", "Coverage under my spouse's plan");
     RadioButton othercoverage = new RadioButton("othercoverage", "Other coverage");
 
-    HTML tac2 = new HTML("<h4><u>For the plan year 2016, I am waiving coverage for: \n</u>");
+    HTML tac2 = new HTML("<h4><u>For the plan year " + Arrays.toString(YearType.values()) + ", I am waiving coverage for: \n</u >");
     HTML tac3 = new HTML("<h4><u>I am waiving coverage due to: \n</u>");
 
     StringField spouseNameOfCarrier = new StringField(OfficeWelcome.constants2, "spouseNameOfCarrier", "HealthInsuranceWaiver", true, false, Alignment.HORIZONTAL);
@@ -76,12 +78,12 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite implements C
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String response) {
-                entity = (JSONObject) JSONParser.parseLenient(response);
-                populateFieldsFromEntity(entity);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+                    }
+                });
 
     }
 

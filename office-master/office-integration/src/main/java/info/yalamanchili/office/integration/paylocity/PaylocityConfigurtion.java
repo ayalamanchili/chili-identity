@@ -6,9 +6,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.yalamanchili.office.integration.paylocity;
+package info.yalamanchili.office.config;
 
 import info.chili.spring.SpringContext;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.stereotype.Component;
