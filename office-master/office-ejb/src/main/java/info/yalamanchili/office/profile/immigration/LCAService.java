@@ -29,6 +29,7 @@ import javax.persistence.PersistenceContext;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -100,7 +101,7 @@ public class LCAService {
         return SpringContext.getBean(LCAService.class);
     }
 
-//    @Async
+    @Async
     @Transactional
     public void generateLcaReport(String email) {
         List<LCAMasterReportDto> res = new ArrayList();
