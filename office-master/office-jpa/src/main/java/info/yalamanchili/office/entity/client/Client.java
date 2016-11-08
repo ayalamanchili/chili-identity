@@ -10,6 +10,7 @@ package info.yalamanchili.office.entity.client;
 import info.chili.jpa.AbstractEntity;
 import info.chili.jpa.validation.Unique;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.ClientStatus;
 import info.yalamanchili.office.entity.profile.Contact;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -78,6 +79,8 @@ public class Client extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     protected InvoiceDeliveryMethod clientInvDeliveryMethod;
     protected Integer terminationNoticePeriod;
+    @Enumerated(EnumType.STRING)
+    protected ClientStatus clientStatus;
 
     public Float getClientFee() {
         return clientFee;
@@ -272,6 +275,20 @@ public class Client extends AbstractEntity {
 
     public void setTerminationNoticePeriod(Integer terminationNoticePeriod) {
         this.terminationNoticePeriod = terminationNoticePeriod;
+    }
+    
+    /**
+     * @return the clientStatus
+     */
+    public ClientStatus getClientStatus() {
+        return clientStatus;
+    }
+
+    /**
+     * @param clientStatus the clientStatus to set
+     */
+    public void setClientStatus(ClientStatus clientStatus) {
+        this.clientStatus = clientStatus;
     }
 
     @Override

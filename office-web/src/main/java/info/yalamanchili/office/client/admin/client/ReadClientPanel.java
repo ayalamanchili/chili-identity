@@ -18,6 +18,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.admin.vendor.ClientStatus;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
 
 /**
@@ -70,6 +71,7 @@ public class ReadClientPanel extends ReadComposite {
         assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("clientInvDeliveryMethod", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("terminationNoticePeriod", entity, DataType.INTEGER_FIELD);
+        assignFieldValueFromEntity("clientStatus", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -97,6 +99,7 @@ public class ReadClientPanel extends ReadComposite {
         addField("msaValDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("msaExpDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("terminationNoticePeriod", true, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addEnumField("clientStatus", true, false, ClientStatus.names(), Alignment.HORIZONTAL);
         alignFields();
     }
 

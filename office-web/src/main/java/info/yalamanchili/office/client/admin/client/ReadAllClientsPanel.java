@@ -70,6 +70,7 @@ public class ReadAllClientsPanel extends CRUDReadAllComposite {
         table.setText(0, 1, getKeyValue("Name"));
         table.setText(0, 2, getKeyValue("Direct Client"));
         table.setText(0, 3, getKeyValue("MSA Exp. Date"));
+        table.setText(0, 4, getKeyValue("Client Status"));
 
     }
 
@@ -86,6 +87,7 @@ public class ReadAllClientsPanel extends CRUDReadAllComposite {
                 table.setText(i, 2, "No");
             }
             table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "msaExpDate")));
+            setEnumColumn(i, 4, entity, "clientStatus", "clientStatus");
         }
 
     }
