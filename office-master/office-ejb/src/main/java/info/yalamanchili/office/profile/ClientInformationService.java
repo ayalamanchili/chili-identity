@@ -514,11 +514,11 @@ public class ClientInformationService {
         ciEntity = clientInformationDao.save(ciEntity);
         if (ClientInformationStatus.CANCELED.equals(ci.getStatus())) {
             ciEntity.setStatus(ClientInformationStatus.PENDING_CONTRACTS_VALIDATION);
-            ci.setBpmProcessId(ClientInformationProcessBean.instance().startNewClientInfoProcess(ciEntity, OfficeSecurityService.instance().getCurrentUser()));
+            ciEntity.setBpmProcessId(ClientInformationProcessBean.instance().startNewClientInfoProcess(ci, OfficeSecurityService.instance().getCurrentUser()));
         }
         if (ClientInformationStatus.PENDING_CONTRACTS_SUBMIT.equals(ci.getStatus()) && submitForApproval) {
             ciEntity.setStatus(ClientInformationStatus.PENDING_CONTRACTS_VALIDATION);
-            ci.setBpmProcessId(ClientInformationProcessBean.instance().startNewClientInfoProcess(ciEntity, OfficeSecurityService.instance().getCurrentUser()));
+            ciEntity.setBpmProcessId(ClientInformationProcessBean.instance().startNewClientInfoProcess(ciEntity, OfficeSecurityService.instance().getCurrentUser()));
         }
         em.flush();
         ci = em.find(ClientInformation.class, ci.getId());
