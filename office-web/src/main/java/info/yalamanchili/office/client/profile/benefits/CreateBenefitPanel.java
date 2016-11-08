@@ -121,9 +121,9 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
     @Override
     protected void addWidgets() {
         benefitType = new EnumField(OfficeWelcome.constants2,
-                "benefitType", "Benefit", false, false, BenefitType.names(), Alignment.HORIZONTAL);
+                "benefitType", "Benefit", false, true, BenefitType.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(benefitType);
-        addEnumField("year", false, false, YearType.names(), Alignment.HORIZONTAL);
+        addEnumField("year", false, true, YearType.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(enrolledFlagField);
         addField("comments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
     }
@@ -153,7 +153,6 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
                 entityFieldsPanel.add(requestedDate);
                 entityFieldsPanel.remove(insuranceWaiver);
             } else {
-                entityFieldsPanel.add(insuranceWaiver);
                 entityFieldsPanel.remove(requestedDate);
             }
         }
