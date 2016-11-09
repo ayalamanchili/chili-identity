@@ -48,7 +48,7 @@ public class VendorService {
         for (Vendor vn : VendorDao.instance().query(0, 2000)) {
             res.add(populateVendorInfo(vn));
         }
-        String[] columnOrder = new String[]{"vendorName", "webSite", "coiEndDate", "vendorType", "vendorFees", "vendorPaymentTerms", "vendorLocations", "recruiterContact", "acctPayContact"};
+        String[] columnOrder = new String[]{"vendorName", "vendorStatus", "webSite", "coiEndDate", "vendorType", "vendorFees", "msaValDate", "msaExpDate", "vendorPaymentTerms", "vendorLocations", "recruiterContact", "acctPayContact"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Vendor Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
@@ -200,6 +200,15 @@ public class VendorService {
         if (vn.getCoiEndDate() != null) {
             dto.setCoiEndDate(vn.getCoiEndDate());
         }
+        if (vn.getMsaValDate()!= null) {
+            dto.setMsaValDate(vn.getMsaValDate());
+        }
+        if (vn.getMsaExpDate()!= null) {
+            dto.setMsaExpDate(vn.getMsaExpDate());
+        }
+        if (vn.getVendorStatus()!= null) {
+            dto.setVendorStatus(vn.getVendorStatus().name());
+        }
         // for getting vendor locations
         if (vn.getLocations().size() > 0) {
             String vendorAddressInfo = "";
@@ -225,13 +234,13 @@ public class VendorService {
             String recContact = "";
             int countc = vn.getContacts().size();
             for (Contact contact : vn.getContacts()) {
-                String name = "";
+                String name = "Name: ";
                 name = name.concat(contact.getFirstName() + " " + contact.getLastName());
-                recContact = recContact.concat("\n" + name);
+                recContact = recContact.concat(name+"\n");
                 if (contact.getEmails().size() > 0) {
-                    String email = "";
+                    String email = "Email: ";
                     email = email.concat(contact.getEmails().get(0).getEmail());
-                    recContact = recContact.concat("-" + email);
+                    recContact = recContact.concat(email+"\n"+"Phone: ");
                 }
                 if (contact.getPhones().size() > 0) {
                     int countp = contact.getPhones().size();
@@ -240,10 +249,10 @@ public class VendorService {
                         if (rphone.getCountryCode() != null) {
                             String ccode = "";
                             ccode = ccode.concat(rphone.getCountryCode());
-                            recContact = recContact.concat("-" + ccode);
+                            recContact = recContact.concat(ccode+"-");
                         }
                         phone = phone.concat(rphone.getPhoneNumber());
-                        recContact = recContact.concat("-" + phone);
+                        recContact = recContact.concat(phone);
                         if (rphone.getExtension() != null) {
                             String ext = "";
                             ext = ext.concat(rphone.getExtension());
@@ -267,13 +276,13 @@ public class VendorService {
             String actContact = "";
             int countap = vn.getAcctPayContacts().size();
             for (Contact acpaycnt : vn.getAcctPayContacts()) {
-                String acname = "";
+                String acname = "Name: ";
                 acname = acname.concat(acpaycnt.getFirstName() + " " + acpaycnt.getLastName());
-                actContact = actContact.concat("\n" + acname);
+                actContact = actContact.concat(acname+"\n");
                 if (acpaycnt.getEmails().size() > 0) {
-                    String acemail = "";
+                    String acemail = "Email: ";
                     acemail = acemail.concat(acpaycnt.getEmails().get(0).getEmail());
-                    actContact = actContact.concat("-" + acemail);
+                    actContact = actContact.concat(acemail+"\n"+"Phone: ");
                 }
                 if (acpaycnt.getPhones().size() > 0) {
                     int countapp = acpaycnt.getPhones().size();
@@ -282,10 +291,10 @@ public class VendorService {
                         if (acpayphone.getCountryCode() != null) {
                             String acccode = "";
                             acccode = acccode.concat(acpayphone.getCountryCode());
-                            actContact = actContact.concat("-" + acccode);
+                            actContact = actContact.concat(acccode+"-");
                         }
                         acphone = acphone.concat(acpayphone.getPhoneNumber());
-                        actContact = actContact.concat("-" + acphone);
+                        actContact = actContact.concat(acphone);
                         if (acpayphone.getExtension() != null) {
                             String acext = "";
                             acext = acext.concat(acpayphone.getExtension());
