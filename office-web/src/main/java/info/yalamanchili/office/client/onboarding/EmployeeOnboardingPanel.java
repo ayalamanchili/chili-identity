@@ -73,7 +73,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
 
     protected static HTML formsInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
-            + "<strong style=\"color:#555555\">Please upload W4 Form and I9 Form</strong></p>\n"
+            + "<strong style=\"color:#555555\">Please upload W4 Form, I9 Form and I9 supporting document</strong></p>\n"
             + "\n"
             + "<ul>\n"
             + "</ul>");
@@ -133,15 +133,15 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     public void loadEntity(String invitationCode) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(invitationCode), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        logger.info(response);
-                        if (!response.trim().equals("null")) {
-                            entity = (JSONObject) JSONParser.parseLenient(response);
-                            populateFieldsFromEntity(entity);
-                        }
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                logger.info(response);
+                if (!response.trim().equals("null")) {
+                    entity = (JSONObject) JSONParser.parseLenient(response);
+                    populateFieldsFromEntity(entity);
+                }
+            }
+        });
     }
 
     protected String getReadURI(String invitationCode) {
@@ -332,16 +332,16 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadDocs(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadDocs(arg0);
+            }
+        });
     }
 
     @Override
