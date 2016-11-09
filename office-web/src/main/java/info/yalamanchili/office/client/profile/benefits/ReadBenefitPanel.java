@@ -63,9 +63,8 @@ public class ReadBenefitPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        logger.info("asdasdasdasdasdas" + entity);
         assignFieldValueFromEntity("benefitType", entity, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("year", entity, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("enrolledYear", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("enrolled", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("affectiveDate", entity, DataType.DATE_FIELD);
         if (entity.containsKey("healthInsuranceWaiver")) {
@@ -84,7 +83,7 @@ public class ReadBenefitPanel extends ReadComposite {
     @Override
     protected void addWidgets() {
         addField("benefitType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("year", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("enrolledYear", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("enrolled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
         addField("affectiveDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
     }

@@ -8,10 +8,9 @@
  */
 package info.yalamanchili.office.entity.profile.insurance;
 
-import info.chili.jpa.AbstractHandleEntity;
+import info.chili.jpa.AbstractEntity;
 import info.yalamanchili.office.entity.profile.benefits.BenefitEnrollment;
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -32,13 +31,13 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @XmlType
 @Table(name = "HealthInsuranceWaiver")
-public class HealthInsuranceWaiver extends AbstractHandleEntity {
+public class HealthInsuranceWaiver extends AbstractEntity {
 
     protected static long serialVersionUID = 1L;
 
     protected String fileUrl;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     protected BenefitEnrollment benefitEnrollment;
 
     @Temporal(javax.persistence.TemporalType.DATE)

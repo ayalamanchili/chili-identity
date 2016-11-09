@@ -17,27 +17,16 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.OfficeRoles.OfficeRole;
 import info.yalamanchili.office.config.OfficeSecurityConfiguration;
-import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceDao;
-import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceWaiverDao;
 import info.yalamanchili.office.email.MailUtils;
-import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.EmployeeType;
 import info.yalamanchili.office.entity.profile.insurance.HealthInsurance;
-import info.yalamanchili.office.entity.profile.insurance.HealthInsuranceWaiver;
-import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.Cobra;
-import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.EmployerSponsoredGroupPlan;
-import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.Individual;
-import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.Medicare;
-import static info.yalamanchili.office.entity.profile.insurance.InsuranceCoverageType.Tricare;
 import info.yalamanchili.office.entity.profile.insurance.InsuranceEnrollment;
 import info.yalamanchili.office.entity.profile.insurance.InsuranceType;
 import info.yalamanchili.office.jms.MessagingService;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.ws.rs.core.Response;
@@ -73,75 +62,7 @@ public class HealthInsuranceService {
         //PreparedBy
         Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getDateRequested()), employeeDao.getPrimaryEmail(preparedBy), null);
         data.getSignatures().add(preparedBysignature);
-
-        HealthInsuranceWaiver healthInsuranceWaiver = HealthInsuranceWaiverDao.instance().find(entity);
-        if (entity != null) {
-            if (healthInsuranceWaiver != null) {
-                if (healthInsuranceWaiver.getWaivingCoverageFor() != null) {
-                    if (healthInsuranceWaiver.getWaivingCoverageFor().contains("MySelf")) {
-                        data.getData().put("myself", "true");
-                    }
-                    if (healthInsuranceWaiver.getWaivingCoverageFor().contains("Spouse")) {
-                        data.getData().put("spouse", "true");
-                    }
-                    if (healthInsuranceWaiver.getWaivingCoverageFor().contains("Dependent")) {
-                        data.getData().put("dependent", "true");
-                    }
-                }
-                if (healthInsuranceWaiver.getWaivingCoverageDueTo() != null) {
-                    if (healthInsuranceWaiver.getWaivingCoverageDueTo().equalsIgnoreCase("NoCoverage")) {
-                        data.getData().put("nocoverage", "true");
-                    } else if (healthInsuranceWaiver.getWaivingCoverageDueTo().equalsIgnoreCase("SpousePlan")) {
-                        data.getData().put("spouseplan", "true");
-                    } else if (healthInsuranceWaiver.getWaivingCoverageDueTo().equalsIgnoreCase("Other")) {
-                        data.getData().put("otherC", "true");
-                    }
-                }
-                if (healthInsuranceWaiver.getSpouseName() != null) {
-                    data.getData().put("spouseName", healthInsuranceWaiver.getSpouseName());
-                }
-                if (healthInsuranceWaiver.getDependentName() != null) {
-                    data.getData().put("dependentName", healthInsuranceWaiver.getDependentName());
-                }
-                if (healthInsuranceWaiver.getSpouseNameOfCarrier() != null) {
-                    data.getData().put("spouseNameOfCarrier", healthInsuranceWaiver.getSpouseNameOfCarrier());
-                }
-                if (healthInsuranceWaiver.getOtherNameOfCarrier() != null) {
-                    data.getData().put("otherNameOfCarrier", healthInsuranceWaiver.getOtherNameOfCarrier());
-                }
-                data.getData().put("year", new SimpleDateFormat("MM/dd/yyyy").format(new Date()).split("/")[2]);
-                if (healthInsuranceWaiver.getSubmittedDate() != null) {
-                    data.getData().put("submittedDate", new SimpleDateFormat("MM-dd-yyyy").format(healthInsuranceWaiver.getSubmittedDate()));
-                }
-                if (healthInsuranceWaiver.getOtherCarrierType() != null) {
-                    switch (healthInsuranceWaiver.getOtherCarrierType()) {
-                        case Individual:
-                            data.getData().put("individual", "true");
-                            break;
-                        case Cobra:
-                            data.getData().put("cobra", "true");
-                            break;
-                        case Medicare:
-                            data.getData().put("medicare", "true");
-                            break;
-                        case Tricare:
-                            data.getData().put("tricare", "true");
-                            break;
-                        case EmployerSponsoredGroupPlan:
-                            data.getData().put("employerSponsoredGroupPlan", "true");
-                            break;
-                    }
-                }
-            }
-        }
-        String empCompanyLogo = "";
-        if (preparedBy.getCompany() != null) {
-            empCompanyLogo = preparedBy.getCompany().getLogoURL().replace("entityId", preparedBy.getCompany().getId().toString());
-        } else {
-            Company company = CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC);
-            empCompanyLogo = company.getLogoURL().replace("entityId", company.getId().toString());
-        }
-        byte[] pdf = PDFUtils.generatePdf(data, empCompanyLogo);
+        byte[] pdf = PDFUtils.generatePdf(data);
         return Response.ok(pdf)
                 .header("content-disposition", "filename = health-insurance.pdf")
                 .header("Content-Length", pdf.length)

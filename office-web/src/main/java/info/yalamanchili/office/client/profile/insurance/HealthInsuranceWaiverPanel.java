@@ -28,9 +28,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.profile.benefits.ReadAllBenefitsPanel;
-import info.yalamanchili.office.client.profile.benefits.YearType;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -126,8 +124,6 @@ public class HealthInsuranceWaiverPanel extends TCreateComposite implements Clic
             entity.put("submittedDate", new JSONString(DateUtils.toDateString(submittedDate.getDate())));
         }
         entity.put("fileUrl", waiverUploadPanel.getFileName());
-        entity.put("targetEntityName", new JSONString("targetEntityName"));
-        entity.put("targetEntityId", new JSONString("0"));
         return entity;
     }
 

@@ -122,14 +122,12 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
                                     "Health Insurance already enrolled with the current year");
                         }
                         HealthInsuranceWaiver entityWaiver = entity.getHealthInsuranceWaiver();
-                        entityWaiver.setTargetEntityId(OfficeSecurityService.instance().getCurrentUser().getId());
-                        entityWaiver.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
                         HealthInsuranceWaiver waiverNew = HealthInsuranceWaiverDao.instance().save(entityWaiver);
                         insurance.setHealthInsuranceWaiver(waiverNew);
                     }
                 } else if (ins.getHealthInsuranceWaiver() != null) {
                     if (entity.getInsuranceEnrollment() != null) {
-                        
+
                         InsuranceEnrollment entityEnrollment = entity.getInsuranceEnrollment();
                         entityEnrollment.setTargetEntityId(insurance.getEmployee().getId());
                         entityEnrollment.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
@@ -154,8 +152,6 @@ public class HealthInsuranceResource extends CRUDResource<HealthInsurance> {
             }
             if (entity.getHealthInsuranceWaiver() != null) {
                 HealthInsuranceWaiver entityWaiver = entity.getHealthInsuranceWaiver();
-                entityWaiver.setTargetEntityId(OfficeSecurityService.instance().getCurrentUser().getId());
-                entityWaiver.setTargetEntityName(InsuranceEnrollment.class.getCanonicalName());
                 HealthInsuranceWaiver waiverNew = HealthInsuranceWaiverDao.instance().save(entityWaiver);
                 insurance.setHealthInsuranceWaiver(waiverNew);
             }

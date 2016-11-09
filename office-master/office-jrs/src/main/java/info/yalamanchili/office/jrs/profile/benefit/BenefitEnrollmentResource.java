@@ -17,7 +17,6 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.benefit.BenefitEnrollmentDao;
-import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceWaiverDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.benefits.BenefitEnrollment;
@@ -79,16 +78,12 @@ public class BenefitEnrollmentResource extends CRUDResource<BenefitEnrollment> {
     public void addBenefit(@PathParam("empId") Long empId, BenefitEnrollment benefitEnrollment) {
         benefitEnrollment.setEmployee(EmployeeDao.instance().findById(empId));
         benefitEnrollment.setBenefitType(benefitEnrollment.getBenefitType());
-        HealthInsuranceWaiver healthWaiver = new HealthInsuranceWaiver();
-        if (benefitEnrollment.getHealthInsuranceWaiver() != null) {
-            healthWaiver = benefitEnrollment.getHealthInsuranceWaiver();
-        }
         List<BenefitEnrollment> benefitEnroll = benefitenrollmentDao.queryForEmployee(benefitEnrollment.getEmployee().getId(), 0, 10);
         if (benefitEnroll != null && benefitEnroll.size() > 0) {
             for (BenefitEnrollment enrollment : benefitEnroll) {
-                if (enrollment.getYear() != null) {
-                    if (benefitEnrollment.getYear() != null) {
-                        if (enrollment.getYear() != null && enrollment.getYear().equals(benefitEnrollment.getYear())) {
+                if (enrollment.getEnrolledYear() != null) {
+                    if (benefitEnrollment.getEnrolledYear() != null) {
+                        if (enrollment.getEnrolledYear() != null && enrollment.getEnrolledYear().equals(benefitEnrollment.getEnrolledYear())) {
                             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "healthinsurance.year.submitted",
                                     "Health Insurance with the entered year already exists");
                         }
@@ -97,8 +92,12 @@ public class BenefitEnrollmentResource extends CRUDResource<BenefitEnrollment> {
             }
         }
         benefitEnrollment = super.save(benefitEnrollment);
+        HealthInsuranceWaiver healthWaiver = new HealthInsuranceWaiver();
         if (benefitEnrollment.getHealthInsuranceWaiver() != null) {
-            benefitEnrollment.setHealthInsuranceWaiver(HealthInsuranceWaiverDao.instance().save(healthWaiver, benefitEnrollment));
+            healthWaiver = benefitEnrollment.getHealthInsuranceWaiver();
+        }
+        if (benefitEnrollment.getHealthInsuranceWaiver() != null) {
+//            benefitEnrollment.setHealthInsuranceWaiver(BenefitEnrollmentDao.instance().save(healthWaiver));
         }
         String comment = "Comments:" + benefitEnrollment.getComments();
         CommentDao.instance().addComment(comment, benefitEnrollment);
@@ -187,8 +186,8 @@ public class BenefitEnrollmentResource extends CRUDResource<BenefitEnrollment> {
         List<BenefitEnrollment> finallist = new ArrayList();
         list.addAll(table.getEntities());
         for (BenefitEnrollment ins : list) {
-            if (ins.getAffectiveDate() != null) {
-                if (ins.getAffectiveDate().after(startDate) && ins.getAffectiveDate().before(endDate)) {
+            if (ins.getDateRequested() != null) {
+                if (ins.getDateRequested().after(startDate) && ins.getDateRequested().before(endDate)) {
                     finallist.add(ins);
                 }
             }

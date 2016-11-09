@@ -20,6 +20,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -43,7 +44,7 @@ public class BenefitEnrollment extends AbstractEntity {
     protected Employee employee;
 
     @NotNull(message = "{benefitYear.not.empty.msg}")
-    protected String year;
+    protected String enrolledYear;
 
     protected Boolean enrolled;
 
@@ -58,7 +59,10 @@ public class BenefitEnrollment extends AbstractEntity {
     protected String comments;
 
     @Temporal(javax.persistence.TemporalType.DATE)
-    protected Date affectiveDate;
+    protected Date effectiveDate;
+
+    @Temporal(javax.persistence.TemporalType.DATE)
+    protected Date dateRequested;
 
     /**
      * @return the employee
@@ -72,20 +76,6 @@ public class BenefitEnrollment extends AbstractEntity {
      */
     public void setEmployee(Employee employee) {
         this.employee = employee;
-    }
-
-    /**
-     * @return the Year
-     */
-    public String getYear() {
-        return year;
-    }
-
-    /**
-     * @param Year the Year to set
-     */
-    public void setYear(String year) {
-        this.year = year;
     }
 
     /**
@@ -116,14 +106,10 @@ public class BenefitEnrollment extends AbstractEntity {
         this.benefitType = benefitType;
     }
 
-    @Override
-    public String toString() {
-        return "BenefitEnrollment{" + "employee=" + employee + ", year=" + year + ", enrolled=" + enrolled + ", benefitType=" + benefitType + ", healthInsuranceWaiver=" + getHealthInsuranceWaiver() + ", comments=" + getComments() + ", affectiveDate=" + getAffectiveDate() + '}';
-    }
-
     /**
      * @return the healthInsuranceWaiver
      */
+    @XmlTransient
     public HealthInsuranceWaiver getHealthInsuranceWaiver() {
         return healthInsuranceWaiver;
     }
@@ -138,6 +124,7 @@ public class BenefitEnrollment extends AbstractEntity {
     /**
      * @return the comments
      */
+    @XmlTransient
     public String getComments() {
         return comments;
     }
@@ -150,16 +137,50 @@ public class BenefitEnrollment extends AbstractEntity {
     }
 
     /**
-     * @return the affectiveDate
+     * @return the effectiveDate
      */
-    public Date getAffectiveDate() {
-        return affectiveDate;
+    public Date getEffectiveDate() {
+        return effectiveDate;
     }
 
     /**
-     * @param affectiveDate the affectiveDate to set
+     * @param effectiveDate the effectiveDate to set
      */
-    public void setAffectiveDate(Date affectiveDate) {
-        this.affectiveDate = affectiveDate;
+    public void setEffectiveDate(Date effectiveDate) {
+        this.effectiveDate = effectiveDate;
     }
+
+    /**
+     * @return the dateRequested
+     */
+    public Date getDateRequested() {
+        return dateRequested;
+    }
+
+    /**
+     * @param dateRequested the dateRequested to set
+     */
+    public void setDateRequested(Date dateRequested) {
+        this.dateRequested = dateRequested;
+    }
+
+    /**
+     * @return the enrolledYear
+     */
+    public String getEnrolledYear() {
+        return enrolledYear;
+    }
+
+    /**
+     * @param enrolledYear the enrolledYear to set
+     */
+    public void setEnrolledYear(String enrolledYear) {
+        this.enrolledYear = enrolledYear;
+    }
+
+    @Override
+    public String toString() {
+        return "BenefitEnrollment{" + "employee=" + employee + ", enrolledYear=" + enrolledYear + ", enrolled=" + enrolled + ", benefitType=" + benefitType + ", healthInsuranceWaiver=" + healthInsuranceWaiver + ", comments=" + comments + ", effectiveDate=" + effectiveDate + ", dateRequested=" + dateRequested + '}';
+    }
+
 }

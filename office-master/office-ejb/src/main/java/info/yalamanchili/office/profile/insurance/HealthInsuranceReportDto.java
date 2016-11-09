@@ -29,6 +29,8 @@ public class HealthInsuranceReportDto implements Serializable {
 
     protected Date startDate;
 
+    protected Date dateRequested;
+
     protected String company;
 
     protected String employeeType;
@@ -157,5 +159,13 @@ public class HealthInsuranceReportDto implements Serializable {
 
     public void setDental(String dental) {
         this.dental = dental;
+    }
+
+    public Date getDateRequested() {
+        return dateRequested;
+    }
+
+    public void setDateRequested(Date dateRequested) {
+        this.dateRequested = dateRequested;
     }
 }

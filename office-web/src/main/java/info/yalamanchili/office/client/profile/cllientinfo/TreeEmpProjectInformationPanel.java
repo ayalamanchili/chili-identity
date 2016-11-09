@@ -5,12 +5,15 @@
  */
 package info.yalamanchili.office.client.profile.cllientinfo;
 
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.invoice.ReadAllInvoicePanel;
-import info.yalamanchili.office.client.admin.project.ReadAllProjectsPanel;
 import info.yalamanchili.office.client.gwt.TreePanelComposite;
 import java.util.logging.Logger;
 
@@ -22,13 +25,10 @@ public class TreeEmpProjectInformationPanel extends TreePanelComposite {
 
     private static Logger logger = Logger.getLogger(TreeEmpProjectInformationPanel.class.getName());
     protected static final String Client_Information = "client_information";
-    protected static final String Projects_Information = "projects_information";
     protected static final String Invoices_Information = "invoices_information";
     protected static final String Timesheets_Information = "timesheets_information";
     protected static final String TimeSummary_Information = "TimeSummary_information";
     protected boolean active = false;
-    protected boolean displayALL = false;
-
     protected String employeeId;
 
     private static TreeEmpProjectInformationPanel instance;
@@ -45,6 +45,7 @@ public class TreeEmpProjectInformationPanel extends TreePanelComposite {
     public TreeEmpProjectInformationPanel(JSONObject emp) {
         super();
         instance = this;
+        this.employeeId = JSONUtils.toString(emp, "id");
         this.entity = emp;
         active = JSONUtils.toBoolean(emp, "status");
         String name = JSONUtils.toString(emp, "firstName") + " " + JSONUtils.toString(emp, "lastName");
@@ -74,22 +75,26 @@ public class TreeEmpProjectInformationPanel extends TreePanelComposite {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(getEntityId(), active));
         }
-        if (Projects_Information.equals(entityNodeKey)) {
-            TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllProjectsPanel(employeeId));
-        }
         if (Invoices_Information.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllInvoicePanel(true));
+            HttpService.HttpServiceAsync.instance().doGet(getInvoiceUrl(), OfficeWelcome.instance().getHeaders(), true,
+                    new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String arg0) {
+                            JSONObject resObj = JSONParser.parseLenient(arg0).isObject();
+                            String key = (String) resObj.keySet().toArray()[0];
+                            JSONArray results = JSONUtils.toJSONArray(resObj.get(key));
+                            if (arg0 != null && results != null) {
+                                TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllInvoicePanel(results));
+                            }
+                        }
+                    });
         }
         if (Timesheets_Information.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-//            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllStatusReportPanel(employeeId));
         }
         if (TimeSummary_Information.equals(entityNodeKey)) {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-//            TabPanel.instance().myOfficePanel.entityPanel.add(new ConsultantTimeSummaryPanel(employeeId));
-//            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllConsultantTimeSheetsPanel(employeeId));
         }
 
     }
@@ -102,5 +107,10 @@ public class TreeEmpProjectInformationPanel extends TreePanelComposite {
     public void showEntity() {
         TabPanel.instance().myOfficePanel.entityPanel.clear();
         TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllClientInfoPanel(getEntityId(), active));
+    }
+
+    private String getInvoiceUrl() {
+        return OfficeWelcome.constants.root_url() + "invoice/getInvoice/" + employeeId;
+
     }
 }
