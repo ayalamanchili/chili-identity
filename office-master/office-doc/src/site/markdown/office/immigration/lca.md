@@ -11,13 +11,13 @@ How to Add LCA
 
 Add LCA :
 ----
- - Readall Lca
+ - ReadAll LCA
  
 ![alt text](../../images/immigration/readallLca1.png "LCA")
 
 Submit LCA :
 ----
- - To Submit LCA Navigate to Add LCA & fill all mandatory fileds  
+ - To Submit LCA click on Add LCA & fill all mandatory fileds  
 
 ![alt text](../../images/immigration/submitLca.png "LCA")
 
@@ -31,7 +31,7 @@ LCA Functionality :
 LCA Status :
 ----
 
- - Status of LCA is Classified According to Pending , Certified, Certified_spare, Withdrawn & the are visible in that particular tab.
+ - Status of LCA is Classified According to Pending , Certified, Certified_spare, Withdrawn and they are visible in that particular tab.
 
 ![alt text](../../images/immigration/LCAStatus.png "LCA")
 
