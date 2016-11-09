@@ -15,5 +15,7 @@ package info.yalamanchili.office.entity.client;
 public enum InvoiceStatus {
     Estimated,
     Confirmed,
-    Submitted;
+    Submitted,
+    Do_Not_Send_Invoice,
+    VMS_Upload;
 }
