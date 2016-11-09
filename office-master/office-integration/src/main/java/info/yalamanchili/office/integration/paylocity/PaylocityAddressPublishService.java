@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.integration.paylocity;
 
+import com.google.common.base.Strings;
 import info.yalamanchili.office.config.PaylocityConfigurtion;
 import info.yalamanchili.office.dao.ext.ExternalRefDao;
 import info.yalamanchili.office.entity.Company;
@@ -27,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 /**
  *
@@ -46,48 +48,47 @@ public class PaylocityAddressPublishService implements AddressPublishService {
 
     @Override
     public void process(Address address) {
-//        if (paylocityConfigurtion.getEnabled()) {
-        Employee employee = ((Employee) address.getContact());
-        //TODO if company is null should we create a admin task to fix?
-        String paylocityCompanyId = ExternalRefDao.instance().getExternalRefId(PaylocityConfigurtion.PAYLOCITY, Company.class, employee.getCompany().getId());
-        String paylocityEmployeeId = ExternalRefDao.instance().getExternalRefId(PaylocityConfigurtion.PAYLOCITY, Employee.class, employee.getId());
-        //headers
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap();
-        headers.add("Authorization", "Bearer " + token);
-        //body
-        JsonObject updateEmployee = new JsonObject();
-        updateEmployee.addProperty("companyId", paylocityCompanyId);
-        updateEmployee.addProperty("employeeId", paylocityEmployeeId);
-        updateEmployee.addProperty("address1", address.getStreet1());
-        updateEmployee.addProperty("address1", address.getStreet2());
-        updateEmployee.addProperty("city", address.getCity());
-        updateEmployee.addProperty("state", address.getState());
-        updateEmployee.addProperty("zip", address.getZip());
-        updateEmployee.addProperty("country", address.getCountry());
-        HttpEntity<JsonObject> entity = new HttpEntity<>(updateEmployee, headers);
-        refreshToken();
-        ResponseEntity<String> response = updateEmployee(paylocityCompanyId, paylocityEmployeeId, entity);
-        if (null != response.getStatusCode()) {
-            switch (response.getStatusCode()) {
-                case UNAUTHORIZED:
-                    //TODO
-                    break;
-                case OK:
-                    Gson gson = new Gson();
-                    JsonObject updateEmployeeResp = gson.fromJson(response.getBody(), JsonObject.class);
-                    break;
-                default:
-                    break;
+        if (paylocityConfigurtion.getEnabled()) {
+            Employee employee = ((Employee) address.getContact());
+            //TODO if company is null should we create a admin task to fix?
+            //TODO if ext emp id is null should we create a admin task to fix?
+            String paylocityCompanyId = ExternalRefDao.instance().getExternalRefId(PaylocityConfigurtion.PAYLOCITY, Company.class, employee.getCompany().getId());
+            String paylocityEmployeeId = ExternalRefDao.instance().getExternalRefId(PaylocityConfigurtion.PAYLOCITY, Employee.class, employee.getId());
+            refreshToken();
+            //headers
+            MultiValueMap<String, String> headers = new LinkedMultiValueMap();
+            headers.add("Authorization", "Bearer " + token);
+            headers.add("Content-Type", "application/json");
+            //body
+            JsonObject updateEmployee = new JsonObject();
+            updateEmployee.addProperty("companyNumber", paylocityCompanyId);
+            updateEmployee.addProperty("employeeId", paylocityEmployeeId);
+            updateEmployee.addProperty("address1", address.getStreet1());
+            if (!Strings.isNullOrEmpty(address.getStreet2())) {
+                updateEmployee.addProperty("address2", address.getStreet2());
+            }
+            updateEmployee.addProperty("city", address.getCity());
+            updateEmployee.addProperty("state", address.getState());
+            updateEmployee.addProperty("zip", address.getZip());
+            updateEmployee.addProperty("country", address.getCountry());
+
+            JsonObject requestBody = new JsonObject();
+            requestBody.add("updateEmployee", updateEmployee);
+            HttpEntity<String> entity = new HttpEntity<>(requestBody.toString(), headers);
+            ResponseEntity<String> response = null;
+            try {
+                response = restTemplate.exchange(paylocityConfigurtion.getPaylocityApiEnpoint() + "update-employee", HttpMethod.POST, entity, String.class);
+            } catch (HttpClientErrorException ex) {
+                switch (ex.getStatusCode()) {
+                    case BAD_REQUEST:
+                        System.out.println("dddddddddddddddddddddddddddddddddd" + ex.getResponseBodyAsString());
+                        break;
+                    default:
+                        //error bpm process
+                        break;
+                }
             }
         }
-        response.getBody();
-//        }
-
-    }
-
-    protected ResponseEntity<String> updateEmployee(String paylocityCompanyId, String paylocityEmployeeId, HttpEntity<JsonObject> entity) {
-        ResponseEntity<String> response = restTemplate.exchange(paylocityConfigurtion.getPaylocityApiEnpoint() + "company/" + paylocityCompanyId + "/employee/" + paylocityEmployeeId, HttpMethod.POST, entity, String.class);
-        return response;
     }
 
     protected void refreshToken() {
