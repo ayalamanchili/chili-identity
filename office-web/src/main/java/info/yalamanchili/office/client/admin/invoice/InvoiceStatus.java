@@ -13,7 +13,9 @@ public enum InvoiceStatus {
 
     Estimated,
     Confirmed,
-    Submitted;
+    Submitted,
+    Do_Not_Send_Invoice,
+    VMS_Upload;
 
     public static String[] names() {
         InvoiceStatus[] values = values();
@@ -26,8 +28,8 @@ public enum InvoiceStatus {
 
     public static String[] getValues() {
         InvoiceStatus[] values = values();
-        String[] names = new String[values.length - 1];
-        for (int i = 0; i < values.length - 1; i++) {
+        String[] names = new String[values.length - 3];
+        for (int i = 0; i < values.length - 3; i++) {
             names[i] = values[i].name();
         }
         return names;

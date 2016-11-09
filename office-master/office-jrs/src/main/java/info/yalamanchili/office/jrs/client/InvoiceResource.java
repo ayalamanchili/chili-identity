@@ -21,6 +21,7 @@ import info.yalamanchili.office.entity.client.InvoiceStatus;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.invoice.GenericsDatesDto;
+import info.yalamanchili.office.invoice.InvoiceDatesDto;
 import info.yalamanchili.office.invoice.InvoiceSearchDto;
 import info.yalamanchili.office.invoice.InvoiceService;
 import info.yalamanchili.office.invoice.InvoiceService.InvoiceTable;
@@ -192,10 +193,17 @@ public class InvoiceResource extends CRUDResource<Invoice> {
     @PUT
     @Path("/submit-invoice/{id}")
     @PreAuthorize("hasAnyRole('ROLE_INVOICE_MANAGER')")
-    public Invoice submit(@PathParam("id") Long id, Invoice invoice) {
+    public Invoice submit(@PathParam("id") Long id, InvoiceDatesDto dto) {
         Invoice inv = invoiceDao.findById(id);
-        inv.setInvoiceStatus(InvoiceStatus.Submitted);
-        inv.setInvoiceSentDate(invoice.getInvoiceSentDate());
+        if (dto.getInvoiceSentDate() != null) {
+            inv.setInvoiceSentDate(dto.getInvoiceSentDate());
+            inv.setInvoiceStatus(InvoiceStatus.Submitted);
+        } else if (dto.getDoNotSendInv() != null && dto.getDoNotSendInv().equals(Boolean.TRUE)) {
+            inv.setInvoiceStatus(InvoiceStatus.Do_Not_Send_Invoice);
+        } else if (dto.getVmsUploadDate() != null) {
+            inv.setInvoiceSentDate(dto.getVmsUploadDate());
+            inv.setInvoiceStatus(InvoiceStatus.VMS_Upload);
+        }
         em.merge(inv);
         return inv;
     }

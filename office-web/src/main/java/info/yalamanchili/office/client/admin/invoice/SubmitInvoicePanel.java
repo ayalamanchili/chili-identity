@@ -9,8 +9,10 @@
 package info.yalamanchili.office.client.admin.invoice;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.CreateComposite;
+import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
@@ -44,6 +46,8 @@ public class SubmitInvoicePanel extends CreateComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
         assignEntityValueFromField("invoiceSentDate", entity);
+        assignEntityValueFromField("doNotSendInv", entity);
+        assignEntityValueFromField("vmsUploadDate", entity);
         return entity;
     }
 
@@ -56,16 +60,16 @@ public class SubmitInvoicePanel extends CreateComposite {
     protected void addButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                postCreateSuccess(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        postCreateSuccess(arg0);
+                    }
+                });
     }
 
     @Override
@@ -87,7 +91,9 @@ public class SubmitInvoicePanel extends CreateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("invoiceSentDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("invoiceSentDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("doNotSendInv", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+        addField("vmsUploadDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
@@ -104,8 +110,20 @@ public class SubmitInvoicePanel extends CreateComposite {
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         DateField sentDate = (DateField) fields.get("invoiceSentDate");
-        if (sentDate.getDate() == null) {
-            sentDate.setMessage("Sent date can not be null");
+        DateField uploadDate = (DateField) fields.get("vmsUploadDate");
+        BooleanField doNotSendInvBF = (BooleanField) fields.get("doNotSendInv");
+        int counter = 0;
+        if (sentDate.getDate() != null) {
+            counter++;
+        }
+        if (uploadDate.getDate() != null) {
+            counter++;
+        }
+        if (doNotSendInvBF.getValue().equals(Boolean.TRUE)) {
+            counter++;
+        }
+        if (counter == 0 || counter > 1) {
+            Window.confirm("Please input atmost one to submit invoice");
             return false;
         }
         return true;
