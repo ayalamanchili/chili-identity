@@ -251,6 +251,8 @@ public class ContractDto implements Serializable {
 
     protected BigDecimal finalBillingRate;
 
+    protected String gapPeriod;
+
     public ContractDto() {
     }
 
@@ -887,6 +889,14 @@ public class ContractDto implements Serializable {
 
     public void setClientFees(Float clientFees) {
         this.clientFees = clientFees;
+    }
+
+    public String getGapPeriod() {
+        return gapPeriod;
+    }
+
+    public void setGapPeriod(String gapPeriod) {
+        this.gapPeriod = gapPeriod;
     }
 
     /**
