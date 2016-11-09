@@ -55,6 +55,9 @@ import info.yalamanchili.office.entity.profile.invite.InvitationType;
 import info.yalamanchili.office.entity.profile.invite.InviteType;
 import info.yalamanchili.office.entity.social.Post;
 import info.yalamanchili.office.config.PaylocityConfigurtion;
+import info.yalamanchili.office.entity.profile.ClientStatus;
+import info.yalamanchili.office.entity.profile.SubcontractorStatus;
+import info.yalamanchili.office.entity.profile.VendorStatus;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
@@ -997,6 +1000,7 @@ public class OfficeStartup {
         Client techSysClient = new Client();
         techSysClient.setName("Tech Systems");
 
+        techSysClient.setClientStatus(ClientStatus.ACTIVE);
         Address clientLocation = new Address();
         clientLocation.setStreet1("2110 wilkes ct");
         clientLocation.setState("AL");
@@ -1033,6 +1037,7 @@ public class OfficeStartup {
         techSysVendor.setName("Sstech");
         techSysVendor.setMsaValDate(new Date());
         techSysVendor.setMsaExpDate(DateUtils.getNextWeek(new Date(), 1));
+        techSysVendor.setVendorStatus(VendorStatus.ACTIVE);
 
         Address vendorLocation = new Address();
         vendorLocation.setStreet1("2110 wilkes ct");
@@ -1059,6 +1064,7 @@ public class OfficeStartup {
     public Subcontractor sstechSubcontractor() {
         Subcontractor subcntr = new Subcontractor();
         subcntr.setName("sstech sub contractor");
+        subcntr.setSubcontractorStatus(SubcontractorStatus.ACTIVE);
 
         Contact subcontractorContact = new Contact();
         subcontractorContact.setFirstName("Subcontractor Contact");
