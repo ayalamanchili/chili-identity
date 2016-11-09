@@ -47,7 +47,7 @@ public class ClientService {
         for (Client ci : ClientDao.instance().query(0, 2000)) {
             res.add(populateClientInfo(ci));
         }
-        String[] columnOrder = new String[]{"clientName", "webSite", "clientInvDeliveryMethod", "terminationNoticePeriod", "clientLocations", "recruiterContact", "acctPayContact"};
+        String[] columnOrder = new String[]{"clientName", "clientStatus", "directClient", "webSite", "clientFee", "clientInvDeliveryMethod", "msaValDate", "msaExpDate", "terminationNoticePeriod", "clientLocations", "recruiterContact", "acctPayContact"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Client Summary Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
@@ -190,6 +190,21 @@ public class ClientService {
         if (ci.getTerminationNoticePeriod() != null) {
             dto.setTerminationNoticePeriod(ci.getTerminationNoticePeriod().toString());
         }
+        if (ci.getMsaValDate() != null) {
+            dto.setMsaValDate(ci.getMsaValDate());
+        }
+        if (ci.getMsaExpDate()!= null) {
+            dto.setMsaExpDate(ci.getMsaExpDate());
+        }
+        if (ci.getDirectClient()!= null) {         
+            dto.setDirectClient(ci.getDirectClient());
+        }
+        if (ci.getClientFee()!= null) {         
+            dto.setClientFee(ci.getClientFee().toString());
+        }
+        if (ci.getClientStatus()!= null) {         
+            dto.setClientStatus(ci.getClientStatus().name());
+        }
         // for getting client locations
         if (ci.getLocations().size() > 0) {
             String clientAddressInfo = "";
@@ -215,13 +230,13 @@ public class ClientService {
             String recContact = "";
             int countc = ci.getContacts().size();
             for (Contact contact : ci.getContacts()) {
-                String name = "";
+                String name = "Name: ";
                 name = name.concat(contact.getFirstName() + " " + contact.getLastName());
-                recContact = recContact.concat("\n" + name);
+                recContact = recContact.concat(name+"\n");
                 if (contact.getEmails().size() > 0) {
-                    String email = "";
+                    String email = "Email: ";
                     email = email.concat(contact.getEmails().get(0).getEmail());
-                    recContact = recContact.concat("-" + email);
+                    recContact = recContact.concat(email+"\n"+"Phone: ");
                 }
                 if (contact.getPhones().size() > 0) {
                     int countp = contact.getPhones().size();
@@ -230,10 +245,10 @@ public class ClientService {
                         if (rphone.getCountryCode() != null) {
                             String ccode = "";
                             ccode = ccode.concat(rphone.getCountryCode());
-                            recContact = recContact.concat("-" + ccode);
+                            recContact = recContact.concat(ccode+"-");
                         }
                         phone = phone.concat(rphone.getPhoneNumber());
-                        recContact = recContact.concat("-" + phone);
+                        recContact = recContact.concat(phone);
                         if (rphone.getExtension() != null) {
                             String ext = "";
                             ext = ext.concat(rphone.getExtension());
@@ -257,13 +272,13 @@ public class ClientService {
             String actContact = "";
             int countap = ci.getClientAcctPayContacts().size();
             for (Contact acpaycnt : ci.getClientAcctPayContacts()) {
-                String acname = "";
+                String acname = "Name: ";
                 acname = acname.concat(acpaycnt.getFirstName() + " " + acpaycnt.getLastName());
-                actContact = actContact.concat("\n" + acname);
+                actContact = actContact.concat(acname+"\n");
                 if (acpaycnt.getEmails().size() > 0) {
-                    String acemail = "";
+                    String acemail = "Email: ";
                     acemail = acemail.concat(acpaycnt.getEmails().get(0).getEmail());
-                    actContact = actContact.concat("-" + acemail);
+                    actContact = actContact.concat(acemail+"\n"+"Phone: ");
                 }
                 if (acpaycnt.getPhones().size() > 0) {
                     int countapp = acpaycnt.getPhones().size();
@@ -272,10 +287,10 @@ public class ClientService {
                         if (acpayphone.getCountryCode() != null) {
                             String acccode = "";
                             acccode = acccode.concat(acpayphone.getCountryCode());
-                            actContact = actContact.concat("-" + acccode);
+                            actContact = actContact.concat(acccode+"-");
                         }
                         acphone = acphone.concat(acpayphone.getPhoneNumber());
-                        actContact = actContact.concat("-" + acphone);
+                        actContact = actContact.concat(acphone);
                         if (acpayphone.getExtension() != null) {
                             String acext = "";
                             acext = acext.concat(acpayphone.getExtension());
