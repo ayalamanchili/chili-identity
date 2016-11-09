@@ -39,6 +39,7 @@ public class VendorMasterReportDto implements Serializable {
     protected String employeeType;
     protected String vendorPaymentTerms;
     protected Date coiEndDate;
+    protected String vendorStatus;
     @Temporal(TemporalType.DATE)
     protected Date msaValDate;
     @Temporal(TemporalType.DATE)
@@ -205,5 +206,13 @@ public class VendorMasterReportDto implements Serializable {
             return;
         }
         getContacts().add(contact);
+    }
+    
+    public String getVendorStatus() {
+        return vendorStatus;
+    }
+
+    public void setVendorStatus(String vendorStatus) {
+        this.vendorStatus = vendorStatus;
     }
 }
