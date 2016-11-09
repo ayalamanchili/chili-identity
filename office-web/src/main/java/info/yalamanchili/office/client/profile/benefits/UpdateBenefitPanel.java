@@ -55,7 +55,7 @@ public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler,
             entity.put("healthInsuranceWaiver", insuranceWaiver.populateEntityFromFields());
         }
         entity.put("enrolled", new JSONString(enrolledFlagField.getValue().toString()));
-        assignEntityValueFromField("year", entity);
+        assignEntityValueFromField("enrolledYear", entity);
         if (requestedDate.getDate() != null) {
             entity.put("affectiveDate", new JSONString(DateUtils.toDateString(requestedDate.getDate())));
         }
@@ -95,7 +95,7 @@ public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler,
     public void populateFieldsFromEntity(JSONObject entity) {
         String enrolled = entity.get("enrolled").isString().stringValue();
         benefitType.selectValue(JSONUtils.toString(entity, "benefitType"));
-        assignFieldValueFromEntity("year", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("enrolledYear", entity, DataType.ENUM_FIELD);
         if (enrolled == "true") {
             enrolledFlagField.setValue(Boolean.TRUE);
         } else {

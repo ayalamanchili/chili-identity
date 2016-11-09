@@ -63,7 +63,7 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
             entity.put("healthInsuranceWaiver", insuranceWaiver.populateEntityFromFields());
         }
         entity.put("enrolled", new JSONString(enrolledFlagField.getValue().toString()));
-        assignEntityValueFromField("year", entity);
+        assignEntityValueFromField("enrolledYear", entity);
         if (requestedDate.getDate() != null) {
             entity.put("affectiveDate", new JSONString(DateUtils.toDateString(requestedDate.getDate())));
         }
@@ -123,7 +123,7 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
         benefitType = new EnumField(OfficeWelcome.constants2,
                 "benefitType", "Benefit", false, true, BenefitType.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(benefitType);
-        addEnumField("year", false, true, YearType.names(), Alignment.HORIZONTAL);
+        addEnumField("enrolledYear", false, true, YearType.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(enrolledFlagField);
         addField("comments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
     }

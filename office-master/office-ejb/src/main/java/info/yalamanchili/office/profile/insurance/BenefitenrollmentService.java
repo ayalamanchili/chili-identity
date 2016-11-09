@@ -72,10 +72,10 @@ public class BenefitenrollmentService {
         data.getData().put("middleName", preparedBy.getMiddleInitial());
 
         //PreparedBy
-        Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getAffectiveDate()), employeeDao.getPrimaryEmail(preparedBy), null);
+        Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getEffectiveDate()), employeeDao.getPrimaryEmail(preparedBy), null);
         data.getSignatures().add(preparedBysignature);
 
-        HealthInsuranceWaiver healthInsuranceWaiver = HealthInsuranceWaiverDao.instance().find(entity);
+        HealthInsuranceWaiver healthInsuranceWaiver = HealthInsuranceWaiverDao.instance().getEntityManager().find(null, data);
         if (entity != null) {
             if (healthInsuranceWaiver != null) {
                 if (healthInsuranceWaiver.getWaivingCoverageFor() != null) {
@@ -162,7 +162,7 @@ public class BenefitenrollmentService {
             List<BenefitEnrollment> insurances = benefitEnrollmentDao.queryForEmployee(emp.getId(), 0, 50);
             if (insurances != null && insurances.size() > 0) {
                 for (BenefitEnrollment insurance : insurances) {
-                    if (insurance != null && year.equals(insurance.getYear())) {
+                    if (insurance != null && year.equals(insurance.getEnrolledYear())) {
                         report.add(populateHealthInsuranceEnrollmentInfo(insurance, emp));
                     } else if (insurance == null) {
                         report.add(populateHealthInsuranceWaiverInfo(insurance, emp));
@@ -196,7 +196,7 @@ public class BenefitenrollmentService {
         }
         dto.setEmail(emp.getPrimaryEmail().getEmail());
 
-        dto.setYear(ins.getYear());
+        dto.setYear(ins.getEnrolledYear());
         return dto;
     }
 
@@ -242,7 +242,7 @@ public class BenefitenrollmentService {
                         enrolledInsurances.add(ins);
                     }
                 }
-                if (isInsuranceEnrolled(enrolledInsurances, dto.getYear()) == enrolledInsurances.size()) {
+                if (isInsuranceEnrolled(enrolledInsurances, dto.getYear()) > 0) {
                     notSubmittedEmps.add(emp);
                 }
             }
@@ -258,7 +258,7 @@ public class BenefitenrollmentService {
                             enrolledInsurances.add(ins);
                         }
                     }
-                    if (isInsuranceEnrolled(enrolledInsurances, dto.getYear()) == enrolledInsurances.size()) {
+                    if (isInsuranceEnrolled(enrolledInsurances, dto.getYear()) > 0) {
                         notSubmittedEmps.add(emp);
                     }
                 }
@@ -273,7 +273,7 @@ public class BenefitenrollmentService {
     private int isInsuranceEnrolled(List<BenefitEnrollment> enrolledInsurancess, String year) {
         int falseCount = 0;
         for (BenefitEnrollment ins : enrolledInsurancess) {
-            if (!ins.getYear().equals(year)) {
+            if (!ins.getEnrolledYear().equals(year)) {
                 falseCount++;
             }
         }
@@ -290,7 +290,7 @@ public class BenefitenrollmentService {
         email.setSubject("Benefit Enrollment " + clnt.getEmployee().getFirstName() + " " + clnt.getEmployee().getLastName() + " Has Created");
         String messageText = " <b><u>System Soft Tech BenefitEnrollment Notification :</b></u> </br> ";
         messageText = messageText.concat("</br> <b>Benefit Type &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :</b> " + clnt.getBenefitType().name());
-        messageText = messageText.concat("</br> <b>Benefit Enrollment Year &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :</b> " + clnt.getYear());
+        messageText = messageText.concat("</br> <b>Benefit Enrollment Year &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :</b> " + clnt.getEnrolledYear());
         messageText = messageText.concat("</br> <b>Benefit Enrollment Comment &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :</b> " + clnt.getComments());
         email.setBody(messageText);
         MessagingService.instance().sendEmail(email);

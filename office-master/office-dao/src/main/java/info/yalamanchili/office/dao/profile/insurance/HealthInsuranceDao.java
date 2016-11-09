@@ -41,7 +41,7 @@ public class HealthInsuranceDao extends CRUDDao<HealthInsurance> {
             return null;
         }
         entity.setInsuranceEnrollment(InsuranceEnrollmentDao.instance().find(entity));
-        entity.setHealthInsuranceWaiver(HealthInsuranceWaiverDao.instance().find(entity));
+//        entity.setHealthInsuranceWaiver(HealthInsuranceWaiverDao.instance().find(entity));
         return entity;
     }
 
@@ -54,7 +54,7 @@ public class HealthInsuranceDao extends CRUDDao<HealthInsurance> {
             InsuranceEnrollmentDao.instance().save(insuEnrt, entity);
         }
         if (healthWaiver != null) {
-            HealthInsuranceWaiverDao.instance().save(healthWaiver, entity);
+//            HealthInsuranceWaiverDao.instance().save(healthWaiver, entity);
         }
         return entity;
     }

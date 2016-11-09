@@ -13,7 +13,6 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceWaiverDao;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.benefits.BenefitEnrollment;
-import info.yalamanchili.office.entity.profile.insurance.HealthInsuranceWaiver;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -51,19 +50,9 @@ public class BenefitEnrollmentDao extends CRUDDao<BenefitEnrollment> {
         if (entity == null) {
             return null;
         }
-        entity.setHealthInsuranceWaiver(HealthInsuranceWaiverDao.instance().find(entity));
+        entity.setHealthInsuranceWaiver(HealthInsuranceWaiverDao.instance().findById(id));
         return entity;
     }
-
-//    @Override
-//    public BenefitEnrollment save(BenefitEnrollment entity) {
-//        HealthInsuranceWaiver healthWaiver = entity.getHealthInsuranceWaiver();
-//        entity = super.save(entity);
-//        if (healthWaiver != null) {
-//            HealthInsuranceWaiverDao.instance().save(healthWaiver, entity);
-//        }
-//        return entity;
-//    }
 
     public List<BenefitEnrollment> getBenefitEnrollment(Employee emp, int start, int limit) {
         Query query = getEntityManager().createQuery("from " + BenefitEnrollment.class.getCanonicalName() + " benefit where benefit.employee=:employeeParam ", BenefitEnrollment.class);

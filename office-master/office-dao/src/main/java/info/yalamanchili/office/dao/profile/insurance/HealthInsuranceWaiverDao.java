@@ -8,7 +8,7 @@
  */
 package info.yalamanchili.office.dao.profile.insurance;
 
-import info.chili.dao.AbstractHandleEntityDao;
+import info.chili.dao.CRUDDao;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.profile.insurance.HealthInsuranceWaiver;
 import javax.persistence.EntityManager;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @Scope("prototype")
-public class HealthInsuranceWaiverDao extends AbstractHandleEntityDao<HealthInsuranceWaiver> {
+public class HealthInsuranceWaiverDao extends CRUDDao<HealthInsuranceWaiver> {
 
     @PersistenceContext
     protected EntityManager em;
@@ -39,4 +39,5 @@ public class HealthInsuranceWaiverDao extends AbstractHandleEntityDao<HealthInsu
     public EntityManager getEntityManager() {
         return em;
     }
+
 }
