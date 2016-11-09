@@ -23,6 +23,9 @@ public class InvoiceDatesDto implements Serializable {
 
     protected Date startDate;
     protected Date endDate;
+    protected Date invoiceSentDate;
+    protected Date vmsUploadDate;
+    protected Boolean doNotSendInv;
 
     public Date getStartDate() {
         return startDate;
@@ -40,4 +43,27 @@ public class InvoiceDatesDto implements Serializable {
         this.endDate = endDate;
     }
 
+    public Date getInvoiceSentDate() {
+        return invoiceSentDate;
+    }
+
+    public void setInvoiceSentDate(Date invoiceSentDate) {
+        this.invoiceSentDate = invoiceSentDate;
+    }
+
+    public Date getVmsUploadDate() {
+        return vmsUploadDate;
+    }
+
+    public void setVmsUploadDate(Date vmsUploadDate) {
+        this.vmsUploadDate = vmsUploadDate;
+    }
+
+    public Boolean getDoNotSendInv() {
+        return doNotSendInv;
+    }
+
+    public void setDoNotSendInv(Boolean doNotSendInv) {
+        this.doNotSendInv = doNotSendInv;
+    }
 }
