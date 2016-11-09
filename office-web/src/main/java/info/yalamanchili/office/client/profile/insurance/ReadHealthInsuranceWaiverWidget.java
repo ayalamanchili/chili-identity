@@ -10,6 +10,7 @@ package info.yalamanchili.office.client.profile.insurance;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Window;
@@ -33,6 +34,7 @@ import info.chili.gwt.widgets.ClickableImage;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.profile.benefits.YearType;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.logging.Logger;
 
 /**
@@ -51,7 +53,7 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite implements C
     RadioButton myspousesplan = new RadioButton("myspousesplan", "Coverage under my spouse's plan");
     RadioButton othercoverage = new RadioButton("othercoverage", "Other coverage");
 
-    HTML tac2 = new HTML("<h4><u>For the plan year " + Arrays.toString(YearType.values()) + ", I am waiving coverage for: \n</u >");
+    HTML tac2 = new HTML("<h4><u>For the plan year " + DateTimeFormat.getFormat("MM/dd/yyyy").format(new Date()).split("/")[2] + ", I am waiving coverage for: \n</u >");
     HTML tac3 = new HTML("<h4><u>I am waiving coverage due to: \n</u>");
 
     StringField spouseNameOfCarrier = new StringField(OfficeWelcome.constants2, "spouseNameOfCarrier", "HealthInsuranceWaiver", true, false, Alignment.HORIZONTAL);
