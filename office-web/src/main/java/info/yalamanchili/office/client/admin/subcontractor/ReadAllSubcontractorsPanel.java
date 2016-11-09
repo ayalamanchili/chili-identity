@@ -69,6 +69,7 @@ public class ReadAllSubcontractorsPanel extends CRUDReadAllComposite {
         // table.setText(0, 2, getKeyValue("WebSite"));
         table.setText(0, 2, getKeyValue("MSA Exp Date"));
         table.setText(0, 3, getKeyValue("COI End Date"));
+        table.setText(0, 4, getKeyValue("Subcontractor Status"));
     }
 
     @Override
@@ -79,6 +80,7 @@ public class ReadAllSubcontractorsPanel extends CRUDReadAllComposite {
             table.setText(i, 1, JSONUtils.toString(entity, "name"));
             table.setText(i, 2, DateUtils.formatDate(JSONUtils.toString(entity, "msaExpDate")));
             table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "coiEndDate")));
+            setEnumColumn(i, 4, entity, "subcontractorStatus", "subcontractorStatus");
         }
     }
 

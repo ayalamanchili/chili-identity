@@ -11,8 +11,11 @@ package info.yalamanchili.office.dto.profile;
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.SubcontractorStatus;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -47,6 +50,8 @@ public class SubcontractorDto implements Serializable {
     protected Date msaExpDate;
     @NotNull(message = "{subcontractor.terminationNoticePeriod.not.null.msg}")
     protected Integer terminationNoticePeriod;
+    @Enumerated(EnumType.STRING)
+    protected SubcontractorStatus subcontractorStatus;
     protected Address location;
     protected ContactDto contact;
 
@@ -166,7 +171,19 @@ public class SubcontractorDto implements Serializable {
     public void setTerminationNoticePeriod(Integer terminationNoticePeriod) {
         this.terminationNoticePeriod = terminationNoticePeriod;
     }
+    /**
+     * @return the subcontractorStatus
+     */
+    public SubcontractorStatus getSubcontractorStatus() {
+        return subcontractorStatus;
+    }
 
+    /**
+     * @param subcontractorStatus the subcontractorStatus to set
+     */
+    public void setSubcontractorStatus(SubcontractorStatus subcontractorStatus) {
+        this.subcontractorStatus = subcontractorStatus;
+    }
     /**
      * @return the location
      */

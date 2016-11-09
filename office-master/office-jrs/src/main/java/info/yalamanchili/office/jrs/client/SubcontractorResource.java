@@ -28,6 +28,7 @@ import info.yalamanchili.office.entity.client.Subcontractor;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.entity.profile.SubcontractorStatus;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.jrs.profile.AddressResource;
@@ -90,6 +91,7 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
     public Subcontractor createSubcontractor(SubcontractorDto subcontractorDto) {
         Subcontractor subcontractor = mapper.map(subcontractorDto, Subcontractor.class);
 
+        subcontractor.setSubcontractorStatus(SubcontractorStatus.ACTIVE);
         if (subcontractorDto.getLocation() != null) {
             subcontractor.addLocations(subcontractorDto.getLocation());
         }

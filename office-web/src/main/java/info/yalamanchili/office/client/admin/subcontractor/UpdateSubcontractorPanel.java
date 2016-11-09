@@ -20,6 +20,7 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.admin.vendor.SubcontractorStatus;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 
@@ -45,6 +46,7 @@ public class UpdateSubcontractorPanel extends UpdateComposite {
         assignEntityValueFromField("msaValDate", entity);
         assignEntityValueFromField("msaExpDate", entity);
         assignEntityValueFromField("terminationNoticePeriod", entity);
+        assignEntityValueFromField("subcontractorStatus", entity);
         return entity;
     }
 
@@ -76,6 +78,7 @@ public class UpdateSubcontractorPanel extends UpdateComposite {
         assignFieldValueFromEntity("msaValDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("terminationNoticePeriod", entity, DataType.INTEGER_FIELD);
+        assignFieldValueFromEntity("subcontractorStatus", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -107,6 +110,7 @@ public class UpdateSubcontractorPanel extends UpdateComposite {
         addField("msaValDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("msaExpDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("terminationNoticePeriod", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addEnumField("subcontractorStatus", false, false, SubcontractorStatus.names(), Alignment.HORIZONTAL);
     }
 
     @Override

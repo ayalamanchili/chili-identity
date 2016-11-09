@@ -11,6 +11,7 @@ import info.chili.jpa.AbstractEntity;
 import info.chili.jpa.validation.Unique;
 import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
+import info.yalamanchili.office.entity.profile.SubcontractorStatus;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -87,6 +88,9 @@ public class Subcontractor extends AbstractEntity {
     protected Date msaExpDate;
 
     protected Integer terminationNoticePeriod;
+    
+    @Enumerated(EnumType.STRING)
+    protected SubcontractorStatus subcontractorStatus;
 
     public Date getCoiEndDate() {
         return coiEndDate;
@@ -204,5 +208,19 @@ public class Subcontractor extends AbstractEntity {
 
     public void setTerminationNoticePeriod(Integer terminationNoticePeriod) {
         this.terminationNoticePeriod = terminationNoticePeriod;
+    }
+    
+    /**
+     * @return the subcontractorStatus
+     */
+    public SubcontractorStatus getSubcontractorStatus() {
+        return subcontractorStatus;
+    }
+
+    /**
+     * @param subcontractorStatus the subcontractorStatus to set
+     */
+    public void setSubcontractorStatus(SubcontractorStatus subcontractorStatus) {
+        this.subcontractorStatus = subcontractorStatus;
     }
 }
