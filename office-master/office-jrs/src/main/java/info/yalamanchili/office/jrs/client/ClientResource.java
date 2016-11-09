@@ -30,6 +30,7 @@ import info.yalamanchili.office.entity.profile.Address;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.dto.profile.ContactDto.ContactDtoTable;
 import info.yalamanchili.office.entity.client.Vendor;
+import info.yalamanchili.office.entity.profile.ClientStatus;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.invoice.GenericsDatesDto;
 import info.yalamanchili.office.jms.MessagingService;
@@ -112,7 +113,8 @@ public class ClientResource extends CRUDResource<Client> {
     @CacheEvict(value = OfficeCacheKeys.CLIENT, allEntries = true)
     public Client createClient(CreateClientDto createClientDto) {
         Client client = mapper.map(createClientDto, Client.class);
-
+        
+        client.setClientStatus(ClientStatus.ACTIVE);
         if (createClientDto.getLocation() != null) {
             client.addLocations(createClientDto.getLocation());
         }

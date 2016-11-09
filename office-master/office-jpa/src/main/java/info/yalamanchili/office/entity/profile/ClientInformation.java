@@ -81,6 +81,9 @@ public class ClientInformation extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(groups = SubmitChecks.class)
     protected Date endDate;
+    
+    protected String gapPeriod;
+
     /**
      * flag to indicate to end of previous project.
      */
@@ -436,6 +439,14 @@ public class ClientInformation extends AbstractEntity {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+       
+    public String getGapPeriod() {
+        return gapPeriod;
+    }
+
+    public void setGapPeriod(String gapPeriod) {
+        this.gapPeriod = gapPeriod;
     }
 
     public boolean isEndPreviousProject() {

@@ -24,10 +24,5 @@ and open the template in the editor.
                    tableName="vendor_aud">
             <column name="vendorStatus" type="varchar(255)"/>
         </addColumn>
-        <sqlFile dbms="mysql"
-                 path="sql/set-active-vendor-status.sql"
-                 relativeToChangelogFile="true"
-                 splitStatements="true"
-                 stripComments="true"/>
     </changeSet>
 </databaseChangeLog>

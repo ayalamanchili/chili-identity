@@ -18,11 +18,11 @@ import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
-import info.chili.gwt.fields.FloatField;
 import info.chili.gwt.fields.IntegerField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.yalamanchili.office.client.admin.vendor.ClientStatus;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
 
 /**
@@ -56,6 +56,7 @@ public class UpdateClientPanel extends UpdateComposite {
         assignEntityValueFromField("msaExpDate", entity);
         assignEntityValueFromField("clientInvDeliveryMethod", entity);
         assignEntityValueFromField("terminationNoticePeriod", entity);
+        assignEntityValueFromField("clientStatus", entity);
         return entity;
     }
 
@@ -91,6 +92,7 @@ public class UpdateClientPanel extends UpdateComposite {
         assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("clientInvDeliveryMethod", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("terminationNoticePeriod", entity, DataType.INTEGER_FIELD);
+        assignFieldValueFromEntity("clientStatus", entity, DataType.ENUM_FIELD);
     }
 
     @Override
@@ -127,6 +129,7 @@ public class UpdateClientPanel extends UpdateComposite {
         addField("msaValDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("msaExpDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("terminationNoticePeriod", false, false, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addEnumField("clientStatus", false, false, ClientStatus.names(), Alignment.HORIZONTAL);
         alignFields();
     }
 

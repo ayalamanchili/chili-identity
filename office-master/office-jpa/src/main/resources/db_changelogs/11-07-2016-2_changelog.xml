@@ -13,9 +13,9 @@ and open the template in the editor.
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <changeSet author="rvallabhaneni" id="updateClientActiveStatus">
+    <changeSet author="rvallabhaneni" id="updateVendorActiveStatus">
         <sqlFile dbms="mysql"
-                  path="sql/set_active_client_status.sql"
+                  path="sql/set_active_vendor_status.sql"
                   relativeToChangelogFile="true"
                   splitStatements="true"
                   stripComments="true"/>

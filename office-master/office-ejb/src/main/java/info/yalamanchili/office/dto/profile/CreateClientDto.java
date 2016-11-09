@@ -11,6 +11,7 @@ package info.yalamanchili.office.dto.profile;
 import info.yalamanchili.office.entity.client.InvoiceDeliveryMethod;
 import info.yalamanchili.office.entity.client.InvoiceFrequency;
 import info.yalamanchili.office.entity.profile.Address;
+import info.yalamanchili.office.entity.profile.ClientStatus;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -51,6 +52,8 @@ public class CreateClientDto implements Serializable {
     @Enumerated(EnumType.STRING)
     protected InvoiceDeliveryMethod clientInvDeliveryMethod;
     protected Integer terminationNoticePeriod;
+    @Enumerated(EnumType.STRING)
+    protected ClientStatus clientStatus;
 
     public Long getId() {
         return id;
@@ -198,6 +201,19 @@ public class CreateClientDto implements Serializable {
 
     public void setTerminationNoticePeriod(Integer terminationNoticePeriod) {
         this.terminationNoticePeriod = terminationNoticePeriod;
+    }
+     /**
+     * @return the clientStatus
+     */
+    public ClientStatus getClientStatus() {
+        return clientStatus;
+    }
+
+    /**
+     * @param clientStatus the clientStatus to set
+     */
+    public void setClientStatus(ClientStatus clientStatus) {
+        this.clientStatus = clientStatus;
     }
 
     @Override

@@ -14,7 +14,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -43,7 +42,6 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
-import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.expense.bnkacct.AccountType;
@@ -67,7 +65,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     protected List<CreateDependentsPanel> dependentsPanels = new ArrayList<>();
     protected List<CreateEmergencyContactWidget> emergencyContactsPanels = new ArrayList<>();
     HTML emptyLine = new HTML("<br/>");
-    HTML fileUploadNotes1 = new HTML("<b> Note: </b> Please upload pdf formats only");
+    HTML fileUploadNotes1 = new HTML("<p><strong style=\"color:#F31212\">Note: please use the above button to upload I9, W4 and I9 supporting doc in pdf format. (To select multiple files use cntrl+click)</strong></p> \n");
     HTML fileUploadNotes2 = new HTML("<b> Note: </b> Original copy of I-9 Form should be sent to Tampa office by Mail.");
     HTML emerContactNotes = new HTML("<b> Note: </b> Primary Emergency Contact should be local and Secondary Emergency Contact can be non local.");
     HTML dependentNotes = new HTML("<b> Note: </b> If you have no dependents, please select this checkbox.");
@@ -513,9 +511,13 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
                 phoneNumberF.setMessage("PhoneNumber must be in 10 characters long");
             }
         }
+        if (dependentsPanels.isEmpty() && noDependentsCB.getValue().equals(Boolean.FALSE)) {
+            Window.confirm("Please choose dependents or select I have No Dependents check box");
+            valid = false;
+        }
         if (fileUploadPanel.getFileNames().size() < 3) {
-             Window.confirm("Please make sure you are uploading I9, W4 and Supporting doc before submitting");
-             valid = false;
+            Window.confirm("Please make sure you are uploading I9, W4 and Supporting doc before submitting");
+            valid = false;
         }
         return valid;
     }
