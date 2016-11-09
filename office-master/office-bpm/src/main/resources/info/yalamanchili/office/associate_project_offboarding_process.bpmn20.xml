@@ -29,7 +29,9 @@
                 Client Name             : ${entity.client.name}
                 Vendor Name             : ${entity.vendor.name}
                 End Date                : ${projectOffboardingEntity.endDate}
-                Reason                  : ${projectOffboardingEntity.notes}                   
+                Reason                  : ${projectOffboardingEntity.notes}     
+                
+                Please use this link to view the contract: ${clientInfoLink}              
             </documentation>
             
             <extensionElements>
@@ -156,6 +158,8 @@
                 Vendor Name             : ${entity.vendor.name}
                 End Date                : ${projectOffboardingEntity.endDate}
                 Reason                  : ${projectOffboardingEntity.notes}                   
+                
+                Please use this link and confirm the end date on the contract: ${clientInfoLink}                   
             </documentation>
             
             <extensionElements>
@@ -211,7 +215,9 @@
                 Client Name             : ${entity.client.name}
                 Vendor Name             : ${entity.vendor.name}
                 End Date                : ${projectOffboardingEntity.endDate}
-                Reason                  : ${projectOffboardingEntity.notes}               
+                Reason                  : ${projectOffboardingEntity.notes}                   
+                
+                Please use this link and confirm the end date on the contract: ${clientInfoLink}                   
             </documentation>
             <extensionElements>
                 <activiti:taskListener 
@@ -260,7 +266,9 @@
                 Client Name             : ${entity.client.name}
                 Vendor Name             : ${entity.vendor.name}
                 End Date                : ${projectOffboardingEntity.endDate}
-                Reason                  : ${projectOffboardingEntity.notes}               
+                Reason                  : ${projectOffboardingEntity.notes}                   
+                
+                Please use this link and confirm the end date on the contract: ${clientInfoLink}                   
             </documentation>
             <extensionElements>
                 <activiti:taskListener 
@@ -314,7 +322,9 @@
                 Client Name             : ${entity.client.name}
                 Vendor Name             : ${entity.vendor.name}
                 End Date                : ${projectOffboardingEntity.endDate}
-                Reason                  : ${projectOffboardingEntity.notes}               
+                Reason                  : ${projectOffboardingEntity.notes}                   
+                
+                Please use this link and confirm the end date on the contract: ${clientInfoLink}                   
             </documentation>
             <extensionElements>
                 <activiti:taskListener 
@@ -369,7 +379,9 @@
                 Vendor Name             : ${entity.vendor.name}
                 WorkStatus              : ${employee.workStatus}
                 End Date                : ${projectOffboardingEntity.endDate}
-                Reason                  : ${projectOffboardingEntity.notes}                
+                Reason                  : ${projectOffboardingEntity.notes}                   
+                
+                Please use this link and confirm the end date on the contract: ${clientInfoLink}                   
             </documentation>
             <extensionElements>
                 <activiti:taskListener 
@@ -410,7 +422,9 @@
                 Client Name             : ${entity.client.name}
                 Vendor Name             : ${entity.vendor.name}
                 End Date                : ${projectOffboardingEntity.endDate}
-                Reason                  : ${projectOffboardingEntity.notes}
+                Reason                  : ${projectOffboardingEntity.notes}                   
+                
+                Please use this link and confirm the end date on the contract: ${clientInfoLink}
             </documentation>
             <extensionElements>
                 <activiti:taskListener 
@@ -464,7 +478,9 @@
                 Client Name             : ${entity.client.name}
                 Vendor Name             : ${entity.vendor.name}
                 End Date                : ${projectOffboardingEntity.endDate}
-                Reason                  : ${projectOffboardingEntity.notes}
+                Reason                  : ${projectOffboardingEntity.notes}                   
+                
+                Please use this link and confirm the end date on the contract: ${clientInfoLink}
             </documentation>
             <extensionElements>
                 <activiti:taskListener 

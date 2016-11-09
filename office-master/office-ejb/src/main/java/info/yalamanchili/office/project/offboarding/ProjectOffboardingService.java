@@ -13,6 +13,7 @@ import info.yalamanchili.office.dto.offboarding.ProjectOffboardingDto;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.bpm.OfficeBPMService;
 import info.yalamanchili.office.bpm.OfficeBPMTaskService;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.ClientInformationDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -51,6 +52,7 @@ public class ProjectOffboardingService {
         vars.put("employeeType", employee.getEmployeeType());
         vars.put("projectOffboardingEntity", ped);
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
+        vars.put("clientInfoLink", getClientInfoLink(ci.getId()));
         OfficeBPMService.instance().startProcess("associate_project_offboarding_process", vars);
 
     }
@@ -66,6 +68,12 @@ public class ProjectOffboardingService {
     
     public static ProjectOffboardingService instance() {
         return SpringContext.getBean(ProjectOffboardingService.class);
+    }
+    
+    protected String getClientInfoLink(Long clientInfoId) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(OfficeServiceConfiguration.instance().getPortalWebUrl()).append("#?entity=info.yalamanchili.office.entity.profile.ClientInformation&id=").append(clientInfoId);
+        return sb.toString();
     }
 
 }
