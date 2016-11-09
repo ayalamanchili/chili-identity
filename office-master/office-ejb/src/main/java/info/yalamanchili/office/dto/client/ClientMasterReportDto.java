@@ -38,11 +38,12 @@ public class ClientMasterReportDto implements Serializable {
     protected String terminationNoticePeriod;
     private Date msaValDate;
     protected Date msaExpDate;
-    protected Boolean directClient;
+    protected String directClient;
     protected String clientFee;
+    protected String clientStatus;
     @ManyToMany(cascade = CascadeType.ALL)
     protected List<Contact> contacts;
-    
+
     public ClientMasterReportDto() {
     }
     public ClientMasterReportDto(Long id, String firstName, String lastName, String employeeType, String clientName, InvoiceDeliveryMethod clientInvDeliveryMethod, Integer terminationNoticePeriod, Date msaValDate, Date msaExpDate) {
@@ -153,7 +154,7 @@ public class ClientMasterReportDto implements Serializable {
     /**
      * @return the directClient
      */
-    public Boolean getDirectClient() {
+    public String getDirectClient() {
         return directClient;
     }
 
@@ -161,7 +162,10 @@ public class ClientMasterReportDto implements Serializable {
      * @param directClient the directClient to set
      */
     public void setDirectClient(Boolean directClient) {
-        this.directClient = directClient;
+      if(directClient == true){
+           this.directClient = "Yes"; 
+        }
+        else this.directClient = "No";
     }
 
     /**
@@ -196,4 +200,13 @@ public class ClientMasterReportDto implements Serializable {
         getContacts().add(contact);
 //      contact.setClient(this);
     }
+    
+    public String getClientStatus() {
+        return clientStatus;
+    }
+
+    public void setClientStatus(String clientStatus) {
+        this.clientStatus = clientStatus;
+    }
+    
 }
