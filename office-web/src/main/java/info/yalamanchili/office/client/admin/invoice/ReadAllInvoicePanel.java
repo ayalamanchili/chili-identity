@@ -46,6 +46,7 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     public static ReadAllInvoicePanel instance;
     protected String clientInfoId;
     protected boolean displayALL = false;
+    protected boolean active = false;
 
     public ReadAllInvoicePanel(String parentId) {
         instance = this;
@@ -97,11 +98,11 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     private String getDeleteURL(String entityId) {
@@ -124,11 +125,11 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getInvocieURL(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        postFetchTable(result);
+                    }
+                });
     }
 
     private String getInvocieURL(Integer start, String limit) {
@@ -206,13 +207,13 @@ public class ReadAllInvoicePanel extends CRUDReadAllComposite {
     public void copyClicked(final String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(OfficeWelcome.constants.root_url() + "invoice/clone/" + entityId, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                new ResponseStatusWidget().show("Copy created. Please update and save.");
-                TabPanel.instance().reportingPanel.entityPanel.clear();
-                TabPanel.instance().reportingPanel.entityPanel.add(new UpdateInvoicePanel(JSONParser.parseLenient(arg0).isObject()));
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        new ResponseStatusWidget().show("Copy created. Please update and save.");
+                        TabPanel.instance().reportingPanel.entityPanel.clear();
+                        TabPanel.instance().reportingPanel.entityPanel.add(new UpdateInvoicePanel(JSONParser.parseLenient(arg0).isObject()));
+                    }
+                });
     }
 
     @Override

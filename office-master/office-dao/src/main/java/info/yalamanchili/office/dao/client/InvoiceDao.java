@@ -98,4 +98,9 @@ public class InvoiceDao extends CRUDDao<Invoice> {
         }
     }
 
+    public List<Invoice> search(String empFirstName, String empLastName) {
+        String searchQuery = getSearchQuery(empFirstName, empLastName);
+        TypedQuery<Invoice> query = em.createQuery(searchQuery, Invoice.class);
+        return query.getResultList();
+    }
 }

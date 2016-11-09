@@ -255,6 +255,14 @@ public class InvoiceResource extends CRUDResource<Invoice> {
         return search;
     }
 
+    @GET
+    @Path("/getInvoice/{empId}")
+    public List<Invoice> getInvoice(@PathParam("empId") Long empId) {
+        Employee emp = EmployeeDao.instance().findById(empId);
+        List<Invoice> search = invoiceDao.search(emp.getFirstName(), emp.getLastName());
+        return search;
+    }
+
     @PUT
     @Path("/adv-search/{start}/{limit}")
     @Transactional(readOnly = true)
