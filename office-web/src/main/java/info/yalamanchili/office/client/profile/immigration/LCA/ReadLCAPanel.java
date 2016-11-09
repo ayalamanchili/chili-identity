@@ -12,6 +12,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.crud.ReadAllComposite;
 import info.chili.gwt.crud.TReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
@@ -169,6 +170,11 @@ public class ReadLCAPanel extends TReadComposite {
     @Override
     protected boolean enableBack() {
         return true;
+    }
+
+    @Override
+    protected ReadAllComposite getReadAllPanel() {
+        return ReadAllLCAPanel.instance;
     }
 
     @Override
