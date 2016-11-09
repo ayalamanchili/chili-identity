@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.RootPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.composite.BaseField;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDComposite;
 import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.UpdateComposite;
@@ -48,6 +49,7 @@ import info.yalamanchili.office.client.expense.bnkacct.AccountType;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,6 +111,12 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         @Override
         public void onUploadComplete(String res) {
             postUpdateSuccess(null);
+        }
+
+        @Override
+        protected List<String> getValidFileExtensions() {
+            String[] exts = "pdf".split(",");
+            return new ArrayList<>(Arrays.asList(exts));
         }
     };
 
