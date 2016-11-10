@@ -19,6 +19,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FormPanel;
@@ -43,6 +44,7 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableLink;
 import info.chili.gwt.widgets.ResponseStatusWidget;
+import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.expenseitem.CreateExpenseItemPanel;
@@ -51,9 +53,9 @@ import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import static info.yalamanchili.office.client.expensereports.CreateExpenseReportPanel.receiptsInfo;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
-import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -68,6 +70,8 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
     public List<TCRUDComposite> updateItemPanels = new ArrayList<>();
     protected ClickableLink addItemL = new ClickableLink("Add Expense Item");
     protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, false, Alignment.HORIZONTAL);
+    public List<CreateExpenseItemPanel> expenseItemPanels = new ArrayList();
+    SuggestBox otherEmployees = new SuggestBox(OfficeWelcome.constants2, "otherEmployees", "ExpenseReport", true, true, Alignment.HORIZONTAL);
     HTML tac = new HTML(" I " + OfficeWelcome.instance().getCurrentUserName() + " Acknowledge that all information in my expenses report is accurate and true \n");
     CheckBox confrmCB = new CheckBox();
     HorizontalPanel hPanel = new HorizontalPanel();
@@ -156,21 +160,21 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        logger.info(response);
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        if (ExpenseFormType.GENERAL_EXPENSE.name().equals(JSONUtils.toString(getEntity(), EXPENSE_FORM_TYPE))) {
-                            addGeneralExpenseFields();
-                        }
-                        if ("Other".equals(JSONUtils.toString(getEntity(), DEPARTMENTTYPE))) {
-                            otherDepartment.setVisible(true);
-                        }
-                        populateFieldsFromEntity(entity);
-                        populateComments();
-                        onChange();
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                logger.info(response);
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                if (ExpenseFormType.GENERAL_EXPENSE.name().equals(JSONUtils.toString(getEntity(), EXPENSE_FORM_TYPE))) {
+                    addGeneralExpenseFields();
+                }
+                if ("Other".equals(JSONUtils.toString(getEntity(), DEPARTMENTTYPE))) {
+                    otherDepartment.setVisible(true);
+                }
+                populateFieldsFromEntity(entity);
+                populateComments();
+                onChange();
+            }
+        });
     }
 
     protected String getReadURI() {
@@ -207,7 +211,6 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
                 i++;
             }
         }
-        logger.info("items are .... " + items);
         entity.put(EXPENSE_ITEMS, items);
         int j = expenseReceipts.size();
         logger.info(expenseReceipts.toString());
@@ -219,6 +222,9 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
                 expenseReceipts.set(j, expenseReceipt);
                 j++;
             }
+        }
+        if (otherEmployees.isVisible() == true) {
+            entity.put("otherEmployees", new JSONString(otherEmployees.getValue()));
         }
         if (expenseReceipts.size() > 0) {
             entity.put(EXPENSE_RECEIPT, expenseReceipts);
@@ -249,7 +255,6 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
         if (otherDepartment.isVisible() == true) {
             entity.put(OTHERDEPARTMENT, new JSONString(otherDepartment.getValue()));
         }
-        entity.put(OTHEREMPLOYEES, otherEmployees.getSelectedObjects());
         return entity;
     }
 
@@ -263,16 +268,16 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadReceipts(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadReceipts(arg0);
+            }
+        });
     }
 
     protected void uploadReceipts(String postString) {
@@ -320,12 +325,8 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
         populateExpenseItems(expenseItems);
         if (ExpenseFormType.GENERAL_EXPENSE.name().equals(JSONUtils.toString(entity, "expenseFormType"))) {
             if (entity.containsKey("otherEmployees")) {
-                JSONArray otherEmps = JSONUtils.toJSONArray(entity.get("otherEmployees"));
-                if (otherEmps.size() > 0) {
-                    if (otherEmps != null) {
-                        otherEmployees.setSelectedValues(entity.get("otherEmployees").isArray());
-                    }
-                }
+                JSONObject emp = (JSONObject) entity.get("otherEmployees");
+                otherEmployees.setValue(emp.get("firstName").isString().stringValue() + " " + emp.get("lastName").isString().stringValue());
             }
             if (entity.containsKey("cardHolderName")) {
                 cardHolderName.setValue(entity.get("cardHolderName").isString().stringValue());
@@ -340,7 +341,6 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
                 payrollFileNumber.setValue(entity.get("payrollFileNumber").isString().stringValue());
             }
         }
-        // populateComments();
     }
 
     UpdateExpenseItemPanel updateItempanel = null;
@@ -358,6 +358,13 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
     }
 
     protected void populateExpenseReceipt(JSONArray items) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).isObject() != null) {
+                UpdateExpenseItemPanel panel = new UpdateExpenseItemPanel(getEntityId(), items.get(i).isObject(), isGeneralExpenseItem());
+                updateItemPanels.add(panel);
+                entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(expenseItemsInfo) + 1);
+            }
+        }
         entityFieldsPanel.insert(new ReadAllExpenseReceiptsPanel(getEntityId(), items), entityFieldsPanel.getWidgetIndex(receiptsInfo) + 1);
     }
 
@@ -395,12 +402,6 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
         otherDepartment.setVisible(false);
         otherEmployees.setVisible(true);
     }
-    SelectEmployeeWidget otherEmployees = new SelectEmployeeWidget(OTHEREMPLOYEES, false, false, Alignment.HORIZONTAL) {
-        @Override
-        public boolean enableMultiSelect() {
-            return true;
-        }
-    };
 
     @Override
     protected void addWidgets() {
@@ -428,16 +429,16 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
         addField(OTHERDEPARTMENT, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         otherDepartment = (StringField) fields.get(OTHERDEPARTMENT);
         addField(COMMENTS, false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
+        entityFieldsPanel.add(expenseItemsInfo);
+        entityFieldsPanel.add(addItemL);
         entityFieldsPanel.add(receiptsInfo);
         entityFieldsPanel.add(fileUploadPanel);
-        entityFieldsPanel.add(expenseItemsInfo);
-        entityActionsPanel.add(addItemL);
         entityActionsPanel.add(Acknowledgement);
         entityActionsPanel.insert(totalExpenses, entityActionsPanel.getWidgetIndex(Acknowledgement));
         entityActionsPanel.insert(totalCorporateCardExpenses, entityActionsPanel.getWidgetIndex(totalExpenses));
         entityActionsPanel.insert(totalPersonalCardExpenses, entityActionsPanel.getWidgetIndex(totalCorporateCardExpenses));
         hPanel.add(confrmCB);
-        confrmCB.setValue(true);
+        confrmCB.setValue(false);
         hPanel.add(tac);
         entityActionsPanel.add(hPanel);
         entityActionsPanel.add(submitForApprovalF);
@@ -447,11 +448,11 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
     }
 
     protected void addGeneralExpenseFields() {
-        entityFieldsPanel.insert(otherEmployees, entityFieldsPanel.getWidgetIndex(receiptsInfo));
-        entityFieldsPanel.insert(cardHolderName, entityFieldsPanel.getWidgetIndex(receiptsInfo));
-        entityFieldsPanel.insert(expensesMadeBy, entityFieldsPanel.getWidgetIndex(receiptsInfo));
-        entityFieldsPanel.insert(payrollFileNumber, entityFieldsPanel.getWidgetIndex(receiptsInfo));
-        entityFieldsPanel.insert(submittedDate, entityFieldsPanel.getWidgetIndex(receiptsInfo));
+        entityFieldsPanel.insert(otherEmployees, entityFieldsPanel.getWidgetIndex(expenseItemsInfo));
+        entityFieldsPanel.insert(cardHolderName, entityFieldsPanel.getWidgetIndex(expenseItemsInfo));
+        entityFieldsPanel.insert(expensesMadeBy, entityFieldsPanel.getWidgetIndex(expenseItemsInfo));
+        entityFieldsPanel.insert(payrollFileNumber, entityFieldsPanel.getWidgetIndex(expenseItemsInfo));
+        entityFieldsPanel.insert(submittedDate, entityFieldsPanel.getWidgetIndex(expenseItemsInfo));
         alignFields();
     }
 
@@ -476,7 +477,7 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
             onChange();
             createPanel = new CreateExpenseItemPanel(this, isGeneralExpenseItem());
             updateItemPanels.add(createPanel);
-            entityFieldsPanel.add(createPanel);
+            entityFieldsPanel.insert(createPanel, entityFieldsPanel.getWidgetIndex(addItemL));
             createPanel.expensePaymentMode.listBox.addBlurHandler(this);
             createPanel.amount.getTextbox().addValueChangeHandler(this);
             onChange();
@@ -564,6 +565,41 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
             totalCorporateCardExpenses.setValue(finalExpenses.negate(), readOnly);
             totalExpenses.setValue(finalExpenses.negate(), readOnly);
         }
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
+        startDate = (DateField) fields.get("startDate");
+        endDate = (DateField) fields.get("endDate");
+        if (startDate.getDate() != null && endDate.getDate() != null && startDate.getDate().after(endDate.getDate())) {
+            endDate.setMessage("End Date must be equal to or after Start Date");
+            return false;
+        }
+        if (startDate.getDate() != null && endDate.getDate() != null && startDate.getDate().after(new Date())) {
+            startDate.setMessage("Start Date must be equal to or before Current Date");
+            return false;
+        }
+        if (startDate.getDate() != null && endDate.getDate() != null && endDate.getDate().after(new Date())) {
+            endDate.setMessage("End Date must be equal to or before Current Date");
+            return false;
+        }
+        if (expenseItemPanels.size() > 0) {
+            DateField expenseDate = null;
+            for (int i = 0; i < expenseItemPanels.size(); i++) {
+                CreateExpenseItemPanel itemPanel = expenseItemPanels.get(i);
+                expenseDate = (DateField) itemPanel.fields.get("expenseDate");
+                if (expenseDate.getDate() != null && (expenseDate.getDate().before(startDate.getDate()) || expenseDate.getDate().after(endDate.getDate()))) {
+                    itemPanel.fields.get("expenseDate").setMessage("Expense Item Date must be equal to or between Expense Start Date and End Date");
+                    return false;
+                }
+            }
+        }
+        if (confrmCB.getValue() == false) {
+            Window.alert("Please Check Acknowledge Check Box before you submit the expense report");
+            return false;
+        }
+        return valid;
     }
 
     @Override
