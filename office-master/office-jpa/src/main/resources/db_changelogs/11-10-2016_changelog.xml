@@ -11,7 +11,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     
-    <changeSet author="rlukalapu" id="add-fields-to-expensereport">
+    <changeSet author="rlukalapu" id="add-card-expense-fields">
         <preConditions onFail="WARN"> 
         </preConditions>
         <addColumn catalogName="office"
