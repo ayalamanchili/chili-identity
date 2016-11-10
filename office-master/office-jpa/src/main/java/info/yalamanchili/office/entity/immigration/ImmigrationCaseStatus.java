@@ -14,7 +14,11 @@ package info.yalamanchili.office.entity.immigration;
  */
 public enum ImmigrationCaseStatus {
     New,
+    Pending_Questionnaire_Submission,
+    Pending_Questionnaire_Verification,
     InProgress,
     Approved,
-    Rejected;
+    Request_For_Evidence,
+    Rejected,
+    Cancelled;
 }
