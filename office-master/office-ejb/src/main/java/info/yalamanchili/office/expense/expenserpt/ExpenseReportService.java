@@ -48,6 +48,7 @@ import info.yalamanchili.office.entity.profile.Employee;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -156,7 +157,10 @@ public class ExpenseReportService {
         }
         vars.put("startDate", sdf.format(entity.getStartDate()));
         vars.put("endDate", sdf.format(entity.getEndDate()));
+        vars.put("expenseType", entity.getExpenseFormType().name().substring(0, 1).toUpperCase().concat((entity.getExpenseFormType().name().substring(1)).toLowerCase().replace("_", " ")));
         vars.put("entityId", entity.getId());
+        vars.put("totalExpenses", entity.getTotalExpenses().setScale(2, RoundingMode.HALF_EVEN));
+        System.out.println("the total amount issss:" + entity.getTotalExpenses().setScale(2, RoundingMode.UP));
         return OfficeBPMService.instance().startProcess("expense_report_process", vars);
     }
 
