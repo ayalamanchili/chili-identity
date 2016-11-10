@@ -9,8 +9,11 @@ package info.yalamanchili.office.client.expenseitem;
 
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
@@ -37,7 +40,7 @@ import java.math.BigDecimal;
  *
  * @author Prasanthi.p
  */
-public class UpdateExpenseItemPanel extends TUpdateComposite implements BlurHandler {
+public class UpdateExpenseItemPanel extends TUpdateComposite implements BlurHandler, ChangeHandler {
 
     SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true);
     public EnumField expensePaymentMode;
@@ -58,7 +61,6 @@ public class UpdateExpenseItemPanel extends TUpdateComposite implements BlurHand
 
     @Override
     public JSONObject populateEntityFromFields() {
-        entity.put(CATEGORY, selectCategoryWidgetF.getSelectedObject());
         assignEntityValueFromField(EXPENSE_PAYMENT_MODE, entity);
         assignEntityValueFromField(EXPENSE_DATE, entity);
         assignEntityValueFromField(PURPOSE, entity);
@@ -74,21 +76,24 @@ public class UpdateExpenseItemPanel extends TUpdateComposite implements BlurHand
     protected void updateButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        postUpdateSuccess(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                postUpdateSuccess(arg0);
+            }
+        });
     }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity(CATEGORY, entity, null);
+        OfficeWelcome.logger.info("populate fields from entity .... " + entity);
+        if (entity.containsKey("category") == true && !entity.get("category").isObject().get("name").isString().stringValue().equals("General")) {
+            assignFieldValueFromEntity(CATEGORY, entity, null);
+        }
         assignFieldValueFromEntity(EXPENSE_PAYMENT_MODE, entity, DataType.ENUM_FIELD);
         if (isGeneralExpenseItem) {
             assignFieldValueFromEntity(DESCRIPTION, entity, DataType.STRING_FIELD);
@@ -123,7 +128,10 @@ public class UpdateExpenseItemPanel extends TUpdateComposite implements BlurHand
         }
         configureLabel(expenseMiles.getLabel());
         configureLabel(amount.getLabel());
-        configureLabel(selectCategoryWidgetF.getLabel());
+        if (!isGeneralExpenseItem) {
+            configureLabel(selectCategoryWidgetF.getLabel());
+        }
+        expenseMiles.setVisible(false);
     }
 
     protected void configureLabel(Label l) {
@@ -137,7 +145,9 @@ public class UpdateExpenseItemPanel extends TUpdateComposite implements BlurHand
         expenseDate = (DateField) fields.get(EXPENSE_DATE);
         addField(PURPOSE, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
         purpose = (StringField) fields.get(PURPOSE);
-        addDropDown(CATEGORY, selectCategoryWidgetF, 1, 3);
+        if (!isGeneralExpenseItem) {
+            addDropDown(CATEGORY, selectCategoryWidgetF, 1, 3);
+        }
         addField(EXPENSE_MILES, false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 1, 4);
         expenseMiles = (CurrencyField) fields.get(EXPENSE_MILES);
         addField(AMOUNT, false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 1, 5);
@@ -181,16 +191,28 @@ public class UpdateExpenseItemPanel extends TUpdateComposite implements BlurHand
             } else if (Window.confirm("Are you sure to delete the expense item?")) {
                 HttpService.HttpServiceAsync.instance().doPut(getDeleteURI(), entity.toString(),
                         OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-                            @Override
-                            public void onResponse(String arg0) {
-                                new ResponseStatusWidget().show("Successfully Deleted ExpenseItem Information");
-                                TabPanel.instance().expensePanel.entityPanel.clear();
-                                TabPanel.instance().expensePanel.entityPanel.add(new UpdateExpenseReportPanel(parentId));
-                            }
-                        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        new ResponseStatusWidget().show("Successfully Deleted ExpenseItem Information");
+                        TabPanel.instance().expensePanel.entityPanel.clear();
+                        TabPanel.instance().expensePanel.entityPanel.add(new UpdateExpenseReportPanel(parentId));
+                    }
+                });
             }
         }
         super.onClick(event);
+    }
+
+    @Override
+    public void onChange(ChangeEvent event) {
+        if (event.getSource().equals(selectCategoryWidgetF.getListBox())) {
+            if (selectCategoryWidgetF.getSelectedObject().get("value").isString().stringValue().trim().equals("Personal Auto")) {
+                expenseMiles.setVisible(true);
+            } else {
+                expenseMiles.setVisible(false);
+            }
+        }
+
     }
 
 }
