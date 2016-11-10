@@ -95,9 +95,9 @@ public class ExpenseReport extends AbstractEntity {
     @ForeignKey(name = "FK_EMP_COMPANY_EXP_RPTS")
     private Company company;
 
-    @ManyToMany
+    @ManyToOne(cascade = CascadeType.MERGE)
     @ForeignKey(name = "FK_Other_Emps_Exp_Rprt")
-    protected Set<Employee> otherEmployees;
+    protected Employee otherEmployees;
 
     private String approvedByManager;
 
@@ -441,15 +441,11 @@ public class ExpenseReport extends AbstractEntity {
         this.expenseReportNumber = expenseReportNumber;
     }
 
-    @XmlTransient
-    public Set<Employee> getOtherEmployees() {
-        if (this.otherEmployees == null) {
-            this.otherEmployees = new HashSet();
-        }
+    public Employee getOtherEmployees() {
         return otherEmployees;
     }
 
-    public void setOtherEmployees(Set<Employee> otherEmployees) {
+    public void setOtherEmployees(Employee otherEmployees) {
         this.otherEmployees = otherEmployees;
     }
 
