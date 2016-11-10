@@ -53,9 +53,9 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.expenseitem.CreateExpenseItemPanel;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
-import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -73,8 +73,10 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
     public List<CreateExpenseItemPanel> expenseItemPanels = new ArrayList();
     SuggestBox approvalManager = new SuggestBox(OfficeWelcome.constants2, "approvalManager", "ExpenseReport", false, false, Alignment.HORIZONTAL);
+    SuggestBox otherEmployees = new SuggestBox(OfficeWelcome.constants2, "otherEmployees", "ExpenseReport", false, false, Alignment.HORIZONTAL);
     BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants2, "Submit", "ExpenseReport", false, false, Alignment.HORIZONTAL);
     HTML tac = new HTML(" I " + OfficeWelcome.instance().getCurrentUserName() + " Acknowledge that all information in my expenses report is accurate and true \n");
+    HTML tac1 = new HTML("\n Note: If you would like to specify other 'Approver' instead of 'Report_To' manager, please mention in the below field \n");
     boolean isGeneralExpenseItem = false;
     CheckBox confrmCB = new CheckBox();
     HorizontalPanel hPanel = new HorizontalPanel();
@@ -119,13 +121,6 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             + "\n"
             + "<ul>\n"
             + "</ul>");
-    protected static HTML approver = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
-            + "<strong style=\"color:#555555\">Note: If you would like to specify other 'Approver' instead of 'Report_To' manager, please mention in the below field.</strong></p>\n"
-            + "\n"
-            + "<ul>\n"
-            + "</ul>");
-
     HTML emptyLine = new HTML("<br/>");
 
     EnumField expenseFormType;
@@ -168,14 +163,14 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     @Override
     protected void addWidgets() {
         addEnumField(EXPENSE_FORM_TYPE, false, true, ExpenseFormType.names(), Alignment.HORIZONTAL);
-        entityFieldsPanel.add(approver);
         entityFieldsPanel.add(approvalManager);
+        entityFieldsPanel.add(tac1);
         entityFieldsPanel.add(generalInfo);
         expenseFormType = (EnumField) fields.get(EXPENSE_FORM_TYPE);
         entityFieldsPanel.add(travelInfo);
         entityFieldsPanel.add(foryourself);
         entityFieldsPanel.add(forsomeone);
-        addDropDown(OTHEREMPLOYEES, otherEmployees);
+        entityFieldsPanel.add(otherEmployees);
         addField(NAMEOFREPORT, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         nameOfReport = (StringField) fields.get(NAMEOFREPORT);
         addField(LOCATION, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -239,19 +234,19 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         expenseItemsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         receiptsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         Acknowledgement.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-        approver.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         approvalManager.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH + 5, Style.Unit.PX);
+        otherEmployees.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH + 5, Style.Unit.PX);
         setButtonText("Submit");
         approvalManager.setVisible(false);
-        approver.setVisible(false);
-        otherDepartment.setVisible(false);
         otherEmployees.setVisible(false);
+        otherDepartment.setVisible(false);
         HttpService.HttpServiceAsync.instance().doGet(getCorpEmpIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
                 Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
                 if (values != null) {
                     approvalManager.loadData(values);
+                    otherEmployees.loadData(values);
                 }
             }
         });
@@ -268,13 +263,6 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         totalCorporateCardExpenses.setValue(BigDecimal.ZERO.negate(), readOnly);
         totalExpenses.setValue(BigDecimal.ZERO.negate(), readOnly);
     }
-
-    SelectEmployeeWidget otherEmployees = new SelectEmployeeWidget(OTHEREMPLOYEES, false, false, Alignment.HORIZONTAL) {
-        @Override
-        public boolean enableMultiSelect() {
-            return true;
-        }
-    };
 
     @Override
     protected void addListeners() {
@@ -318,7 +306,9 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         assignEntityValueFromField(COMPANY, entity);
         entity.put("foryourself", new JSONString(foryourself.getValue().toString()));
         entity.put("forsomeone", new JSONString(forsomeone.getValue().toString()));
-        entity.put(OTHEREMPLOYEES, otherEmployees.getSelectedObjects());
+        if (otherEmployees.getSelectedObject() != null) {
+            entity.put("otherEmployees", otherEmployees.getSelectedObject());
+        }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_RECRUITER)) {
             if (fields.containsKey("company") && selectCompanyWidget.getSelectedObject() != null) {
                 JSONObject company = selectCompanyWidget.getSelectedObject();
@@ -366,17 +356,17 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        logger.info(arg0.getMessage());
-                        handleErrorResponse(arg0);
-                    }
+            @Override
+            public void onFailure(Throwable arg0) {
+                logger.info(arg0.getMessage());
+                handleErrorResponse(arg0);
+            }
 
-                    @Override
-                    public void onSuccess(String arg0) {
-                        uploadReceipts(arg0);
-                    }
-                });
+            @Override
+            public void onSuccess(String arg0) {
+                uploadReceipts(arg0);
+            }
+        });
     }
 
     @Override
@@ -434,6 +424,19 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         }
     }
 
+    private void removeItems() {
+        if (expenseItemPanels.size() > 0) {
+            for (int i = 0; i <= expenseItemPanels.size() - 1; i++) {
+                CreateExpenseItemPanel itemPanel = expenseItemPanels.get(i);
+                itemPanel.removeFromParent();
+                expenseItemPanels.remove(itemPanel);
+            }
+            CreateExpenseItemPanel itemPanel = expenseItemPanels.get(expenseItemPanels.size() - 1);
+            itemPanel.removeFromParent();
+            expenseItemPanels.remove(itemPanel);
+        }
+    }
+
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Expense Form Successfully Created");
@@ -445,9 +448,11 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         projectName.setVisible(true);
         projectNumber.setVisible(true);
         location.setVisible(true);
-        approvalManager.setVisible(false);
-        generalInfo.setVisible(false);
         if (render == true) {
+            approvalManager.setVisible(false);
+            generalInfo.setVisible(false);
+            travelInfo.setVisible(true);
+            entityFieldsPanel.remove(tac1);
             entityFieldsPanel.remove(foryourself);
             entityFieldsPanel.remove(forsomeone);
             entityFieldsPanel.remove(otherEmployees);
@@ -459,6 +464,18 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             if (fields.containsKey(SUBMITTEDDATE)) {
                 submittedDate.setVisible(false);
             }
+        } else {
+            approvalManager.setVisible(true);
+            generalInfo.setVisible(true);
+            travelInfo.setVisible(false);
+            entityFieldsPanel.insert(tac1, entityFieldsPanel.getWidgetIndex(approvalManager));
+            entityFieldsPanel.insert(foryourself, entityFieldsPanel.getWidgetIndex(generalInfo) + 1);
+            entityFieldsPanel.insert(forsomeone, entityFieldsPanel.getWidgetIndex(foryourself) + 1);
+            entityFieldsPanel.insert(otherEmployees, entityFieldsPanel.getWidgetIndex(forsomeone) + 1);
+            entityFieldsPanel.insert(cardHolderName, entityFieldsPanel.getWidgetIndex(destination) + 1);
+            entityFieldsPanel.insert(expensesMadeBy, entityFieldsPanel.getWidgetIndex(cardHolderName) + 1);
+            payrollFileNumber.setVisible(true);
+            submittedDate.setVisible(true);
         }
     }
 
@@ -468,14 +485,15 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             if (expenseFormType.getValue().equals(ExpenseFormType.GENERAL_EXPENSE.name())) {
                 renderproject(false);
                 isGeneralExpenseItem = true;
+                addExpenseItems();
                 approvalManager.setVisible(true);
-                approver.setVisible(true);
                 generalInfo.setVisible(true);
                 travelInfo.setVisible(false);
                 entityCaptionPanel.setCaptionHTML("General Expense form");
             } else if (expenseFormType.getValue().equals(ExpenseFormType.TRAVEL_EXPENSE.name())) {
                 renderproject(true);
                 isGeneralExpenseItem = false;
+                addExpenseItems();
                 isGeneralExpenseItem = false;
                 travelInfo.setVisible(true);
                 entityCaptionPanel.setCaptionHTML("Travel Expense form");
@@ -581,6 +599,25 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
             endDate.setMessage("End Date must be equal to or after Start Date");
             return false;
         }
+        if (startDate.getDate() != null && endDate.getDate() != null && startDate.getDate().after(new Date())) {
+            startDate.setMessage("Start Date must be equal to or before Current Date");
+            return false;
+        }
+        if (startDate.getDate() != null && endDate.getDate() != null && endDate.getDate().after(new Date())) {
+            endDate.setMessage("End Date must be equal to or before Current Date");
+            return false;
+        }
+        if (expenseItemPanels.size() > 0) {
+            DateField expenseDate = null;
+            for (int i = 0; i < expenseItemPanels.size(); i++) {
+                CreateExpenseItemPanel itemPanel = expenseItemPanels.get(i);
+                expenseDate = (DateField) itemPanel.fields.get("expenseDate");
+                if (expenseDate.getDate() != null && (expenseDate.getDate().before(startDate.getDate()) || expenseDate.getDate().after(endDate.getDate()))) {
+                    itemPanel.fields.get("expenseDate").setMessage("Expense Item Date must be equal to or between Expense Start Date and End Date");
+                    return false;
+                }
+            }
+        }
         if (confrmCB.getValue() == false) {
             Window.alert("Please Check Acknowledge Check Box before you submit the expense report");
             return false;
@@ -599,6 +636,17 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "expensereport/submit?submitForApproval=" + submitForApprovalF.getValue();
+    }
+
+    private void addExpenseItems() {
+        removeItems();
+        expenseItemPanels.clear();
+        CreateExpenseItemPanel panel;
+        panel = null;
+        panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem);
+        expenseItemPanels.add(panel);
+        entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(addItemL));
+        entityFieldsPanel.add(addItemL);
     }
 
     @Override
