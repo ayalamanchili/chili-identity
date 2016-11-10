@@ -14,6 +14,5 @@ package info.yalamanchili.office.entity.profile.invite;
  */
 public enum InvitationType {
     EMPLOYEE_ONBOARDING,
-    CLIENT_ONBOARDING,
-    H1B_Questionnaire;
+    CLIENT_ONBOARDING;
 }

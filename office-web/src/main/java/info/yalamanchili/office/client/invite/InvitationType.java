@@ -15,8 +15,7 @@ package info.yalamanchili.office.client.invite;
 public enum InvitationType {
     
     EMPLOYEE_ONBOARDING,
-    CLIENT_ONBOARDING,
-    H1B_Questionnaire;
+    CLIENT_ONBOARDING;
     
     public static String[] names() {
         InvitationType[] values = values();

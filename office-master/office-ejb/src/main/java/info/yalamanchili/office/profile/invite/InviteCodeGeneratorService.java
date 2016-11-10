@@ -19,10 +19,8 @@ import info.yalamanchili.office.dao.invite.InviteTypeDao;
 import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dto.onboarding.InitiateOnBoardingDto;
 import info.yalamanchili.office.entity.Company;
-import info.yalamanchili.office.entity.immigration.ImmigrationCase;
 import info.yalamanchili.office.entity.profile.invite.InvitationType;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
-import info.yalamanchili.office.entity.profile.invite.InviteType;
 import info.yalamanchili.office.jms.MessagingService;
 import java.util.Date;
 import java.util.HashMap;
@@ -59,35 +57,12 @@ public class InviteCodeGeneratorService {
         return generate(code, sendEmail, dto);
     }
 
-    public InviteCode generate(InvitationType type, String email, Date vaidDate, Date expiryDate, boolean sendEmail, ImmigrationCase immigrationCase) {
-        InviteCode code = new InviteCode();
-        if (InviteTypeDao.instance().find(type) == null) {
-            InviteType inviteType = new InviteType();
-            inviteType.setInvitationType(type);
-            inviteType.setDescription(type.name());
-            InviteTypeDao.instance().save(inviteType);
-            code.setInviteType(inviteType);
-        } else {
-            code.setInviteType(InviteTypeDao.instance().find(type));
-        }
-        code.setValidFromDate(vaidDate);
-        code.setExpiryDate(expiryDate);
-        code.setEmail(email);
-        return generate(code, sendEmail, immigrationCase);
-    }
-
     public InviteCode generate(InviteCode entity, boolean sendEmail, InitiateOnBoardingDto dto) {
         entity.setInvitationCode(uuidGen());
         inviteCodeDao.save(entity);
         if (sendEmail) {
             sendInviteCodeEmail(entity, dto);
         }
-        return entity;
-    }
-
-    public InviteCode generate(InviteCode entity, boolean sendEmail, ImmigrationCase immigrationCase) {
-        entity.setInvitationCode(uuidGen());
-        inviteCodeDao.save(entity);
         return entity;
     }
     protected final String[] ON_BOARDING_FORMS_LIST = {"W4_On_Boarding", "I9_On_Boarding", "I9_New_Version_Example"};
@@ -125,4 +100,5 @@ public class InviteCodeGeneratorService {
     public static InviteCodeGeneratorService instance() {
         return SpringContext.getBean(InviteCodeGeneratorService.class);
     }
+
 }
