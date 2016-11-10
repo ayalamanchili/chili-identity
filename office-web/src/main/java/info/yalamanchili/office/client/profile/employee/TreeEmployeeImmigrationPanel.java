@@ -15,7 +15,6 @@ import info.yalamanchili.office.client.profile.immigration.Passport.ReadAllPassp
 import info.yalamanchili.office.client.profile.immigration.i94Record.ReadAllI94RecordPanel;
 import info.yalamanchili.office.client.profile.immigration.travelhistroy.ReadAllTravelHistoryRecordPanel;
 import info.yalamanchili.office.client.profile.immigration.educationrecord.ReadAllEducationRecordPanel;
-import info.yalamanchili.office.client.profile.immigration.immigrationcase.ReadAllImmigrationCasePanel;
 import java.util.logging.Logger;
 
 /**
@@ -29,9 +28,6 @@ public class TreeEmployeeImmigrationPanel extends TreePanelComposite {
     protected static final String TRAVALHISTORY_NODE = "travelhistory-immigration";
     protected static final String I94Record_NODE = "i94Rirecord-immigration";
     protected static final String EducationRecord_NODE = "educationrecord-immigration";
-    protected static final String IMMIGRATION_CASE_NODE = "immigrationCase-immigration";
-    //  protected static final String LCA_NODE = "lca-immigration";
-    //  protected static final String PETITION_NODE = "petition-immigration";
     protected String employeeId;
 
     public TreeEmployeeImmigrationPanel(String empId) {
@@ -49,13 +45,10 @@ public class TreeEmployeeImmigrationPanel extends TreePanelComposite {
 
     @Override
     protected void addWidgets() {
-        addFirstChildLink("Immigration Case", IMMIGRATION_CASE_NODE);
         addFirstChildLink("Passport", PASSPORT_NODE);
         addFirstChildLink("TravelHistory", TRAVALHISTORY_NODE);
         addFirstChildLink("I94Record", I94Record_NODE);
         addFirstChildLink("EducationRecord", EducationRecord_NODE);  
-        //     addFirstChildLink("LCA", LCA_NODE);
-        //    addFirstChildLink("Petition", PETITION_NODE);
     }
 
     @Override
@@ -75,19 +68,7 @@ public class TreeEmployeeImmigrationPanel extends TreePanelComposite {
         if (EducationRecord_NODE.equals(entityNodeKey)) {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEducationRecordPanel(employeeId));
-        }            
-        if (IMMIGRATION_CASE_NODE.equals(entityNodeKey)) {
-            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllImmigrationCasePanel(employeeId));
-        }
-//        if (LCA_NODE.equals(entityNodeKey)) {
-//            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-//            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllLCAPanel(employeeId));
-//        }
-//        if (PETITION_NODE.equals(entityNodeKey)) {
-//            TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-//            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllEmployeePetitionsPanel(employeeId));
-//        }
+        } 
     }
 
     @Override
@@ -97,5 +78,4 @@ public class TreeEmployeeImmigrationPanel extends TreePanelComposite {
     @Override
     public void showEntity() {
     }
-
 }
