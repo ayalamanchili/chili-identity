@@ -27,6 +27,7 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.FormatUtils;
 import info.chili.gwt.utils.JSONUtils;
+import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
@@ -34,7 +35,6 @@ import info.yalamanchili.office.client.expenseitem.ReadExpenseItemPanel;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.home.tasks.ReadAllTasks;
-import info.yalamanchili.office.client.profile.employee.SelectEmployeeWidget;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -49,24 +49,13 @@ public class ReadExpenseReportPanel extends ReadComposite {
     private static Logger logger = Logger.getLogger(ReadExpenseItemPanel.class.getName());
     protected List<ReadExpenseItemPanel> readItemsPanels = new ArrayList<ReadExpenseItemPanel>();
     protected HorizontalPanel attachmentsPanel = new HorizontalPanel();
+    SuggestBox otherEmployees = new SuggestBox(OfficeWelcome.constants2, "otherEmployees", "ExpenseReport", true, true, Alignment.HORIZONTAL);
     protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, false, Alignment.HORIZONTAL);
     CurrencyField totalPersonalCardExpenses = new CurrencyField(OfficeWelcome.constants2, "totalPersonalCardExpenses", "ExpenseReport", true, true, Alignment.HORIZONTAL);
     CurrencyField totalCorporateCardExpenses = new CurrencyField(OfficeWelcome.constants2, "totalCorporateCardExpenses", "ExpenseReport", true, true, Alignment.HORIZONTAL);
     CurrencyField totalExpenses = new CurrencyField(OfficeWelcome.constants2, "totalExpenses", "ExpenseReport", true, true, Alignment.HORIZONTAL);
 
     FormPanel formPanel = new FormPanel();
-//    protected static HTML travelInfo = new HTML("\n"
-//            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
-//            + "<strong style=\"color:#555555\">Travel Expense Information</strong></p>\n"
-//            + "\n"
-//            + "<ul>\n"
-//            + "</ul>");
-//    protected static HTML generalInfo = new HTML("\n"
-//            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
-//            + "<strong style=\"color:#555555\">General Expense Information</strong></p>\n"
-//            + "\n"
-//            + "<ul>\n"
-//            + "</ul>");
     protected static HTML expenseInfo = new HTML("\n"
             + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
             + "<strong style=\"color:#555555\">Expense Details</strong></p>\n"
@@ -86,24 +75,17 @@ public class ReadExpenseReportPanel extends ReadComposite {
     StringField location;
     StringField destination;
     StringField nameOfReport;
-    StringField cardHolderName = new StringField(OfficeWelcome.constants2, CARDHOLDERNAME, "ExpenseReport", true, true, Alignment.HORIZONTAL);
-    StringField expensesMadeBy = new StringField(OfficeWelcome.constants2, EXPENSESMADEBY, "ExpenseReport", true, true, Alignment.HORIZONTAL);
+    StringField cardHolderName = new StringField(OfficeWelcome.constants2, CARDHOLDERNAME, "ExpenseReport", true, false, Alignment.HORIZONTAL);
+    StringField expensesMadeBy = new StringField(OfficeWelcome.constants2, EXPENSESMADEBY, "ExpenseReport", true, false, Alignment.HORIZONTAL);
     DateField startDate;
     DateField endDate;
     StringField projectName;
     StringField projectNumber;
     EnumField expenseReimbursePaymentMode;
-    DateField submittedDate = new DateField(OfficeWelcome.constants2, SUBMITTEDDATE, "ExpenseReport", true, true, Alignment.HORIZONTAL);
-    IntegerField payrollFileNumber = new IntegerField(OfficeWelcome.constants2, PAYROLLFILENUMBER, "ExpenseReport", true, true, Alignment.HORIZONTAL);
+    DateField submittedDate = new DateField(OfficeWelcome.constants2, SUBMITTEDDATE, "ExpenseReport", true, false, Alignment.HORIZONTAL);
+    IntegerField payrollFileNumber = new IntegerField(OfficeWelcome.constants2, PAYROLLFILENUMBER, "ExpenseReport", true, false, Alignment.HORIZONTAL);
     EnumField departmentType;
     StringField otherDepartment;
-
-    SelectEmployeeWidget otherEmployees = new SelectEmployeeWidget(OTHEREMPLOYEES, true, true, Alignment.HORIZONTAL) {
-        @Override
-        public boolean enableMultiSelect() {
-            return true;
-        }
-    };
 
     public static ReadExpenseReportPanel instance() {
         return instance;
@@ -125,14 +107,6 @@ public class ReadExpenseReportPanel extends ReadComposite {
     protected void addWidgets() {
         addEnumField(EXPENSE_FORM_TYPE, true, false, ExpenseFormType.names(), Alignment.HORIZONTAL);
         expenseFormType = (EnumField) fields.get(EXPENSE_FORM_TYPE);
-//        entityFieldsPanel.add(generalInfo);
-//        entityFieldsPanel.add(travelInfo);
-        SelectEmployeeWidget otherEmployees = new SelectEmployeeWidget(OTHEREMPLOYEES, true, false, Alignment.HORIZONTAL) {
-            @Override
-            public boolean enableMultiSelect() {
-                return true;
-            }
-        };
         otherEmployees.setVisible(true);
         addField(NAMEOFREPORT, true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         nameOfReport = (StringField) fields.get(NAMEOFREPORT);
@@ -181,8 +155,6 @@ public class ReadExpenseReportPanel extends ReadComposite {
         projectName.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
         projectNumber.getLabel().getElement().getStyle().setWidth(DEFAULT_DIFF_FIELD_WIDTH, Style.Unit.PX);
         expenseReimbursePaymentMode.getLabel().getElement().getStyle().setWidth(DEFAULT_FIELD_WIDTH, Style.Unit.PX);
-//        generalInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-//        travelInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         expenseReceiptInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         otherDepartment.setVisible(true);
@@ -196,17 +168,17 @@ public class ReadExpenseReportPanel extends ReadComposite {
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        if (ExpenseFormType.GENERAL_EXPENSE.name().equals(JSONUtils.toString(getEntity(), EXPENSE_FORM_TYPE))) {
-                            addGeneralExpenseFields();
-                        }
-                        logger.info(entity.toString());
-                        populateFieldsFromEntity(entity);
-                        populateComments();
-                    }
-                });
+            @Override
+            public void onResponse(String response) {
+                entity = (JSONObject) JSONParser.parseLenient(response);
+                if (ExpenseFormType.GENERAL_EXPENSE.name().equals(JSONUtils.toString(getEntity(), EXPENSE_FORM_TYPE))) {
+                    addGeneralExpenseFields();
+                }
+                logger.info(entity.toString());
+                populateFieldsFromEntity(entity);
+                populateComments();
+            }
+        });
     }
 
     @Override
@@ -241,12 +213,8 @@ public class ReadExpenseReportPanel extends ReadComposite {
         }
         if (ExpenseFormType.GENERAL_EXPENSE.name().equals(JSONUtils.toString(entity, "expenseFormType"))) {
             if (entity.containsKey("otherEmployees")) {
-                JSONArray otherEmps = JSONUtils.toJSONArray(entity.get("otherEmployees"));
-                if (otherEmps.size() > 0) {
-                    if (otherEmps != null) {
-                        otherEmployees.setSelectedValues(entity.get("otherEmployees").isArray());
-                    }
-                }
+                JSONObject emp = (JSONObject) entity.get("otherEmployees");
+                otherEmployees.setValue(emp.get("firstName").isString().stringValue() + " " + emp.get("lastName").isString().stringValue());
             }
             if (entity.containsKey("cardHolderName")) {
                 cardHolderName.setValue(entity.get("cardHolderName").isString().stringValue());
