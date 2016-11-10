@@ -18,7 +18,6 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.onboarding.EmployeeOnboardingPanel;
-import info.yalamanchili.office.client.profile.employee.H1bQuestionnaireSentWidget;
 import info.yalamanchili.office.client.resources.OfficeImages;
 import java.util.List;
 
