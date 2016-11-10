@@ -62,16 +62,14 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
 
     @GET
     @Path("/{empId}/{start}/{limit}")
-    public ImmigrationCaseTable table(@PathParam("empId") long empId,@PathParam("start") int start, @PathParam("limit") int limit) {
-        
-        Employee emp = EmployeeDao.instance().findById(empId);        
+    public ImmigrationCaseTable table(@PathParam("empId") long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
+        Employee emp = EmployeeDao.instance().findById(empId);
         ImmigrationCaseTable tableObj = new ImmigrationCaseTable();
-        tableObj.setEntities(immigrationCaseDao.instance().getImmigrationCases(emp,start, limit));
+        tableObj.setEntities(immigrationCaseDao.instance().getImmigrationCases(emp, start, limit));
         tableObj.setSize(immigrationCaseDao.instance().getImmigrationCaseSize(emp, start, limit));
         return tableObj;
     }
-    
-    
+
     @XmlRootElement
     @XmlType
     public static class ImmigrationCaseTable implements java.io.Serializable {
