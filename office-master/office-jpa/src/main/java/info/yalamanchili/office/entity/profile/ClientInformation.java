@@ -81,7 +81,7 @@ public class ClientInformation extends AbstractEntity {
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull(groups = SubmitChecks.class)
     protected Date endDate;
-    
+    @Transient
     protected String gapPeriod;
 
     /**
@@ -120,7 +120,7 @@ public class ClientInformation extends AbstractEntity {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "clientinformation_client_apcontacts")
     @ForeignKey(name = "FK_ClientAPContacts_ClientInformations")
-    @Size(min = 1 ,groups = VendorChecks.class, message = "may not be null")
+    @Size(min = 1, groups = VendorChecks.class, message = "may not be null")
     protected Set<Contact> clientAPContacts;
     /**
      * Client Location
@@ -129,22 +129,22 @@ public class ClientInformation extends AbstractEntity {
     @ForeignKey(name = "FK_ClientLocation_ClientInformations")
     @NotNull(groups = SubmitChecks.class)
     protected Address clientLocation;
-    
+
     /**
      * clientFeeApplicable
      */
     protected Boolean clientFeeApplicable;
-        
+
     /**
      * clientFee
      */
     protected Float clientFee;
-    
+
     /**
      * directClient
      */
     protected Boolean directClient;
-    
+
     /**
      * Vendor
      */
@@ -189,7 +189,7 @@ public class ClientInformation extends AbstractEntity {
      * PayRate
      */
     protected BigDecimal payRate;
-    
+
     protected Float payRatePercentage;
     /**
      * BillingRate
@@ -200,7 +200,7 @@ public class ClientInformation extends AbstractEntity {
      * OverTime PayRate
      */
     protected BigDecimal overTimePayRate;
-    
+
     protected Float overTimePayRatePercentage;
     /**
      * over time billing rate
@@ -394,7 +394,7 @@ public class ClientInformation extends AbstractEntity {
 
     @OneToMany(mappedBy = "clientInformation", fetch = FetchType.EAGER)
     protected List<Invoice> invoice;
-    
+
     protected Boolean active;
 
     public Boolean isIsEndDateConfirmed() {
@@ -440,7 +440,7 @@ public class ClientInformation extends AbstractEntity {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-       
+
     public String getGapPeriod() {
         return gapPeriod;
     }
@@ -520,7 +520,7 @@ public class ClientInformation extends AbstractEntity {
     public void setDirectClient(Boolean directClient) {
         this.directClient = directClient;
     }
-    
+
     public Vendor getVendor() {
         return vendor;
     }
@@ -568,31 +568,35 @@ public class ClientInformation extends AbstractEntity {
     public void setPayRate(BigDecimal payRate) {
         this.payRate = payRate;
     }
-/**
+
+    /**
      * @return the payRatePercentage
      */
     public Float getPayRatePercentage() {
         return payRatePercentage;
     }
+
     /**
      * @param payRatePercentage the payRatePercentage to set
      */
     public void setPayRatePercentage(Float payRatePercentage) {
         this.payRatePercentage = payRatePercentage;
     }
+
     /**
      * @return the overTimePayRatePercentage
      */
     public Float getOverTimePayRatePercentage() {
         return overTimePayRatePercentage;
     }
+
     /**
      * @param overTimePayRatePercentage the overTimePayRatePercentage to set
      */
     public void setOverTimePayRatePercentage(Float overTimePayRatePercentage) {
         this.overTimePayRatePercentage = overTimePayRatePercentage;
     }
-    
+
     public BigDecimal getBillingRate() {
         return billingRate;
     }
@@ -1071,7 +1075,7 @@ public class ClientInformation extends AbstractEntity {
     public void setActive(Boolean active) {
         this.active = active;
     }
-    
+
     @Override
     public String describe() {
         StringBuilder description = new StringBuilder("\n");
@@ -1092,12 +1096,12 @@ public class ClientInformation extends AbstractEntity {
     public interface SubmitChecks {
 
     }
-    
+
     public interface SubcontractorChecks {
-        
+
     }
-    
+
     public interface VendorChecks {
-        
+
     }
 }
