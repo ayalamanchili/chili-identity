@@ -21,6 +21,7 @@ import info.chili.gwt.fields.FloatField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 import java.util.logging.Logger;
@@ -76,6 +77,10 @@ public class UpdateVendorsPanel extends UpdateComposite {
                     }
                 });
     }
+    
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.client.Vendor"));
+    }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
@@ -94,6 +99,7 @@ public class UpdateVendorsPanel extends UpdateComposite {
         assignFieldValueFromEntity("vendorType", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("coiEndDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("vendorStatus", entity, DataType.ENUM_FIELD);
+        populateComments();
     }
 
     @Override

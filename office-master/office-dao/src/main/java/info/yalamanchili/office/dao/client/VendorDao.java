@@ -9,6 +9,8 @@ package info.yalamanchili.office.dao.client;
 
 import info.chili.spring.SpringContext;
 import info.chili.dao.CRUDDao;
+import info.chili.jpa.QueryUtils;
+import info.yalamanchili.office.entity.client.Client;
 import info.yalamanchili.office.entity.client.Vendor;
 import info.yalamanchili.office.entity.profile.BillingRate;
 import info.yalamanchili.office.entity.profile.ClientInformation;
@@ -17,6 +19,7 @@ import info.yalamanchili.office.entity.profile.EmployeeType;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -25,6 +28,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -134,5 +138,11 @@ public class VendorDao extends CRUDDao<Vendor> {
         reportQueryBuilder.append("from ").append(Vendor.class.getCanonicalName()).append(" where ");
         reportQueryBuilder.append("msaExpDate BETWEEN :startDateParam AND :endDateParam");
         return reportQueryBuilder.toString();
+    }
+    
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Override
+    public Map<String, String> getEntityStringMapByParams(int start, int limit, String... params) {
+        return QueryUtils.getEntityStringMapByParams(getEntityManager(), QueryUtils.getListBoxResultsQueryString(Vendor.class.getCanonicalName(), params) + " where vendorStatus='ACTIVE' ", start, limit, params);
     }
 }

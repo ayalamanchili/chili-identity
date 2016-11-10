@@ -23,6 +23,7 @@ import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.admin.vendor.ClientStatus;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
 
 /**
@@ -76,6 +77,10 @@ public class UpdateClientPanel extends UpdateComposite {
         });
     }
 
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.client.Client"));
+    }
+    
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         assignFieldValueFromEntity("name", entity, DataType.STRING_FIELD);
@@ -93,6 +98,7 @@ public class UpdateClientPanel extends UpdateComposite {
         assignFieldValueFromEntity("clientInvDeliveryMethod", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("terminationNoticePeriod", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("clientStatus", entity, DataType.ENUM_FIELD);
+        populateComments();
     }
 
     @Override
