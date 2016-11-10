@@ -7,8 +7,12 @@
  */
 package info.yalamanchili.office.client.admin.client;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlowPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ResponseStatusWidget;
@@ -20,6 +24,7 @@ import info.chili.gwt.crud.CreateComposite;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.GenericPopup;
 import java.util.logging.Logger;
 
 /**
@@ -51,12 +56,12 @@ public class ReadAllClientsPanel extends CRUDReadAllComposite {
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getclientsURL(parentId, start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String result) {
-                        logger.info(result);
-                        postFetchTable(result);
-                    }
-                });
+            @Override
+            public void onResponse(String result) {
+                logger.info(result);
+                postFetchTable(result);
+            }
+        });
     }
 
     public String getclientsURL(String employeeId, Integer start, String limit) {
@@ -117,11 +122,11 @@ public class ReadAllClientsPanel extends CRUDReadAllComposite {
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-                    @Override
-                    public void onResponse(String arg0) {
-                        postDeleteSuccess();
-                    }
-                });
+            @Override
+            public void onResponse(String arg0) {
+                postDeleteSuccess();
+            }
+        });
     }
 
     protected String getDeleteURL(String entityId) {
@@ -157,5 +162,38 @@ public class ReadAllClientsPanel extends CRUDReadAllComposite {
     protected void createButtonClicked() {
         TabPanel.instance().getAdminPanel().entityPanel.clear();
         TabPanel.instance().getAdminPanel().entityPanel.add(new CreateClientPanel(CreateComposite.CreateCompositeType.CREATE));
+    }
+
+    @Override
+    protected boolean enableDrafts() {
+        return false;
+    }
+
+    @Override
+    protected void displayDrafts() {
+        HttpService.HttpServiceAsync.instance().doGet(getDraftsUrl(), OfficeWelcome.instance().getHeaders(), false, new ALAsyncCallback<String>() {
+            @Override
+            public void onResponse(String result) {
+                FlowPanel draftP = new FlowPanel();
+                Button createDraft = new Button("Create Draft");
+                createDraft.addClickHandler((ClickEvent event) -> {
+                    CreateClientPanel createDraftPanel = new CreateClientPanel(CreateComposite.CreateCompositeType.CREATE) {
+                        @Override
+                        protected String getURI() {
+                            return OfficeWelcome.constants.root_url() + "chili/serialized-entities?className=info.yalamanchili.office.entity.client.Client";
+                        }
+                    };
+                    new GenericPopup(createDraftPanel).show();
+                });
+                draftP.add(createDraft);
+                draftP.add(new ReadAllClientsPanel(JSONUtils.toJSONArray(JSONParser.parseLenient(result))));
+                draftDP.setContent(draftP);
+            }
+        });
+
+    }
+
+    protected String getDraftsUrl() {
+        return OfficeWelcome.instance().constants.root_url() + "chili/serialized-entities/find-all?className=info.yalamanchili.office.entity.client.Client";
     }
 }
