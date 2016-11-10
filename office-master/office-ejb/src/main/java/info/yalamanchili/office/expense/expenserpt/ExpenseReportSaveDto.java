@@ -36,22 +36,9 @@ public class ExpenseReportSaveDto extends ExpenseReport {
     protected List<ExpenseItem> expenseItems;
 
     protected Set<ExpenseReceipt> expenseReceipts;
-    
+
     protected String comments;
-    
-    protected Set<Employee> otherEmployees;
 
-    @Override
-    public void setOtherEmployees(Set<Employee> otherEmployees) {
-        super.setOtherEmployees(otherEmployees); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    @XmlElement
-    public Set<Employee> getOtherEmployees() {
-        return super.getOtherEmployees(); //To change body of generated methods, choose Tools | Templates.
-    }
-    
     @Override
     @XmlElement
     @Size(min = 1, message = "{expenseitem.min.size.msg}")
