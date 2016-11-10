@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.client.profile.benefits;
 
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -16,6 +17,7 @@ import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.insurance.ReadHealthInsuranceWaiverWidget;
@@ -67,6 +69,11 @@ public class ReadBenefitPanel extends ReadComposite {
         assignFieldValueFromEntity("enrolledYear", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("enrolled", entity, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("effectiveDate", entity, DataType.DATE_FIELD);
+        JSONArray dependents = JSONUtils.toJSONArray(entity.get("healthInsuranceWaiver"));
+        populateDependents(dependents);
+    }
+
+    protected void populateDependents(JSONArray items) {
         if (entity.containsKey("healthInsuranceWaiver")) {
             entityFieldsPanel.add(new ReadHealthInsuranceWaiverWidget(entity.get("healthInsuranceWaiver").isObject()));
         }
