@@ -17,6 +17,7 @@ import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.ext.CommentDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.benefit.BenefitEnrollmentDao;
+import info.yalamanchili.office.dao.profile.insurance.HealthInsuranceWaiverDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.benefits.BenefitEnrollment;
@@ -91,17 +92,19 @@ public class BenefitEnrollmentResource extends CRUDResource<BenefitEnrollment> {
                 }
             }
         }
-        benefitEnrollment = super.save(benefitEnrollment);
         HealthInsuranceWaiver healthWaiver = new HealthInsuranceWaiver();
         if (benefitEnrollment.getHealthInsuranceWaiver() != null) {
             healthWaiver = benefitEnrollment.getHealthInsuranceWaiver();
-        }
-        if (benefitEnrollment.getHealthInsuranceWaiver() != null) {
-//            benefitEnrollment.setHealthInsuranceWaiver(BenefitEnrollmentDao.instance().save(healthWaiver));
+            HealthInsuranceWaiverDao.instance().save(healthWaiver);
         }
         String comment = "Comments:" + benefitEnrollment.getComments();
+        benefitEnrollment = super.save(benefitEnrollment);
         CommentDao.instance().addComment(comment, benefitEnrollment);
+        if (benefitEnrollment.getHealthInsuranceWaiver() != null) {
+            benefitEnrollment.setHealthInsuranceWaiver(healthWaiver);
+        }
         getDao().save(benefitEnrollment);
+        benefitEnrollment.setId(benefitEnrollment.getId());
         BenefitenrollmentService.instance().sendBenefitEnrollmentCreatedNotification(benefitEnrollment);
     }
 

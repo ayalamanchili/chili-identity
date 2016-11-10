@@ -18,9 +18,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
@@ -54,8 +54,10 @@ public class BenefitEnrollment extends AbstractEntity {
 
     @OneToOne
     @ForeignKey(name = "FK_HLTH_INS_WVR")
+    @Transient
     protected HealthInsuranceWaiver healthInsuranceWaiver;
 
+    @Transient
     protected String comments;
 
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -109,7 +111,6 @@ public class BenefitEnrollment extends AbstractEntity {
     /**
      * @return the healthInsuranceWaiver
      */
-    @XmlTransient
     public HealthInsuranceWaiver getHealthInsuranceWaiver() {
         return healthInsuranceWaiver;
     }
@@ -124,7 +125,6 @@ public class BenefitEnrollment extends AbstractEntity {
     /**
      * @return the comments
      */
-    @XmlTransient
     public String getComments() {
         return comments;
     }

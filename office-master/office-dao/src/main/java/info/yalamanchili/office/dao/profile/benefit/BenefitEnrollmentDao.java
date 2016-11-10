@@ -45,6 +45,11 @@ public class BenefitEnrollmentDao extends CRUDDao<BenefitEnrollment> {
     }
 
     @Override
+    public BenefitEnrollment save(BenefitEnrollment entity) {
+        return em.merge(entity);
+    }
+
+    @Override
     public BenefitEnrollment findById(Long id) {
         BenefitEnrollment entity = super.findById(id);
         if (entity == null) {

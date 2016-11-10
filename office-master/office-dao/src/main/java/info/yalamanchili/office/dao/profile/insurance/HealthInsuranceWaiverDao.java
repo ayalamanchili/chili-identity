@@ -36,6 +36,21 @@ public class HealthInsuranceWaiverDao extends CRUDDao<HealthInsuranceWaiver> {
     }
 
     @Override
+    public HealthInsuranceWaiver save(HealthInsuranceWaiver entity) {
+        entity = em.merge(entity);
+        return entity;
+    }
+
+    @Override
+    public HealthInsuranceWaiver findById(Long id) {
+        HealthInsuranceWaiver entity = super.findById(id);
+        if (entity == null) {
+            return null;
+        }
+        return entity;
+    }
+
+    @Override
     public EntityManager getEntityManager() {
         return em;
     }

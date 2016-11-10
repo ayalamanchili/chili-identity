@@ -80,8 +80,13 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
     @Override
     public void postDeleteSuccess() {
         new ResponseStatusWidget().show("Successfully Deleted");
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBenefitsPanel(TreeEmployeePanel.instance().getEntityId()));
+        if (TabPanel.instance().myOfficePanel.isVisible()) {
+            TabPanel.instance().myOfficePanel.entityPanel.clear();
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBenefitsPanel(TreeEmployeePanel.instance().getEntityId()));
+        } else if (TabPanel.instance().profilePanel.isVisible()) {
+            TabPanel.instance().profilePanel.entityPanel.clear();
+            TabPanel.instance().profilePanel.entityPanel.add(new ReadAllBenefitsPanel(parentId));
+        }
     }
 
     @Override

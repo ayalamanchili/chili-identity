@@ -42,7 +42,7 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
 
     protected FlowPanel panel = new FlowPanel();
     BooleanField enrolledFlagField = new BooleanField(OfficeWelcome.constants2, "enrolled", "Benefit", false, false, Alignment.HORIZONTAL);
-    DateField requestedDate = new DateField(OfficeWelcome.constants2, "affectiveDate", "Benefit", false, false, Alignment.HORIZONTAL);
+    DateField requestedDate = new DateField(OfficeWelcome.constants2, "effectiveDate", "Benefit", false, false, Alignment.HORIZONTAL);
     EnumField benefitType = new EnumField(OfficeWelcome.constants2, "benefitType", "Benefit", false, false, BenefitType.names(), Alignment.HORIZONTAL);
     protected String empId;
 
@@ -65,7 +65,7 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
         entity.put("enrolled", new JSONString(enrolledFlagField.getValue().toString()));
         assignEntityValueFromField("enrolledYear", entity);
         if (requestedDate.getDate() != null) {
-            entity.put("affectiveDate", new JSONString(DateUtils.toDateString(requestedDate.getDate())));
+            entity.put("effectiveDate", new JSONString(DateUtils.toDateString(requestedDate.getDate())));
         }
         assignEntityValueFromField("comments", entity);
         return entity;

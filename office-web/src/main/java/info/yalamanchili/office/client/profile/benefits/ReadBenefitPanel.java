@@ -66,7 +66,7 @@ public class ReadBenefitPanel extends ReadComposite {
         assignFieldValueFromEntity("benefitType", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("enrolledYear", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("enrolled", entity, DataType.BOOLEAN_FIELD);
-        assignFieldValueFromEntity("affectiveDate", entity, DataType.DATE_FIELD);
+        assignFieldValueFromEntity("effectiveDate", entity, DataType.DATE_FIELD);
         if (entity.containsKey("healthInsuranceWaiver")) {
             entityFieldsPanel.add(new ReadHealthInsuranceWaiverWidget(entity.get("healthInsuranceWaiver").isObject()));
         }
@@ -85,7 +85,7 @@ public class ReadBenefitPanel extends ReadComposite {
         addField("benefitType", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("enrolledYear", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("enrolled", true, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        addField("affectiveDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("effectiveDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
     }
 
     @Override
