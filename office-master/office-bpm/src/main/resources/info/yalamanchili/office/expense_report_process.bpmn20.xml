@@ -19,12 +19,12 @@
                   name="Expense Report Manager Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
             <documentation>
                 Employee Expense Report Manager Approval Task
-                Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Expense Form Type   : #{entity.expenseFormType}
-                Purpose             : #{entity.location}
-                Start Date          : #{startDate}
-                End Date            : #{endDate}
-                Total Amount        : #{entity.totalExpenses}
+                Employee Name          : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Expense Form Type    : #{expenseType}
+                Purpose                        : #{entity.location}
+                Start Date                     : #{startDate}
+                End Date                       : #{endDate}
+                Total Amount               : #{totalExpenses}
                 
                 Navigate to view Expense Report:
                 Expense > Expense Reports > Search > Click View > Table Action column > Click View Icon (or)
@@ -89,12 +89,12 @@
                   name="Expense Report Final Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
             <documentation>
                 Employee Expense Report Final Approval Task
-                Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Expense Form Type   : #{entity.expenseFormType}
-                Purpose             : #{entity.location}
-                Start Date          : #{startDate}
-                End Date            : #{endDate}
-                Total Amount        : #{entity.totalExpenses}
+                Employee Name          : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Expense Form Type    : #{expenseType}
+                Purpose                        : #{entity.location}
+                Start Date                     : #{startDate}
+                End Date                       : #{endDate}
+                Total Amount               : #{totalExpenses}
                 
                 Navigate to view Expense Report:
                 Expense > Expense Reports > Search > Click View > Table Action column > Click View Icon (or)
@@ -152,12 +152,12 @@
                   activiti:candidateGroups="ROLE_ACCOUNTS_PAYABLE">
             <documentation>
                 Employee Expense Report Accounts Payable Payment Dispatch Task.
-                Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
-                Expense Form Type   : #{entity.expenseFormType}
-                Purpose             : #{entity.location}
-                Start Date          : #{startDate}
-                End Date            : #{endDate}
-                Total Amount        : #{entity.totalExpenses}
+                Employee Name          : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Expense Form Type    : #{expenseType}
+                Purpose                        : #{entity.location}
+                Start Date                     : #{startDate}
+                End Date                       : #{endDate}
+                Total Amount               : #{totalExpenses}
                 
                 Navigate to view Expense Report:
                 Expense > Expense Reports > Search > Click View > Table Action column > Click View Icon (or)
