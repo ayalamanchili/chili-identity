@@ -17,6 +17,7 @@ import info.yalamanchili.office.client.profile.immigration.LCA.LcaMenu;
 import info.yalamanchili.office.client.profile.immigration.LCA.LcaSidePanel;
 import info.yalamanchili.office.client.profile.immigration.LCA.ReadAllLCAPanel;
 import info.yalamanchili.office.client.profile.immigration.LCA.SearchLcaPanel;
+import info.yalamanchili.office.client.profile.immigration.immigrationcase.ReadAllImmigrationCasePanel;
 
 /**
  *
@@ -31,6 +32,9 @@ public class ImmigrationMenu extends CMenuBar {
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             addMenuItem("Petition", "Petition", immigrationpetitionCmd);
+        }
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
+            addMenuItem("Immigration Case", "Immigration Case", immigrationCaseCmd);
         }
     }
 
@@ -54,5 +58,13 @@ public class ImmigrationMenu extends CMenuBar {
             TabPanel.instance().getImmigrationPanel().entityPanel.add(new ReadAllPetitionsPanel());
         }
     };
-
+    
+    static Command immigrationCaseCmd = new Command() {
+        public void execute() {
+            TabPanel.instance().getImmigrationPanel().entityPanel.clear();
+            TabPanel.instance().getImmigrationPanel().sidePanelTop.clear();
+            TabPanel.instance().getImmigrationPanel().sidePanelTop.add(new ImmigrationCaseSidePanel());
+            TabPanel.instance().getImmigrationPanel().entityPanel.add(new ReadAllImmigrationCasePanel());
+        }
+    };
 }
