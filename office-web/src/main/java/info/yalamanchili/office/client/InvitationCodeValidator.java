@@ -71,7 +71,7 @@ public class InvitationCodeValidator {
                         RootPanel.get().removeFromParent();
                         RootPanel.get().add(new Image(OfficeImages.INSTANCE.logo()));
                         if (entity.containsKey("invitationType") == true && entity.get("invitationType").isString().stringValue().equals("H1B_Questionnaire")) {
-                            //RootPanel.get().add(new H1bQuestionnaireSentWidget(arg0));
+                            RootPanel.get().add(new H1bQuestionnaireSentWidget(arg0));
                         } else {
                             RootPanel.get().add(new EmployeeOnboardingPanel(arg0));
                         }
