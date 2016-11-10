@@ -172,44 +172,44 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         immigrationCaseDao.getEntityManager().merge(immigrationCase);
     }
 
-    @GET
-    @Path("h1b-questionnaire/get-details/{invitationCode}")
-    public EmployeeH1BDetailsDto getdetails(@PathParam("invitationCode") String invitationCode) {
-        String invCde = invitationCode.trim();
-        InviteCode code = InviteCodeDao.instance().find(invCde);
-        Employee emp;
-        EmployeeH1BDetailsDto res = new EmployeeH1BDetailsDto();
-        info.yalamanchili.office.entity.profile.Email email;
-        if (EmployeeDao.instance().findByEmail(code.getEmail()) != null) {
-            emp = EmployeeDao.instance().findByEmail(code.getEmail());
-            if (emp.getEmails().size() > 0 && emp.getEmails().get(0) != null) {
-                email = emp.getEmails().get(0);
-                res.setEmail(email.getEmail());
-                if (email.getEmailType().getEmailType().equals("Work")) {
-                    res.setWorkEmail(email.getEmail());
-                }
-            }
-            res.setEmpFirstName(emp.getFirstName());
-            res.setEmpLastName(emp.getLastName());
-            res.setDateOfBirth(emp.getDateOfBirth());
-            res.setSsn(emp.getSsn());
-            EmployeeAdditionalDetails details = EmployeeAdditionalDetailsDao.instance().find(emp);
-            if (details != null && details.getId() != null) {
-                res.setMaritalStatus(details.getMaritalStatus().name());
-            }
-            res.setMaritalStatus(MaritalStatus.Unknown.name());
-            if (emp.getSex() != null) {
-                res.setGender(emp.getSex().name());
-            }
-        }
-        return res;
-    }
+//    @GET
+//    @Path("h1b-questionnaire/get-details/{invitationCode}")
+//    public EmployeeH1BDetailsDto getdetails(@PathParam("invitationCode") String invitationCode) {
+//        String invCde = invitationCode.trim();
+//        InviteCode code = InviteCodeDao.instance().find(invCde);
+//        Employee emp;
+//        EmployeeH1BDetailsDto res = new EmployeeH1BDetailsDto();
+//        info.yalamanchili.office.entity.profile.Email email;
+//        if (EmployeeDao.instance().findByEmail(code.getEmail()) != null) {
+//            emp = EmployeeDao.instance().findByEmail(code.getEmail());
+//            if (emp.getEmails().size() > 0 && emp.getEmails().get(0) != null) {
+//                email = emp.getEmails().get(0);
+//                res.setEmail(email.getEmail());
+//                if (email.getEmailType().getEmailType().equals("Work")) {
+//                    res.setWorkEmail(email.getEmail());
+//                }
+//            }
+//            res.setEmpFirstName(emp.getFirstName());
+//            res.setEmpLastName(emp.getLastName());
+//            res.setDateOfBirth(emp.getDateOfBirth());
+//            res.setSsn(emp.getSsn());
+//            EmployeeAdditionalDetails details = EmployeeAdditionalDetailsDao.instance().find(emp);
+//            if (details != null && details.getId() != null) {
+//                res.setMaritalStatus(details.getMaritalStatus().name());
+//            }
+//            res.setMaritalStatus(MaritalStatus.Unknown.name());
+//            if (emp.getSex() != null) {
+//                res.setGender(emp.getSex().name());
+//            }
+//        }
+//        return res;
+//    }
 
-    @PUT
-    @Path("save-immigration-info/{invitationCode}")
-    public EmployeeH1BDetailsDto savePersonalInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
-        return dto;
-    }
+//    @PUT
+//    @Path("save-immigration-info/{invitationCode}")
+//    public EmployeeH1BDetailsDto savePersonalInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
+//        return dto;
+//    }
 
     @PUT
     @Path("/search-case/{start}/{limit}")
