@@ -121,6 +121,7 @@ private static Logger logger = Logger.getLogger(ProfileReportsSidePanel.class.ge
         }
         if (event.getSource().equals(searchB) && searchB.getParent().equals(projectSummaryPanel)) {
             if (associates.contains(employeeSB.getValue())) {
+                employeeSB.clearMessage();
                 TabPanel.instance().reportingPanel.entityPanel.clear();
                 HttpService.HttpServiceAsync.instance().doPut(getUrl(), populateEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
@@ -139,10 +140,14 @@ private static Logger logger = Logger.getLogger(ProfileReportsSidePanel.class.ge
                     }
                 });
             }
+            else{
+                employeeSB.setMessage("Required");
+            }
         }
 
         if (event.getSource().equals(reportB) && reportB.getParent().equals(projectSummaryPanel)) {
             if (associates.contains(employeeSB.getValue())) {
+                employeeSB.clearMessage();
                 HttpService.HttpServiceAsync.instance().doPut(reportUrl(), populateEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                     @Override
@@ -152,6 +157,9 @@ private static Logger logger = Logger.getLogger(ProfileReportsSidePanel.class.ge
                         TabPanel.instance().reportingPanel.entityPanel.clear();
                     }
                 });
+            }
+            else{
+                employeeSB.setMessage("Required");
             }
         }
     }
