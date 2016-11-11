@@ -16,6 +16,7 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.OfficeRoles;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
+import info.yalamanchili.office.client.SubcontractorReportService;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.client.SubcontractorDao;
 import info.yalamanchili.office.dao.profile.AddressDao;
@@ -254,6 +255,12 @@ public class SubcontractorResource extends CRUDResource<Subcontractor> {
         }
         subcontractor.getLocations().remove(location);
         AddressDao.instance().delete(location.getId());
+    }
+    
+    @GET
+    @Path("/subcontractor-clientinfo-report")
+    public void getActiveClientsReport() {
+        SubcontractorReportService.instance().generateActiveClientsInfoReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
     /**
