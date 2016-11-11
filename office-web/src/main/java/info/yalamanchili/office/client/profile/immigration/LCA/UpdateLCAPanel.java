@@ -42,7 +42,7 @@ public class UpdateLCAPanel extends UpdateComposite {
     protected BooleanField addAddress = new BooleanField(OfficeWelcome.constants, "Add LCA Secondary Address", "LCA", false, false, Alignment.HORIZONTAL);
     HTML wagesInfo = new HTML("<h4 style=\"color:#427fed\">" + "Wages Information</h4>");
     HTML addInfo = new HTML("<h4 style=\"color:#427fed\">" + "Additional Information</h4>");
-    protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
+    protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, false, Alignment.HORIZONTAL);
     HTML lcaAddress1 = new HTML("<h4 style=\"color:#427fed\">" + "LCA Primary Address </h4>");
     HTML lcaAddress2 = new HTML("<h4 style=\"color:#427fed\">" + "LCA Secondary Address</h4>");
     HTML empInfo = new HTML("<h4 style=\"color:#427fed\">" + "Select Consultants</h4>");
@@ -190,13 +190,13 @@ public class UpdateLCAPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("candidateNames", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("candidateNames", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("lcaNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("totalWorkingPositions", false, true, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("totalWorkingPositions", false, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
         addEnumField("visaClassification", false, true, VisaClassificationType.names(), Alignment.HORIZONTAL);
         addDropDown("company", selectCompanyWidget);
         addField("jobTitle", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("socCodesAndOccupations", false, true, SOCCodesAndOccupations.names(), Alignment.HORIZONTAL);
+        addEnumField("socCodesAndOccupations", false, false, SOCCodesAndOccupations.names(), Alignment.HORIZONTAL);
         addField("lcaValidFromDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("lcaValidToDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addEnumField("status", false, true, LCAStatus.names(), Alignment.HORIZONTAL);
