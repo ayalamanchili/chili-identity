@@ -141,8 +141,8 @@ private static Logger logger = Logger.getLogger(ProfileReportsSidePanel.class.ge
             }
         }
 
-        if (event.getSource().equals(reportB)) {
-            if (reportB.getParent().equals(projectSummaryPanel)) {
+        if (event.getSource().equals(reportB) && reportB.getParent().equals(projectSummaryPanel)) {
+            if (associates.contains(employeeSB.getValue())) {
                 HttpService.HttpServiceAsync.instance().doPut(reportUrl(), populateEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
                     @Override
