@@ -9,6 +9,7 @@
 package info.yalamanchili.office.client;
 
 import com.google.gwt.user.client.Window;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -24,21 +25,15 @@ public class URLParamProcessor {
 
     public static boolean process() {
         Map<String, List<String>> map = Window.Location.getParameterMap();
+        List<Entry> entryList = new ArrayList();
         for (Entry e : map.entrySet()) {
-            String key = (String) e.getKey();
-            List<String> values = (List<String>) e.getValue();
-            logger.info("processing url param" + key);
-            logger.info("processing url values" + values);
-            processUrlParam(key, values);
-            return true;
+            entryList.add(e);
         }
+        processUrlParam(entryList);
         return false;
     }
 
-    protected static void processUrlParam(String key, List<String> values) {
-        switch (key) {
-            case "inviteCode":
-                InvitationCodeValidator.validate(values);
-        }
+    protected static void processUrlParam(List<Entry> entryList) {
+        InvitationCodeValidator.validateParams(entryList);
     }
 }
