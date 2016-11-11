@@ -286,14 +286,14 @@ public class ReadAllClientInfoPanel extends CRUDReadAllComposite implements Clic
         }
     }
 
-    @Override
-    protected boolean enableDraft() {
-        if (isProspectCPD == false) {
-            return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN);
-        } else {
-            return false;
-        }
-    }
+//    @Override
+//    protected boolean enableDrafts() {
+//        if (isProspectCPD == false) {
+//            return Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN);
+//        } else {
+//            return false;
+//        }
+//    }
 
     @Override
     protected String getDraftUrl() {

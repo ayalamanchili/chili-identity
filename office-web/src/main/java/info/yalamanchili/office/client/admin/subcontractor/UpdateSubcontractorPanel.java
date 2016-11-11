@@ -21,6 +21,7 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.admin.vendor.SubcontractorStatus;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceDeliveryMethod;
 import info.yalamanchili.office.client.profile.cllientinfo.InvoiceFrequency;
 
@@ -65,6 +66,10 @@ public class UpdateSubcontractorPanel extends UpdateComposite {
             }
         });
     }
+    
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.client.Subcontractor"));
+    }
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
@@ -79,6 +84,7 @@ public class UpdateSubcontractorPanel extends UpdateComposite {
         assignFieldValueFromEntity("msaExpDate", entity, DataType.DATE_FIELD);
         assignFieldValueFromEntity("terminationNoticePeriod", entity, DataType.INTEGER_FIELD);
         assignFieldValueFromEntity("subcontractorStatus", entity, DataType.ENUM_FIELD);
+        populateComments();
     }
 
     @Override
