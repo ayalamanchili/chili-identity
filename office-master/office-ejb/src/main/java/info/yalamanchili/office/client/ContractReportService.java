@@ -23,6 +23,7 @@ import info.yalamanchili.office.dto.client.ContractDto;
 import info.yalamanchili.office.dto.client.ContractDto.ContractTable;
 import info.yalamanchili.office.dto.client.ContractSearchDto;
 import info.yalamanchili.office.dto.client.PayRateReportDto;
+import info.yalamanchili.office.dto.client.SubcontractorMasterReportDto;
 import info.yalamanchili.office.dto.client.VendorMasterReportDto;
 import info.yalamanchili.office.entity.profile.ClientInformation;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -225,6 +226,11 @@ public class ContractReportService {
     
     public List<VendorMasterReportDto> getAllActiveCPDWithValidSMSAs() {
         TypedQuery<VendorMasterReportDto> q = em.createQuery("SELECT DISTINCT NEW " + VendorMasterReportDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName, ci.employee.lastName, employee.employeeType.name, ci.vendor.name, ci.vendor.msaValDate, ci.vendor.msaExpDate) from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate > Now() or ci.endDate is null AND ci.vendor.msaExpDate > NOW() or ci.vendor.msaExpDate is null", VendorMasterReportDto.class);
+        return q.getResultList();
+    }
+    
+    public List<SubcontractorMasterReportDto> getAllActiveCPDWithValidSMSASubcontractor() {
+        TypedQuery<SubcontractorMasterReportDto> q = em.createQuery("SELECT DISTINCT NEW " + SubcontractorMasterReportDto.class.getCanonicalName() + "(ci.id, ci.employee.firstName, ci.employee.lastName, employee.employeeType.name, ci.subcontractor.name, ci.subcontractor.msaValDate, ci.subcontractor.msaExpDate) from " + ClientInformation.class.getCanonicalName() + " ci where ci.endDate > Now() or ci.endDate is null AND ci.client.msaExpDate > NOW() or ci.client.msaExpDate is null", SubcontractorMasterReportDto.class);
         return q.getResultList();
     }
 

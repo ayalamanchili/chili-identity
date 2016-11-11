@@ -72,18 +72,18 @@ public class ClientService {
                 int countc = client.getContacts().size();
                 for (Contact contact : client.getContacts()) {
                     contact.describe();
-                    String name = "";
+                    String name = "Name : ";
                     name = name.concat(contact.getFirstName() + " " + contact.getLastName());
                     recContact = recContact.concat("\n" + name);
                     if (contact.getEmails().size() > 0) {
-
-                        email = email.concat(contact.getEmails().get(0).getEmail());
-                        recContact = recContact.concat("-" + email);
+                        String rcemail = "Email : ";
+                        rcemail = rcemail.concat(contact.getEmails().get(0).getEmail());
+                        recContact = recContact.concat("-" + rcemail);
                     }
                     if (contact.getPhones().size() > 0) {
                         int countp = contact.getPhones().size();
                         for (Phone rphone : contact.getPhones()) {
-                            String phone = "";
+                            String phone = "phone : ";
                             if (rphone.getCountryCode() != null) {
                                 String ccode = "";
                                 ccode = ccode.concat(rphone.getCountryCode());
