@@ -27,15 +27,19 @@ import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.chili.gwt.widgets.SuggestBox;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  *
  * @author ayalamanchili
  */
 public class ProfileReportsSidePanel extends ALComposite implements ClickHandler, OpenHandler {
-
-    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
+    
+private static Logger logger = Logger.getLogger(ProfileReportsSidePanel.class.getName());
+    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, true);
     protected FlowPanel panel = new FlowPanel();
     ClickableLink profileBasicReportL = new ClickableLink("Basic Profile Report");
     ClickableLink profileAdvanceReportL = new ClickableLink("Complete Profile Report");
@@ -45,6 +49,7 @@ public class ProfileReportsSidePanel extends ALComposite implements ClickHandler
     FlowPanel projectSummaryPanel = new FlowPanel();
     Button searchB = new Button("Search");
     Button reportB = new Button("Report");
+    List<String> associates = new ArrayList<>();
 
     public ProfileReportsSidePanel() {
         init(panel);
@@ -73,6 +78,8 @@ public class ProfileReportsSidePanel extends ALComposite implements ClickHandler
                 Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
                 if (values != null) {
                     employeeSB.loadData(values);
+                    for (String k : values.keySet())
+                    associates.add(values.get(k));
                 }
             }
         });
@@ -112,8 +119,8 @@ public class ProfileReportsSidePanel extends ALComposite implements ClickHandler
         if (event.getSource().equals(companyContactsReportL)) {
             generateCompanyContactReport();
         }
-        if (event.getSource().equals(searchB)) {
-            if (searchB.getParent().equals(projectSummaryPanel)) {
+        if (event.getSource().equals(searchB) && searchB.getParent().equals(projectSummaryPanel)) {
+            if (associates.contains(employeeSB.getValue())) {
                 TabPanel.instance().reportingPanel.entityPanel.clear();
                 HttpService.HttpServiceAsync.instance().doPut(getUrl(), populateEntity().toString(), OfficeWelcome.instance().getHeaders(), true,
                         new ALAsyncCallback<String>() {
@@ -121,6 +128,7 @@ public class ProfileReportsSidePanel extends ALComposite implements ClickHandler
                     public void onResponse(String result) {
                         if (result == null || JSONParser.parseLenient(result).isObject().size() == 0) {
                             new ResponseStatusWidget().show("No Results");
+                            employeeSB.clearText();
                         } else {
                             JSONObject resObj = JSONParser.parseLenient(result).isObject();
                             String key = (String) resObj.keySet().toArray()[0];
