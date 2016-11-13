@@ -98,12 +98,13 @@ public class VendorService {
             String recContact = "";
             int countc = vendor.getContacts().size();
             for (Contact contact : vendor.getContacts()) {
-                String name = "";
+                String name = "Name : ";
                 name = name.concat(contact.getFirstName() + " " + contact.getLastName());
                 recContact = recContact.concat("\n" + name);
                 if (contact.getEmails().size() > 0) {
-                    email = email.concat(contact.getEmails().get(0).getEmail());
-                    recContact = recContact.concat("-" + email);
+                    String rcemail = "Email : ";
+                    rcemail = rcemail.concat(contact.getEmails().get(0).getEmail());
+                    recContact = recContact.concat("-" + rcemail);
                 }
                 if (contact.getPhones().size() > 0) {
                     int countp = contact.getPhones().size();
@@ -139,18 +140,18 @@ public class VendorService {
             String actContact = "";
             int countap = vendor.getAcctPayContacts().size();
             for (Contact acpaycnt : vendor.getAcctPayContacts()) {
-                String acname = "";
+                String acname = "Name : ";
                 acname = acname.concat(acpaycnt.getFirstName() + " " + acpaycnt.getLastName());
                 actContact = actContact.concat("\n" + acname);
                 if (acpaycnt.getEmails().size() > 0) {
-                    String acemail = "";
+                    String acemail = "Email : ";
                     acemail = acemail.concat(acpaycnt.getEmails().get(0).getEmail());
                     actContact = actContact.concat("-" + acemail);
                 }
                 if (acpaycnt.getPhones().size() > 0) {
                     int countapp = acpaycnt.getPhones().size();
                     for (Phone acpayphone : acpaycnt.getPhones()) {
-                        String acphone = "";
+                        String acphone = "Phone : ";
                         if (acpayphone.getCountryCode() != null) {
                             String acccode = "";
                             acccode = acccode.concat(acpayphone.getCountryCode());

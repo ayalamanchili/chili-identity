@@ -41,6 +41,7 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
     public FlowPanel subcontractorSidePanel = new FlowPanel();
     ClickableLink SubcontractorSummaryReportL = new ClickableLink("Subcontractor Summary Report");
     CaptionPanel reportsCaptionPanel = new CaptionPanel();
+    ClickableLink activeSubcontractorReportL = new ClickableLink("Active Subcontractor Report");
     FlowPanel reportsPanel = new FlowPanel();
     Button reportsB = new Button("Report");
     Button viewReportsB = new Button("View");
@@ -61,6 +62,7 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
         viewReportsB.addClickHandler(this);
         clearReportL.addClickHandler(this);
         reportsB.addClickHandler(this);
+        activeSubcontractorReportL.addClickHandler(this);
     }
 
     @Override
@@ -81,6 +83,7 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
         subcontractorSidePanel.add(reportsCaptionPanel);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_CONTRACTS_ADMIN, Auth.ROLE.ROLE_BILLING_AND_INVOICING, Auth.ROLE.ROLE_CONTRACTS)) {
             subcontractorSidePanel.add(SubcontractorSummaryReportL);
+            subcontractorSidePanel.add(activeSubcontractorReportL);
         }
     }
 
@@ -91,6 +94,9 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
         }
         if (event.getSource().equals(viewReportsB)) {
             viewReport();
+        }
+        if (event.getSource().equals(activeSubcontractorReportL)) {
+            generateActiveSubcontractorInfoReport();
         }
         if (event.getSource().equals(clearReportL)) {
             clearReportsField();
@@ -179,5 +185,18 @@ public class SubcontractorSidePanel extends ALComposite implements ClickHandler 
 
     protected String getSubcontractorInfoReportUrl() {
         return OfficeWelcome.constants.root_url() + "contract-report/subcontractors-summary-report";
+    }
+
+    private void generateActiveSubcontractorInfoReport() {
+         HttpService.HttpServiceAsync.instance().doGet(getActiveSubcontractorInfoReportUrl(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String result) {
+                        new ResponseStatusWidget().show("Report will be emailed to your primary email");
+                    }
+                });
+    }
+    protected String getActiveSubcontractorInfoReportUrl() {
+        return OfficeWelcome.constants.root_url() + "subcontractor/subcontractor-clientinfo-report";
     }
 }
