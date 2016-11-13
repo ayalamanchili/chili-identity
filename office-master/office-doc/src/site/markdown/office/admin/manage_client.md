@@ -26,7 +26,7 @@ To View/Update/Delete a particular client you can click on the respective icons 
 ![View/Update/Delete](../../images/admin/client_actions.png)
 
 The other way to add the client locations, account pay contacts and recruiter contacts as shown below.
-Navigate to _**Admin -->Clients**_ Click on View/Update icon on the particular client you want to add.
+Navigate to _**Admin -->Clients**_ Click on View/Update icon on the particular client you want to Active/In Active.
 
 ![Add locations/account pay/recruiter contacts](../../images/admin/add-locations-and-contacts.png)
 ![Add locations/account pay/recruiter contacts](../../images/admin/add-locations-and-contacts1.png)

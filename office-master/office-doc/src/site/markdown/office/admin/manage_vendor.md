@@ -23,7 +23,7 @@ To View/Update/Delete a particular vendor you can click on the respective icons 
 ![View/Update/Delete](../../images/admin/vendor_actions.png)
 
 The other way to add the vendor locations, account pay contacts and recruiter contacts as shown below.
-Navigate to _**Admin -->Vendors**_ Click on View/Update icon on the particular vendor you want to add.
+Navigate to _**Admin -->Vendors**_ Click on View/Update icon on the particular vendor you want to you want to Active/In Active.
 
 ![Add locations/account pay/recruiter contacts](../../images/admin/add-locations-and-contacts-to-vendor.png)
 ![Add locations/account pay/recruiter contacts](../../images/admin/add-locations-and-contacts-to-vendor1.png)
