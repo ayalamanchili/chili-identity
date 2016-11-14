@@ -68,9 +68,9 @@ public class AlienNumberResource extends CRUDResource<AlienNumber> {
     @AccessCheck(roles = {"ROLE_ADMIN", "ROLE_H1B_IMMIGRATION", "ROLE_GC_IMMIGRATION"})
     @Override
     public void delete(@PathParam("id") Long id) {
-        AlienNumber alienNum = AlienNumberDao.instance().findById(id);
+        AlienNumber alienNum = alienNumberDao.findById(id);
         if (alienNum.getId() != null) {
-            AlienNumberDao.instance().delete(id);
+            alienNumberDao.delete(id);
         }
     }
 }
