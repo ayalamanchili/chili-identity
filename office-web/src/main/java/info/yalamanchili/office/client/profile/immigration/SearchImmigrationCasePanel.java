@@ -7,8 +7,10 @@ package info.yalamanchili.office.client.profile.immigration;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Timer;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
@@ -32,7 +34,10 @@ public class SearchImmigrationCasePanel extends SearchComposite {
 
     private static Logger logger = Logger.getLogger(SearchImmigrationCasePanel.class.getName());
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
-    protected SelectCompanyWidget companyWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
+    protected SelectCompanyWidget companyWidget = new SelectCompanyWidget(false, false, Alignment.VERTICAL);
+    EnumField sponsorType = new EnumField(OfficeWelcome.constants2, "sponsorType", "ImmigrationCase", false, false, SponsorType.names());
+    EnumField caseType = new EnumField(OfficeWelcome.constants2, "immigrationCaseType", "ImmigrationCase", false, false, ImmigrationCaseType.names());
+    EnumField caseStatus = new EnumField(OfficeWelcome.constants2, "immigrationCaseStatus", "ImmigrationCase", false, false, ImmigrationCaseStatus.names());
 
     public SearchImmigrationCasePanel() {
         init("Search", "ImmigrationCase", OfficeWelcome.constants2);
@@ -101,10 +106,10 @@ public class SearchImmigrationCasePanel extends SearchComposite {
     @Override
     protected void addWidgets() {
         advancedSearchPanel.add(employeeSB);
-        addEnumField("sponsorType", false, true, SponsorType.names());
         addDropDown("company", companyWidget);
-        addEnumField("immigrationCaseType", false, false, ImmigrationCaseType.names());
-        addEnumField("immigrationCaseStatus", false, false, ImmigrationCaseStatus.names());
+        advancedSearchPanel.add(sponsorType);
+        advancedSearchPanel.add(caseType);
+        advancedSearchPanel.add(caseStatus);
     }
 
     @Override
@@ -116,10 +121,15 @@ public class SearchImmigrationCasePanel extends SearchComposite {
         if (companyWidget.getSelectedObject() != null) {
             entity.put("company", companyWidget.getSelectedObject());
         }
-        assignEntityValueFromField("sponsorType", entity);
-        assignEntityValueFromField("immigrationCaseType", entity);
-        assignEntityValueFromField("immigrationCaseStatus", entity);
-        logger.info(entity.toString());
+        if (sponsorType.getValue() != null) {
+            entity.put("sponsorType", new JSONString(sponsorType.getValue()));
+        }
+        if (caseType.getValue() != null) {
+            entity.put("immigrationCaseType", new JSONString(caseType.getValue()));
+        }
+        if (caseStatus.getValue() != null) {
+            entity.put("immigrationCaseStatus", new JSONString(caseStatus.getValue()));
+        }
         return entity;
     }
 
