@@ -19,7 +19,8 @@ import org.hibernate.search.annotations.Indexed;
 @XmlRootElement
 @Entity
 @Audited
-public class DeportationInfo extends AbstractHandleEntity{
+public class DeportationInfo extends AbstractHandleEntity {
+    
     private static final long serialVersionUID = 13L;
     
     protected Boolean isBenfRemProceed;
