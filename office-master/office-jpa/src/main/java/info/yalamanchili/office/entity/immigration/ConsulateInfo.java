@@ -8,7 +8,7 @@
  */
 package info.yalamanchili.office.entity.immigration;
 
-import info.chili.jpa.AbstractEntity;
+import info.chili.jpa.AbstractHandleEntity;
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.envers.Audited;
@@ -22,7 +22,7 @@ import org.hibernate.search.annotations.Indexed;
 @Audited
 @XmlRootElement
 @Indexed
-public class ConsulateInfo extends AbstractEntity {
+public class ConsulateInfo extends AbstractHandleEntity {
     
     private static final long serialVersionUID = 13L;
     
@@ -57,7 +57,4 @@ public class ConsulateInfo extends AbstractEntity {
     public void setCountry(String country) {
         this.country = country;
     }
-    
-    
-    
 }
