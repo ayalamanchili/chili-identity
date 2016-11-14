@@ -82,7 +82,13 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
     public ImmigrationCase saveImmigration(ImmigrationCase entity) {
         if (entity.getId() == null) {
             if (entity.getEmployee() != null) {
-                entity.setEmployee(EmployeeDao.instance().findById(entity.getEmployee().getId()));
+                Employee emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
+                entity.setEmployee(emp);
+                if(emp.getCompany()!=null){
+                    entity.setCompany(CompanyDao.instance().findById(emp.getCompany().getId()));
+                }else{
+                    entity.setCompany(CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC));
+                }
             }
             if (entity.getCompany() != null) {
                 entity.setCompany(CompanyDao.instance().findById(entity.getCompany().getId()));
