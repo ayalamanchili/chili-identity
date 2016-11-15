@@ -233,6 +233,9 @@ public class ContractService {
         if (searchDto.getCompany() != null) {
             queryStr.append("ci.company LIKE '%").append(searchDto.getCompany().name().trim()).append("%' ").append(" and ");
         }
+        if (searchDto.getPractice()!= null) {
+            queryStr.append("ci.practice.name='").append(searchDto.getPractice().trim()).append("' ").append(" and ");
+        }
         if (StringUtils.isNotBlank(searchDto.getEmployeeType())) {
             queryStr.append("ci.employee.employeeType.name LIKE '%").append(searchDto.getEmployeeType().trim()).append("%' ").append(" and ");
         }
@@ -521,6 +524,15 @@ public class ContractService {
         ContractTable table = getResultForReport(dto);
         String[] columnOrder = new String[]{"employee", "consultantJobTitle", "client", "billingRate", "startDate", "endDate", "vendorRecruiter", "subContractorName", "subcontractorPayRate"};
         String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employees Working Under Vendor " + dto.getVendor(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
+        MessagingService.instance().emailReport(fileName, email);
+    }
+    
+    @Async
+    @Transactional
+     public void generateServiceTypeReport(ContractSearchDto dto, String email) {
+        ContractTable table = getResultForReport(dto);
+        String[] columnOrder = new String[]{"employee", "client", "vendor", "startDate", "endDate"};
+        String fileName = ReportGenerator.generateExcelOrderedReport(table.getEntities(), "Employees Under " + dto.getPractice(), OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder);
         MessagingService.instance().emailReport(fileName, email);
     }
 
