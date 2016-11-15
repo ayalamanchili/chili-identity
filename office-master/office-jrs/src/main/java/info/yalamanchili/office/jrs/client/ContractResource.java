@@ -112,6 +112,13 @@ public class ContractResource {
         Employee emp = OfficeSecurityService.instance().getCurrentUser();
         ContractService.instance().generateRecruiterReport(dto, emp.getPrimaryEmail().getEmail());
     }
+    
+    @PUT
+    @Path("/serviceType-report")
+    public void generateServiceTypeReport(ContractSearchDto dto) {
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        ContractService.instance().generateServiceTypeReport(dto, emp.getPrimaryEmail().getEmail());
+    }
 
     @GET
     @Path("/reports")
