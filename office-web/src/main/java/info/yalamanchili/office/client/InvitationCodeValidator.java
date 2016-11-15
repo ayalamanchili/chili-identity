@@ -17,11 +17,9 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import info.chili.gwt.rpc.HttpService;
-import info.yalamanchili.office.client.invite.InvitationType;
 import info.yalamanchili.office.client.onboarding.EmployeeOnboardingPanel;
 import info.yalamanchili.office.client.resources.OfficeImages;
 import java.util.List;
-import java.util.Map.Entry;
 
 /**
  *
@@ -29,75 +27,43 @@ import java.util.Map.Entry;
  */
 public class InvitationCodeValidator {
 
-    public static boolean validate(List<String> values) {
+    public static boolean validate(String key, List<String> values) {
         if (values.size() == 1 && !Strings.isNullOrEmpty(values.get(0))) {
-            OfficeWelcome.logger.info("validate url .... ");
             JSONObject entity = new JSONObject();
-            entity.put("invitationCode", new JSONString(values.get(0)));
-            renderUI(entity, 1);
-        }
-        return false;
-    }
-
-    public static boolean validateParams(List<Entry> entryList) {
-        OfficeWelcome.logger.info("validate url with list of params.... ");
-        if (entryList != null) {
-            if (entryList.size() == 1) {
-                OfficeWelcome.logger.info("validate url with no params.... ");
-                Entry e = entryList.get(0);
-                validate((List<String>) e.getValue());
-            } else {
-                JSONObject entity = new JSONObject();
-                for (Entry e : entryList) {
-                    String key = (String) e.getKey();
-                    List<String> values = (List<String>) e.getValue();
-                    if (values.size() == 1 && !Strings.isNullOrEmpty(values.get(0))) {
-                        if (key.equalsIgnoreCase("invitecode")) {
-                            entity.put("invitationCode", new JSONString(values.get(0)));
-                        } else {
-                            entity.put(key, new JSONString(values.get(0)));
-                        }
-                    }
-                }
-                if (entity.containsKey("invitationCode")) {
-                    renderUI(entity, entryList.size());
-                }
+            if (key.equals("inviteCode")) {
+                entity.put("invitationCode", new JSONString(values.get(0)));
+            } else if (key.equals("h1b-questionnaire")) {
+                entity.put("invitationCode", new JSONString(values.get(0)));
             }
+            HttpService.HttpServiceAsync.instance().doPut(getInviteCodeValidateURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
+                    new AsyncCallback<String>() {
+                        @Override
+                        public void onSuccess(String arg0) {
+                            RootPanel.get().clear();
+                            RootPanel.get().add(new Image(OfficeImages.INSTANCE.logo()));
+                            if (key.equals("inviteCode")) {
+                                RootPanel.get().add(new EmployeeOnboardingPanel(arg0));
+                            } else if (key.equals("h1b-questionnaire")) {
+                                //RootPanel.get().add(new H1bQuestionnaireSentWidget(arg0));
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Throwable caught) {
+                            //TODO throw validation messge
+                            HTML error = new HTML("\n"
+                                    + "<p style=\"border: 1px solid rgb(100, 100, 100); padding: 5px 10px; background: rgb(238, 238, 238);\">"
+                                    + "<strong style=\"color:#EF520F; align: center\">Invitation Code Is Invalid Or Expired</strong></p>\n"
+                                    + "\n"
+                                    + "<ul>\n"
+                                    + "</ul>");
+                            RootPanel.get().clear();
+                            error.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+                            RootPanel.get().add(error);
+                        }
+                    });
         }
         return false;
-    }
-
-    public static void renderUI(JSONObject entity, int paramCount) {
-        HttpService.HttpServiceAsync.instance().doPut(getInviteCodeValidateURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
-                new AsyncCallback<String>() {
-                    @Override
-                    public void onSuccess(String arg0) {
-                        RootPanel.get().clear();
-                        RootPanel.get().removeFromParent();
-                        RootPanel.get().add(new Image(OfficeImages.INSTANCE.logo()));
-                        if (paramCount == 1 && (arg0.contains(InvitationType.CLIENT_ONBOARDING.name()) == true || arg0.contains(InvitationType.H1B_Questionnaire.name())==false)) {
-                            RootPanel.get().add(new EmployeeOnboardingPanel(arg0));
-                        } else if (paramCount == 2 && (arg0.contains(InvitationType.H1B_Questionnaire.name()) == true && (entity.containsKey("invitationType") == true && entity.get("invitationType").isString().stringValue().equals(InvitationType.H1B_Questionnaire.name())))) {
-                            //RootPanel.get().add(new H1bQuestionnaireSentWidget(arg0));
-                        }else{
-                            onFailure(null);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        //TODO throw validation messge
-                        HTML error = new HTML("\n"
-                                + "<p style=\"border: 1px solid rgb(100, 100, 100); padding: 5px 10px; background: rgb(238, 238, 238);\">"
-                                + "<strong style=\"color:#EF520F; align: center\">Invitation Code Is Invalid Or Expired</strong></p>\n"
-                                + "\n"
-                                + "<ul>\n"
-                                + "</ul>");
-                        RootPanel.get().clear();
-                        error.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-                        RootPanel.get().add(error);
-                    }
-                });
     }
 
     protected static String getInviteCodeValidateURI() {

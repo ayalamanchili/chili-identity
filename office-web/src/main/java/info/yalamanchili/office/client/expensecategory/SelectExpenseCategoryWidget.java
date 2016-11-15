@@ -23,6 +23,10 @@ public class SelectExpenseCategoryWidget extends SelectComposite {
         super(OfficeWelcome.constants, "ExpenseCategory", readOnly, isRequired, Alignment.HORIZONTAL);
     }
 
+    public SelectExpenseCategoryWidget(Boolean readOnly, Boolean isRequired, Alignment alignment) {
+        super(OfficeWelcome.constants, "ExpenseCategory", readOnly, isRequired, alignment);
+    }
+
     @Override
     protected void fetchDropDownData() {
         HttpService.HttpServiceAsync.instance().doGet(getDropDownURL(0, 10, "id", "name"),

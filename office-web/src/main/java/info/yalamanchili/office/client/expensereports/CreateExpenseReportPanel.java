@@ -54,6 +54,7 @@ import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.expenseitem.CreateExpenseItemPanel;
 import static info.yalamanchili.office.client.expensereports.ExpenseFormConstants.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -206,6 +207,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem);
         expenseItemPanels.add(panel);
         entityFieldsPanel.add(panel);
+        panel.deleteB.setVisible(false);
         entityActionsPanel.add(receiptsInfo);
         entityActionsPanel.insert(totalExpenses, entityActionsPanel.getWidgetIndex(receiptsInfo));
         entityActionsPanel.insert(totalCorporateCardExpenses, entityActionsPanel.getWidgetIndex(totalExpenses));
@@ -345,8 +347,12 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
                 i++;
             }
         }
-        entity.put("totalPersonalCardExpenses", new JSONString(totalPersonalCardExpenses.getCurrency().toString()));
-        entity.put("totalCorporateCardExpenses", new JSONString(totalCorporateCardExpenses.getCurrency().toString()));
+        if (totalPersonalCardExpenses.getCurrency() != null) {
+            entity.put("totalPersonalCardExpenses", new JSONString(totalPersonalCardExpenses.getCurrency().toString()));
+        }
+        if (totalCorporateCardExpenses.getCurrency() != null) {
+            entity.put("totalCorporateCardExpenses", new JSONString(totalCorporateCardExpenses.getCurrency().toString()));
+        }
         entity.put("totalExpenses", new JSONString(totalExpenses.getCurrency().toString()));
         entity.put(EXPENSE_RECEIPT, expenseReceipts);
         return entity;
@@ -356,17 +362,17 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     protected void createButtonClicked() {
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                logger.info(arg0.getMessage());
-                handleErrorResponse(arg0);
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        logger.info(arg0.getMessage());
+                        handleErrorResponse(arg0);
+                    }
 
-            @Override
-            public void onSuccess(String arg0) {
-                uploadReceipts(arg0);
-            }
-        });
+                    @Override
+                    public void onSuccess(String arg0) {
+                        uploadReceipts(arg0);
+                    }
+                });
     }
 
     @Override
@@ -387,7 +393,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(addItemL)) {
             onChange();
-            panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem);
+            panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem, false);
             expenseItemPanels.add(panel);
             entityFieldsPanel.add(panel);
             panel.expensePaymentMode.listBox.addBlurHandler(this);
@@ -528,24 +534,24 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         if (expenseItemPanels.size() > 0) {
             for (int i = 0; i < expenseItemPanels.size(); i++) {
                 CreateExpenseItemPanel itemPanel = expenseItemPanels.get(i);
-                if (itemPanel.amount.getCurrency() != null && itemPanel.expensePaymentMode.getValue().equalsIgnoreCase("Personal_Card")) {
+                if (itemPanel.amount.getCurrency() != null && itemPanel.expensePaymentMode.getValue() != null && itemPanel.expensePaymentMode.getValue().equalsIgnoreCase("Personal_Card")) {
                     amountV = itemPanel.amount.getValue();
                     if (!totalPersonalCardExpenses.getValue().isEmpty()) {
                         BigDecimal finalAmt = totalPersonalCardExpenses.getCurrency().add(new BigDecimal(amountV));
-                        totalPersonalCardExpenses.setValue(finalAmt, readyOnly);
+                        totalPersonalCardExpenses.setValue(finalAmt.setScale(2, RoundingMode.HALF_EVEN), readyOnly);
                         amountV = "";
                     } else {
-                        totalPersonalCardExpenses.setValue(new BigDecimal(amountV), readyOnly);
+                        totalPersonalCardExpenses.setValue(new BigDecimal(amountV).setScale(2, RoundingMode.HALF_EVEN), readyOnly);
                         amountV = "";
                     }
-                } else if (itemPanel.amount.getCurrency() != null && itemPanel.expensePaymentMode.getValue().equalsIgnoreCase("Corporate_Card")) {
+                } else if (itemPanel.amount.getCurrency() != null && itemPanel.expensePaymentMode.getValue() != null && itemPanel.expensePaymentMode.getValue().equalsIgnoreCase("Corporate_Card")) {
                     amountC = itemPanel.amount.getValue();
                     if (!totalCorporateCardExpenses.getValue().isEmpty()) {
                         BigDecimal finalAmt = totalCorporateCardExpenses.getCurrency().add(new BigDecimal(amountC));
-                        totalCorporateCardExpenses.setValue(finalAmt, readyOnly);
+                        totalCorporateCardExpenses.setValue(finalAmt.setScale(2, RoundingMode.HALF_EVEN), readyOnly);
                         amountC = "";
                     } else {
-                        totalCorporateCardExpenses.setValue(new BigDecimal(amountC), readyOnly);
+                        totalCorporateCardExpenses.setValue(new BigDecimal(amountC).setScale(2, RoundingMode.HALF_EVEN), readyOnly);
                         amountC = "";
                     }
                 }
