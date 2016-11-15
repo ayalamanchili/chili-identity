@@ -13,7 +13,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
@@ -42,7 +41,8 @@ import java.math.BigDecimal;
  */
 public class UpdateExpenseItemPanel extends TUpdateComposite implements BlurHandler, ChangeHandler {
 
-    SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true);
+//  SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true);
+    SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true, Alignment.VERTICAL);
     public EnumField expensePaymentMode;
     DateField expenseDate;
     StringField purpose;
@@ -52,11 +52,21 @@ public class UpdateExpenseItemPanel extends TUpdateComposite implements BlurHand
     public ClickableLink deleteB = new ClickableLink("Remove Item");
     protected String parentId;
     boolean isGeneralExpenseItem = false;
+    boolean displayFieldNames = true;
 
     public UpdateExpenseItemPanel(String parentId, JSONObject entity, boolean isGeneralExpense) {
         this.parentId = parentId;
         this.isGeneralExpenseItem = isGeneralExpense;
-        initUpdateComposite(entity, "ExpenseItem", OfficeWelcome.constants);
+        initUpdateComposite(entity, "ExpenseItem", OfficeWelcome.constants2);
+        entityCaptionPanel.setCaptionHTML("");
+    }
+    
+    public UpdateExpenseItemPanel(String parentId, JSONObject entity, boolean isGeneralExpense, boolean displayFieldNames) {
+        this.parentId = parentId;
+        this.isGeneralExpenseItem = isGeneralExpense;
+        this.displayFieldNames = displayFieldNames;
+        initUpdateComposite(entity, "ExpenseItem", OfficeWelcome.constants2);
+        entityCaptionPanel.setCaptionHTML("");
     }
 
     @Override
@@ -120,42 +130,42 @@ public class UpdateExpenseItemPanel extends TUpdateComposite implements BlurHand
     @Override
     protected void configure() {
         update.setVisible(false);
-        configureLabel(expensePaymentMode.getLabel());
-        configureLabel(expenseDate.getLabel());
-        configureLabel(purpose.getLabel());
+        configureLabel(expensePaymentMode.getLabel(), displayFieldNames);
+        configureLabel(expenseDate.getLabel(), displayFieldNames);
+        configureLabel(purpose.getLabel(), displayFieldNames);
         if (isGeneralExpenseItem) {
-            configureLabel(description.getLabel());
+            configureLabel(description.getLabel(), displayFieldNames);
         }
-        configureLabel(expenseMiles.getLabel());
-        configureLabel(amount.getLabel());
+        configureLabel(expenseMiles.getLabel(), displayFieldNames);
+        configureLabel(amount.getLabel(), displayFieldNames);
         if (!isGeneralExpenseItem) {
-            configureLabel(selectCategoryWidgetF.getLabel());
+            configureLabel(selectCategoryWidgetF.getLabel(), displayFieldNames);
         }
         expenseMiles.setVisible(false);
     }
 
-    protected void configureLabel(Label l) {
+     protected void configureLabel(Label l, boolean displayFieldNames) {
         l.removeStyleName("tfFieldHeader");
-        l.setVisible(false);
+        l.setVisible(displayFieldNames);
     }
 
     @Override
     protected void addWidgets() {
-        addField(EXPENSE_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 1, 1);
+        addField(EXPENSE_DATE, false, true, DataType.DATE_FIELD, Alignment.VERTICAL, 1, 1);
         expenseDate = (DateField) fields.get(EXPENSE_DATE);
-        addField(PURPOSE, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
+        addField(PURPOSE, false, true, DataType.STRING_FIELD, Alignment.VERTICAL, 1, 2);
         purpose = (StringField) fields.get(PURPOSE);
         if (!isGeneralExpenseItem) {
             addDropDown(CATEGORY, selectCategoryWidgetF, 1, 3);
         }
-        addField(EXPENSE_MILES, false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 1, 4);
+        addField(EXPENSE_MILES, false, false, DataType.CURRENCY_FIELD, Alignment.VERTICAL, 1, 4);
         expenseMiles = (CurrencyField) fields.get(EXPENSE_MILES);
-        addField(AMOUNT, false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 1, 5);
+        addField(AMOUNT, false, true, DataType.CURRENCY_FIELD, Alignment.VERTICAL, 1, 5);
         amount = (CurrencyField) fields.get(AMOUNT);
-        addEnumField(EXPENSE_PAYMENT_MODE, false, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL, 1, 6);
+        addEnumField(EXPENSE_PAYMENT_MODE, false, true, ExpensePaymentMode.names(), Alignment.VERTICAL, 1, 6);
         expensePaymentMode = (EnumField) fields.get(EXPENSE_PAYMENT_MODE);
         if (isGeneralExpenseItem) {
-            addField(DESCRIPTION, false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 7);
+            addField(DESCRIPTION, false, false, DataType.STRING_FIELD, Alignment.VERTICAL, 1, 7);
             description = (StringField) fields.get(DESCRIPTION);
         }
         entityFieldsPanel.setWidget(1, 8, deleteB);

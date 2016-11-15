@@ -46,7 +46,7 @@ import java.util.logging.Logger;
 public class CreateExpenseItemPanel extends TCreateComposite implements ChangeHandler, BlurHandler, ClickHandler {
 
     private Logger logger = Logger.getLogger(CreateExpenseItemPanel.class.getName());
-    SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true);
+    SelectExpenseCategoryWidget selectCategoryWidgetF = new SelectExpenseCategoryWidget(false, true, Alignment.VERTICAL);
     public EnumField expensePaymentMode;
     DateField expenseDate;
     StringField purpose;
@@ -56,12 +56,22 @@ public class CreateExpenseItemPanel extends TCreateComposite implements ChangeHa
     CurrencyField expenseMiles;
     public ClickableLink deleteB = new ClickableLink("Remove Item");
     CRUDComposite parent;
+    boolean displayFieldNames = true;
 
     public CreateExpenseItemPanel(CRUDComposite parent, boolean isGeneralExpenseItem) {
         super(TCreateComposite.CreateCompositeType.CREATE);
         this.parent = parent;
         this.isGeneralExpenseItem = isGeneralExpenseItem;
-        initCreateComposite("ExpenseItem", OfficeWelcome.constants);
+        initCreateComposite("ExpenseItem", OfficeWelcome.constants2);
+        entityCaptionPanel.setCaptionHTML("");
+    }
+    public CreateExpenseItemPanel(CRUDComposite parent, boolean isGeneralExpenseItem, boolean displayFieldNames) {
+        super(TCreateComposite.CreateCompositeType.CREATE);
+        this.parent = parent;
+        this.isGeneralExpenseItem = isGeneralExpenseItem;
+        this.displayFieldNames = displayFieldNames;
+        initCreateComposite("ExpenseItem", OfficeWelcome.constants2);
+        entityCaptionPanel.setCaptionHTML("");
     }
 
     @Override
@@ -70,21 +80,21 @@ public class CreateExpenseItemPanel extends TCreateComposite implements ChangeHa
 
     @Override
     protected void addWidgets() {
-        addField(EXPENSE_DATE, false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 1, 1);
+        addField(EXPENSE_DATE, false, true, DataType.DATE_FIELD, Alignment.VERTICAL, 1, 1);
         expenseDate = (DateField) fields.get(EXPENSE_DATE);
-        addField(PURPOSE, false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
+        addField(PURPOSE, false, true, DataType.STRING_FIELD, Alignment.VERTICAL, 1, 2);
         purpose = (StringField) fields.get(PURPOSE);
         if (!isGeneralExpenseItem) {
             addDropDown(CATEGORY, selectCategoryWidgetF, 1, 3);
         }
-        addEnumField(EXPENSE_PAYMENT_MODE, false, true, ExpensePaymentMode.names(), Alignment.HORIZONTAL, 1, 4);
+        addEnumField(EXPENSE_PAYMENT_MODE, false, true, ExpensePaymentMode.names(), Alignment.VERTICAL, 1, 4);
         expensePaymentMode = (EnumField) fields.get(EXPENSE_PAYMENT_MODE);
-        addField(EXPENSE_MILES, false, false, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 1, 5);
+        addField(EXPENSE_MILES, false, false, DataType.CURRENCY_FIELD, Alignment.VERTICAL, 1, 5);
         expenseMiles = (CurrencyField) fields.get(EXPENSE_MILES);
-        addField(AMOUNT, false, true, DataType.CURRENCY_FIELD, Alignment.HORIZONTAL, 1, 6);
+        addField(AMOUNT, false, true, DataType.CURRENCY_FIELD, Alignment.VERTICAL, 1, 6);
         amount = (CurrencyField) fields.get(AMOUNT);
         if (isGeneralExpenseItem) {
-            addField(DESCRIPTION, false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 7);
+            addField(DESCRIPTION, false, false, DataType.STRING_FIELD, Alignment.VERTICAL, 1, 7);
             description = (StringField) fields.get(DESCRIPTION);
         }
         entityFieldsPanel.setWidget(1, 8, deleteB);
@@ -95,23 +105,22 @@ public class CreateExpenseItemPanel extends TCreateComposite implements ChangeHa
     protected void configure() {
         create.setVisible(false);
         if (!isGeneralExpenseItem) {
-            configureLabel(selectCategoryWidgetF.getLabel());
+            configureLabel(selectCategoryWidgetF.getLabel(), displayFieldNames);
         }
         if (isGeneralExpenseItem) {
-            configureLabel(description.getLabel());
+            configureLabel(description.getLabel(), displayFieldNames);
         }
-        configureLabel(expensePaymentMode.getLabel());
-        configureLabel(expenseDate.getLabel());
-        configureLabel(purpose.getLabel());
-        configureLabel(expenseMiles.getLabel());
-        configureLabel(amount.getLabel());
+        configureLabel(expensePaymentMode.getLabel(), displayFieldNames);
+        configureLabel(expenseDate.getLabel(), displayFieldNames);
+        configureLabel(purpose.getLabel(), displayFieldNames);
+        configureLabel(expenseMiles.getLabel(), displayFieldNames);
+        configureLabel(amount.getLabel(), displayFieldNames);
         expenseMiles.setVisible(false);
-        setBackgroundText();
     }
 
-    protected void configureLabel(Label l) {
+    protected void configureLabel(Label l, boolean displayFieldNames) {
         l.removeStyleName("tfFieldHeader");
-        l.setVisible(false);
+        l.setVisible(displayFieldNames);
     }
 
     @Override
@@ -223,7 +232,6 @@ public class CreateExpenseItemPanel extends TCreateComposite implements ChangeHa
                             }
                         });
             }
-
         }
     }
 }
