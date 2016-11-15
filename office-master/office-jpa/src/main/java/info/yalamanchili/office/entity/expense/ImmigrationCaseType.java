@@ -15,6 +15,6 @@ package info.yalamanchili.office.entity.expense;
 public enum ImmigrationCaseType {
     NEW_H1B, 
     TRANSFER_H1B, 
-    ENTENSION_H1B,
+    EXTENSION_H1B,
     AMENDMENT;
 }
