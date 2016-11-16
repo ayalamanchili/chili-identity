@@ -16,15 +16,14 @@ import com.google.gwt.user.client.ui.RadioButton;
 import info.chili.gwt.crud.TUpdateComposite;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.BooleanField;
+import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.profile.benefits.YearType;
 import info.yalamanchili.office.client.profile.employee.TreeEmployeePanel;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -108,8 +107,6 @@ public class UpdateHealthInsuranceWaiverPanel extends TUpdateComposite {
         if (submittedDate.getDate() != null) {
             entity.put("submittedDate", new JSONString(DateUtils.toDateString(submittedDate.getDate())));
         }
-        entity.put("targetEntityName", new JSONString("targetEntityName"));
-        entity.put("targetEntityId", new JSONString("0"));
         return entity;
     }
 
@@ -131,7 +128,14 @@ public class UpdateHealthInsuranceWaiverPanel extends TUpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-
+//        assignFieldValueFromEntity("waivingCoverageFor", entity, DataType.STRING_FIELD);
+//        assignFieldValueFromEntity("spouseName", entity, DataType.STRING_FIELD);
+//        assignFieldValueFromEntity("dependentName", entity, DataType.STRING_FIELD);
+//        assignFieldValueFromEntity("waivingCoverageDueTo", entity, DataType.STRING_FIELD);
+//        assignFieldValueFromEntity("spouseNameOfCarrier", entity, DataType.STRING_FIELD);
+//        assignFieldValueFromEntity("otherNameOfCarrier", entity, DataType.STRING_FIELD);
+//        assignFieldValueFromEntity("otherCarrierType", entity, DataType.ENUM_FIELD);
+//        assignFieldValueFromEntity("submittedDate", entity, DataType.DATE_FIELD);
     }
 
     @Override
@@ -232,7 +236,7 @@ public class UpdateHealthInsuranceWaiverPanel extends TUpdateComposite {
         }
     }
 
-    protected boolean checkClientSideValidations(boolean valid) {
+    public boolean checkClientSideValidations(boolean valid) {
         if (spouse.isChecked() == true && spouseName.isVisible() == true && (spouseName.getValue() == null || spouseName.getValue().isEmpty())) {
             spouseName.setMessage("Spouse Name can not be empty");
             valid = false;

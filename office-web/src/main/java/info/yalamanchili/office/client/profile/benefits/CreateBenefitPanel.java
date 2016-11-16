@@ -73,8 +73,6 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
 
     @Override
     protected void createButtonClicked() {
-        enrolledFlagField.getBox().addClickHandler(this);
-        benefitType.listBox.addChangeHandler(this);
     }
 
     @Override
@@ -120,8 +118,6 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
 
     @Override
     protected void addWidgets() {
-        benefitType = new EnumField(OfficeWelcome.constants2,
-                "benefitType", "Benefit", false, true, BenefitType.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(benefitType);
         addEnumField("enrolledYear", false, true, YearType.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(enrolledFlagField);
@@ -153,6 +149,7 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
                 entityFieldsPanel.add(requestedDate);
                 entityFieldsPanel.remove(insuranceWaiver);
             } else {
+                entityFieldsPanel.add(insuranceWaiver);
                 entityFieldsPanel.remove(requestedDate);
             }
         }

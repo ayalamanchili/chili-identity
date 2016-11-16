@@ -14,7 +14,6 @@ import info.chili.gwt.crud.CreateComposite.CreateCompositeType;
 import info.chili.gwt.crud.TableRowOptionsWidget;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -92,7 +91,8 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
     @Override
     public void updateClicked(String entityId) {
         if (TabPanel.instance().profilePanel.isVisible()) {
-            new GenericPopup(new UpdateBenefitPanel(getEntity(entityId))).show();
+            TabPanel.instance().profilePanel.entityPanel.clear();
+            TabPanel.instance().profilePanel.entityPanel.add(new UpdateBenefitPanel(getEntity(entityId)));
         } else {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
             TabPanel.instance().myOfficePanel.entityPanel.add(new UpdateBenefitPanel(getEntity(entityId)));

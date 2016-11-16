@@ -10,8 +10,10 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.date.DateUtils;
 import info.chili.gwt.fields.BooleanField;
@@ -37,7 +39,7 @@ public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler,
 
     private static Logger logger = Logger.getLogger(UpdateBenefitPanel.class.getName());
     BooleanField enrolledFlagField = new BooleanField(OfficeWelcome.constants2, "enrolled", "Benefit", false, false, Alignment.HORIZONTAL);
-    DateField requestedDate = new DateField(OfficeWelcome.constants2, "affectiveDate", "Benefit", false, false, Alignment.HORIZONTAL);
+    DateField requestedDate = new DateField(OfficeWelcome.constants2, "effectiveDate", "Benefit", false, false, Alignment.HORIZONTAL);
     EnumField benefitType = new EnumField(OfficeWelcome.constants2, "benefitType", "Benefit", false, false, BenefitType.names(), Alignment.HORIZONTAL);
     protected String empId;
 
@@ -49,15 +51,14 @@ public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler,
 
     @Override
     protected JSONObject populateEntityFromFields() {
-//        return null;
         entity.put("benefitType", new JSONString(benefitType.getValue()));
-        if (insuranceWaiver != null) {
+        if (insuranceWaiver != null && entity.containsKey("healthInsuranceWaiver") && benefitType.getValue().equals(BenefitType.Health_Insurance.name()) && (enrolledFlagField.getValue() == false)) {
             entity.put("healthInsuranceWaiver", insuranceWaiver.populateEntityFromFields());
         }
         entity.put("enrolled", new JSONString(enrolledFlagField.getValue().toString()));
         assignEntityValueFromField("enrolledYear", entity);
         if (requestedDate.getDate() != null) {
-            entity.put("affectiveDate", new JSONString(DateUtils.toDateString(requestedDate.getDate())));
+            entity.put("effectiveDate", new JSONString(DateUtils.toDateString(requestedDate.getDate())));
         }
         return entity;
     }
@@ -92,24 +93,46 @@ public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler,
     }
 
     @Override
+    public void loadEntity(String entityId) {
+        HttpService.HttpServiceAsync.instance().doGet(getReadURI(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        logger.info(response);
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
+
+                    }
+                });
+    }
+
+    protected String getReadURI() {
+        return OfficeWelcome.constants.root_url() + "benefit/save/" + entityId;
+    }
+
+    @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         String enrolled = entity.get("enrolled").isString().stringValue();
         benefitType.selectValue(JSONUtils.toString(entity, "benefitType"));
+        if (insuranceWaiver != null && benefitType.getValue().equals(BenefitType.Health_Insurance.name()) && (enrolledFlagField.getValue() == false) && entity.containsKey("healthInsuranceWaiver")) {
+            entityFieldsPanel.add(new UpdateHealthInsuranceWaiverPanel(entity.get("healthInsuranceWaiver").isObject()));
+        }
         assignFieldValueFromEntity("enrolledYear", entity, DataType.ENUM_FIELD);
-        if (enrolled == "true") {
+        if ("true".equals(enrolled)) {
             enrolledFlagField.setValue(Boolean.TRUE);
         } else {
             enrolledFlagField.setValue(Boolean.FALSE);
         }
         entity.put(enrolledFlagField.getTitle(), entity.get("enrolled"));
-        assignFieldValueFromEntity("affectiveDate", entity, DataType.DATE_FIELD);
-        if (entity.get("enrolled").isString().stringValue().equalsIgnoreCase("false") && entity.containsKey("healthInsuranceWaiver")) {
-            entityFieldsPanel.add(new UpdateHealthInsuranceWaiverPanel(entity.get("healthInsuranceWaiver").isObject()));
+        if (requestedDate.getDate() != null) {
+            assignFieldValueFromEntity("effectiveDate", entity, DataType.DATE_FIELD);
+            entityFieldsPanel.add(requestedDate);
         }
     }
 
     @Override
     protected void addListeners() {
+        enrolledFlagField.getBox().addClickHandler(this);
         benefitType.listBox.addChangeHandler(this);
     }
 
@@ -120,9 +143,8 @@ public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler,
     @Override
     protected void addWidgets() {
         entityFieldsPanel.add(benefitType);
-        addEnumField("year", false, false, YearType.names(), Alignment.HORIZONTAL);
+        addEnumField("enrolledYear", false, false, YearType.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(enrolledFlagField);
-        addField("affectiveDate", false, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
     }
 
     @Override
@@ -166,8 +188,12 @@ public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler,
         }
     }
 
-    protected boolean checkClientSideValidations(boolean valid) {
-
-        return valid;
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        boolean valid = true;
+        if (benefitType.getValue().equals(BenefitType.Health_Insurance.name()) && (enrolledFlagField.getValue() == false)) {
+            return insuranceWaiver.checkClientSideValidations(valid);
+        }
+        return true;
     }
 }

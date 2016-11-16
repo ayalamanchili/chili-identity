@@ -32,8 +32,6 @@ import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.ClickableImage;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.profile.benefits.YearType;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.logging.Logger;
 
