@@ -41,6 +41,7 @@ public interface OfficeCacheKeys {
     String PROSPECT = "prospect";
     String CLIENTINFORMATION = "clientinformation";
     String OUTOFOFFICEREQUEST = "outofreq";
+    String IMMIGRATION_CASE = "immiCase";
     /**
      * holds key values for email messaging with address
      */
