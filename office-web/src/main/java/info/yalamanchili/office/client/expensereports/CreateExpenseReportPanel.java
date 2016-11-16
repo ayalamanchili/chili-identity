@@ -77,7 +77,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     SuggestBox otherEmployees = new SuggestBox(OfficeWelcome.constants2, "otherEmployees", "ExpenseReport", false, false, Alignment.HORIZONTAL);
     BooleanField submitForApprovalF = new BooleanField(OfficeWelcome.constants2, "Submit", "ExpenseReport", false, false, Alignment.HORIZONTAL);
     HTML tac = new HTML(" I " + OfficeWelcome.instance().getCurrentUserName() + " Acknowledge that all information in my expenses report is accurate and true \n");
-    HTML tac1 = new HTML("\n Note: If you would like to specify other 'Approver' instead of 'Report_To' manager, please mention in the below field \n");
+    HTML tac1 = new HTML("\n <br/>" + "Note: If you would like to specify other 'Approver' instead of 'Report_To' manager, please mention in the below field \n <br/><br/>");
     boolean isGeneralExpenseItem = false;
     CheckBox confrmCB = new CheckBox();
     HorizontalPanel hPanel = new HorizontalPanel();
@@ -432,14 +432,15 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
 
     private void removeItems() {
         if (expenseItemPanels.size() > 0) {
+            logger.info("size is ... " + expenseItemPanels.size());
             for (int i = 0; i <= expenseItemPanels.size() - 1; i++) {
                 CreateExpenseItemPanel itemPanel = expenseItemPanels.get(i);
                 itemPanel.removeFromParent();
                 expenseItemPanels.remove(itemPanel);
             }
-            CreateExpenseItemPanel itemPanel = expenseItemPanels.get(expenseItemPanels.size() - 1);
-            itemPanel.removeFromParent();
-            expenseItemPanels.remove(itemPanel);
+//            CreateExpenseItemPanel itemPanel = expenseItemPanels.get(expenseItemPanels.size() - 1);
+//            itemPanel.removeFromParent();
+//            expenseItemPanels.remove(itemPanel);
         }
     }
 
@@ -500,7 +501,6 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
                 renderproject(true);
                 isGeneralExpenseItem = false;
                 addExpenseItems();
-                isGeneralExpenseItem = false;
                 travelInfo.setVisible(true);
                 entityCaptionPanel.setCaptionHTML("Travel Expense form");
             }
@@ -645,14 +645,15 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
     }
 
     private void addExpenseItems() {
+        logger.info("is general expense item ... " + isGeneralExpenseItem);
         removeItems();
         expenseItemPanels.clear();
-        CreateExpenseItemPanel panel;
-        panel = null;
         panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem);
         expenseItemPanels.add(panel);
-        entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(addItemL));
-        entityFieldsPanel.add(addItemL);
+        entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(expenseItemsInfo) + 1);
+        panel.expensePaymentMode.listBox.addBlurHandler(this);
+        panel.amount.getTextbox().addValueChangeHandler(this);
+        //entityFieldsPanel.add(addItemL);
     }
 
     @Override

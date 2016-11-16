@@ -367,13 +367,6 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
     }
 
     protected void populateExpenseReceipt(JSONArray items) {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).isObject() != null) {
-                UpdateExpenseItemPanel panel = new UpdateExpenseItemPanel(getEntityId(), items.get(i).isObject(), isGeneralExpenseItem());
-                updateItemPanels.add(panel);
-                entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(expenseItemsInfo) + 1);
-            }
-        }
         entityFieldsPanel.insert(new ReadAllExpenseReceiptsPanel(getEntityId(), items), entityFieldsPanel.getWidgetIndex(receiptsInfo) + 1);
     }
 
