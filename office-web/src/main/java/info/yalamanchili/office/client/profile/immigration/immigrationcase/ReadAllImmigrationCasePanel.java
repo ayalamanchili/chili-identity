@@ -121,6 +121,8 @@ public class ReadAllImmigrationCasePanel extends CRUDReadAllComposite {
                         @Override
                         public void onResponse(String result) {
                             new ResponseStatusWidget().show("H1B Questionnaire Url has been emailed successfully");
+                            TabPanel.instance().immigrationPanel.entityPanel.clear();
+                            TabPanel.instance().immigrationPanel.entityPanel.add(new ReadAllImmigrationCasePanel());
                         }
                     });
         }
