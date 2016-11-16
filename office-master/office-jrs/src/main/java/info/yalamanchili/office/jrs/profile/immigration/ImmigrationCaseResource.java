@@ -13,6 +13,7 @@ import info.chili.dao.CRUDDao;
 import info.chili.document.dao.SerializedEntityDao;
 import info.chili.email.Email;
 import info.chili.jpa.validation.Validate;
+import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
@@ -42,6 +43,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -84,9 +87,9 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
             if (entity.getEmployee() != null) {
                 Employee emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
                 entity.setEmployee(emp);
-                if(emp.getCompany()!=null){
+                if (emp.getCompany() != null) {
                     entity.setCompany(CompanyDao.instance().findById(emp.getCompany().getId()));
-                }else{
+                } else {
                     entity.setCompany(CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC));
                 }
             }
@@ -116,6 +119,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
 
     @GET
     @Path("/{empId}/{start}/{limit}")
+    @Cacheable(OfficeCacheKeys.IMMIGRATION_CASE)
     public ImmigrationCaseTable table(@PathParam("empId") long empId, @PathParam("start") int start, @PathParam("limit") int limit) {
         Employee emp = EmployeeDao.instance().findById(empId);
         ImmigrationCaseTable tableObj = new ImmigrationCaseTable();
@@ -135,8 +139,11 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
 
     @GET
     @Path("send-questionnaire/{caseId}")
+    @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CASE, allEntries = true)
     public void sendH1BQuestionnaire(@PathParam("caseId") Long caseId) {
         ImmigrationCase immigrationCase = immigrationCaseDao.findById(caseId);
+        immigrationCase.setImmigrationCaseStatus(ImmigrationCaseStatus.Pending_Questionnaire_Submission);
+        immigrationCaseDao.getEntityManager().merge(immigrationCase);
         String empEmail = null;
         Employee emp = null;
         if (immigrationCase.getEmployee() != null) {
@@ -150,7 +157,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         Email email = new Email();
         email.addTo(empEmail);
         Map<String, Object> emailCtx = new HashMap<>();
-        emailCtx.put("invitationCode", OfficeServiceConfiguration.instance().getPortalWebUrl() + "?inviteCode=" + code.getInvitationCode() + "&invitationType=" + code.getInviteType().getInvitationType().name());
+        emailCtx.put("invitationCode", OfficeServiceConfiguration.instance().getPortalWebUrl() + "?h1b-questionnaire=" + code.getInvitationCode() + "&invitationType=" + code.getInviteType().getInvitationType().name());
         if (emp != null) {
             emailCtx.put("employeeName", emp.getFirstName() + " " + emp.getLastName());
             if (emp.getCompany() != null) {
@@ -169,9 +176,8 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         String messageText = "Questionnaire";
         email.setContext(emailCtx);
         email.setSubject(messageText);
+        email.setBody(code.getInvitationCode());
         MessagingService.instance().sendEmail(email);
-        immigrationCase.setImmigrationCaseStatus(ImmigrationCaseStatus.Pending_Questionnaire_Submission);
-        immigrationCaseDao.getEntityManager().merge(immigrationCase);
     }
 
 //    @GET
