@@ -60,6 +60,7 @@ public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler,
         if (requestedDate.getDate() != null) {
             entity.put("effectiveDate", new JSONString(DateUtils.toDateString(requestedDate.getDate())));
         }
+        assignEntityValueFromField("comments", entity);
         return entity;
     }
 
@@ -114,20 +115,18 @@ public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler,
     public void populateFieldsFromEntity(JSONObject entity) {
         String enrolled = entity.get("enrolled").isString().stringValue();
         benefitType.selectValue(JSONUtils.toString(entity, "benefitType"));
-        if (insuranceWaiver != null && benefitType.getValue().equals(BenefitType.Health_Insurance.name()) && (enrolledFlagField.getValue() == false) && entity.containsKey("healthInsuranceWaiver")) {
-            entityFieldsPanel.add(new UpdateHealthInsuranceWaiverPanel(entity.get("healthInsuranceWaiver").isObject()));
-        }
         assignFieldValueFromEntity("enrolledYear", entity, DataType.ENUM_FIELD);
         if ("true".equals(enrolled)) {
             enrolledFlagField.setValue(Boolean.TRUE);
-        } else {
-            enrolledFlagField.setValue(Boolean.FALSE);
-        }
-        entity.put(enrolledFlagField.getTitle(), entity.get("enrolled"));
-        if (requestedDate.getDate() != null) {
             assignFieldValueFromEntity("effectiveDate", entity, DataType.DATE_FIELD);
             entityFieldsPanel.add(requestedDate);
+        } else {
+            enrolledFlagField.setValue(Boolean.FALSE);
+            insuranceWaiver = new UpdateHealthInsuranceWaiverPanel(entity.get("healthInsuranceWaiver").isObject());
+            entityFieldsPanel.add(insuranceWaiver);
         }
+        entity.put(enrolledFlagField.getTitle(), entity.get("enrolled"));
+        assignFieldValueFromEntity("comments", entity, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -145,16 +144,15 @@ public class UpdateBenefitPanel extends UpdateComposite implements ClickHandler,
         entityFieldsPanel.add(benefitType);
         addEnumField("enrolledYear", false, false, YearType.names(), Alignment.HORIZONTAL);
         entityFieldsPanel.add(enrolledFlagField);
+        addField("comments", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
     }
 
     @Override
     public void onChange(ChangeEvent event) {
         if (event.getSource().equals(benefitType.listBox)) {
             if (benefitType.getValue().equals(BenefitType.Health_Insurance.name()) && (enrolledFlagField.getValue() == false)) {
-                insuranceWaiver.removeFromParent();
                 entityFieldsPanel.add(insuranceWaiver);
             } else {
-                insuranceWaiver.removeFromParent();
                 entityFieldsPanel.remove(insuranceWaiver);
             }
         }
