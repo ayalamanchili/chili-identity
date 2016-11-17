@@ -72,6 +72,7 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite implements C
     }
 
     public ReadHealthInsuranceWaiverWidget(String id) {
+        this.empId = id;
         initReadComposite(id, "HealthInsuranceWaiver", OfficeWelcome.constants2);
     }
 
@@ -83,7 +84,6 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite implements C
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
-                        entityFieldsPanel.setWidget(12, 1, printIcn);
                     }
                 });
 
@@ -162,7 +162,7 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite implements C
         entityFieldsPanel.setWidget(9, 1, otherNameOfCarrier);
         entityFieldsPanel.setWidget(9, 2, otherCarrierType);
         entityFieldsPanel.setWidget(10, 1, submittedDate);
-
+        entityFieldsPanel.setWidget(12, 1, printIcn);
         alignFields();
     }
 
@@ -172,7 +172,7 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite implements C
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "benefit/" + getEntityId();
+        return "";
     }
 
     @Override
