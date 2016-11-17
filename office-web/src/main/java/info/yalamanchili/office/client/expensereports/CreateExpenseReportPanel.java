@@ -242,6 +242,9 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         approvalManager.setVisible(false);
         otherEmployees.setVisible(false);
         otherDepartment.setVisible(false);
+        tac1.setVisible(false);
+        foryourself.setVisible(false);
+        forsomeone.setVisible(false);
         HttpService.HttpServiceAsync.instance().doGet(getCorpEmpIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
             @Override
             public void onResponse(String entityString) {
@@ -496,6 +499,9 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
                 approvalManager.setVisible(true);
                 generalInfo.setVisible(true);
                 travelInfo.setVisible(false);
+                tac1.setVisible(true);
+                foryourself.setVisible(true);
+                forsomeone.setVisible(true);
                 entityCaptionPanel.setCaptionHTML("General Expense form");
             } else if (expenseFormType.getValue().equals(ExpenseFormType.TRAVEL_EXPENSE.name())) {
                 renderproject(true);
@@ -650,6 +656,7 @@ public class CreateExpenseReportPanel extends CreateComposite implements ChangeH
         expenseItemPanels.clear();
         panel = new CreateExpenseItemPanel(this, isGeneralExpenseItem);
         expenseItemPanels.add(panel);
+        panel.deleteB.setVisible(false);
         entityFieldsPanel.insert(panel, entityFieldsPanel.getWidgetIndex(expenseItemsInfo) + 1);
         panel.expensePaymentMode.listBox.addBlurHandler(this);
         panel.amount.getTextbox().addValueChangeHandler(this);

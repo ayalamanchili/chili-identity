@@ -75,13 +75,17 @@ public class UpdateExpenseItemPanel extends TUpdateComposite implements BlurHand
         assignEntityValueFromField(EXPENSE_DATE, entity);
         assignEntityValueFromField(PURPOSE, entity);
         if (!isGeneralExpenseItem) {
-            entity.put(CATEGORY, selectCategoryWidgetF.getSelectedObject());
+            OfficeWelcome.logger.info("entity isssssss:"+selectCategoryWidgetF.getSelectedObject());
+            JSONObject category = selectCategoryWidgetF.getSelectedObject();
+            category.put("name", category.get("value"));
+            entity.put(CATEGORY, category);
         }
         if (isGeneralExpenseItem) {
             assignEntityValueFromField(DESCRIPTION, entity);
         }
         assignEntityValueFromField(EXPENSE_MILES, entity);
         assignEntityValueFromField(AMOUNT, entity);
+        OfficeWelcome.logger.info("entity isssssss:"+entity);
         return entity;
     }
 
