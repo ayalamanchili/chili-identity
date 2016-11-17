@@ -50,7 +50,14 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
 
     public CreateBenefitPanel(CreateComposite.CreateCompositeType type) {
         super(type);
+        this.empId = empId;
         initCreateComposite("Benefit", OfficeWelcome.constants2);
+    }
+
+    public CreateBenefitPanel(String employeeId) {
+        super(CreateComposite.CreateCompositeType.CREATE);
+        this.empId = employeeId;
+        initCreateComposite("Benefit", OfficeWelcome.constants);
     }
 
     @Override
@@ -97,10 +104,10 @@ public class CreateBenefitPanel extends CreateComposite implements ClickHandler,
         GenericPopup.hideIfOpen();
         if (TabPanel.instance().profilePanel.isVisible()) {
             TabPanel.instance().profilePanel.entityPanel.clear();
-            TabPanel.instance().profilePanel.entityPanel.add(new ReadAllBenefitsPanel(OfficeWelcome.instance().employeeId));
+            TabPanel.instance().profilePanel.entityPanel.add(new ReadAllBenefitsPanel(empId));
         } else {
             TabPanel.instance().myOfficePanel.entityPanel.clear();
-            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBenefitsPanel(TreeEmployeePanel.instance().getEntityId()));
+            TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllBenefitsPanel(OfficeWelcome.instance().employeeId));
         }
     }
 

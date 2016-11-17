@@ -75,8 +75,9 @@ public class BenefitEnrollmentResource extends CRUDResource<BenefitEnrollment> {
     @PUT
     @Validate
     @Path("/save/{empId}")
+    @Produces("application/text")
     @AccessCheck(roles = {"ROLE_HEALTH_INSURANCE_MANAGER"})
-    public void addBenefit(@PathParam("empId") Long empId, BenefitEnrollment benefitEnrollment) {
+    public String addBenefit(@PathParam("empId") Long empId, BenefitEnrollment benefitEnrollment) {
         benefitEnrollment.setEmployee(EmployeeDao.instance().findById(empId));
         benefitEnrollment.setBenefitType(benefitEnrollment.getBenefitType());
         List<BenefitEnrollment> benefitEnroll = benefitenrollmentDao.queryForEmployee(benefitEnrollment.getEmployee().getId(), 0, 10);
@@ -103,9 +104,9 @@ public class BenefitEnrollmentResource extends CRUDResource<BenefitEnrollment> {
         if (benefitEnrollment.getHealthInsuranceWaiver() != null) {
             benefitEnrollment.setHealthInsuranceWaiver(healthWaiver);
         }
-        getDao().save(benefitEnrollment);
-        benefitEnrollment.setId(benefitEnrollment.getId());
+        benefitenrollmentDao.save(benefitEnrollment).getId().toString();
         BenefitenrollmentService.instance().sendBenefitEnrollmentCreatedNotification(benefitEnrollment);
+        return benefitenrollmentDao.save(benefitEnrollment).getId().toString();
     }
 
     @GET

@@ -65,6 +65,7 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite implements C
     HTML emptyLine = new HTML("<br/>");
 
     ClickableImage printIcn = new ClickableImage("print", ChiliImages.INSTANCE.printIcon_16_16());
+    protected String empId;
 
     public ReadHealthInsuranceWaiverWidget(JSONObject entity) {
         initReadComposite(entity, "HealthInsuranceWaiver", OfficeWelcome.constants2);
@@ -82,6 +83,7 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite implements C
                     public void onResponse(String response) {
                         entity = (JSONObject) JSONParser.parseLenient(response);
                         populateFieldsFromEntity(entity);
+                        entityFieldsPanel.setWidget(12, 1, printIcn);
                     }
                 });
 
@@ -160,7 +162,7 @@ public class ReadHealthInsuranceWaiverWidget extends TReadComposite implements C
         entityFieldsPanel.setWidget(9, 1, otherNameOfCarrier);
         entityFieldsPanel.setWidget(9, 2, otherCarrierType);
         entityFieldsPanel.setWidget(10, 1, submittedDate);
-        entityFieldsPanel.setWidget(12, 1, printIcn);
+
         alignFields();
     }
 
