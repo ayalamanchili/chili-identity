@@ -436,9 +436,9 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
         entityFieldsPanel.add(receiptsInfo);
         entityFieldsPanel.add(fileUploadPanel);
         entityActionsPanel.add(Acknowledgement);
-        entityActionsPanel.insert(totalExpenses, entityActionsPanel.getWidgetIndex(Acknowledgement));
-        entityActionsPanel.insert(totalCorporateCardExpenses, entityActionsPanel.getWidgetIndex(totalExpenses));
-        entityActionsPanel.insert(totalPersonalCardExpenses, entityActionsPanel.getWidgetIndex(totalCorporateCardExpenses));
+        entityFieldsPanel.insert(totalExpenses, entityFieldsPanel.getWidgetIndex(receiptsInfo));
+        entityFieldsPanel.insert(totalCorporateCardExpenses, entityFieldsPanel.getWidgetIndex(totalExpenses));
+        entityFieldsPanel.insert(totalPersonalCardExpenses, entityFieldsPanel.getWidgetIndex(totalCorporateCardExpenses));
         hPanel.add(confrmCB);
         confrmCB.setValue(false);
         hPanel.add(tac);
@@ -586,10 +586,10 @@ public class UpdateExpenseReportPanel extends UpdateComposite implements ChangeH
             endDate.setMessage("End Date must be equal to or before Current Date");
             return false;
         }
-        if (expenseItemPanels.size() > 0) {
+        if (updateItemPanels.size() > 0) {
             DateField expenseDate = null;
-            for (int i = 0; i < expenseItemPanels.size(); i++) {
-                CreateExpenseItemPanel itemPanel = expenseItemPanels.get(i);
+            for (int i = 0; i < updateItemPanels.size(); i++) {
+                UpdateExpenseItemPanel itemPanel = (UpdateExpenseItemPanel) updateItemPanels.get(i);
                 expenseDate = (DateField) itemPanel.fields.get("expenseDate");
                 if (expenseDate.getDate() != null && (expenseDate.getDate().before(startDate.getDate()) || expenseDate.getDate().after(endDate.getDate()))) {
                     itemPanel.fields.get("expenseDate").setMessage("Expense Item Date must be equal to or between Expense Start Date and End Date");

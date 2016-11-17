@@ -14,7 +14,9 @@ import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
+import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.profile.contact.WorkStatus;
 import java.util.logging.Logger;
 
@@ -27,6 +29,7 @@ public class ConsultantTimeSummaryPanel extends ReadComposite {
     protected String employeeId;
     private static ConsultantTimeSummaryPanel instance;
     private static Logger logger = Logger.getLogger(ConsultantTimeSummaryPanel.class.getName());
+    protected SelectCompanyWidget selectCompanyWidget = new SelectCompanyWidget(false, false, Alignment.HORIZONTAL);
 
     public static ConsultantTimeSummaryPanel instance() {
         return instance;
@@ -57,6 +60,7 @@ public class ConsultantTimeSummaryPanel extends ReadComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
+        JSONObject employee = new JSONObject();
         assignFieldValueFromEntity("employee", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("startDate", entity, DataType.STRING_FIELD);
         assignFieldValueFromEntity("availablePTOHours", entity, DataType.FLOAT_FIELD);
@@ -66,6 +70,7 @@ public class ConsultantTimeSummaryPanel extends ReadComposite {
         assignFieldValueFromEntity("totalUsedHours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("totalAvailableHours", entity, DataType.FLOAT_FIELD);
         assignFieldValueFromEntity("workStatus", entity, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("company", entity, null);
     }
 
     @Override
@@ -87,6 +92,7 @@ public class ConsultantTimeSummaryPanel extends ReadComposite {
         addField("totalUsedHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addField("totalAvailableHours", true, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
         addEnumField("workStatus", true, false, WorkStatus.names(), Alignment.HORIZONTAL);
+        addDropDown("company", selectCompanyWidget);
         alignFields();
     }
 
