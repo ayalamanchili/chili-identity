@@ -28,26 +28,27 @@ import info.yalamanchili.office.client.profile.emergencycnt.ReadAllDependentsPan
  * @author Sandeep Sunchu <sandeep.sunchu@sstech.us>
  */
 public class ReadImmigrationCasePanel extends ReadComposite {
-    
+
     private static ReadImmigrationCasePanel instance;
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", true, true, Alignment.HORIZONTAL);
     StringField emailF = new StringField(OfficeWelcome.constants, "email", "Email", true, false, Alignment.HORIZONTAL);
     protected SelectCompanyWidget companyWidget = new SelectCompanyWidget(true, false, Alignment.HORIZONTAL);
-    
+
     public static ReadImmigrationCasePanel instance() {
         return instance;
     }
-    
+
     public ReadImmigrationCasePanel(JSONObject entity) {
+        OfficeWelcome.logger.info("read case entity is .... " + entity);
         instance = this;
         initReadComposite(entity, "ImmigrationCase", OfficeWelcome.constants2);
         populateDependents();
     }
-    
+
     protected final void populateDependents() {
         entityFieldsPanel.add(new ReadAllDependentsPanel(getEntityId(), "ImmigrationCase"));
     }
-    
+
     @Override
     public void loadEntity(String entityId) {
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
@@ -59,10 +60,9 @@ public class ReadImmigrationCasePanel extends ReadComposite {
                     }
                 });
     }
-    
+
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        OfficeWelcome.logger.info("entity in read panel is ... " + entity);
         if (entity.containsKey("employee") == true) {
             JSONObject employee = entity.get("employee").isObject();
             if (employee != null) {
@@ -76,22 +76,27 @@ public class ReadImmigrationCasePanel extends ReadComposite {
             emailF.setValue(JSONUtils.toString(entity, "email"));
         }
         if (entity.containsKey("company") && entity.get("company") != null) {
-            entityFieldsPanel.insert(companyWidget, entityFieldsPanel.getWidgetIndex(emailF));
+            if (entity.containsKey("email") && !"".equals(entity.get("email").isString().stringValue())) {
+                entityFieldsPanel.insert(companyWidget, entityFieldsPanel.getWidgetIndex(emailF));
+
+            } else {
+                entityFieldsPanel.insert(companyWidget, entityFieldsPanel.getWidgetIndex(employeeSB) + 3);
+            }
             companyWidget.setSelectedValue(entity.get("company").isObject());
         }
         assignFieldValueFromEntity("sponsorType", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("immigrationCaseType", entity, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("immigrationCaseStatus", entity, DataType.ENUM_FIELD);
     }
-    
+
     @Override
     protected void addListeners() {
     }
-    
+
     @Override
     protected void configure() {
     }
-    
+
     @Override
     protected void addWidgets() {
         entityFieldsPanel.add(employeeSB);
@@ -99,21 +104,21 @@ public class ReadImmigrationCasePanel extends ReadComposite {
         addEnumField("immigrationCaseType", true, true, ImmigrationCaseType.names(), Alignment.HORIZONTAL);
         addEnumField("immigrationCaseStatus", true, true, ImmigrationCaseStatus.names(), Alignment.HORIZONTAL);
     }
-    
+
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
     }
-    
+
     @Override
     protected boolean enableBack() {
         return true;
     }
-    
+
     @Override
     protected ReadAllComposite getReadAllPanel() {
         return ReadAllImmigrationCasePanel.instance;
     }
-    
+
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "immigrationcase/" + entityId;
