@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import info.chili.gwt.rpc.HttpService;
 import info.yalamanchili.office.client.onboarding.EmployeeOnboardingPanel;
+import info.yalamanchili.office.client.profile.employee.H1bQuestionnaireWidget;
 import info.yalamanchili.office.client.resources.OfficeImages;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class InvitationCodeValidator {
                             if (key.equals("inviteCode")) {
                                 RootPanel.get().add(new EmployeeOnboardingPanel(arg0));
                             } else if (key.equals("h1b-questionnaire")) {
-                                //RootPanel.get().add(new H1bQuestionnaireSentWidget(arg0));
+                                RootPanel.get().add(new H1bQuestionnaireWidget(arg0));
                             }
                         }
 
