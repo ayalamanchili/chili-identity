@@ -34,7 +34,7 @@ public class ImmigrationCaseSidePanel extends ALComposite implements ClickHandle
 
     @Override
     protected void addWidgets() {
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_ACCOUNTS_PAYABLE, ROLE.ROLE_ADMIN, ROLE.ROLE_PAYROLL_AND_BENIFITS, ROLE.ROLE_CEO, ROLE.ROLE_GENERAL_EXPENSE_MANAGER)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_H1B_IMMIGRATION, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             sidePanel.add(new SearchImmigrationCasePanel());
         }
     }
