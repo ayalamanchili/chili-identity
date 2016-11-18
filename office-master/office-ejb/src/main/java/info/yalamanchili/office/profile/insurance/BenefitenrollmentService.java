@@ -60,11 +60,12 @@ public class BenefitenrollmentService {
     @Autowired
     protected Mapper mapper;
 
-    public Response getReport(BenefitEnrollment entity) {
-        PdfDocumentData data = new PdfDocumentData();
-        data.setTemplateUrl("/templates/pdf/health-waiver-template.pdf");
+    public Response getReport(Long id) {
+        BenefitEnrollment entity = benefitEnrollmentDao.findById(id);
         EmployeeDao employeeDao = EmployeeDao.instance();
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
+        PdfDocumentData data = new PdfDocumentData();
+        data.setTemplateUrl("/templates/pdf/health-waiver-template.pdf");
         data.setKeyStoreName(securityConfiguration.getKeyStoreName());
         Employee preparedBy = entity.getEmployee();
         data.getData().put("firstName", preparedBy.getFirstName());
@@ -75,7 +76,7 @@ public class BenefitenrollmentService {
         Signature preparedBysignature = new Signature(preparedBy.getEmployeeId(), preparedBy.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "employeeSignature", DateUtils.dateToCalendar(entity.getEffectiveDate()), employeeDao.getPrimaryEmail(preparedBy), null);
         data.getSignatures().add(preparedBysignature);
 
-        HealthInsuranceWaiver healthInsuranceWaiver = HealthInsuranceWaiverDao.instance().getEntityManager().find(null, data);
+        HealthInsuranceWaiver healthInsuranceWaiver = HealthInsuranceWaiverDao.instance().getEntityManager().find(HealthInsuranceWaiver.class, id);
         if (entity != null) {
             if (healthInsuranceWaiver != null) {
                 if (healthInsuranceWaiver.getWaivingCoverageFor() != null) {
