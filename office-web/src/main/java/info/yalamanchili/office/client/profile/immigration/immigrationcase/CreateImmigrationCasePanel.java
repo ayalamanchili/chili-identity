@@ -35,7 +35,7 @@ public class CreateImmigrationCasePanel extends CreateComposite implements BlurH
 
     private static Logger logger = Logger.getLogger(CreateImmigrationCasePanel.class.getName());
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, true, Alignment.HORIZONTAL);
-    StringField emailF = new StringField(OfficeWelcome.constants, "email", "Email", false, false, Alignment.HORIZONTAL);
+    StringField emailF = new StringField(OfficeWelcome.constants, "email", "Email", false, true, Alignment.HORIZONTAL);
     protected SelectCompanyWidget companyWidget = new SelectCompanyWidget(false, false, Alignment.HORIZONTAL);
 
     public CreateImmigrationCasePanel(CreateComposite.CreateCompositeType type) {
@@ -127,13 +127,20 @@ public class CreateImmigrationCasePanel extends CreateComposite implements BlurH
 
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
+        OfficeWelcome.logger.info("does email attached to fields panel .... "+emailF.isAttached());
         if (entity.get("employee") == null && entity.get("employeeName") != null && entity.get("employeeName").isString().stringValue().trim().isEmpty()) {
             employeeSB.setMessage("Please choose a employee");
             return false;
         }
-        if (entity.get("employeeName") != null && emailF.getValue() == null) {
+        if (entity.get("employeeName") != null && entity.containsKey("email") == true && entity.get("email").isString().stringValue().isEmpty()) {
             emailF.setMessage("Please enter email address");
             return false;
+        }
+        if(emailF.getValue()!=null){
+            if(!emailF.getValue().matches("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$")){
+                emailF.setMessage("Enter a valid email address");
+                return false;
+            }
         }
         if (entity.get("employeeName") != null && companyWidget.getSelectedObject() == null) {
             companyWidget.setMessage("Please select company");
