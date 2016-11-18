@@ -43,7 +43,6 @@ import info.yalamanchili.office.client.profile.immigration.LCA.LcaMenu;
 import info.yalamanchili.office.client.profile.immigration.LCA.LcaSidePanel;
 import info.yalamanchili.office.client.profile.immigration.LCA.ReadAllLCAPanel;
 import info.yalamanchili.office.client.profile.immigration.LCA.SearchLcaPanel;
-import info.yalamanchili.office.client.profile.immigration.Petitions.ReadAllPetitionsPanel;
 import info.yalamanchili.office.client.profile.reports.ProfileReportsSidePanel;
 import info.yalamanchili.office.client.profile.selfservice.ReadAllServiceTicketsPanel;
 import info.yalamanchili.office.client.profile.skill.ReadAllSkillsPanel;
@@ -87,7 +86,7 @@ public class TabPanel extends Composite implements SelectionHandler<Integer> {
             tabPanel.add(timePanel, "Time", false);
         }
         tabPanel.add(expensePanel, "Expense", false);
-        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN)) {
+        if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ADMIN, Auth.ROLE.ROLE_GC_IMMIGRATION)) {
             tabPanel.add(immigrationPanel, "Immigration", false);
         }
         tabPanel.add(drivePanel, "Drive", false);

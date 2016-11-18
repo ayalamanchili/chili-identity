@@ -8,7 +8,9 @@ package info.yalamanchili.office.client.profile.benefits;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
+import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.CreateComposite.CreateCompositeType;
 import info.chili.gwt.crud.TableRowOptionsWidget;
@@ -39,6 +41,13 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
     public ReadAllBenefitsPanel(JSONArray result) {
         instance = this;
         initTable("Benefits", result, OfficeWelcome.constants2);
+    }
+    protected boolean isenrolled = false;
+
+    public ReadAllBenefitsPanel(String title, JSONArray array, boolean isenrolled) {
+        instance = this;
+        this.isenrolled = isenrolled;
+        initTable(title, array, OfficeWelcome.constants2);
     }
 
     @Override
@@ -127,10 +136,15 @@ public class ReadAllBenefitsPanel extends CRUDReadAllComposite implements ClickH
     @Override
     protected void addOptionsWidget(int row, JSONObject entity) {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HEALTH_INSURANCE_MANAGER)) {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE_DELETE, row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.PRINT, TableRowOptionsWidget.OptionsType.DELETE);
         } else {
-            createOptionsWidget(TableRowOptionsWidget.OptionsType.READ_UPDATE, row, JSONUtils.toString(entity, "id"));
+            createOptionsWidget(JSONUtils.toString(entity, "id"), row, TableRowOptionsWidget.OptionsType.READ, TableRowOptionsWidget.OptionsType.UPDATE, TableRowOptionsWidget.OptionsType.PRINT);
         }
+    }
+
+    @Override
+    public void printClicked(String entityId) {
+        Window.open(ChiliClientConfig.instance().getFileDownloadUrl() + "benefit/benefitenrollment-print" + "&passthrough=true" + "&id=" + entityId, "_blank", "");
     }
 
     private String getEmployeeBenefitsURL(String employeeId, Integer start, String limit) {
