@@ -128,10 +128,10 @@ public class BenefitEnrollmentResource extends CRUDResource<BenefitEnrollment> {
     }
 
     @GET
-    @Path("/benefitenrollment-print/{id}")
+    @Path("/benefitenrollment-print")
     @Produces({"application/pdf"})
     public Response getReport(@QueryParam("id") Long id) {
-        return BenefitenrollmentService.instance().getReport(benefitenrollmentDao.findById(id));
+        return BenefitenrollmentService.instance().getReport(id);
     }
 
     @GET
