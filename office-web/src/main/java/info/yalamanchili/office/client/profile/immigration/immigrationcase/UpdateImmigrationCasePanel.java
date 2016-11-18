@@ -134,6 +134,12 @@ public class UpdateImmigrationCasePanel extends UpdateComposite {
             emailF.setMessage("Please Enter Email Address");
             return false;
         }
+        if(emailF.getValue()!=null){
+            if(!emailF.getValue().matches("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$")){
+                emailF.setMessage("Enter a valid email address");
+                return false;
+            }
+        }
         if (entity.containsKey("employee") == false && companyWidget.getSelectedObject() == null) {
             companyWidget.setMessage("Please select company");
             return false;
