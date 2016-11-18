@@ -33,7 +33,7 @@ public class UpdateImmigrationCasePanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateImmigrationCasePanel.class.getName());
     SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", true, true, Alignment.HORIZONTAL);
-    StringField emailF = new StringField(OfficeWelcome.constants, "email", "Email", false, false, Alignment.HORIZONTAL);
+    StringField emailF = new StringField(OfficeWelcome.constants, "email", "Email", false, true, Alignment.HORIZONTAL);
     protected SelectCompanyWidget companyWidget = new SelectCompanyWidget(false, true, Alignment.HORIZONTAL);
 
     public UpdateImmigrationCasePanel(JSONObject entity) {
@@ -85,7 +85,7 @@ public class UpdateImmigrationCasePanel extends UpdateComposite {
             entityFieldsPanel.insert(emailF, entityFieldsPanel.getWidgetIndex(employeeSB) + 3);
             emailF.setValue(JSONUtils.toString(entity, "email"));
         }
-        if (entity.containsKey("company") == true && entity.get("company").isObject()!=null) {
+        if (entity.containsKey("company") == true && entity.get("company").isObject() != null) {
             entityFieldsPanel.insert(companyWidget, entityFieldsPanel.getWidgetIndex(emailF) + 1);
             companyWidget.setSelectedValue(entity.get("company").isObject());
         }
@@ -130,17 +130,17 @@ public class UpdateImmigrationCasePanel extends UpdateComposite {
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         EnumField caseStatusF = (EnumField) fields.get("immigrationCaseStatus");
-        if (entity.containsKey("employee") == false && entity.containsKey("email") == true && ("".equals(entity.get("email").isString().stringValue()) || entity.get("email").isString().stringValue() == null)) {
+        if (entity.containsKey("email") == true && entity.get("email") != null && entity.get("email").isString().stringValue().isEmpty()) {
             emailF.setMessage("Please Enter Email Address");
             return false;
         }
-        if(emailF.getValue()!=null){
-            if(!emailF.getValue().matches("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$")){
+        if (emailF.getValue() != null && !emailF.getValue().isEmpty()) {
+            if (!emailF.getValue().matches("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$")) {
                 emailF.setMessage("Enter a valid email address");
                 return false;
             }
         }
-        if (entity.containsKey("employee") == false && companyWidget.getSelectedObject() == null) {
+        if (companyWidget.getSelectedObject() == null) {
             companyWidget.setMessage("Please select company");
             return false;
         }
