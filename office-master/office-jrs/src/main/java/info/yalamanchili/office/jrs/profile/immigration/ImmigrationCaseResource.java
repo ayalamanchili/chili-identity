@@ -13,6 +13,8 @@ import info.chili.dao.CRUDDao;
 import info.chili.document.dao.SerializedEntityDao;
 import info.chili.email.Email;
 import info.chili.jpa.validation.Validate;
+import info.chili.service.jrs.exception.ServiceException;
+import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
@@ -21,11 +23,11 @@ import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmailDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
-import info.yalamanchili.office.dao.profile.immigration.EducationRecordDao;
 import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.dto.prospect.ProspectDto;
 import info.yalamanchili.office.entity.Company;
-import info.yalamanchili.office.entity.immigration.EducationRecord;
+import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.immigration.ImmigrationCase;
 import info.yalamanchili.office.entity.immigration.ImmigrationCaseStatus;
 import info.yalamanchili.office.entity.profile.EmailType;
@@ -38,9 +40,9 @@ import info.yalamanchili.office.entity.profile.invite.InvitationType;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
-import info.yalamanchili.office.profile.EmployeeOnBoardingService;
 import info.yalamanchili.office.profile.invite.InviteCodeGeneratorService;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -72,15 +74,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
-
+    
     @Autowired
     protected ImmigrationCaseDao immigrationCaseDao;
-
+    
     @Override
     public CRUDDao getDao() {
         return immigrationCaseDao;
     }
-
+    
     @PUT
     @Path("/{employeeId}")
     @Validate
@@ -91,48 +93,59 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         entity.setCreatedDate(new Date());
         return immigrationCaseDao.save(entity);
     }
-
+    
     @PUT
     @Validate
-    @Path("/add-case")
+    @Path("/case/save")
     public ImmigrationCase saveImmigration(ImmigrationCase entity) {
-        if (entity.getId() == null) {
-            if (entity.getEmployee() != null) {
-                Employee emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
-                entity.setEmployee(emp);
-                entity.setEmail(emp.getPrimaryEmail().getEmail());
-                if (emp.getCompany() != null) {
-                    entity.setCompany(CompanyDao.instance().findById(emp.getCompany().getId()));
-                } else {
-                    entity.setCompany(CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC));
-                }
+        List<ImmigrationCase> cases = immigrationCaseDao.query(0, 10000);
+        for (ImmigrationCase immigrationCase : cases) {
+            if (immigrationCase.getEmail().equals(entity.getEmail()) && immigrationCase.getImmigrationCaseType().equals(entity.getImmigrationCaseType())) {
+                throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invitation.already.sent", "Immigration Case Already Created To The Contact");
             }
-            if (entity.getCompany() != null) {
-                entity.setCompany(CompanyDao.instance().findById(entity.getCompany().getId()));
-            }
-            entity.setCreatedBy(OfficeSecurityService.instance().getCurrentUserName());
-            entity.setImmigrationCaseStatus(ImmigrationCaseStatus.New);
-            entity.setCreatedDate(new Date());
-            return immigrationCaseDao.save(entity);
-        } else {
-            ImmigrationCase newCase = ImmigrationCaseDao.instance().findById(entity.getId());
-            if (entity.getEmployee() != null) {
-                Employee emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
-                newCase.setEmployee(emp);
-                newCase.setEmail(entity.getEmail());
-            } else {
-                newCase.setEmail(entity.getEmail());
-            }
-            if (entity.getCompany() != null) {
-                newCase.setCompany(CompanyDao.instance().findById(entity.getCompany().getId()));
-            }
-            newCase.setSponsorType(entity.getSponsorType());
-            newCase.setImmigrationCaseStatus(entity.getImmigrationCaseStatus());
-            newCase.setImmigrationCaseType(entity.getImmigrationCaseType());
-            return immigrationCaseDao.getEntityManager().merge(newCase);
         }
+        if (entity.getEmployee() != null) {
+            Employee emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
+            entity.setEmployee(emp);
+            entity.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
+            entity.setEmail(emp.getPrimaryEmail().getEmail());
+            if (emp.getCompany() != null) {
+                entity.setCompany(CompanyDao.instance().findById(emp.getCompany().getId()));
+            } else {
+                entity.setCompany(CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC));
+            }
+        }
+        if (entity.getCompany() != null) {
+            entity.setCompany(CompanyDao.instance().findById(entity.getCompany().getId()));
+        }
+        entity.setCreatedBy(OfficeSecurityService.instance().getCurrentUserName());
+        entity.setImmigrationCaseStatus(ImmigrationCaseStatus.New);
+        entity.setCreatedDate(new Date());
+        return immigrationCaseDao.save(entity);
     }
-
+    
+    @PUT
+    @Validate
+    @Path("/case/update")
+    public ImmigrationCase updateImmigration(ImmigrationCase entity) {
+        ImmigrationCase newCase = ImmigrationCaseDao.instance().findById(entity.getId());
+        if (entity.getEmployee() != null) {
+            Employee emp = EmployeeDao.instance().findById(entity.getEmployee().getId());
+            newCase.setEmployee(emp);
+            newCase.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
+            newCase.setEmail(entity.getEmail());
+        } else {
+            newCase.setEmail(entity.getEmail());
+        }
+        if (entity.getCompany() != null) {
+            newCase.setCompany(CompanyDao.instance().findById(entity.getCompany().getId()));
+        }
+        newCase.setSponsorType(entity.getSponsorType());
+        newCase.setImmigrationCaseStatus(entity.getImmigrationCaseStatus());
+        newCase.setImmigrationCaseType(entity.getImmigrationCaseType());
+        return immigrationCaseDao.getEntityManager().merge(newCase);
+    }
+    
     @GET
     @Path("/{empId}/{start}/{limit}")
     @Cacheable(OfficeCacheKeys.IMMIGRATION_CASE)
@@ -143,7 +156,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         tableObj.setSize(immigrationCaseDao.getImmigrationCaseSize(emp, start, limit));
         return tableObj;
     }
-
+    
     @GET
     @Path("/read-all/{start}/{limit}")
     public ImmigrationCaseTable readAllTable(@PathParam("start") int start, @PathParam("limit") int limit) {
@@ -152,7 +165,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         tableObj.setSize(Long.valueOf(tableObj.getEntities().size()));
         return tableObj;
     }
-
+    
     @GET
     @Path("send-questionnaire/{caseId}")
     @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CASE, allEntries = true)
@@ -195,7 +208,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         email.setBody(code.getInvitationCode());
         MessagingService.instance().sendEmail(email);
     }
-
+    
     @GET
     @Path("h1b-questionnaire/get-details")
     @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CASE)
@@ -232,7 +245,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         detailsDto.setEmpPersonalInfo(res);
         return detailsDto;
     }
-
+    
     @PUT
     @Path("save-personal-info/{invitationCode}")
     public EmployeeH1BDetailsDto savePersonalInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
@@ -303,7 +316,6 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
 //        }
 //        return dto;
 //    }
-
     private MaritalStatus setMaritalStatus(String maritalStatus) {
         MaritalStatus status = null;
         switch (maritalStatus) {
@@ -319,7 +331,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         }
         return status;
     }
-
+    
     public EmailType getWorkEmailType() {
         Query getEmailType = EmailDao.instance().getEntityManager().createQuery("from " + EmailType.class.getCanonicalName()
                 + " where emailType=:emailTypeParam");
@@ -332,7 +344,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
             return EmailDao.instance().getEntityManager().merge(workEmailType);
         }
     }
-
+    
     private Employee getEmployee(String invitationCode) {
         InviteCode code = getInviteCode(invitationCode);
         Employee emp;
@@ -342,7 +354,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         }
         return null;
     }
-
+    
     private InviteCode getInviteCode(String invitationCode) {
         String invCde = invitationCode.trim();
         return InviteCodeDao.instance().find(invCde);
@@ -359,7 +371,40 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
 //        }
 //        return null;
 //    }
-
+    @GET
+    @Path("/search-suggestions")
+    @Transactional(propagation = Propagation.NEVER)
+    public List<Entry> getDropDown() {
+        // to do convert this logic into sql query in dao class.
+        List<Entry> namesEntries = new ArrayList();
+        List<ImmigrationCase> cases = immigrationCaseDao.query(0, 10000);
+        for (ImmigrationCase iCase : cases) {
+            if (iCase.getEmployee() != null) {
+                Employee emp = EmployeeDao.instance().findById(iCase.getEmployee().getId());
+                Entry entry = new Entry();
+                entry.setId(iCase.getId().toString());
+                entry.setValue(emp.getFirstName() + " " + emp.getLastName());
+                namesEntries.add(entry);
+            } else {
+                Entry entry = new Entry();
+                entry.setId(iCase.getId().toString());
+                entry.setValue(iCase.getEmployeeName());
+                namesEntries.add(entry);
+            }
+        }
+        return namesEntries;
+    }
+    
+    @GET
+    @Path("/search/{caseId}")
+    @Transactional(propagation = Propagation.NEVER)
+    public List<ImmigrationCase> search(@PathParam("caseId") Long caseId, @PathParam("start") int start,
+            @PathParam("limit") int limit, @QueryParam("column") List<String> columns) {
+        List<ImmigrationCase> res = new ArrayList();
+        res.add(immigrationCaseDao.findById(caseId));
+        return res;
+    }
+    
     @PUT
     @Path("/search-case/{start}/{limit}")
     @Transactional(propagation = Propagation.NEVER)
@@ -370,27 +415,27 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         searchQuery.setMaxResults(limit);
         return searchQuery.getResultList();
     }
-
+    
     @XmlRootElement
     @XmlType
     public static class ImmigrationCaseTable implements java.io.Serializable {
-
+        
         protected Long size;
         protected List<ImmigrationCase> entities;
-
+        
         public Long getSize() {
             return size;
         }
-
+        
         public void setSize(Long size) {
             this.size = size;
         }
-
+        
         @XmlElement
         public List<ImmigrationCase> getEntities() {
             return entities;
         }
-
+        
         public void setEntities(List<ImmigrationCase> entities) {
             this.entities = entities;
         }
