@@ -9,6 +9,7 @@
 package info.yalamanchili.office.dao.profile.immigration;
 
 import info.chili.dao.CRUDDao;
+import info.chili.service.jrs.types.Entry;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.entity.immigration.ImmigrationCase;
 import info.yalamanchili.office.entity.profile.Employee;
@@ -56,6 +57,11 @@ public class ImmigrationCaseDao extends CRUDDao<ImmigrationCase>{
         Query query = getEntityManager().createQuery("select count (*) from " + ImmigrationCase.class.getCanonicalName() + " st where st.employee=:employeeParam", Long.class);
         query.setParameter("employeeParam", emp);
         return (Long) query.getSingleResult();
-
+    }
+    
+     public List<Entry> searchSuggestions() {
+         return null;
+//        Query findAllQuery = getEntityManager().createQuery("SELECT NEW " + Entry.class.getCanonicalName() + "(case.id,case.employeeName)" + " FROM " + ImmigrationCase.class.getCanonicalName() + " case)");
+//        return findAllQuery.getResultList();
     }
 }
