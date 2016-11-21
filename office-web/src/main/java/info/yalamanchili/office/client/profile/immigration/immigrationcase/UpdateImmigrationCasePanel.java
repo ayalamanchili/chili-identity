@@ -124,7 +124,7 @@ public class UpdateImmigrationCasePanel extends UpdateComposite {
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "immigrationcase/add-case";
+        return OfficeWelcome.constants.root_url() + "immigrationcase/case/update";
     }
 
     @Override
