@@ -24,6 +24,7 @@ import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.expense.chkreq.ImmigrationCaseType;
 import info.yalamanchili.office.client.expense.chkreq.SponsorType;
+import info.yalamanchili.office.client.profile.immigration.ImmigrationCaseSidePanel;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -82,6 +83,8 @@ public class CreateImmigrationCasePanel extends CreateComposite implements BlurH
     @Override
     protected void postCreateSuccess(String result) {
         new ResponseStatusWidget().show("Successfully Added Immigration Case");
+        TabPanel.instance().immigrationPanel.sidePanelTop.clear();
+        TabPanel.instance().immigrationPanel.sidePanelTop.add(new ImmigrationCaseSidePanel());
         TabPanel.instance().immigrationPanel.entityPanel.clear();
         TabPanel.instance().immigrationPanel.entityPanel.add(new ReadAllImmigrationCasePanel());
     }
@@ -122,7 +125,7 @@ public class CreateImmigrationCasePanel extends CreateComposite implements BlurH
 
     @Override
     protected String getURI() {
-        return OfficeWelcome.constants.root_url() + "immigrationcase/add-case";
+        return OfficeWelcome.constants.root_url() + "immigrationcase/case/save";
     }
 
     @Override
@@ -132,7 +135,6 @@ public class CreateImmigrationCasePanel extends CreateComposite implements BlurH
             return false;
         }
         if (emailF.isAttached() == true && entity.get("employeeName") != null && entity.containsKey("email") == true && entity.get("email").isString().stringValue().isEmpty()) {
-            OfficeWelcome.logger.info("123");
             emailF.setMessage("Please enter email address");
             return false;
         }
@@ -143,7 +145,6 @@ public class CreateImmigrationCasePanel extends CreateComposite implements BlurH
             }
         }
         if (entity.get("employeeName") != null && companyWidget.getSelectedObject() == null) {
-            OfficeWelcome.logger.info("789");
             companyWidget.setMessage("Please select company");
             return false;
         }
