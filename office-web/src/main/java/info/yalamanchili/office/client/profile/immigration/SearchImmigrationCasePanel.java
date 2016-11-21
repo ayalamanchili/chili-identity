@@ -14,7 +14,7 @@ import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
-import info.chili.gwt.widgets.SuggestBox;
+import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
@@ -33,7 +33,6 @@ import java.util.logging.Logger;
 public class SearchImmigrationCasePanel extends SearchComposite {
 
     private static Logger logger = Logger.getLogger(SearchImmigrationCasePanel.class.getName());
-    SuggestBox employeeSB = new SuggestBox(OfficeWelcome.constants, "employee", "Employee", false, false);
     protected SelectCompanyWidget companyWidget = new SelectCompanyWidget(false, false, Alignment.VERTICAL);
     EnumField sponsorType = new EnumField(OfficeWelcome.constants2, "sponsorType", "ImmigrationCase", false, false, SponsorType.names());
     EnumField caseType = new EnumField(OfficeWelcome.constants2, "immigrationCaseType", "ImmigrationCase", false, false, ImmigrationCaseType.names());
@@ -42,7 +41,6 @@ public class SearchImmigrationCasePanel extends SearchComposite {
     public SearchImmigrationCasePanel() {
         init("Search", "ImmigrationCase", OfficeWelcome.constants2);
         advancedSearchDP.setOpen(true);
-        //TabPanel.instance().immigrationPanel.sidePanelTop.setHeight("100%");
     }
 
     @Override
@@ -53,22 +51,22 @@ public class SearchImmigrationCasePanel extends SearchComposite {
 
     @Override
     protected void populateSearchSuggestBox() {
-//        Timer timer = new Timer() {
-//            @Override
-//            public void run() {
-//                HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-//                    @Override
-//                    public void onResponse(String entityString) {
-//                        Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
-//                        if (values != null) {
-//                            suggestionsMap = values;
-//                            loadSearchSuggestions(values.values());
-//                        }
-//                    }
-//                });
-//            }
-//        };
-//        timer.schedule(1000);
+        Timer timer = new Timer() {
+            @Override
+            public void run() {
+                HttpService.HttpServiceAsync.instance().doGet(getnameDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String entityString) {
+                        Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
+                        if (values != null) {
+                            suggestionsMap = values;
+                            loadSearchSuggestions(values.values());
+                        }
+                    }
+                });
+            }
+        };
+        timer.schedule(1000);
     }
 
     protected String getnameDropDownUrl() {
@@ -77,35 +75,14 @@ public class SearchImmigrationCasePanel extends SearchComposite {
 
     @Override
     protected void populateAdvancedSuggestBoxes() {
-        HttpService.HttpServiceAsync.instance().doGet(getEmployeeIdsDropDownUrl(), OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String entityString) {
-                Map<String, String> values = JSONUtils.convertKeyValueStringPairs(entityString);
-                if (values != null) {
-                    employeeSB.loadData(values);
-                }
-            }
-        });
-    }
-
-    private String getEmployeeIdsDropDownUrl() {
-        return OfficeWelcome.constants.root_url() + "employee/employees-by-type/dropdown/0/10000?column=id&column=firstName&column=lastName&employee-type=Corporate Employee&employee-type=Employee";
     }
 
     @Override
     protected void configure() {
-        Timer timer = new Timer() {
-            @Override
-            public void run() {
-                populateAdvancedSuggestBoxes();
-            }
-        };
-        timer.schedule(2000);
     }
 
     @Override
     protected void addWidgets() {
-        advancedSearchPanel.add(employeeSB);
         addDropDown("company", companyWidget);
         advancedSearchPanel.add(sponsorType);
         advancedSearchPanel.add(caseType);
@@ -115,9 +92,6 @@ public class SearchImmigrationCasePanel extends SearchComposite {
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject entity = new JSONObject();
-        if (employeeSB.getSelectedObject() != null) {
-            entity.put("employee", employeeSB.getSelectedObject());
-        }
         if (companyWidget.getSelectedObject() != null) {
             entity.put("company", companyWidget.getSelectedObject());
         }
@@ -135,19 +109,18 @@ public class SearchImmigrationCasePanel extends SearchComposite {
 
     @Override
     protected void search(String searchText) {
-//        if (getKey() == null) {
-//            clearSearch();
-//            new ResponseStatusWidget().show("No Employee Selected");
-//
-//        } else {
-//            HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 1000),
-//                    OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
-//                        @Override
-//                        public void onResponse(String result) {
-//                            processSearchResult(result);
-//                        }
-//                    });
-//        }
+        if (getKey() == null) {
+            clearSearch();
+            new ResponseStatusWidget().show("No Employee Selected");
+        } else {
+            HttpService.HttpServiceAsync.instance().doGet(getSearchURI(getSearchText(), 0, 1000),
+                    OfficeWelcome.instance().getHeaders(), true, new ALAsyncCallback<String>() {
+                        @Override
+                        public void onResponse(String result) {
+                            processSearchResult(result);
+                        }
+                    });
+        }
     }
 
     @Override
@@ -180,7 +153,7 @@ public class SearchImmigrationCasePanel extends SearchComposite {
 
     @Override
     protected boolean disableRegularSearch() {
-        return true;
+        return false;
     }
 
     @Override
