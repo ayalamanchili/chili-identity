@@ -59,6 +59,13 @@ public class ImmigrationCaseDao extends CRUDDao<ImmigrationCase>{
         return (Long) query.getSingleResult();
     }
     
+    public List<ImmigrationCase> findByEmail(String email) {
+        //TODO order by created date
+        Query query = getEntityManager().createQuery("from " + ImmigrationCase.class.getCanonicalName() + " immiCase where immiCase.email=:emailParam", ImmigrationCase.class);
+        query.setParameter("emailParam", email);
+        return query.getResultList();
+    }
+    
      public List<Entry> searchSuggestions() {
          return null;
 //        Query findAllQuery = getEntityManager().createQuery("SELECT NEW " + Entry.class.getCanonicalName() + "(case.id,case.employeeName)" + " FROM " + ImmigrationCase.class.getCanonicalName() + " case)");
