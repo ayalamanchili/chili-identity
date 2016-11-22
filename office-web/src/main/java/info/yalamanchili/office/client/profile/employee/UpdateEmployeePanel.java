@@ -202,7 +202,7 @@ public class UpdateEmployeePanel extends UpdateComposite {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             addField("hoursPerWeek", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION,ROLE.ROLE_ON_BOARDING_MGR)) {
             addDropDown("company", selectCompnayWidget);
         }
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
