@@ -103,6 +103,7 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
                     public void onResponse(String response) {
                         if (!response.trim().equals("null")) {
                             entity = (JSONObject) JSONParser.parseLenient(response);
+                            logger.info("entity after refresh .... "+entity);
                             populateFieldsFromEntity(entity);
                         }
                     }
@@ -115,19 +116,24 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        JSONObject personalInfoOBJ = entity.get("empPersonalInfo").isObject();
-        assignFieldValueFromEntity("empLastName", personalInfoOBJ, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("empFirstName", personalInfoOBJ, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("middleInitial", personalInfoOBJ, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("gender", personalInfoOBJ, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("maritalStatus", personalInfoOBJ, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("email", personalInfoOBJ, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("workEmail", personalInfoOBJ, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("ssn", personalInfoOBJ, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("dateOfBirth", personalInfoOBJ, DataType.DATE_FIELD);
-        //assignFieldValueFromEntity("firstName", personalInfo, DataType.STRING_FIELD);
-        //assignFieldValueFromEntity("middleName", personalInfo, DataType.STRING_FIELD);
-        //assignFieldValueFromEntity("lastName", personalInfo, DataType.STRING_FIELD);
+        if (entity.containsKey("empPersonalInfo")) {
+            JSONObject personalInfoOBJ = entity.get("empPersonalInfo").isObject();
+            assignFieldValueFromEntity("empLastName", personalInfoOBJ, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("empFirstName", personalInfoOBJ, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("middleInitial", personalInfoOBJ, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("gender", personalInfoOBJ, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("maritalStatus", personalInfoOBJ, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("email", personalInfoOBJ, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("workEmail", personalInfoOBJ, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("ssn", personalInfoOBJ, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("dateOfBirth", personalInfoOBJ, DataType.DATE_FIELD);
+        }
+        if (entity.containsKey("otherNamesInfo")) {
+            JSONObject otherNamesInfoOBJ = entity.get("otherNamesInfo").isObject();
+            assignFieldValueFromEntity("firstName", otherNamesInfoOBJ, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("middleName", otherNamesInfoOBJ, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("lastName", otherNamesInfoOBJ, DataType.STRING_FIELD);
+        }
     }
 
     @Override
@@ -198,9 +204,9 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
         if (event.getSource().equals(personalInfoEdit)) {
             new GenericPopup(new UpdateEmpPersonalInfoPopupPanel(entityId), 50, Window.getClientHeight() / 5).show();
         }
-//        if (event.getSource().equals(eduInfo2Edit)) {
-//            new GenericPopup(new UpdateEducationRecordPopupPanel(entityId), 50, Window.getClientHeight() / 5).show();
-//        }
+        if (event.getSource().equals(OtherNamesInfoEdit)) {
+            new GenericPopup(new UpdateOtherNamesInfoPopupPanel(entityId), 50, Window.getClientHeight() * 2).show();
+        }
     }
 
     protected String updateImmigrationInfo() {
