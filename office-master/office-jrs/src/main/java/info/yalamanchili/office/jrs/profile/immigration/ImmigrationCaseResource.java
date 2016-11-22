@@ -17,6 +17,7 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
+import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
@@ -24,12 +25,14 @@ import info.yalamanchili.office.dao.profile.EmailDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
 import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseDao;
+import info.yalamanchili.office.dao.profile.immigration.OtherNamesInfoDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.dto.prospect.ProspectDto;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.immigration.ImmigrationCase;
 import info.yalamanchili.office.entity.immigration.ImmigrationCaseStatus;
+import info.yalamanchili.office.entity.immigration.OtherNamesInfo;
 import info.yalamanchili.office.entity.profile.EmailType;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Sex;
@@ -40,6 +43,7 @@ import info.yalamanchili.office.entity.profile.invite.InvitationType;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.profile.immigration.OtherNamesInfoService;
 import info.yalamanchili.office.profile.invite.InviteCodeGeneratorService;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -74,15 +78,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
-    
+
     @Autowired
     protected ImmigrationCaseDao immigrationCaseDao;
     
+    @Autowired
+    protected OtherNamesInfoService infoService;
+
     @Override
     public CRUDDao getDao() {
         return immigrationCaseDao;
     }
-    
+
+    protected final String Questionnaire_Form = "H-1B_Questionnaire";
+
     @PUT
     @Path("/{employeeId}")
     @Validate
@@ -93,7 +102,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         entity.setCreatedDate(new Date());
         return immigrationCaseDao.save(entity);
     }
-    
+
     @PUT
     @Validate
     @Path("/case/save")
@@ -123,7 +132,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         entity.setCreatedDate(new Date());
         return immigrationCaseDao.save(entity);
     }
-    
+
     @PUT
     @Validate
     @Path("/case/update")
@@ -145,7 +154,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         newCase.setImmigrationCaseType(entity.getImmigrationCaseType());
         return immigrationCaseDao.getEntityManager().merge(newCase);
     }
-    
+
     @GET
     @Path("/{empId}/{start}/{limit}")
     @Cacheable(OfficeCacheKeys.IMMIGRATION_CASE)
@@ -156,7 +165,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         tableObj.setSize(immigrationCaseDao.getImmigrationCaseSize(emp, start, limit));
         return tableObj;
     }
-    
+
     @GET
     @Path("/read-all/{start}/{limit}")
     public ImmigrationCaseTable readAllTable(@PathParam("start") int start, @PathParam("limit") int limit) {
@@ -165,7 +174,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         tableObj.setSize(Long.valueOf(tableObj.getEntities().size()));
         return tableObj;
     }
-    
+
     @GET
     @Path("send-questionnaire/{caseId}")
     @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CASE, allEntries = true)
@@ -206,14 +215,18 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         email.setContext(emailCtx);
         email.setSubject(messageText);
         email.setBody(code.getInvitationCode());
+        if (FileDao.instance().getFilePath(Questionnaire_Form) != null) {
+            email.getAttachments().add(FileDao.instance().getFilePath(Questionnaire_Form));
+        }
         MessagingService.instance().sendEmail(email);
     }
-    
+
     @GET
     @Path("h1b-questionnaire/get-details")
     @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CASE)
     public EmployeeH1BDetailsDto getdetails(@QueryParam("invitationCode") String invitationCode) {
         EmployeeH1BDetailsDto detailsDto = new EmployeeH1BDetailsDto();
+        // employee personal details
         PersonalInfoDto res = new PersonalInfoDto();
         info.yalamanchili.office.entity.profile.Email email;
         Employee emp = getEmployee(invitationCode);
@@ -241,11 +254,24 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
             if (emp.getSex() != null) {
                 res.setGender(emp.getSex().name());
             }
+            detailsDto.setEmpPersonalInfo(res);
         }
-        detailsDto.setEmpPersonalInfo(res);
+
+        // other names info
+        ImmigrationCase iCase = getCase(invitationCode);
+        List<OtherNamesInfo> otherNames = OtherNamesInfoDao.instance().findAll(iCase.getId(), ImmigrationCase.class.getCanonicalName());
+        if (otherNames != null && otherNames.size() > 0) {
+            OtherNamesInfo info = new OtherNamesInfo();
+            info.setFirstName(otherNames.get(0).getFirstName());
+            info.setLastName(otherNames.get(0).getLastName());
+            info.setMiddleName(otherNames.get(0).getMiddleName());
+            detailsDto.setOtherNamesInfo(otherNames.get(0));
+
+        }
+//       
         return detailsDto;
     }
-    
+
     @PUT
     @Path("save-personal-info/{invitationCode}")
     public EmployeeH1BDetailsDto savePersonalInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
@@ -298,6 +324,19 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         return dto;
     }
 
+    @PUT
+    @Path("save-other-names-info/{invitationCode}")
+    public EmployeeH1BDetailsDto saveOtherNamesInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
+        ImmigrationCase immiCase = getCase(invitationCode);
+        OtherNamesInfo info = dto.getOtherNamesInfo();
+        info.setTargetEntityId(immiCase.getId());
+        info.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
+        OtherNamesInfo save = infoService.save(immiCase.getId(), info);
+        dto.setOtherNamesInfo(save);
+        System.out.println("dto is ... "+dto);
+        return dto;
+    }
+
 //    @PUT
 //    @Path("save-edu-info2/{invitationCode}")
 //    public EmployeeH1BDetailsDto saveEducatnRecInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
@@ -331,7 +370,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         }
         return status;
     }
-    
+
     public EmailType getWorkEmailType() {
         Query getEmailType = EmailDao.instance().getEntityManager().createQuery("from " + EmailType.class.getCanonicalName()
                 + " where emailType=:emailTypeParam");
@@ -344,8 +383,8 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
             return EmailDao.instance().getEntityManager().merge(workEmailType);
         }
     }
-    
-    private Employee getEmployee(String invitationCode) {
+
+    public Employee getEmployee(String invitationCode) {
         InviteCode code = getInviteCode(invitationCode);
         Employee emp;
         if (EmployeeDao.instance().findByEmail(code.getEmail()) != null) {
@@ -354,23 +393,29 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         }
         return null;
     }
-    
-    private InviteCode getInviteCode(String invitationCode) {
+
+    public InviteCode getInviteCode(String invitationCode) {
         String invCde = invitationCode.trim();
         return InviteCodeDao.instance().find(invCde);
     }
 
-//    private ImmigrationCase getCase(String invitationCode) {
-//        InviteCode code = getInviteCode(invitationCode);
-//        Employee emp = getEmployee(code.getInvitationCode());
-//        List<ImmigrationCase> immigrationCases = immigrationCaseDao.instance().getImmigrationCases(emp, 0, 10);
-//        for (ImmigrationCase iCase : immigrationCases) {
-//            if (iCase.getEmail().equals(code.getEmail())) {
-//                return iCase;
-//            }
-//        }
-//        return null;
-//    }
+    public ImmigrationCase getCase(String invitationCode) {
+        InviteCode code = getInviteCode(invitationCode);
+        Employee emp = getEmployee(code.getInvitationCode());
+        List<ImmigrationCase> immigrationCases = new ArrayList();
+        if (emp != null) {
+            immigrationCases = immigrationCaseDao.getImmigrationCases(emp, 0, 10);
+        } else {
+            immigrationCases = immigrationCaseDao.findByEmail(code.getEmail());
+        }
+        for (ImmigrationCase iCase : immigrationCases) {
+            if (iCase.getEmail().equals(code.getEmail())) {
+                return iCase;
+            }
+        }
+        return null;
+    }
+
     @GET
     @Path("/search-suggestions")
     @Transactional(propagation = Propagation.NEVER)
@@ -394,7 +439,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         }
         return namesEntries;
     }
-    
+
     @GET
     @Path("/search/{caseId}")
     @Transactional(propagation = Propagation.NEVER)
@@ -404,7 +449,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         res.add(immigrationCaseDao.findById(caseId));
         return res;
     }
-    
+
     @PUT
     @Path("/search-case/{start}/{limit}")
     @Transactional(propagation = Propagation.NEVER)
@@ -415,27 +460,27 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         searchQuery.setMaxResults(limit);
         return searchQuery.getResultList();
     }
-    
+
     @XmlRootElement
     @XmlType
     public static class ImmigrationCaseTable implements java.io.Serializable {
-        
+
         protected Long size;
         protected List<ImmigrationCase> entities;
-        
+
         public Long getSize() {
             return size;
         }
-        
+
         public void setSize(Long size) {
             this.size = size;
         }
-        
+
         @XmlElement
         public List<ImmigrationCase> getEntities() {
             return entities;
         }
-        
+
         public void setEntities(List<ImmigrationCase> entities) {
             this.entities = entities;
         }
