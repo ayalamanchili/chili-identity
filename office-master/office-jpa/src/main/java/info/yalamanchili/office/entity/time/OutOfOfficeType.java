@@ -15,5 +15,6 @@ package info.yalamanchili.office.entity.time;
 public enum OutOfOfficeType {
 
     OUT_OF_OFFICE,
-    WORK_FROM_HOME;
+    WORK_FROM_HOME,
+    BUSINESS_TRIP;
 }
