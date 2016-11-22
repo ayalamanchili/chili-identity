@@ -27,9 +27,7 @@ import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
 import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseDao;
 import info.yalamanchili.office.dao.profile.immigration.OtherNamesInfoDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
-import info.yalamanchili.office.dto.prospect.ProspectDto;
 import info.yalamanchili.office.entity.Company;
-import info.yalamanchili.office.entity.hr.Prospect;
 import info.yalamanchili.office.entity.immigration.ImmigrationCase;
 import info.yalamanchili.office.entity.immigration.ImmigrationCaseStatus;
 import info.yalamanchili.office.entity.immigration.OtherNamesInfo;
@@ -268,7 +266,6 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
             detailsDto.setOtherNamesInfo(otherNames.get(0));
 
         }
-//       
         return detailsDto;
     }
 
@@ -331,9 +328,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         OtherNamesInfo info = dto.getOtherNamesInfo();
         info.setTargetEntityId(immiCase.getId());
         info.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
-        OtherNamesInfo save = infoService.save(immiCase.getId(), info);
-        dto.setOtherNamesInfo(save);
-        System.out.println("dto is ... "+dto);
+        dto.setOtherNamesInfo(infoService.save(immiCase.getId(), info));
         return dto;
     }
 
