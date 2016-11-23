@@ -79,7 +79,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
 
     @Autowired
     protected ImmigrationCaseDao immigrationCaseDao;
-    
+
     @Autowired
     protected OtherNamesInfoService infoService;
 
@@ -180,18 +180,14 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         ImmigrationCase immigrationCase = immigrationCaseDao.findById(caseId);
         immigrationCase.setImmigrationCaseStatus(ImmigrationCaseStatus.Pending_Questionnaire_Submission);
         immigrationCaseDao.getEntityManager().merge(immigrationCase);
-        String empEmail = null;
         Employee emp = null;
         if (immigrationCase.getEmployee() != null) {
             emp = EmployeeDao.instance().findById(immigrationCase.getEmployee().getId());
-            empEmail = emp.getPrimaryEmail().getEmail();
-        } else {
-            empEmail = immigrationCase.getEmail();
         }
-        InviteCode code = InviteCodeGeneratorService.instance().generate(InvitationType.H1B_Questionnaire, empEmail, new Date(), DateUtils.addDays(new Date(), 7), false, immigrationCase);
+        InviteCode code = InviteCodeGeneratorService.instance().generate(InvitationType.H1B_Questionnaire, immigrationCase.getEmail(), new Date(), DateUtils.addDays(new Date(), 7), false, immigrationCase);
         SerializedEntityDao.instance().save(immigrationCase, code.getClass().getCanonicalName(), code.getId());
         Email email = new Email();
-        email.addTo(empEmail);
+        email.addTo(immigrationCase.getEmail());
         Map<String, Object> emailCtx = new HashMap<>();
         emailCtx.put("invitationCode", OfficeServiceConfiguration.instance().getPortalWebUrl() + "?h1b-questionnaire=" + code.getInvitationCode()); //+ "&invitationType=" + code.getInviteType().getInvitationType().name());
         if (emp != null) {
@@ -264,7 +260,6 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
             info.setLastName(otherNames.get(0).getLastName());
             info.setMiddleName(otherNames.get(0).getMiddleName());
             detailsDto.setOtherNamesInfo(otherNames.get(0));
-
         }
         return detailsDto;
     }
@@ -273,8 +268,8 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
     @Path("save-personal-info/{invitationCode}")
     public EmployeeH1BDetailsDto savePersonalInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
         Employee emp = getEmployee(invitationCode);
-        if (dto.getEmpPersonalInfo() != null) {
-            PersonalInfoDto personalInfoDto = dto.getEmpPersonalInfo();
+        PersonalInfoDto personalInfoDto = dto.getEmpPersonalInfo();
+        if (emp != null) {
             emp.setFirstName(personalInfoDto.getEmpFirstName());
             emp.setLastName(personalInfoDto.getEmpLastName());
             emp.setDateOfBirth(personalInfoDto.getDateOfBirth());
@@ -286,8 +281,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
             info.yalamanchili.office.entity.profile.Email emailAdd = new info.yalamanchili.office.entity.profile.Email();
             emailAdd.setEmail(personalInfoDto.getEmail());
             emailAdd.setPrimaryEmail(Boolean.TRUE);
-            //emailAdd.setEmailType(new EmployeeOnBoardingService().getPersonalEmailType());
-            emailAdd.setContact(ContactDao.instance().findByEmail(InviteCodeDao.instance().find(invitationCode.trim()).getEmail()));
+            emailAdd.setContact(ContactDao.instance().findByEmail(emp.getEmails().get(0).getEmail()));
             emp.addEmail(EmailDao.instance().save(emailAdd));
             //Work Email
             info.yalamanchili.office.entity.profile.Email workEmail = new info.yalamanchili.office.entity.profile.Email();
@@ -380,10 +374,10 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
     }
 
     public Employee getEmployee(String invitationCode) {
-        InviteCode code = getInviteCode(invitationCode);
+        ImmigrationCase iCase = getCase(invitationCode);
         Employee emp;
-        if (EmployeeDao.instance().findByEmail(code.getEmail()) != null) {
-            emp = EmployeeDao.instance().findByEmail(code.getEmail());
+        if (iCase != null && iCase.getEmployee() != null) {
+            emp = EmployeeDao.instance().findById(iCase.getEmployee().getId());
             return emp;
         }
         return null;
@@ -396,17 +390,10 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
 
     public ImmigrationCase getCase(String invitationCode) {
         InviteCode code = getInviteCode(invitationCode);
-        Employee emp = getEmployee(code.getInvitationCode());
         List<ImmigrationCase> immigrationCases = new ArrayList();
-        if (emp != null) {
-            immigrationCases = immigrationCaseDao.getImmigrationCases(emp, 0, 10);
-        } else {
-            immigrationCases = immigrationCaseDao.findByEmail(code.getEmail());
-        }
-        for (ImmigrationCase iCase : immigrationCases) {
-            if (iCase.getEmail().equals(code.getEmail())) {
-                return iCase;
-            }
+        immigrationCases = immigrationCaseDao.findByEmail(code.getEmail());
+        if (immigrationCases.size() > 0) {
+            return immigrationCases.get(0);
         }
         return null;
     }
