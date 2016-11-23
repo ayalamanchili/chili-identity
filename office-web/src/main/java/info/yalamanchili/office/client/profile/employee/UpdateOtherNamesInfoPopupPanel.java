@@ -108,8 +108,12 @@ public class UpdateOtherNamesInfoPopupPanel extends UpdateComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                        entity = (JSONObject) JSONParser.parseLenient(response);
-                        populateFieldsFromEntity(entity);
+                       if (!response.trim().contains("<html>")) {
+                            entity = (JSONObject) JSONParser.parseLenient(response);
+                            populateFieldsFromEntity(entity);
+                        } else {
+                            entity = new JSONObject();
+                        }
                     }
                 });
     }
