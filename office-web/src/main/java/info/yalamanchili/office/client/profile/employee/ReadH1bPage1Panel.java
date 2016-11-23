@@ -149,6 +149,10 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
             assignFieldValueFromEntity("typeOfUSDegree", usEduRecInfoObj, DataType.STRING_FIELD);
             assignFieldValueFromEntity("degreeOfStudy", usEduRecInfoObj, DataType.STRING_FIELD);
         }
+        if (entity.containsKey("alienNumber")) {
+            JSONObject alienNumber = entity.get("alienNumber").isObject();
+            assignFieldValueFromEntity("alienNumber", alienNumber, DataType.STRING_FIELD);
+        }
     }
 
     @Override
@@ -156,6 +160,7 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
         personalInfoEdit.addClickHandler(this);
         eduInfo2Edit.addClickHandler(this);
         OtherNamesInfoEdit.addClickHandler(this);
+        alienNoInfoEdit.addClickHandler(this);
         if (countriesF != null) {
             countriesF.listBox.addChangeHandler(this);
         }
@@ -194,7 +199,7 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
         addField("degreeOfStudy", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(alienNoInfo);
         entityFieldsPanel.add(alienNoInfoEdit);
-        addField("alienNumber", true, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("alienNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(eduInfo1);
         entityFieldsPanel.add(eduInfo1Edit);
         addField("fieldOfStudy", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -221,6 +226,9 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
         }
         if (event.getSource().equals(OtherNamesInfoEdit)) {
             new GenericPopup(new UpdateOtherNamesInfoPopupPanel(invitationCode), 50, Window.getClientHeight() * 2).show();
+        }
+        if (event.getSource().equals(alienNoInfoEdit)) {
+            new GenericPopup(new UpdateAlienNoPopupPanel(entityId), 200, 1000).show();
         }
     }
 
