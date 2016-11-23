@@ -7,7 +7,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/DECORATION/1.3.0 http://maven.apache.org/xsd/decoration-1.3.0.xsd"
          name="System Soft Portal">
-    
+ 
     <bannerLeft>
         <name>Project Name</name>
         <!-- <src>https://yalamanchili.googlecode.com/files/sstlogo.png</src>-->
@@ -30,8 +30,11 @@
                 <sitesearch/>
             </googleSearch>            -->
         </fluidoSkin>
-    </custom>    
+    </custom>   
     <body>
+        <head>
+            <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW"></META>
+        </head>
         <menu name="Overview">
             <item name="Introduction" href="/office/index.html"/>
             <item name="Social" href="/office/social.html"/>
@@ -80,7 +83,7 @@
                 <item name="Dependents" href="office/profile/dependents.html"/>
                 <item name="SkillSet" href="office/profile/skillset.html" />
                 <item name="Benefits" href="office/profile/benefits.html" collapse="true">
-                     <item name="Health Insurance" href="office/profile/health-insurance.html" collapse="true"/>
+                    <item name="Health Insurance" href="office/profile/health-insurance.html" collapse="true"/>
                     <item name="Reports" href="office/profile/health-reports.html" collapse="true"/>
                 </item>   
                 <item name="Preferences" href="office/profile/preferences.html"/>
@@ -99,7 +102,7 @@
             <item name="Adminstration" href="/office/admin.html" collapse="true">
                 <item name="Manage Client" href="/office/admin/manage_client.html"/>
                 <item name="Manage Vendor" href="/office/admin/manage_vendor.html" collapse="true">
-                   <item name="Vendor Reports" href="/office/admin/vendor_reports.html"/>
+                    <item name="Vendor Reports" href="/office/admin/vendor_reports.html"/>
                 </item>   
                 <item name="Bulkupload" href="/office/admin/bulkimport.html"/>
                 <item name="Vendor Invoice Schedules" href="/office/admin/vendor-invoice-schedules.html"/>
@@ -171,8 +174,8 @@
                               
             </item>
             <item name="Immigration" href="/office/immigration/lca.html" collapse="true">
-                 <item name="LCA" href="/office/immigration/lca.html"/>
-                </item>
+                <item name="LCA" href="/office/immigration/lca.html"/>
+            </item>
             <item name="Trouble Accessing Portal" href="/office/accountresettask.html" collapse="true">
                 <item name="Account Reset" href="/office/accountresettask.html"/>
                 <item name="Forgot Password" href="/office/forgot-password.html"/>
