@@ -24,10 +24,12 @@ import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmailDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
+import info.yalamanchili.office.dao.profile.immigration.AlienNumberDao;
 import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseDao;
 import info.yalamanchili.office.dao.profile.immigration.OtherNamesInfoDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.Company;
+import info.yalamanchili.office.entity.immigration.AlienNumber;
 import info.yalamanchili.office.entity.immigration.ImmigrationCase;
 import info.yalamanchili.office.entity.immigration.ImmigrationCaseStatus;
 import info.yalamanchili.office.entity.immigration.OtherNamesInfo;
@@ -41,6 +43,7 @@ import info.yalamanchili.office.entity.profile.invite.InvitationType;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.profile.immigration.AlienNumberService;
 import info.yalamanchili.office.profile.immigration.OtherNamesInfoService;
 import info.yalamanchili.office.profile.invite.InviteCodeGeneratorService;
 import java.text.SimpleDateFormat;
@@ -82,6 +85,9 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
 
     @Autowired
     protected OtherNamesInfoService infoService;
+
+    @Autowired
+    protected AlienNumberService alienService;
 
     @Override
     public CRUDDao getDao() {
@@ -261,6 +267,12 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
             info.setMiddleName(otherNames.get(0).getMiddleName());
             detailsDto.setOtherNamesInfo(otherNames.get(0));
         }
+        //alien number
+        List<AlienNumber> alienNumbers = AlienNumberDao.instance().findAll(iCase.getId(), ImmigrationCase.class.getCanonicalName());
+        if (alienNumbers != null && alienNumbers.size() > 0) {
+            AlienNumber alienNo = alienNumbers.get(0);
+            detailsDto.setAlienNumber(alienNo);
+        }
         return detailsDto;
     }
 
@@ -323,6 +335,17 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         info.setTargetEntityId(immiCase.getId());
         info.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
         dto.setOtherNamesInfo(infoService.save(immiCase.getId(), info));
+        return dto;
+    }
+
+    @PUT
+    @Path("save-alien-info/{invitationCode}")
+    public EmployeeH1BDetailsDto saveAlienNo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
+        ImmigrationCase immiCase = getCase(invitationCode);
+        AlienNumber num = dto.getAlienNumber();
+        num.setTargetEntityId(immiCase.getId());
+        num.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
+        dto.setAlienNumber(alienService.save(immiCase.getId(), num));
         return dto;
     }
 
