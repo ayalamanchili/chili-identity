@@ -38,6 +38,7 @@ public class UpdateEmpPersonalInfoPopupPanel extends UpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
+        logger.info("entity in other info panel is ... " + entity);
         JSONObject personalInfoObj = new JSONObject();
         assignEntityValueFromField("empLastName", personalInfoObj);
         assignEntityValueFromField("empFirstName", personalInfoObj);
@@ -123,14 +124,18 @@ public class UpdateEmpPersonalInfoPopupPanel extends UpdateComposite {
 
     @Override
     public void loadEntity(String entityId) {
-            HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
-                    new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String response) {
+        HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
+                new ALAsyncCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (!response.trim().contains("<html>")) {
                             entity = (JSONObject) JSONParser.parseLenient(response);
                             populateFieldsFromEntity(entity);
+                        } else {
+                            entity = new JSONObject();
                         }
-                    });
+                    }
+                });
     }
 
     protected String updatePersonalInfo() {

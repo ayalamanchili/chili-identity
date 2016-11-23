@@ -91,6 +91,7 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
 
     public ReadH1bPage1Panel(String invitationCode) {
         instance = this;
+        this.invitationCode = invitationCode;
         initReadComposite(invitationCode, "H1BQuestionnaire", OfficeWelcome.constants2);
         entityCaptionPanel.setCaptionHTML("");
     }
@@ -101,10 +102,11 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if (!response.trim().equals("null")) {
+                        if (!response.trim().contains("<html>")) {
                             entity = (JSONObject) JSONParser.parseLenient(response);
-                            logger.info("entity after refresh .... "+entity);
                             populateFieldsFromEntity(entity);
+                        } else {
+                            entity = new JSONObject();
                         }
                     }
                 });
@@ -134,6 +136,23 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
             assignFieldValueFromEntity("middleName", otherNamesInfoOBJ, DataType.STRING_FIELD);
             assignFieldValueFromEntity("lastName", otherNamesInfoOBJ, DataType.STRING_FIELD);
         }
+        if (entity.containsKey("usEduRecInfo")) {
+            JSONObject usEduRecInfoObj = entity.get("usEduRecInfo").isObject();
+            assignFieldValueFromEntity("nameOfSchool", usEduRecInfoObj, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("street1", usEduRecInfoObj, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("street2", usEduRecInfoObj, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("country", usEduRecInfoObj, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("city", usEduRecInfoObj, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("state", usEduRecInfoObj, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("zip", usEduRecInfoObj, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("dateDegreeAwarded", usEduRecInfoObj, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("typeOfUSDegree", usEduRecInfoObj, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("degreeOfStudy", usEduRecInfoObj, DataType.STRING_FIELD);
+        }
+        if (entity.containsKey("alienNumber")) {
+            JSONObject alienNumber = entity.get("alienNumber").isObject();
+            assignFieldValueFromEntity("alienNumber", alienNumber, DataType.STRING_FIELD);
+        }
     }
 
     @Override
@@ -141,6 +160,7 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
         personalInfoEdit.addClickHandler(this);
         eduInfo2Edit.addClickHandler(this);
         OtherNamesInfoEdit.addClickHandler(this);
+        alienNoInfoEdit.addClickHandler(this);
         if (countriesF != null) {
             countriesF.listBox.addChangeHandler(this);
         }
@@ -171,15 +191,15 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
         addField("street1", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("street2", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("country", true, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("city", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("city", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("state", true, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
-        addField("zip", true, false, DataType.LONG_FIELD, Alignment.HORIZONTAL);
+        addField("zip", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateDegreeAwarded", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("typeOfUSDegree", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("certificationObtained", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("typeOfUSDegree", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("degreeOfStudy", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(alienNoInfo);
         entityFieldsPanel.add(alienNoInfoEdit);
-        addField("alienNumber", true, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("alienNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(eduInfo1);
         entityFieldsPanel.add(eduInfo1Edit);
         addField("fieldOfStudy", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -202,10 +222,13 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(personalInfoEdit)) {
-            new GenericPopup(new UpdateEmpPersonalInfoPopupPanel(entityId), 50, Window.getClientHeight() / 5).show();
+            new GenericPopup(new UpdateEmpPersonalInfoPopupPanel(invitationCode), 50, Window.getClientHeight() / 5).show();
         }
         if (event.getSource().equals(OtherNamesInfoEdit)) {
-            new GenericPopup(new UpdateOtherNamesInfoPopupPanel(entityId), 50, Window.getClientHeight() * 2).show();
+            new GenericPopup(new UpdateOtherNamesInfoPopupPanel(invitationCode), 50, Window.getClientHeight() * 2).show();
+        }
+        if (event.getSource().equals(alienNoInfoEdit)) {
+            new GenericPopup(new UpdateAlienNoPopupPanel(entityId), 200, 1000).show();
         }
     }
 

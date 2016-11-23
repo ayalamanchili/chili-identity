@@ -5,6 +5,7 @@
  */
 package info.yalamanchili.office.client.profile.employee;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -23,29 +24,27 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author radhika.mukkala
+ * @author Ramana.Lukalapu
  */
-public class UpdateOtherNamesInfoPopupPanel extends UpdateComposite {
+public class UpdateAlienNoPopupPanel extends UpdateComposite {
 
-    private static Logger logger = Logger.getLogger(UpdateOtherNamesInfoPopupPanel.class.getName());
+    private static Logger logger = Logger.getLogger(UpdateAlienNoPopupPanel.class.getName());
 
-    public UpdateOtherNamesInfoPopupPanel(String entityId) {
-        initUpdateComposite(entityId, "OtherNamesInfo", OfficeWelcome.constants);
+    public UpdateAlienNoPopupPanel(String entityId) {
+        initUpdateComposite(entityId, "AlienNo", OfficeWelcome.constants);
     }
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject otherNamesInfoObj = new JSONObject();
-        assignEntityValueFromField("firstName", otherNamesInfoObj);
-        assignEntityValueFromField("lastName", otherNamesInfoObj);
-        assignEntityValueFromField("middleName", otherNamesInfoObj);
-        entity.put("otherNamesInfo", otherNamesInfoObj);
+        JSONObject alienNoObj = new JSONObject();
+        assignEntityValueFromField("alienNumber", alienNoObj);
+        entity.put("alienNumber", alienNoObj);
         return entity;
     }
 
     @Override
     protected void updateButtonClicked() {
-        HttpService.HttpServiceAsync.instance().doPut(updateOtherNamesInfo(), entity.toString(),
+        HttpService.HttpServiceAsync.instance().doPut(updateAlienNumber(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable arg0) {
@@ -61,11 +60,9 @@ public class UpdateOtherNamesInfoPopupPanel extends UpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        if (entity.containsKey("otherNamesInfo")) {
-            JSONObject empPersoanlInfo = entity.get("otherNamesInfo").isObject();
-            assignFieldValueFromEntity("firstName", empPersoanlInfo, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("lastName", empPersoanlInfo, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("middleName", empPersoanlInfo, DataType.STRING_FIELD);
+        if (entity.containsKey("alienNumber")) {
+            JSONObject alienNumber = entity.get("alienNumber").isObject();
+            assignFieldValueFromEntity("alienNumber", alienNumber, DataType.STRING_FIELD);
         }
     }
 
@@ -75,7 +72,7 @@ public class UpdateOtherNamesInfoPopupPanel extends UpdateComposite {
         RootPanel.get().clear();
         RootPanel.get().add(new Image(OfficeImages.INSTANCE.logo()));
         RootPanel.get().add(new H1bQuestionnaireWidget(entityId));
-        new ResponseStatusWidget().show("Successfully  Updated Other Names Info");
+        new ResponseStatusWidget().show("Successfully  Updated Alien Number");
     }
 
     @Override
@@ -88,9 +85,7 @@ public class UpdateOtherNamesInfoPopupPanel extends UpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("firstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("middleName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("alienNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
     }
 
     @Override
@@ -108,17 +103,13 @@ public class UpdateOtherNamesInfoPopupPanel extends UpdateComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                       if (!response.trim().contains("<html>")) {
-                            entity = (JSONObject) JSONParser.parseLenient(response);
-                            populateFieldsFromEntity(entity);
-                        } else {
-                            entity = new JSONObject();
-                        }
+                        entity = (JSONObject) JSONParser.parseLenient(response);
+                        populateFieldsFromEntity(entity);
                     }
                 });
     }
 
-    protected String updateOtherNamesInfo() {
-        return OfficeWelcome.constants.root_url() + "immigrationcase/save-other-names-info/" + entityId;
+    protected String updateAlienNumber() {
+        return URL.encode(OfficeWelcome.constants.root_url() + "immigrationcase/save-alien-info/" + entityId);
     }
 }
