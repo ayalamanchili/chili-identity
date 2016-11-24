@@ -11,6 +11,8 @@ package info.yalamanchili.office.entity.immigration;
 import info.chili.jpa.AbstractHandleEntity;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -22,28 +24,29 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author Sudha
  */
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Indexed
 @XmlRootElement
 @Entity
 @Audited
 
-public class EducationRecord  extends AbstractHandleEntity {
-    
+public class EducationRecord extends AbstractHandleEntity {
+
     private static final long serialVersionUID = 4L;
-        
+
     @NotEmpty(message = "{degreeOfStudy.not.empty.msg}")
     protected String degreeOfStudy;
 
     protected String fieldOfStudy;
 
     protected String nameOfSchool;
-    
+
     protected String address;
-    
+
     @NotNull(message = "{dateDegreeAwarded.not.empty.msg}")
     @Temporal(javax.persistence.TemporalType.DATE)
     protected Date dateDegreeAwarded;
-    
+
     public String getDegreeOfStudy() {
         return degreeOfStudy;
     }
@@ -82,11 +85,10 @@ public class EducationRecord  extends AbstractHandleEntity {
 
     public void setDateDegreeAwarded(Date dateDegreeAwarded) {
         this.dateDegreeAwarded = dateDegreeAwarded;
-    }    
-    
+    }
+
     @Override
     public String toString() {
         return "EducationRecord{" + "degreeOfStudy=" + degreeOfStudy + ", fieldOfStudy=" + fieldOfStudy + ", nameOfSchool=" + nameOfSchool + ", address=" + address + ", dateDegreeRewarded=" + dateDegreeAwarded + '}';
-    }    
-    
+    }
 }
