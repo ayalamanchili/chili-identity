@@ -11,6 +11,7 @@ package info.yalamanchili.office.jrs.profile.immigration;
 import info.yalamanchili.office.entity.immigration.AlienNumber;
 import info.yalamanchili.office.entity.immigration.EducationRecord;
 import info.yalamanchili.office.entity.immigration.OtherNamesInfo;
+import info.yalamanchili.office.entity.immigration.USEducationRecord;
 import java.io.Serializable;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -30,6 +31,8 @@ public class EmployeeH1BDetailsDto implements Serializable {
     private OtherNamesInfo otherNamesInfo;
 
     private AlienNumber alienNumber;
+    
+    private USEducationRecord usEducRec;
 
     public PersonalInfoDto getEmpPersonalInfo() {
         return empPersonalInfo;
@@ -61,5 +64,13 @@ public class EmployeeH1BDetailsDto implements Serializable {
 
     public void setAlienNumber(AlienNumber alienNumber) {
         this.alienNumber = alienNumber;
+    }
+
+    public USEducationRecord getUsEducRec() {
+        return usEducRec;
+    }
+
+    public void setUsEducRec(USEducationRecord usEducRec) {
+        this.usEducRec = usEducRec;
     }
 }
