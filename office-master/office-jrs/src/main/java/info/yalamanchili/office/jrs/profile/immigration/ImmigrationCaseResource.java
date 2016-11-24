@@ -27,12 +27,14 @@ import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
 import info.yalamanchili.office.dao.profile.immigration.AlienNumberDao;
 import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseDao;
 import info.yalamanchili.office.dao.profile.immigration.OtherNamesInfoDao;
+import info.yalamanchili.office.dao.profile.immigration.UsEducationRecordDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.immigration.AlienNumber;
 import info.yalamanchili.office.entity.immigration.ImmigrationCase;
 import info.yalamanchili.office.entity.immigration.ImmigrationCaseStatus;
 import info.yalamanchili.office.entity.immigration.OtherNamesInfo;
+import info.yalamanchili.office.entity.immigration.USEducationRecord;
 import info.yalamanchili.office.entity.profile.EmailType;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Sex;
@@ -45,6 +47,7 @@ import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.immigration.AlienNumberService;
 import info.yalamanchili.office.profile.immigration.OtherNamesInfoService;
+import info.yalamanchili.office.profile.immigration.USEducationRecordService;
 import info.yalamanchili.office.profile.invite.InviteCodeGeneratorService;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -88,6 +91,9 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
 
     @Autowired
     protected AlienNumberService alienService;
+
+    @Autowired
+    protected USEducationRecordService usEducService;
 
     @Override
     public CRUDDao getDao() {
@@ -273,6 +279,11 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
             AlienNumber alienNo = alienNumbers.get(0);
             detailsDto.setAlienNumber(alienNo);
         }
+        List<USEducationRecord> records = UsEducationRecordDao.instance().findAll(iCase.getId(), ImmigrationCase.class.getCanonicalName());
+        if (records != null && records.size() > 0) {
+            USEducationRecord rec = records.get(0);
+            detailsDto.setUsEducRec(rec);
+        }
         return detailsDto;
     }
 
@@ -349,24 +360,17 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         return dto;
     }
 
-//    @PUT
-//    @Path("save-edu-info2/{invitationCode}")
-//    public EmployeeH1BDetailsDto saveEducatnRecInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
-//        ImmigrationCase immiCase = getCase(invitationCode);
-//        EducationRecord record = new EducationRecord();
-//        if (dto.getEduRecord() != null) {
-//            EducationRecord immiEduRec = dto.getEduRecord();
-//            record.setAddress(immiEduRec.getAddress());
-//            record.setDateDegreeAwarded(immiEduRec.getDateDegreeAwarded());
-//            record.setDegreeOfStudy(immiEduRec.getDegreeOfStudy());
-//            record.setFieldOfStudy(immiEduRec.getFieldOfStudy());
-//            record.setNameOfSchool(immiEduRec.getNameOfSchool());
-//            record.setTargetEntityId(immiCase.getId());
-//            record.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
-//            EducationRecordDao.instance().save(record);
-//        }
-//        return dto;
-//    }
+    @PUT
+    @Path("save-us-edu-info/{invitationCode}")
+    public EmployeeH1BDetailsDto saveUSEducInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
+        ImmigrationCase immiCase = getCase(invitationCode);
+        USEducationRecord record = dto.getUsEducRec();
+        record.setTargetEntityId(immiCase.getId());
+        record.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
+        dto.setUsEducRec(usEducService.save(immiCase.getId(), record));
+        return dto;
+    }
+
     private MaritalStatus setMaritalStatus(String maritalStatus) {
         MaritalStatus status = null;
         switch (maritalStatus) {
