@@ -120,7 +120,7 @@ public class OfficeServiceConfiguration {
     /**
      *
      */
-    protected boolean lockCorporateEvaluations = true;
+    protected boolean lockCorporateEvaluations = false;
 
     public void setAdminEmail(String adminEmail) {
         this.adminEmail = adminEmail;
