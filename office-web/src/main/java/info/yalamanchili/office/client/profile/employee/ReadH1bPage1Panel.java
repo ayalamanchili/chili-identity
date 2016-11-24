@@ -5,24 +5,18 @@
  */
 package info.yalamanchili.office.client.profile.employee;
 
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
-import info.chili.gwt.data.CanadaStatesFactory;
-import info.chili.gwt.data.CountryFactory;
-import info.chili.gwt.data.IndiaStatesFactory;
-import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
@@ -35,14 +29,12 @@ import java.util.logging.Logger;
  *
  * @author radhika.mukkala
  */
-public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, ChangeHandler {
+public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler {
 
     private static Logger logger = Logger.getLogger(ReadH1bPage1Panel.class.getName());
 
     protected static ReadH1bPage1Panel instance;
     protected String invitationCode;
-    EnumField statesF;
-    EnumField countriesF;
 
     protected Button personalInfoEdit = new Button("Click here to Edit");
     protected Button OtherNamesInfoEdit = new Button("Click here to Add");
@@ -113,7 +105,7 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
     }
 
     protected String getReadURI(String entityId) {
-        return OfficeWelcome.constants.root_url() + "immigrationcase/h1b-questionnaire/get-details/?invitationCode=" + entityId;
+        return OfficeWelcome.constants.root_url() + "immigrationcase/h1b-questionnaire/get-details?invitationCode=" + entityId;
     }
 
     @Override
@@ -136,22 +128,41 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
             assignFieldValueFromEntity("middleName", otherNamesInfoOBJ, DataType.STRING_FIELD);
             assignFieldValueFromEntity("lastName", otherNamesInfoOBJ, DataType.STRING_FIELD);
         }
-        if (entity.containsKey("usEduRecInfo")) {
-            JSONObject usEduRecInfoObj = entity.get("usEduRecInfo").isObject();
-            assignFieldValueFromEntity("nameOfSchool", usEduRecInfoObj, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("street1", usEduRecInfoObj, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("street2", usEduRecInfoObj, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("country", usEduRecInfoObj, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("city", usEduRecInfoObj, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("state", usEduRecInfoObj, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("zip", usEduRecInfoObj, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("dateDegreeAwarded", usEduRecInfoObj, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("typeOfUSDegree", usEduRecInfoObj, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("degreeOfStudy", usEduRecInfoObj, DataType.STRING_FIELD);
-        }
-        if (entity.containsKey("alienNumber")) {
-            JSONObject alienNumber = entity.get("alienNumber").isObject();
-            assignFieldValueFromEntity("alienNumber", alienNumber, DataType.STRING_FIELD);
+        if (entity.containsKey("usEducRec")) {
+            JSONObject usEduRecInfoObj = entity.get("usEducRec").isObject();
+            if (usEduRecInfoObj.containsKey("address") && usEduRecInfoObj.get("address").isString().stringValue() != null) {
+                JSONObject address = new JSONObject();
+                String[] adressArr = usEduRecInfoObj.get("address").isString().stringValue().split("-");
+                if (adressArr.length == 5) {
+                    address.put("street1", new JSONString(adressArr[0]));
+                    address.put("street2", new JSONString(""));
+                    address.put("city", new JSONString(adressArr[1]));
+                    address.put("state", new JSONString(adressArr[2]));
+                    address.put("country", new JSONString(adressArr[3]));
+                    address.put("zip", new JSONString(adressArr[4]));
+                } else if (adressArr.length == 6) {
+                    address.put("street1", new JSONString(adressArr[0]));
+                    address.put("street2", new JSONString(adressArr[1]));
+                    address.put("city", new JSONString(adressArr[2]));
+                    address.put("state", new JSONString(adressArr[3]));
+                    address.put("country", new JSONString(adressArr[4]));
+                    address.put("zip", new JSONString(adressArr[5]));
+                }
+                assignFieldValueFromEntity("street1", address, DataType.STRING_FIELD);
+                assignFieldValueFromEntity("street2", address, DataType.STRING_FIELD);
+                assignFieldValueFromEntity("country", address, DataType.STRING_FIELD);
+                assignFieldValueFromEntity("city", address, DataType.STRING_FIELD);
+                assignFieldValueFromEntity("state", address, DataType.STRING_FIELD);
+                assignFieldValueFromEntity("zip", address, DataType.STRING_FIELD);
+                assignFieldValueFromEntity("nameOfSchool", usEduRecInfoObj, DataType.STRING_FIELD);
+                assignFieldValueFromEntity("dateDegreeAwarded", usEduRecInfoObj, DataType.DATE_FIELD);
+                assignFieldValueFromEntity("typeOfUSDegree", usEduRecInfoObj, DataType.STRING_FIELD);
+                assignFieldValueFromEntity("degreeOfStudy", usEduRecInfoObj, DataType.STRING_FIELD);
+            }
+            if (entity.containsKey("alienNumber")) {
+                JSONObject alienNumber = entity.get("alienNumber").isObject();
+                assignFieldValueFromEntity("alienNumber", alienNumber, DataType.STRING_FIELD);
+            }
         }
     }
 
@@ -161,9 +172,6 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
         eduInfo2Edit.addClickHandler(this);
         OtherNamesInfoEdit.addClickHandler(this);
         alienNoInfoEdit.addClickHandler(this);
-        if (countriesF != null) {
-            countriesF.listBox.addChangeHandler(this);
-        }
     }
 
     @Override
@@ -190,9 +198,9 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
         addField("nameOfSchool", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("street1", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("street2", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("country", true, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addField("country", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("city", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("state", true, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+        addField("state", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("zip", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateDegreeAwarded", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("typeOfUSDegree", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -211,8 +219,6 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
         addField("firstName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("middleName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("lastName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        statesF = (EnumField) fields.get("state");
-        countriesF = (EnumField) fields.get("country");
     }
 
     @Override
@@ -230,25 +236,15 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler, Ch
         if (event.getSource().equals(alienNoInfoEdit)) {
             new GenericPopup(new UpdateAlienNoPopupPanel(entityId), 200, 1000).show();
         }
+        if (event.getSource().equals(eduInfo2Edit)) {
+            new GenericPopup(new UpdateCaseEducRecPopupPanel(entityId), 200, 1000).show();
+        }
     }
 
     protected String updateImmigrationInfo() {
         return URL.encode(OfficeWelcome.constants.root_url() + "immigrationcase/save-immigration-info/" + invitationCode);
     }
 
-    @Override
-    public void onChange(ChangeEvent event) {
-        switch (countriesF.getValue()) {
-            case "USA":
-                statesF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
-                break;
-            case "INDIA":
-                statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
-                break;
-            case "CANADA":
-                statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
-        }
-    }
 
     @Override
     protected String getURI() {
