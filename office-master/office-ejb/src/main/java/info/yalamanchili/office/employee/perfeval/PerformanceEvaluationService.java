@@ -248,6 +248,9 @@ public class PerformanceEvaluationService {
         fyYears.add("2013");
         fyYears.add("2014");
         fyYears.add("2015");
+        fyYears.add("2016");
+        fyYears.add("2017");
+        fyYears.add("2018");
         //TODO add years as needed
         return fyYears;
     }
