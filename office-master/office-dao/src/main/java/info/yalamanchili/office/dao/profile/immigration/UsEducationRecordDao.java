@@ -46,7 +46,6 @@ public class UsEducationRecordDao extends AbstractHandleEntityDao<USEducationRec
     @Transactional(readOnly = true)
     @Override
     public List<USEducationRecord> findAll(Long id, String targetClassName) {
-        System.out.println("entity cls is .... " + entityCls+" entity manager is .... "+em);
         TypedQuery<USEducationRecord> query = em.createQuery("from " + USEducationRecord.class.getCanonicalName() + " where targetEntityName=:targetEntityNameParam and targetEntityId=:targetEntityIdParam", entityCls);
         query.setParameter("targetEntityNameParam", targetClassName);
         query.setParameter("targetEntityIdParam", id);
