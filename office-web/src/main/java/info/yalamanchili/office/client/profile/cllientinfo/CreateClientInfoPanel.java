@@ -126,7 +126,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         assignEntityValueFromField("consultantJobTitle", clientInfo);
         assignEntityValueFromField("company", clientInfo);
         assignEntityValueFromField("client", clientInfo);
-        assignEntityValueFromField("clientFeeApplicable", clientInfo);
+//        assignEntityValueFromField("clientFeeApplicable", clientInfo);
         assignEntityValueFromField("clientFee", clientInfo);
 //        assignEntityValueFromField("directClient", clientInfo);        
         assignEntityValueFromField("clientContact", clientInfo);
@@ -135,7 +135,7 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         assignEntityValueFromField("clientPaymentTerms", clientInfo);
         assignEntityValueFromField("vendor", clientInfo);
         assignEntityValueFromField("vendorAPContacts", clientInfo);
-        assignEntityValueFromField("vendorFeeApplicable", clientInfo);
+//        assignEntityValueFromField("vendorFeeApplicable", clientInfo);
         assignEntityValueFromField("vendorFee", clientInfo);
         assignEntityValueFromField("vendorLocation", clientInfo);
         assignEntityValueFromField("vendorRecruiters", clientInfo);
@@ -259,8 +259,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         if (endDateF != null) {
             endDateF.getDatePicker().addValueChangeHandler(this);
         }
-        isClientFeeApplicable.getBox().addClickHandler(this);
-        isVendorFeeApplicable.getBox().addClickHandler(this);
+//        isClientFeeApplicable.getBox().addClickHandler(this);
+//        isVendorFeeApplicable.getBox().addClickHandler(this);
     }
 
     @Override
@@ -305,11 +305,11 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         };
         addDropDown("clientAPContacts", selectClientAcctPayContact);
         entityFieldsPanel.add(addClientAcctPayContact);
-        addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        isClientFeeApplicable = (BooleanField) fields.get("clientFeeApplicable");
-        addField("clientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL); 
-        clientFee = (FloatField) fields.get("clientFee");
-        clientFee.setVisible(false);
+//        addField("clientFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+//        isClientFeeApplicable = (BooleanField) fields.get("clientFeeApplicable");
+//        addField("clientFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL); 
+//        clientFee = (FloatField) fields.get("clientFee");
+//        clientFee.setVisible(false);
         addField("clientPaymentTerms", false, false, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Middle Vendor Information"));
         addDropDown("middleVendor", new SelectMiddleVendorWidget(false, false, Alignment.HORIZONTAL));
@@ -334,11 +334,11 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
         };
         addDropDown("vendorAPContacts", selectVendorAPContactsW);
         entityFieldsPanel.add(addVendorAcctPayContact);
-        addField("vendorFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
-        isVendorFeeApplicable = (BooleanField) fields.get("vendorFeeApplicable");
-        addField("vendorFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL); 
-        vendorFee = (FloatField) fields.get("vendorFee");
-        vendorFee.setVisible(false);
+//        addField("vendorFeeApplicable", false, false, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL);
+//        isVendorFeeApplicable = (BooleanField) fields.get("vendorFeeApplicable");
+//        addField("vendorFee", false, false, DataType.FLOAT_FIELD, Alignment.HORIZONTAL);
+//        vendorFee = (FloatField) fields.get("vendorFee");
+//        vendorFee.setVisible(false);
         addField("vendorPaymentTerms", false, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(getLineSeperatorTag("Project Details"));
         addField("startDate", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -435,16 +435,16 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                 new GenericPopup(new CreateClientAcctPayCntPanel(selectClientWidgetF.getSelectedObjectId(), CreateCompositeType.ADD), 400, 100).show();
             }
         }
-        if (event.getSource().equals(isClientFeeApplicable.getBox()) && isClientFeeApplicable.getValue()) {
-            clientFee.setVisible(true);
-        } else {
-            clientFee.setVisible(false);
-        }
-        if (event.getSource().equals(isVendorFeeApplicable.getBox()) && isVendorFeeApplicable.getValue()) {
-            vendorFee.setVisible(true);
-        } else {
-            vendorFee.setVisible(false);
-        }
+//        if (event.getSource().equals(isClientFeeApplicable.getBox()) && isClientFeeApplicable.getValue()) {
+//            clientFee.setVisible(true);
+//        } else {
+//            clientFee.setVisible(false);
+//        }
+//        if (event.getSource().equals(isVendorFeeApplicable.getBox()) && isVendorFeeApplicable.getValue()) {
+//            vendorFee.setVisible(true);
+//        } else {
+//            vendorFee.setVisible(false);
+//        }
         if (event.getSource().equals(addVendorL)) {
             if (Auth.hasAnyOfRoles(ROLE.ROLE_CONTRACTS_ADMIN)) {
                 new GenericPopup(new CreateVendorPanel(CreateCompositeType.CREATE), 350, 10).show();
@@ -497,8 +497,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                         } else {
                             invFrequencyv.setSelectedIndex(0);
                         }
-                        FloatField vendorFee=(FloatField) fields.get("vendorFee");
-                        vendorFee.setValue(JSONUtils.toString(vendor, "vendorFees"));
+//                        FloatField vendorFee=(FloatField) fields.get("vendorFee");
+//                        vendorFee.setValue(JSONUtils.toString(vendor, "vendorFees"));
                     }
                 });
     }
@@ -517,8 +517,8 @@ public class CreateClientInfoPanel extends CreateComposite implements ChangeHand
                         payTermF.setValue(JSONUtils.toString(client, "paymentTerms"));
 //                        BooleanField directClientB=(BooleanField) fields.get("directClient");
 //                        directClientB.setValue(JSONUtils.toBoolean(client, "directClient"));
-                        FloatField clientFee=(FloatField) fields.get("clientFee");
-                        clientFee.setValue(JSONUtils.toString(client, "clientFee"));
+//                        FloatField clientFee=(FloatField) fields.get("clientFee");
+//                        clientFee.setValue(JSONUtils.toString(client, "clientFee"));
 
                     }
                 });
