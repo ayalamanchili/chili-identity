@@ -56,7 +56,6 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
             String nottes = (String) task.getExecution().getVariable("nottes");
             if (status.equalsIgnoreCase("approved")) {
                 entity.setStatus(ClientInformationStatus.PENDING_INVOICING_BILLING_APPROVAL);
-                sendNewClieniInformationNotification(entity, nottes, task);
                 if (StringUtils.isNotEmpty(nottes)) {
                     CommentDao.instance().addComment("New Client Info Contract Validation Task: " + nottes, entity);
                 }
@@ -70,7 +69,12 @@ public class NewClientInformationProcess extends RuleBasedTaskDelegateListner {
         String itemno = (String) task.getExecution().getVariable("itemNumber");
         if (task.getTaskDefinitionKey().equals("newClientInfoInvoicingAndBillingTask")) {
             if (status.equalsIgnoreCase("approved")) {
-                entity.setStatus(ClientInformationStatus.PENDING_PAYROLL_VERIFICATION);
+                if (entity.getEmployee().getEmployeeType().getName() != "Subcontractor"
+                        && entity.getEmployee().getEmployeeType().getName() != "1099 Contractor") {
+                    entity.setStatus(ClientInformationStatus.PENDING_PAYROLL_VERIFICATION);
+                } else {
+                    entity.setStatus(ClientInformationStatus.PENDING_HR_VERIFICATION);
+                }
                 sendNewClieniInformationNotification(entity, itemno, task);
             } else {
                 entity.setStatus(ClientInformationStatus.CANCELED);
