@@ -43,7 +43,6 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject educationRecord = new JSONObject();
         assignEntityValueFromField("degreeOfStudy", educationRecord);
-        assignEntityValueFromField("fieldOfStudy", educationRecord);
         assignEntityValueFromField("nameOfSchool", educationRecord);
         assignEntityValueFromField("typeOfUSDegree", educationRecord);
         assignEntityValueFromField("dateDegreeAwarded", educationRecord);
@@ -87,7 +86,6 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite {
             educRec = new JSONObject();
         }
         assignFieldValueFromEntity("degreeOfStudy", educRec, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("fieldOfStudy", educRec, DataType.STRING_FIELD);
         assignFieldValueFromEntity("nameOfSchool", educRec, DataType.STRING_FIELD);
         assignFieldValueFromEntity("typeOfUSDegree", educRec, DataType.STRING_FIELD);
         assignFieldValueFromEntity("dateDegreeAwarded", educRec, DataType.DATE_FIELD);
@@ -137,7 +135,6 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite {
     @Override
     protected void addWidgets() {
         addField("degreeOfStudy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("fieldOfStudy", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("nameOfSchool", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("typeOfUSDegree", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateDegreeAwarded", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
@@ -184,9 +181,9 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite {
 
     private String getAddress(JSONObject address) {
         if (address.containsKey("street2")) {
-            return address.get("street1").isString().stringValue().trim() + " - " + address.get("street2").isString().stringValue().trim() + " - " + address.get("city").isString().stringValue().trim() + "-" + address.get("state").isString().stringValue().trim() + " - " + address.get("country").isString().stringValue().trim() + " - " + address.get("zip").isString().stringValue().trim();
+            return address.get("street1").isString().stringValue().trim() + "-" + address.get("street2").isString().stringValue().trim() + "-" + address.get("city").isString().stringValue().trim() + "-" + address.get("state").isString().stringValue().trim() + "-" + address.get("country").isString().stringValue().trim() + "-" + address.get("zip").isString().stringValue().trim();
         } else {
-            return address.get("street1").isString().stringValue().trim() + " - " + address.get("city").isString().stringValue().trim() + "-" + address.get("state").isString().stringValue().trim() + " - " + address.get("country").isString().stringValue().trim() + " - " + address.get("zip").isString().stringValue().trim();
+            return address.get("street1").isString().stringValue().trim() + "-" + address.get("city").isString().stringValue().trim() + "-" + address.get("state").isString().stringValue().trim() + "-" + address.get("country").isString().stringValue().trim() + "-" + address.get("zip").isString().stringValue().trim();
         }
     }
 }
