@@ -5,7 +5,6 @@
  */
 package info.yalamanchili.office.client.invite;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
@@ -29,6 +28,8 @@ public class ReadAllInviteCodePanel extends CRUDReadAllComposite {
 
     private static Logger logger = Logger.getLogger(ReadAllInviteCodePanel.class.getName());
     public static ReadAllInviteCodePanel instance;
+    protected String targetClassName = null;
+    protected String caseId;
 
     public ReadAllInviteCodePanel() {
         instance = this;
@@ -40,21 +41,33 @@ public class ReadAllInviteCodePanel extends CRUDReadAllComposite {
         initTable("Code", array, OfficeWelcome.constants);
     }
 
+    public ReadAllInviteCodePanel(String parentId, String targetClassName) {
+        instance = this;
+        this.caseId = parentId;
+        this.targetClassName = targetClassName;
+        initTable("Invite Code", OfficeWelcome.constants2);
+    }
+
     @Override
     public void viewClicked(String entityId) {
-        TabPanel.instance().chiliAdminPanel.entityPanel.clear();
-        TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadInviteCodePanel(getEntity(entityId)));
+        if (caseId == null) {
+            TabPanel.instance().chiliAdminPanel.entityPanel.clear();
+            TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadInviteCodePanel(getEntity(entityId)));
+        } else {
+            TabPanel.instance().immigrationPanel.entityPanel.clear();
+            TabPanel.instance().immigrationPanel.entityPanel.add(new ReadInviteCodePanel(getEntity(entityId)));
+        }
     }
 
     @Override
     public void deleteClicked(String entityId) {
         HttpService.HttpServiceAsync.instance().doPut(getDeleteURL(entityId), null, OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String arg0) {
-                postDeleteSuccess();
-            }
-        });
+                    @Override
+                    public void onResponse(String arg0) {
+                        postDeleteSuccess();
+                    }
+                });
     }
 
     protected String getDeleteURL(String entityId) {
@@ -70,25 +83,35 @@ public class ReadAllInviteCodePanel extends CRUDReadAllComposite {
 
     @Override
     public void updateClicked(String entityId) {
-        TabPanel.instance().chiliAdminPanel.entityPanel.clear();
-        TabPanel.instance().chiliAdminPanel.entityPanel.add(new UpdateInviteCodePanel(getEntity(entityId)));
+        if (caseId == null) {
+            TabPanel.instance().chiliAdminPanel.entityPanel.clear();
+            TabPanel.instance().chiliAdminPanel.entityPanel.add(new UpdateInviteCodePanel(getEntity(entityId), true));
+        } else {
+            TabPanel.instance().immigrationPanel.entityPanel.clear();
+            TabPanel.instance().immigrationPanel.entityPanel.add(new UpdateInviteCodePanel(getEntity(entityId)));
+        }
     }
 
     @Override
     public void preFetchTable(int start) {
         HttpService.HttpServiceAsync.instance().doGet(getEventServiceUrl(start, OfficeWelcome.constants.tableSize()), OfficeWelcome.instance().getHeaders(),
                 false, new ALAsyncCallback<String>() {
-            @Override
-            public void onResponse(String result) {
-                logger.info(result);
-                postFetchTable(result);
-            }
-        });
+                    @Override
+                    public void onResponse(String result) {
+                        logger.info(result);
+                        postFetchTable(result);
+                    }
+                });
     }
 
     public String getEventServiceUrl(Integer start, String limit) {
-        return OfficeWelcome.constants.root_url() + "invitecode/" + start.toString() + "/"
-                + limit;
+        if (caseId == null && this.targetClassName == null) {
+            return OfficeWelcome.constants.root_url() + "invitecode/" + start.toString() + "/"
+                    + limit;
+        } else {
+            return OfficeWelcome.constants.root_url() + "invitecode/" + caseId + "/" + start.toString() + "/"
+                    + limit;
+        }
     }
 
     @Override
@@ -107,8 +130,8 @@ public class ReadAllInviteCodePanel extends CRUDReadAllComposite {
             JSONObject entity = (JSONObject) entities.get(i - 1);
             addOptionsWidget(i, entity);
             table.setText(i, 1, JSONUtils.toString(entity, "invitationCode"));
-            table.setText(i, 2,  DateUtils.formatDate(JSONUtils.toString(entity, "expiryDate")));
-            table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity,"validFromDate")));
+            table.setText(i, 2, DateUtils.formatDate(JSONUtils.toString(entity, "expiryDate")));
+            table.setText(i, 3, DateUtils.formatDate(JSONUtils.toString(entity, "validFromDate")));
             table.setText(i, 4, JSONUtils.toString(entity, "email"));
             table.setText(i, 5, JSONUtils.toString(entity, "invitationType"));
         }
