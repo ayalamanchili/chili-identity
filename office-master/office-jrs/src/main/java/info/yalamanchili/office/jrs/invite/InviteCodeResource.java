@@ -51,6 +51,12 @@ public class InviteCodeResource {
         return inviteCodeService.getInviteCodes(start, limit);
     }
 
+    @GET
+    @Path("/{caseId}/{start}/{limit}")
+    public InviteCodeService.InviteCodeTable getCaseCodes(@PathParam("caseId") Long caseId, @PathParam("start") int start, @PathParam("limit") int limit) {
+        return inviteCodeService.getCaseInviteCodes(caseId, start, limit);
+    }
+
     @PUT
     @Path("/search")
     public List<InviteCodeService.InviteCodeDto> search(InviteCodeService.InviteCodeDto search) {
@@ -72,5 +78,4 @@ public class InviteCodeResource {
         updateEntity.setExpiryDate(entity.getExpiryDate());
         inviteCodeDao.save(updateEntity);
     }
-
 }
