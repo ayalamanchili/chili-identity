@@ -21,6 +21,7 @@ import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.expense.chkreq.ImmigrationCaseStatus;
 import info.yalamanchili.office.client.expense.chkreq.ImmigrationCaseType;
 import info.yalamanchili.office.client.expense.chkreq.SponsorType;
+import info.yalamanchili.office.client.invite.ReadAllInviteCodePanel;
 import info.yalamanchili.office.client.profile.emergencycnt.ReadAllDependentsPanel;
 
 /**
@@ -39,14 +40,18 @@ public class ReadImmigrationCasePanel extends ReadComposite {
     }
 
     public ReadImmigrationCasePanel(JSONObject entity) {
-        OfficeWelcome.logger.info("read case entity is .... " + entity);
         instance = this;
         initReadComposite(entity, "ImmigrationCase", OfficeWelcome.constants2);
         populateDependents();
+        populateInviteCodes();
     }
 
     protected final void populateDependents() {
         entityFieldsPanel.add(new ReadAllDependentsPanel(getEntityId(), "ImmigrationCase"));
+    }
+    
+    protected final void populateInviteCodes() {
+        entityFieldsPanel.add(new ReadAllInviteCodePanel(getEntityId(), "ImmigrationCase"));
     }
 
     @Override
