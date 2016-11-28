@@ -20,20 +20,27 @@ import java.util.logging.Logger;
  * @author Rohith.Vallabhaneni
  */
 public class UpdateInviteCodePanel extends UpdateComposite {
-    
+
     private static Logger logger = Logger.getLogger(UpdateInviteCodePanel.class.getName());
+    private boolean isCasePanel = false;
 
     public UpdateInviteCodePanel(JSONObject entity) {
         instance = this;
         initUpdateComposite(entity, "InviteCodeService", OfficeWelcome.constants);
     }
-    
+
+    public UpdateInviteCodePanel(JSONObject entity, boolean isCasePanel) {
+        this.isCasePanel = isCasePanel;
+        instance = this;
+        initUpdateComposite(entity, "InviteCodeService", OfficeWelcome.constants);
+    }
+
     protected static UpdateInviteCodePanel instance;
 
     public static UpdateInviteCodePanel instance() {
         return instance;
     }
-    
+
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject inviteType = new JSONObject();
@@ -47,7 +54,6 @@ public class UpdateInviteCodePanel extends UpdateComposite {
 
     @Override
     protected void updateButtonClicked() {
-        logger.info("entity details:" + entity.toString());
         HttpService.HttpServiceAsync.instance().doPut(getURI(), entity.toString(), OfficeWelcome.instance().getHeaders(), true,
                 new AsyncCallback<String>() {
                     @Override
@@ -73,21 +79,25 @@ public class UpdateInviteCodePanel extends UpdateComposite {
 
     @Override
     protected void postUpdateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Updated Invitation Code");
-        TabPanel.instance().myOfficePanel.sidePanelTop.clear();
-        TabPanel.instance().myOfficePanel.sidePanelTop.add(new InviteCodeSidePanel());
-        TabPanel.instance().myOfficePanel.entityPanel.clear();
-        TabPanel.instance().myOfficePanel.entityPanel.add(new ReadAllInviteCodePanel());
+        if (isCasePanel == false) {
+            new ResponseStatusWidget().show("Successfully Updated Invitation Code");
+            TabPanel.instance().chiliAdminPanel.sidePanelTop.clear();
+            TabPanel.instance().chiliAdminPanel.sidePanelTop.add(new InviteCodeSidePanel());
+            TabPanel.instance().chiliAdminPanel.entityPanel.clear();
+            TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadAllInviteCodePanel());
+        } else {
+            new ResponseStatusWidget().show("Successfully Updated Invitation Code");
+            TabPanel.instance().immigrationPanel.sidePanelTop.clear();
+            TabPanel.instance().immigrationPanel.entityPanel.clear();
+        }
     }
 
     @Override
     protected void addListeners() {
-        
     }
 
     @Override
     protected void configure() {
-        
     }
 
     @Override
@@ -101,12 +111,10 @@ public class UpdateInviteCodePanel extends UpdateComposite {
 
     @Override
     protected void addWidgetsBeforeCaptionPanel() {
-        
     }
 
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "invitecode/update-expiration/" + getEntityId();
     }
-    
 }
