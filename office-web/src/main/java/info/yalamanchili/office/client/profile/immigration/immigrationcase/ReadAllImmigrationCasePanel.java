@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.CRUDReadAllComposite;
 import info.chili.gwt.crud.CreateComposite;
@@ -115,21 +116,8 @@ public class ReadAllImmigrationCasePanel extends CRUDReadAllComposite {
     }
 
     protected void sendQuestionnaire(String entityId) {
-        if (!entityId.isEmpty()) {
-            HttpService.HttpServiceAsync.instance().doGet(sendH1BQuestionUrl(entityId), OfficeWelcome.instance().getHeaders(), false,
-                    new ALAsyncCallback<String>() {
-                        @Override
-                        public void onResponse(String result) {
-                            new ResponseStatusWidget().show("H1B Questionnaire Url has been emailed successfully");
-                            TabPanel.instance().immigrationPanel.entityPanel.clear();
-                            TabPanel.instance().immigrationPanel.entityPanel.add(new ReadAllImmigrationCasePanel());
-                        }
-                    });
-        }
-    }
+        new GenericPopup(new DocsCheckListWidget(entityId, CreateComposite.CreateCompositeType.ADD), 50, Window.getClientHeight() / 5).show();
 
-    private String sendH1BQuestionUrl(String entityId) {
-        return OfficeWelcome.constants.root_url() + "immigrationcase/send-questionnaire/" + entityId;
     }
 
     @Override
