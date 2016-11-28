@@ -13,6 +13,8 @@ import info.chili.email.Email;
 import info.chili.spring.SpringContext;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
+import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseDao;
+import info.yalamanchili.office.entity.immigration.ImmigrationCase;
 import info.yalamanchili.office.entity.profile.invite.InvitationType;
 import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import info.yalamanchili.office.jms.MessagingService;
@@ -23,7 +25,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.apache.commons.lang.time.DateUtils;
-import static org.hibernate.Hibernate.entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Sort;
@@ -46,11 +47,34 @@ public class InviteCodeService {
     protected MongoOperations mongoTemplate;
     @Autowired
     public InviteCodeDao inviteCodeDao;
-    
+
     public static InviteCodeService instance() {
         return SpringContext.getBean(InviteCodeService.class);
     }
-    
+
+    public InviteCodeTable getCaseInviteCodes(Long caseId, int start, int limit) {
+        ImmigrationCase iCase = ImmigrationCaseDao.instance().findById(caseId);
+        InviteCodeTable res = new InviteCodeTable();
+        Query query = new Query();
+        query.with(new Sort(Sort.Direction.DESC, "expiryDate"));
+        mongoTemplate.find(query.limit(limit).skip(start), InviteCode.class).stream().filter((inviteCode) -> (inviteCode.getEmail().equals(iCase.getEmail()) && inviteCode.getInviteType() != null && inviteCode.getInviteType().getInvitationType().equals(InvitationType.H1B_Questionnaire))).map((inviteCode) -> {
+            InviteCodeDto dto = new InviteCodeDto();
+            dto.setId(inviteCode.getId());
+            dto.setInvitationCode(inviteCode.getInvitationCode());
+            dto.setExpiryDate(inviteCode.getExpiryDate());
+            dto.setValidFromDate(inviteCode.getValidFromDate());
+            dto.setEmail(inviteCode.getEmail());
+            if (inviteCode.getInviteType() != null) {
+                dto.setInvitationType(inviteCode.getInviteType().getInvitationType());
+                
+            }
+            return dto;
+        }).forEach((dto) -> {
+            res.getEntities().add(dto);
+        });
+        res.setSize(Long.valueOf(res.getEntities().size()));
+        return res;
+    }
 
     public InviteCodeTable getInviteCodes(int start, int limit) {
         InviteCodeTable res = new InviteCodeTable();
@@ -97,31 +121,30 @@ public class InviteCodeService {
         }
         return res;
     }
-    
+
     public void sendExpiryDateAlertNotification() {
         List<InviteCode> inviteCodes = inviteCodeDao.query();
-        if (inviteCodes.size () > 0 ) {
+        if (inviteCodes.size() > 0) {
             int reminderDays = 3;
             for (InviteCode inviteCode : inviteCodes) {
-               Email email = new Email();
+                Email email = new Email();
                 if (DateUtils.isSameDay(DateUtils.addDays(new Date(), reminderDays), inviteCode.getExpiryDate())) {
-                   email.addTo(inviteCode.getEmail());
-                   email.setHtml(Boolean.TRUE);
-                   email.setRichText(Boolean.TRUE);
-                   email.setSubject("Invitation Link about to expire: "+inviteCode.getInviteType().getDescription());
-                   String messageText = " <b>Your Invitation Link is About to"
-                           + " expire in 3 days! Please go to the below url and"
-                           + " complete it as soon as possible.  </b> </br> "
-                           + OfficeServiceConfiguration.instance().getPortalWebUrl() 
-                           + "?inviteCode=" + inviteCode.getInvitationCode();
-                   email.setBody(messageText);
-                   MessagingService.instance().sendEmail(email);
-               }        
-           }
-           
+                    email.addTo(inviteCode.getEmail());
+                    email.setHtml(Boolean.TRUE);
+                    email.setRichText(Boolean.TRUE);
+                    email.setSubject("Invitation Link about to expire: " + inviteCode.getInviteType().getDescription());
+                    String messageText = " <b>Your Invitation Link is About to"
+                            + " expire in 3 days! Please go to the below url and"
+                            + " complete it as soon as possible.  </b> </br> "
+                            + OfficeServiceConfiguration.instance().getPortalWebUrl()
+                            + "?inviteCode=" + inviteCode.getInvitationCode();
+                    email.setBody(messageText);
+                    MessagingService.instance().sendEmail(email);
+                }
+            }
+
         }
     }
-    
 
     @XmlRootElement
     @XmlType
@@ -247,5 +270,4 @@ public class InviteCodeService {
             this.entities = entities;
         }
     }
-
 }
