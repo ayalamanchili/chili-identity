@@ -17,7 +17,6 @@ import info.chili.service.jrs.exception.ServiceException;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.cache.OfficeCacheKeys;
 import info.yalamanchili.office.config.OfficeServiceConfiguration;
-import info.yalamanchili.office.dao.drive.FileDao;
 import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dao.profile.CompanyDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
@@ -99,8 +98,6 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
     public CRUDDao getDao() {
         return immigrationCaseDao;
     }
-
-    protected final String Questionnaire_Form = "H-1B_Questionnaire";
 
     @PUT
     @Path("/{employeeId}")
@@ -185,10 +182,10 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         return tableObj;
     }
 
-    @GET
+    @PUT
     @Path("send-questionnaire/{caseId}")
     @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CASE, allEntries = true)
-    public void sendH1BQuestionnaire(@PathParam("caseId") Long caseId) {
+    public void sendH1BQuestionnaire(@PathParam("caseId") Long caseId, DocsCheckListDto dto) {
         ImmigrationCase immigrationCase = immigrationCaseDao.findById(caseId);
         immigrationCase.setImmigrationCaseStatus(ImmigrationCaseStatus.Pending_Questionnaire_Submission);
         immigrationCaseDao.getEntityManager().merge(immigrationCase);
@@ -196,7 +193,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         if (immigrationCase.getEmployee() != null) {
             emp = EmployeeDao.instance().findById(immigrationCase.getEmployee().getId());
         }
-        InviteCode code = InviteCodeGeneratorService.instance().generate(InvitationType.H1B_Questionnaire, immigrationCase.getEmail(), new Date(), DateUtils.addDays(new Date(), 7), false, immigrationCase);
+        InviteCode code = InviteCodeGeneratorService.instance().generate(InvitationType.H1B_Questionnaire, immigrationCase.getEmail(), new Date(), DateUtils.addDays(new Date(), 14), false, immigrationCase);
         SerializedEntityDao.instance().save(immigrationCase, code.getClass().getCanonicalName(), code.getId());
         Email email = new Email();
         email.addTo(immigrationCase.getEmail());
@@ -216,14 +213,12 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         emailCtx.put("caseType", immigrationCase.getImmigrationCaseType().name());
         emailCtx.put("validFrom", new SimpleDateFormat("MM/dd/yyyy").format(code.getValidFromDate()));
         emailCtx.put("validTo", new SimpleDateFormat("MM/dd/yyyy").format(code.getExpiryDate()));
+        emailCtx.put("checkList", dto.getDocsCheckList());
         email.setTemplateName("questionnaire_invitation_email_template.html");
         String messageText = "Processing of your " + immigrationCase.getImmigrationCaseType() + " Visa Petition - " + CompanyDao.instance().findById(immigrationCase.getCompany().getId()).getName();
         email.setContext(emailCtx);
         email.setSubject(messageText);
         email.setBody(code.getInvitationCode());
-        if (FileDao.instance().getFilePath(Questionnaire_Form) != null) {
-            email.getAttachments().add(FileDao.instance().getFilePath(Questionnaire_Form));
-        }
         MessagingService.instance().sendEmail(email);
     }
 
