@@ -89,6 +89,11 @@
                             <li><strong>Please indicate which U.S. consulate from which you wish to obtain your visa.</strong></li>
                             <li><strong>Please complete the entire questionnaire, providing as many details as you can.</strong></li>
                         </div>
+                        <br/>
+                        <div style="color: #940404; font-size: 15px;"><strong> DOCUMENTS CHECK LIST: </strong></div>
+                        <div th:each="entry : ${checkList}">
+                            <li><strong><span th:if="${entry.value} != 'null'" th:text="${entry.value}"/> </strong></li>
+                        </div>
                         <p style="font-size: 15px;">In the meantime, if you have any questions, please do not hesitate to contact me directly.</p>
                     </div>
                     <div  style="border: 0px; padding: 0px 10px; background: rgb(182, 199, 216); text-align:left;">
