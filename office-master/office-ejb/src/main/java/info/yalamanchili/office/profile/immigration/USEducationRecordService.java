@@ -41,13 +41,25 @@ public class USEducationRecordService {
         List<USEducationRecord> findAll = usEducationRecordDao.findAll(caseId, ImmigrationCase.class.getCanonicalName());
         if (findAll != null && findAll.size() > 0) {
             USEducationRecord usEduRec = findAll.get(0);
-            //usEduRec = mapper.map(dto, USEducationRecord.class);
             usEduRec.setAddress(dto.getAddress());
             usEduRec.setDateDegreeAwarded(dto.getDateDegreeAwarded());
             usEduRec.setDegreeOfStudy(dto.getDegreeOfStudy());
-            usEduRec.setFieldOfStudy(dto.getFieldOfStudy());
             usEduRec.setNameOfSchool(dto.getNameOfSchool());
             usEduRec.setTypeOfUSDegree(dto.getTypeOfUSDegree());
+            usEduRec.setTargetEntityId(caseId);
+            usEduRec.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
+            return usEducationRecordDao.getEntityManager().merge(usEduRec);
+        } else {
+            USEducationRecord save = usEducationRecordDao.save(dto);
+            return save;
+        }
+    }
+
+    public USEducationRecord saveEduDetailsI(Long caseId, USEducationRecord dto) {
+        List<USEducationRecord> findAll = usEducationRecordDao.findAll(caseId, ImmigrationCase.class.getCanonicalName());
+        if (findAll != null && findAll.size() > 0) {
+            USEducationRecord usEduRec = findAll.get(0);
+            usEduRec.setFieldOfStudy(dto.getFieldOfStudy());
             usEduRec.setHighestLevelOfEdu(dto.getHighestLevelOfEdu());
             usEduRec.setTargetEntityId(caseId);
             usEduRec.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
