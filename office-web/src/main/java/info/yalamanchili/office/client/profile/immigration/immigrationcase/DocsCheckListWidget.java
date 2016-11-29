@@ -85,7 +85,7 @@ public class DocsCheckListWidget extends CreateComposite {
 
     @Override
     protected void postCreateSuccess(String result) {
-        new ResponseStatusWidget().show("Successfully Submitted Documents CheckList");
+        new ResponseStatusWidget().show("Questionnaire Link has emailed successfully");
         ReadAllImmigrationCasePanel.instance.refresh();
         GenericPopup.instance().hide();
     }
