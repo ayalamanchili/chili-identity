@@ -33,6 +33,8 @@ public class EmployeeH1BDetailsDto implements Serializable {
     private AlienNumber alienNumber;
     
     private USEducationRecord usEducRec;
+    
+    private EducationDto eduDto;
 
     public PersonalInfoDto getEmpPersonalInfo() {
         return empPersonalInfo;
@@ -72,5 +74,13 @@ public class EmployeeH1BDetailsDto implements Serializable {
 
     public void setUsEducRec(USEducationRecord usEducRec) {
         this.usEducRec = usEducRec;
+    }
+
+    public EducationDto getEduDto() {
+        return eduDto;
+    }
+
+    public void setEduDto(EducationDto eduDto) {
+        this.eduDto = eduDto;
     }
 }

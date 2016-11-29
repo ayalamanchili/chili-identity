@@ -24,6 +24,7 @@ import info.yalamanchili.office.dao.profile.EmailDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
 import info.yalamanchili.office.dao.profile.immigration.AlienNumberDao;
+import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseAdditionalDetailsDao;
 import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseDao;
 import info.yalamanchili.office.dao.profile.immigration.OtherNamesInfoDao;
 import info.yalamanchili.office.dao.profile.immigration.UsEducationRecordDao;
@@ -31,6 +32,7 @@ import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.immigration.AlienNumber;
 import info.yalamanchili.office.entity.immigration.ImmigrationCase;
+import info.yalamanchili.office.entity.immigration.ImmigrationCaseAdditionalDetails;
 import info.yalamanchili.office.entity.immigration.ImmigrationCaseStatus;
 import info.yalamanchili.office.entity.immigration.OtherNamesInfo;
 import info.yalamanchili.office.entity.immigration.USEducationRecord;
@@ -274,10 +276,19 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
             AlienNumber alienNo = alienNumbers.get(0);
             detailsDto.setAlienNumber(alienNo);
         }
+        EducationDto dto = new EducationDto();
         List<USEducationRecord> records = UsEducationRecordDao.instance().findAll(iCase.getId(), ImmigrationCase.class.getCanonicalName());
         if (records != null && records.size() > 0) {
             USEducationRecord rec = records.get(0);
+            dto.setHighestLevelOfEdu(rec.getHighestLevelOfEdu());
+            dto.setFieldOfStudy(rec.getFieldOfStudy());
             detailsDto.setUsEducRec(rec);
+        }
+        List<ImmigrationCaseAdditionalDetails> details = ImmigrationCaseAdditionalDetailsDao.instance().findAll(iCase.getId(), ImmigrationCase.class.getCanonicalName());
+        if (details != null && details.size() > 0) {
+            ImmigrationCaseAdditionalDetails addtnDetails = details.get(0);
+            dto.setNoOfDependents(addtnDetails.getNoOfDependents());
+            detailsDto.setEduDto(dto);
         }
         return detailsDto;
     }
@@ -365,6 +376,33 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         dto.setUsEducRec(usEducService.save(immiCase.getId(), record));
         return dto;
     }
+    
+    @PUT
+    @Path("save-edu-info/{invitationCode}")
+    public EmployeeH1BDetailsDto saveEducInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
+        ImmigrationCase immiCase = getCase(invitationCode);
+        EducationDto eduDto = dto.getEduDto();
+
+        // save education details
+        USEducationRecord record = new USEducationRecord();
+        record.setFieldOfStudy(eduDto.getFieldOfStudy());
+        record.setHighestLevelOfEdu(eduDto.getHighestLevelOfEdu());
+        record.setDegreeOfStudy("Degreeofstudy");
+        record.setDateDegreeAwarded(new Date());
+        record.setTargetEntityId(immiCase.getId());
+        record.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
+        usEducService.save(immiCase.getId(), record);
+
+//        save no. od dependents
+        ImmigrationCaseAdditionalDetails details = new ImmigrationCaseAdditionalDetails();
+        details.setTargetEntityId(immiCase.getId());
+        details.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
+        details.setNoOfDependents(eduDto.getNoOfDependents());
+        ImmigrationCaseAdditionalDetailsDao.instance().save(details);
+        dto.setEduDto(eduDto);
+        return dto;
+    }
+
 
     private MaritalStatus setMaritalStatus(String maritalStatus) {
         MaritalStatus status = null;

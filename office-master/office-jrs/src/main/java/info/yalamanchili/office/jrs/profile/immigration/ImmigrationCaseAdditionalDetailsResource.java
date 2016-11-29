@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Path("secured/case-details")
 @Component
 @Transactional
-@Scope("request")
+@Scope("prototype")
 public class ImmigrationCaseAdditionalDetailsResource extends CRUDResource<ImmigrationCaseAdditionalDetails> {
 
     @Autowired
