@@ -16,7 +16,6 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
-import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.expense.chkreq.ImmigrationCaseStatus;
@@ -47,6 +46,13 @@ public class ReadImmigrationCasePanel extends ReadComposite {
         populateInviteCodes();
         populateDependents();
         populateComments();
+    }
+    
+     public ReadImmigrationCasePanel(String id) {
+        instance = this;
+        initReadComposite(id, "ImmigrationCase", OfficeWelcome.constants2);
+        populateDependents();
+        populateInviteCodes();
     }
 
     protected final void populateDependents() {

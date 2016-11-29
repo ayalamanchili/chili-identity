@@ -9,10 +9,13 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import info.chili.gwt.crud.UpdateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.rpc.HttpService;
+import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.TabPanel;
+import info.yalamanchili.office.client.profile.immigration.immigrationcase.ReadImmigrationCasePanel;
 import java.util.logging.Logger;
 
 /**
@@ -23,14 +26,16 @@ public class UpdateInviteCodePanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateInviteCodePanel.class.getName());
     private boolean isCasePanel = false;
+    private String caseId;
 
     public UpdateInviteCodePanel(JSONObject entity) {
         instance = this;
         initUpdateComposite(entity, "InviteCodeService", OfficeWelcome.constants);
     }
 
-    public UpdateInviteCodePanel(JSONObject entity, boolean isCasePanel) {
+    public UpdateInviteCodePanel(JSONObject entity, String caseId, boolean isCasePanel) {
         this.isCasePanel = isCasePanel;
+        this.caseId = caseId;
         instance = this;
         initUpdateComposite(entity, "InviteCodeService", OfficeWelcome.constants);
     }
@@ -87,8 +92,9 @@ public class UpdateInviteCodePanel extends UpdateComposite {
             TabPanel.instance().chiliAdminPanel.entityPanel.add(new ReadAllInviteCodePanel());
         } else {
             new ResponseStatusWidget().show("Successfully Updated Invitation Code");
-            TabPanel.instance().immigrationPanel.sidePanelTop.clear();
+            GenericPopup.hideIfOpen();
             TabPanel.instance().immigrationPanel.entityPanel.clear();
+            TabPanel.instance().immigrationPanel.entityPanel.add(new ReadImmigrationCasePanel(caseId));
         }
     }
 
@@ -116,5 +122,16 @@ public class UpdateInviteCodePanel extends UpdateComposite {
     @Override
     protected String getURI() {
         return OfficeWelcome.constants.root_url() + "invitecode/update-expiration/" + getEntityId();
+    }
+
+    @Override
+    protected boolean processClientSideValidations(JSONObject entity) {
+        DateField startDateF = (DateField) fields.get("validFromDate");
+        DateField endDateF = (DateField) fields.get("expiryDate");
+        if (startDateF.getDate().after(endDateF.getDate())) {
+            endDateF.setMessage("Expiry Date must be equal to or after Valid From  Date");
+            return false;
+        }
+        return true;
     }
 }

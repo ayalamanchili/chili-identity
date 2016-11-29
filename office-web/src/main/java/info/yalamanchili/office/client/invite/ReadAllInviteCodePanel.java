@@ -29,7 +29,7 @@ public class ReadAllInviteCodePanel extends CRUDReadAllComposite {
     private static Logger logger = Logger.getLogger(ReadAllInviteCodePanel.class.getName());
     public static ReadAllInviteCodePanel instance;
     protected String targetClassName = null;
-    protected String caseId;
+    protected String caseId = null;
 
     public ReadAllInviteCodePanel() {
         instance = this;
@@ -85,10 +85,9 @@ public class ReadAllInviteCodePanel extends CRUDReadAllComposite {
     public void updateClicked(String entityId) {
         if (caseId == null) {
             TabPanel.instance().chiliAdminPanel.entityPanel.clear();
-            TabPanel.instance().chiliAdminPanel.entityPanel.add(new UpdateInviteCodePanel(getEntity(entityId), true));
+            TabPanel.instance().chiliAdminPanel.entityPanel.add(new UpdateInviteCodePanel(getEntity(entityId)));
         } else {
-            TabPanel.instance().immigrationPanel.entityPanel.clear();
-            TabPanel.instance().immigrationPanel.entityPanel.add(new UpdateInviteCodePanel(getEntity(entityId)));
+            new GenericPopup(new UpdateInviteCodePanel(getEntity(entityId), caseId, true), 500, 200).show();
         }
     }
 
