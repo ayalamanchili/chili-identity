@@ -16,11 +16,13 @@ import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.SuggestBox;
+import info.yalamanchili.office.client.Auth;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.company.SelectCompanyWidget;
 import info.yalamanchili.office.client.expense.chkreq.ImmigrationCaseStatus;
 import info.yalamanchili.office.client.expense.chkreq.ImmigrationCaseType;
 import info.yalamanchili.office.client.expense.chkreq.SponsorType;
+import info.yalamanchili.office.client.ext.comment.ReadAllCommentsPanel;
 import info.yalamanchili.office.client.invite.ReadAllInviteCodePanel;
 import info.yalamanchili.office.client.profile.emergencycnt.ReadAllDependentsPanel;
 
@@ -42,16 +44,21 @@ public class ReadImmigrationCasePanel extends ReadComposite {
     public ReadImmigrationCasePanel(JSONObject entity) {
         instance = this;
         initReadComposite(entity, "ImmigrationCase", OfficeWelcome.constants2);
-        populateDependents();
         populateInviteCodes();
+        populateDependents();
+        populateComments();
     }
 
     protected final void populateDependents() {
         entityFieldsPanel.add(new ReadAllDependentsPanel(getEntityId(), "ImmigrationCase"));
     }
-    
+
     protected final void populateInviteCodes() {
         entityFieldsPanel.add(new ReadAllInviteCodePanel(getEntityId(), "ImmigrationCase"));
+    }
+
+    protected void populateComments() {
+        entityFieldsPanel.add(new ReadAllCommentsPanel(getEntityId(), "info.yalamanchili.office.entity.immigration.ImmigrationCase"));
     }
 
     @Override
