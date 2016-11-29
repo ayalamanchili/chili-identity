@@ -24,6 +24,8 @@ import org.hibernate.search.annotations.Indexed;
 public class USEducationRecord extends EducationRecord {
 
     private String typeOfUSDegree;
+    
+    private String highestLevelOfEdu;
 
     public USEducationRecord() {
         super();
@@ -35,5 +37,13 @@ public class USEducationRecord extends EducationRecord {
 
     public void setTypeOfUSDegree(String typeOfUSDegree) {
         this.typeOfUSDegree = typeOfUSDegree;
+    }
+
+    public String getHighestLevelOfEdu() {
+        return highestLevelOfEdu;
+    }
+
+    public void setHighestLevelOfEdu(String highestLevelOfEdu) {
+        this.highestLevelOfEdu = highestLevelOfEdu;
     }
 }
