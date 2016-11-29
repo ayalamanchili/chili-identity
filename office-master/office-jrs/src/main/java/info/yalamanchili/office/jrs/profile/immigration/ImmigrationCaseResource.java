@@ -391,7 +391,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         record.setDateDegreeAwarded(new Date());
         record.setTargetEntityId(immiCase.getId());
         record.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
-        usEducService.save(immiCase.getId(), record);
+        usEducService.saveEduDetailsI(immiCase.getId(), record);
 
 //        save no. od dependents
         ImmigrationCaseAdditionalDetails details = new ImmigrationCaseAdditionalDetails();
