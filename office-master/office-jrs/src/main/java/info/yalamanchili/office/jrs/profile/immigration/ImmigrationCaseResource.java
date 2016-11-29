@@ -48,6 +48,7 @@ import info.yalamanchili.office.entity.profile.invite.InviteCode;
 import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.immigration.AlienNumberService;
+import info.yalamanchili.office.profile.immigration.ImmigrationCaseAdditionalDetailsService;
 import info.yalamanchili.office.profile.immigration.OtherNamesInfoService;
 import info.yalamanchili.office.profile.immigration.USEducationRecordService;
 import info.yalamanchili.office.profile.invite.InviteCodeGeneratorService;
@@ -96,6 +97,9 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
 
     @Autowired
     protected USEducationRecordService usEducService;
+    
+    @Autowired
+    protected ImmigrationCaseAdditionalDetailsService additionalService;
 
     @Override
     public CRUDDao getDao() {
@@ -443,12 +447,12 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         record.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
         usEducService.saveEduDetailsI(immiCase.getId(), record);
 
-//        save no. od dependents
+//        save no. of dependents
         ImmigrationCaseAdditionalDetails details = new ImmigrationCaseAdditionalDetails();
         details.setTargetEntityId(immiCase.getId());
         details.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
         details.setNoOfDependents(eduDto.getNoOfDependents());
-        ImmigrationCaseAdditionalDetailsDao.instance().save(details);
+        additionalService.addCaseDetails(immiCase.getId(), details);
         dto.setEduDto(eduDto);
         return dto;
     }
