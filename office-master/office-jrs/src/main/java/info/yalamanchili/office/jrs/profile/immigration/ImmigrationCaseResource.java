@@ -36,6 +36,7 @@ import info.yalamanchili.office.entity.immigration.ImmigrationCaseAdditionalDeta
 import info.yalamanchili.office.entity.immigration.ImmigrationCaseStatus;
 import info.yalamanchili.office.entity.immigration.OtherNamesInfo;
 import info.yalamanchili.office.entity.immigration.USEducationRecord;
+import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.EmailType;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.Sex;
@@ -258,6 +259,18 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
                 res.setGender(emp.getSex().name());
             }
             detailsDto.setEmpPersonalInfo(res);
+        }else{
+            Contact cnt = getContact(invitationCode);
+            if(cnt != null){
+                res.setEmpFirstName(cnt.getFirstName());
+                res.setEmpLastName(cnt.getLastName());
+                res.setMiddleInitial(cnt.getMiddleInitial());
+                res.setDateOfBirth(cnt.getDateOfBirth());
+                res.setGender(cnt.getSex().name());
+                res.setEmail(cnt.getEmails().get(0).getEmail());
+                res.setMaritalStatus(MaritalStatus.Unknown.name());
+                detailsDto.setEmpPersonalInfo(res);
+            }
         }
 
         // other names info
@@ -340,6 +353,43 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
                 }
             }
             EmployeeDao.instance().getEntityManager().merge(emp);
+        } else {
+            ImmigrationCase iCase = getCase(invitationCode);
+            Contact cnt = getContact(invitationCode);
+            if (cnt == null) {
+                Contact contact = new Contact();
+                contact.setFirstName(personalInfoDto.getEmpFirstName());
+                contact.setLastName(personalInfoDto.getEmpLastName());
+                contact.setMiddleInitial(personalInfoDto.getMiddleInitial());
+                contact.setDateOfBirth(personalInfoDto.getDateOfBirth());
+                if (personalInfoDto.getGender().equals(Sex.MALE.name())) {
+                    contact.setSex(Sex.MALE);
+                } else {
+                    contact.setSex(Sex.FEMALE);
+                }
+                info.yalamanchili.office.entity.profile.Email email = new info.yalamanchili.office.entity.profile.Email();
+                email.setEmail(iCase.getEmail());
+                email.setPrimaryEmail(Boolean.TRUE);
+                Contact save = ContactDao.instance().save(contact);
+                email.setContact(save);
+                EmailDao.instance().save(email);
+            }else{
+                cnt.setFirstName(personalInfoDto.getEmpFirstName());
+                cnt.setLastName(personalInfoDto.getEmpLastName());
+                cnt.setMiddleInitial(personalInfoDto.getMiddleInitial());
+                cnt.setDateOfBirth(personalInfoDto.getDateOfBirth());
+                if (personalInfoDto.getGender().equals(Sex.MALE.name())) {
+                    cnt.setSex(Sex.MALE);
+                } else {
+                    cnt.setSex(Sex.FEMALE);
+                }
+                info.yalamanchili.office.entity.profile.Email email = new info.yalamanchili.office.entity.profile.Email();
+                email.setEmail(iCase.getEmail());
+                email.setPrimaryEmail(Boolean.TRUE);
+                Contact save = ContactDao.instance().getEntityManager().merge(cnt);
+                email.setContact(save);
+                EmailDao.instance().save(email);
+            }
         }
         return dto;
     }
@@ -376,7 +426,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         dto.setUsEducRec(usEducService.save(immiCase.getId(), record));
         return dto;
     }
-    
+
     @PUT
     @Path("save-edu-info/{invitationCode}")
     public EmployeeH1BDetailsDto saveEducInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
@@ -402,7 +452,6 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         dto.setEduDto(eduDto);
         return dto;
     }
-
 
     private MaritalStatus setMaritalStatus(String maritalStatus) {
         MaritalStatus status = null;
@@ -439,6 +488,16 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         if (iCase != null && iCase.getEmployee() != null) {
             emp = EmployeeDao.instance().findById(iCase.getEmployee().getId());
             return emp;
+        }
+        return null;
+    }
+    
+    public Contact getContact(String invitationCode) {
+        ImmigrationCase iCase = getCase(invitationCode);
+        Contact cnt;
+        if (iCase != null) {
+            cnt = ContactDao.instance().findByEmail(iCase.getEmail());
+            return cnt;
         }
         return null;
     }
