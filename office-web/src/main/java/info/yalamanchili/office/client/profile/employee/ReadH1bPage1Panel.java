@@ -206,9 +206,9 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler {
         addField("nameOfSchool", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("street1", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("street2", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("country", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("city", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("state", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("country", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("zip", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateDegreeAwarded", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         addField("typeOfUSDegree", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
@@ -245,7 +245,7 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler {
             new GenericPopup(new UpdateAlienNoPopupPanel(entityId), 200, 1000).show();
         }
         if (event.getSource().equals(eduInfo2Edit)) {
-            new GenericPopup(new UpdateCaseEducRecPopupPanel(entityId), 200, 1000).show();
+            new GenericPopup(new UpdateCaseEducRecPopupPanel(entityId), 200, 650).show();
         }
         if (event.getSource().equals(eduInfo1Edit)) {
             new GenericPopup(new UpdateEducationRecord1PopupPanel(entityId), 200, 900).show();
