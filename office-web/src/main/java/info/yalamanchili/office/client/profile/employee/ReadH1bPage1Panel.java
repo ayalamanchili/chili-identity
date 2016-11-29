@@ -163,6 +163,13 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler {
                 JSONObject alienNumber = entity.get("alienNumber").isObject();
                 assignFieldValueFromEntity("alienNumber", alienNumber, DataType.STRING_FIELD);
             }
+            if (entity.containsKey("eduDto")) {
+                JSONObject eduDto = entity.get("eduDto").isObject();
+                assignFieldValueFromEntity("fieldOfStudy", eduDto, DataType.STRING_FIELD);
+                assignFieldValueFromEntity("highestLevelOfEdu", eduDto, DataType.TEXT_AREA_FIELD);
+                assignFieldValueFromEntity("noOfDependents", eduDto, DataType.INTEGER_FIELD);
+
+            }
         }
     }
 
@@ -172,6 +179,7 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler {
         eduInfo2Edit.addClickHandler(this);
         OtherNamesInfoEdit.addClickHandler(this);
         alienNoInfoEdit.addClickHandler(this);
+        eduInfo1Edit.addClickHandler(this);
     }
 
     @Override
@@ -211,7 +219,7 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler {
         entityFieldsPanel.add(eduInfo1);
         entityFieldsPanel.add(eduInfo1Edit);
         addField("fieldOfStudy", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("highestLevelOfEducation", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("highestLevelOfEdu", true, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
         addField("noOfDependents", true, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(otherNamesInfo);
         entityFieldsPanel.add(otherNamesNotes);
@@ -239,12 +247,14 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler {
         if (event.getSource().equals(eduInfo2Edit)) {
             new GenericPopup(new UpdateCaseEducRecPopupPanel(entityId), 200, 1000).show();
         }
+        if (event.getSource().equals(eduInfo1Edit)) {
+            new GenericPopup(new UpdateEducationRecord1PopupPanel(entityId), 200, 900).show();
+        }
     }
 
     protected String updateImmigrationInfo() {
         return URL.encode(OfficeWelcome.constants.root_url() + "immigrationcase/save-immigration-info/" + invitationCode);
     }
-
 
     @Override
     protected String getURI() {
