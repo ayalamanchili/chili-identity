@@ -12,6 +12,7 @@ import info.chili.spring.SpringContext;
 import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseAdditionalDetailsDao;
 import info.yalamanchili.office.entity.immigration.ImmigrationCase;
 import info.yalamanchili.office.entity.immigration.ImmigrationCaseAdditionalDetails;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +33,18 @@ public class ImmigrationCaseAdditionalDetailsService {
     @Autowired
     public ImmigrationCaseAdditionalDetailsDao caseDetailsDao;
 
-    public void addCaseDetails(Long targetId, ImmigrationCaseAdditionalDetails caseDetails) {
-        ImmigrationCaseAdditionalDetails entity = null;
-        entity = caseDetailsDao.save(caseDetails);
-        entity.setTargetEntityId(targetId);
-        entity.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
-        em.merge(entity);
+    public ImmigrationCaseAdditionalDetails addCaseDetails(Long targetId, ImmigrationCaseAdditionalDetails caseDetails) {
+        List<ImmigrationCaseAdditionalDetails> details = ImmigrationCaseAdditionalDetailsDao.instance().findAll(targetId, ImmigrationCase.class.getCanonicalName());
+        if (details != null && details.size() > 0) {
+            ImmigrationCaseAdditionalDetails additionalDetails = details.get(0);
+            additionalDetails.setNoOfDependents(caseDetails.getNoOfDependents());
+            additionalDetails.setTargetEntityId(targetId);
+            additionalDetails.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
+            return caseDetailsDao.getEntityManager().merge(additionalDetails);
+        } else {
+            ImmigrationCaseAdditionalDetails save = caseDetailsDao.save(caseDetails);
+            return save;
+        }
     }
 
     public static ImmigrationCaseAdditionalDetailsService instance() {
