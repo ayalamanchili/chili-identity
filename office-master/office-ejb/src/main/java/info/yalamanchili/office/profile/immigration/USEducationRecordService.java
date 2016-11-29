@@ -48,6 +48,7 @@ public class USEducationRecordService {
             usEduRec.setFieldOfStudy(dto.getFieldOfStudy());
             usEduRec.setNameOfSchool(dto.getNameOfSchool());
             usEduRec.setTypeOfUSDegree(dto.getTypeOfUSDegree());
+            usEduRec.setHighestLevelOfEdu(dto.getHighestLevelOfEdu());
             usEduRec.setTargetEntityId(caseId);
             usEduRec.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
             return usEducationRecordDao.getEntityManager().merge(usEduRec);
