@@ -79,6 +79,7 @@ public class H1bQuestionnaireWidget extends UpdateComposite implements ClickHand
         page4L.setTitle("Go to Deportation Info, Prev. Visa Info, Visa filing Info");
         page5L.setTitle("Go to Consulate info");
         page6L.setTitle("Go to Applicant and Stay Period Info");
+        entityActionsPanel.add(new ReadH1bPage1Panel(invitationCode));
     }
 
     @Override
@@ -89,8 +90,7 @@ public class H1bQuestionnaireWidget extends UpdateComposite implements ClickHand
         pagesPanel.add(page4L);
         pagesPanel.add(page5L);
         pagesPanel.add(page6L);
-        entityActionsPanel.add(pagesPanel);
-        entityActionsPanel.add(new ReadH1bPage1Panel(invitationCode));
+        entityFieldsPanel.add(pagesPanel);
         alignFields();
     }
 
@@ -107,8 +107,13 @@ public class H1bQuestionnaireWidget extends UpdateComposite implements ClickHand
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(page1L)) {
             entityActionsPanel.clear();
-            entityActionsPanel.add(pagesPanel);
+            entityFieldsPanel.add(pagesPanel);
             entityActionsPanel.add(new ReadH1bPage1Panel(invitationCode));
+        }
+        if (event.getSource().equals(page2L)) {
+            entityActionsPanel.clear();
+            entityFieldsPanel.add(pagesPanel);
+            entityActionsPanel.add(new ReadH1bPage2Panel(invitationCode));
         }
     }
 
