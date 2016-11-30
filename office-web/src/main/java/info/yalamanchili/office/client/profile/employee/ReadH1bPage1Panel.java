@@ -104,7 +104,7 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler {
     }
 
     protected String getReadURI(String entityId) {
-        return OfficeWelcome.constants.root_url() + "immigrationcase/h1b-questionnaire/get-details?invitationCode=" + entityId;
+        return OfficeWelcome.constants.root_url() + "immigrationcase/h1b-questionnaire/get-details/page-1?invitationCode=" + entityId;
     }
 
     @Override
