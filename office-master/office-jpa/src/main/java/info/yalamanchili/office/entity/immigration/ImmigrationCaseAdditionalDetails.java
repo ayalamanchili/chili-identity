@@ -10,6 +10,7 @@ package info.yalamanchili.office.entity.immigration;
 
 import info.chili.jpa.AbstractHandleEntity;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.Indexed;
@@ -25,6 +26,9 @@ import org.hibernate.search.annotations.Indexed;
 public class ImmigrationCaseAdditionalDetails extends AbstractHandleEntity {
 
     protected String currentOccupation;
+    
+    @Lob
+    protected String workExpSummary;
 
     protected Integer noOfDependents;
 
@@ -44,7 +48,14 @@ public class ImmigrationCaseAdditionalDetails extends AbstractHandleEntity {
         this.noOfDependents = noOfDependents;
     }
 
+    public String getWorkExpSummary() {
+        return workExpSummary;
+    }
 
+    public void setWorkExpSummary(String workExpSummary) {
+        this.workExpSummary = workExpSummary;
+    }
+    
     @Override
     public String toString() {
         return "ImmigrationCaseAdditionalDetails{" + "currentOccupation=" + currentOccupation + ", noOfDependents=" + noOfDependents + '}';
