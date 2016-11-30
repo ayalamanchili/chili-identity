@@ -191,8 +191,6 @@ public class i94Record extends AbstractHandleEntity {
     public void setComments(String comments) {
         this.comments = comments;
     }
-    
-    
 
     @Override
     public String toString() {
