@@ -26,6 +26,13 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
@@ -115,4 +122,29 @@ public class PaylocityAddressPublishService implements AddressPublishService {
         }
     }
 
+    protected static final String AES_KEY = "asdasda";
+    protected static final String INIT_VECTOR = "sdasd";
+
+    public SecuredContent getSecuredRequest(String unsecuredPayload) {
+        SecuredContent sc = new SecuredContent();
+        IvParameterSpec iv = null;
+        SecretKeySpec skeySpec = null;
+        sc.setIv(INIT_VECTOR);
+        //generate aes key with iv
+        try {
+            iv = new IvParameterSpec(INIT_VECTOR.getBytes("UTF-8"));
+            skeySpec = new SecretKeySpec(AES_KEY.getBytes("UTF-8"), "AES");
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(PaylocityAddressPublishService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        // encrypt payload with aes
+        sc.setContent(Encryptor.encrypt(skeySpec, iv, unsecuredPayload));
+        // encrypt aes key with public key.
+        //populate secured content and return
+        return sc;
+    }
+
+    public String securePayload(String unsecuredPayload) {
+        return "";
+    }
 }
