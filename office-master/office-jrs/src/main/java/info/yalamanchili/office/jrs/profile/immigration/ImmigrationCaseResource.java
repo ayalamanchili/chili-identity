@@ -29,6 +29,7 @@ import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseDao;
 import info.yalamanchili.office.dao.profile.immigration.OtherNamesInfoDao;
 import info.yalamanchili.office.dao.profile.immigration.UsEducationRecordDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
+import info.yalamanchili.office.email.EmailService;
 import info.yalamanchili.office.entity.Company;
 import info.yalamanchili.office.entity.immigration.AlienNumber;
 import info.yalamanchili.office.entity.immigration.ImmigrationCase;
@@ -236,14 +237,12 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         EmployeeH1BDetailsDto detailsDto = new EmployeeH1BDetailsDto();
         // employee personal details
         PersonalInfoDto res = new PersonalInfoDto();
-        info.yalamanchili.office.entity.profile.Email email;
         Employee emp = getEmployee(invitationCode);
         if (emp != null) {
-            if (emp.getEmails().size() > 0) {
-                email = emp.getEmails().get(emp.getEmails().size() - 1);
-                res.setEmail(email.getEmail());
-                if (email.getEmailType().getEmailType().equals("Work")) {
-                    res.setWorkEmail(email.getEmail());
+            res.setEmail(emp.getPrimaryEmail().getEmail());
+            for (info.yalamanchili.office.entity.profile.Email emailAddr : emp.getEmails()) {
+                if (emailAddr.getEmailType() != null && emailAddr.getEmailType().getEmailType().equals("Work")) {
+                    res.setWorkEmail(emailAddr.getEmail());
                 }
             }
             res.setEmpFirstName(emp.getFirstName());
@@ -323,19 +322,36 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
                 emp.setMiddleInitial(personalInfoDto.getMiddleInitial());
             }
             emp.setSsn(personalInfoDto.getSsn());
+            
             //Personal Email
             info.yalamanchili.office.entity.profile.Email emailAdd = new info.yalamanchili.office.entity.profile.Email();
-            emailAdd.setEmail(personalInfoDto.getEmail());
-            emailAdd.setPrimaryEmail(Boolean.TRUE);
-            emailAdd.setContact(ContactDao.instance().findByEmail(emp.getEmails().get(0).getEmail()));
-            emp.addEmail(EmailDao.instance().save(emailAdd));
+            if (EmailService.instance().findEmail(personalInfoDto.getEmail()) == null) {
+                emailAdd.setEmail(personalInfoDto.getEmail());
+                emailAdd.setPrimaryEmail(Boolean.TRUE);
+                emailAdd.setContact(ContactDao.instance().findByEmail(emp.getEmails().get(0).getEmail()));
+                emp.addEmail(EmailDao.instance().save(emailAdd));
+                EmployeeDao.instance().updatePrimaryEmail(emp, emailAdd);
+            } else {
+                info.yalamanchili.office.entity.profile.Email findEmail = EmailService.instance().findEmail(personalInfoDto.getEmail());
+                findEmail.setEmail(personalInfoDto.getEmail());
+                findEmail.setPrimaryEmail(Boolean.TRUE);
+                EmailDao.instance().getEntityManager().merge(findEmail);
+                //EmployeeDao.instance().updatePrimaryEmail(emp, findEmail);
+            }
+
             //Work Email
-            info.yalamanchili.office.entity.profile.Email workEmail = new info.yalamanchili.office.entity.profile.Email();
-            workEmail.setEmail(personalInfoDto.getEmail());
-            workEmail.setPrimaryEmail(Boolean.TRUE);
-            workEmail.setEmailType(getWorkEmailType());
-            workEmail.setContact(ContactDao.instance().findByEmail(InviteCodeDao.instance().find(invitationCode.trim()).getEmail()));
-            emp.addEmail(EmailDao.instance().save(workEmail));
+            if (EmailService.instance().findEmail(personalInfoDto.getWorkEmail()) == null) {
+                info.yalamanchili.office.entity.profile.Email workEmail = new info.yalamanchili.office.entity.profile.Email();
+                workEmail.setEmail(personalInfoDto.getWorkEmail());
+                workEmail.setPrimaryEmail(Boolean.FALSE);
+                workEmail.setEmailType(getWorkEmailType());
+                workEmail.setContact(ContactDao.instance().findByEmail(InviteCodeDao.instance().find(invitationCode.trim()).getEmail()));
+                emp.addEmail(EmailDao.instance().save(workEmail));
+            } else {
+                info.yalamanchili.office.entity.profile.Email email = EmailService.instance().findEmail(personalInfoDto.getWorkEmail());
+                email.setEmail(personalInfoDto.getWorkEmail());
+                emp.addEmail(EmailDao.instance().getEntityManager().merge(email));
+            }
             if (personalInfoDto.getGender().equalsIgnoreCase("male")) {
                 emp.setSex(Sex.MALE);
             } else {
