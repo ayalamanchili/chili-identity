@@ -11,7 +11,6 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -236,10 +235,10 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(personalInfoEdit)) {
-            new GenericPopup(new UpdateEmpPersonalInfoPopupPanel(invitationCode), 50, Window.getClientHeight() / 5).show();
+            new GenericPopup(new UpdateEmpPersonalInfoPopupPanel(invitationCode), 200, 200).show();
         }
         if (event.getSource().equals(OtherNamesInfoEdit)) {
-            new GenericPopup(new UpdateOtherNamesInfoPopupPanel(invitationCode), 50, Window.getClientHeight() * 2).show();
+            new GenericPopup(new UpdateOtherNamesInfoPopupPanel(invitationCode), 200, 1350).show();
         }
         if (event.getSource().equals(alienNoInfoEdit)) {
             new GenericPopup(new UpdateAlienNoPopupPanel(entityId), 200, 1000).show();

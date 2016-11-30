@@ -5,10 +5,12 @@
  */
 package info.yalamanchili.office.client.profile.employee;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import info.chili.gwt.crud.UpdateComposite;
@@ -34,6 +36,8 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite {
     private static Logger logger = Logger.getLogger(UpdateCaseEducRecPopupPanel.class.getName());
     UpdateAddressWidget updateAddressWidget;
     CreateAddressWidget createAddrWidget;
+    Button saveNextEdu = new Button("Save and Next");
+    boolean saveNextEduValue = false;
 
     public UpdateCaseEducRecPopupPanel(String entityId) {
         initUpdateComposite(entityId, "EducationRecord", OfficeWelcome.constants);
@@ -63,6 +67,7 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite {
 
     @Override
     protected void updateButtonClicked() {
+        JSONObject entity = populateEntityFromFields();
         HttpService.HttpServiceAsync.instance().doPut(updateUSEduInfo(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
                     @Override
@@ -121,15 +126,20 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite {
         RootPanel.get().clear();
         RootPanel.get().add(new Image(OfficeImages.INSTANCE.logo()));
         RootPanel.get().add(new H1bQuestionnaireWidget(entityId));
+        if (saveNextEduValue == true) {
+            new GenericPopup(new UpdateAlienNoPopupPanel(entityId), 200, 200).show();
+        }
         new ResponseStatusWidget().show("Successfully  Updated US Education Record Info");
     }
 
     @Override
     protected void addListeners() {
+        saveNextEdu.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
+        update.setText("Save");
     }
 
     @Override
@@ -138,6 +148,7 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite {
         addField("nameOfSchool", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("typeOfUSDegree", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateDegreeAwarded", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        entityActionsPanel.add(saveNextEdu);
         alignFields();
     }
 
@@ -185,5 +196,14 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite {
         } else {
             return address.get("street1").isString().stringValue().trim() + "-" + address.get("city").isString().stringValue().trim() + "-" + address.get("state").isString().stringValue().trim() + "-" + address.get("country").isString().stringValue().trim() + "-" + address.get("zip").isString().stringValue().trim();
         }
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(saveNextEdu)) {
+            saveNextEduValue = true;
+            updateButtonClicked();
+        }
+        super.onClick(event);
     }
 }

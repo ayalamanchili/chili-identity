@@ -5,11 +5,13 @@
  */
 package info.yalamanchili.office.client.profile.employee;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RadioButton;
@@ -33,7 +35,10 @@ import java.util.logging.Logger;
 public class UpdateEducationRecord1PopupPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateEducationRecord1PopupPanel.class.getName());
-
+    
+    Button saveNextEdu1 = new Button("Save and Next");
+    boolean saveNextEdu1Value = false;
+    
     HTML eduInfo1Notes = new HTML("<p style=\"color:#F31212\">Beneficiary's Highest Level of Education</strong></p> \n");
     RadioButton levelOfEducation1 = new RadioButton("educationRecord", "NO DIPLOMA");
     RadioButton levelOfEducation2 = new RadioButton("educationRecord", "HIGH SCHOOL GRADUATE - high school DIPLOMA or the equivalent (for example ,GED)");
@@ -62,7 +67,7 @@ public class UpdateEducationRecord1PopupPanel extends UpdateComposite {
 
     @Override
     protected void updateButtonClicked() {
-        logger.info("the upadte entity isssss:"+entity);
+        JSONObject entity = populateEntityFromFields();
         HttpService.HttpServiceAsync.instance().doPut(updateEduDetails(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
                     @Override
@@ -95,16 +100,21 @@ public class UpdateEducationRecord1PopupPanel extends UpdateComposite {
         RootPanel.get().clear();
         RootPanel.get().add(new Image(OfficeImages.INSTANCE.logo()));
         RootPanel.get().add(new H1bQuestionnaireWidget(entityId));
+        if (saveNextEdu1Value == true) {
+            new GenericPopup(new UpdateOtherNamesInfoPopupPanel(entityId), 200, 200).show();
+        }
         new ResponseStatusWidget().show("Successfully  Updated Education Details");
     }
 
     @Override
     protected void addListeners() {
+        saveNextEdu1.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
         panel.setSpacing(5);
+        update.setText("Save");
     }
 
     @Override
@@ -122,6 +132,7 @@ public class UpdateEducationRecord1PopupPanel extends UpdateComposite {
         panel.add(levelOfEducation8);
         panel.add(levelOfEducation9);
         entityFieldsPanel.add(panel);
+        entityActionsPanel.add(saveNextEdu1);
     }
 
     @Override
@@ -209,5 +220,14 @@ public class UpdateEducationRecord1PopupPanel extends UpdateComposite {
                   levelOfEducation9.setValue(true);
                   break;
         }
+    }
+    
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(saveNextEdu1)) {
+            saveNextEdu1Value = true;
+            updateButtonClicked();
+        }
+        super.onClick(event);
     }
 }

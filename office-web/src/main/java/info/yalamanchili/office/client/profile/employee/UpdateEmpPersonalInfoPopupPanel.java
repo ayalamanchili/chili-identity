@@ -5,10 +5,12 @@
  */
 package info.yalamanchili.office.client.profile.employee;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -31,6 +33,9 @@ import java.util.logging.Logger;
 public class UpdateEmpPersonalInfoPopupPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateEmpPersonalInfoPopupPanel.class.getName());
+
+    Button saveNext = new Button("Save and Next");
+    boolean saveNextValue = false;
 
     public UpdateEmpPersonalInfoPopupPanel(String entityId) {
         initUpdateComposite(entityId, "PersonalInfo", OfficeWelcome.constants);
@@ -55,6 +60,7 @@ public class UpdateEmpPersonalInfoPopupPanel extends UpdateComposite {
 
     @Override
     protected void updateButtonClicked() {
+        JSONObject entity = populateEntityFromFields();
         HttpService.HttpServiceAsync.instance().doPut(updatePersonalInfo(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
                     @Override
@@ -89,15 +95,20 @@ public class UpdateEmpPersonalInfoPopupPanel extends UpdateComposite {
         RootPanel.get().clear();
         RootPanel.get().add(new Image(OfficeImages.INSTANCE.logo()));
         RootPanel.get().add(new H1bQuestionnaireWidget(entityId));
+        if (saveNextValue == true) {
+            new GenericPopup(new UpdateCaseEducRecPopupPanel(entityId), 200, 200).show();
+        }
         new ResponseStatusWidget().show("Successfully  Updated Employee Personal Info");
     }
 
     @Override
     protected void addListeners() {
+        saveNext.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
+        update.setText("Save");
     }
 
     @Override
@@ -111,6 +122,7 @@ public class UpdateEmpPersonalInfoPopupPanel extends UpdateComposite {
         addField("workEmail", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("ssn", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addField("dateOfBirth", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        entityActionsPanel.add(saveNext);
     }
 
     @Override
@@ -140,5 +152,14 @@ public class UpdateEmpPersonalInfoPopupPanel extends UpdateComposite {
 
     protected String updatePersonalInfo() {
         return URL.encode(OfficeWelcome.constants.root_url() + "immigrationcase/save-personal-info/" + entityId);
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(saveNext)) {
+            saveNextValue = true;
+            updateButtonClicked();
+        }
+        super.onClick(event);
     }
 }

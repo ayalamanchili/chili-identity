@@ -5,10 +5,12 @@
  */
 package info.yalamanchili.office.client.profile.employee;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
@@ -30,6 +32,9 @@ public class UpdateAlienNoPopupPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateAlienNoPopupPanel.class.getName());
 
+    Button saveNextAlien = new Button("Save and Next");
+    boolean saveNextalienValue = false;
+
     public UpdateAlienNoPopupPanel(String entityId) {
         initUpdateComposite(entityId, "AlienNo", OfficeWelcome.constants);
     }
@@ -44,6 +49,7 @@ public class UpdateAlienNoPopupPanel extends UpdateComposite {
 
     @Override
     protected void updateButtonClicked() {
+        JSONObject entity = populateEntityFromFields();
         HttpService.HttpServiceAsync.instance().doPut(updateAlienNumber(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
                     @Override
@@ -72,20 +78,26 @@ public class UpdateAlienNoPopupPanel extends UpdateComposite {
         RootPanel.get().clear();
         RootPanel.get().add(new Image(OfficeImages.INSTANCE.logo()));
         RootPanel.get().add(new H1bQuestionnaireWidget(entityId));
+        if (saveNextalienValue == true) {
+            new GenericPopup(new UpdateEducationRecord1PopupPanel(entityId), 200, 200).show();
+        }
         new ResponseStatusWidget().show("Successfully  Updated Alien Number");
     }
 
     @Override
     protected void addListeners() {
+        saveNextAlien.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
+        update.setText("Save");
     }
 
     @Override
     protected void addWidgets() {
         addField("alienNumber", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        entityActionsPanel.add(saveNextAlien);
     }
 
     @Override
@@ -103,7 +115,7 @@ public class UpdateAlienNoPopupPanel extends UpdateComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                         if (!response.trim().contains("<html>")) {
+                        if (!response.trim().contains("<html>")) {
                             entity = (JSONObject) JSONParser.parseLenient(response);
                             populateFieldsFromEntity(entity);
                         } else {
@@ -115,5 +127,14 @@ public class UpdateAlienNoPopupPanel extends UpdateComposite {
 
     protected String updateAlienNumber() {
         return URL.encode(OfficeWelcome.constants.root_url() + "immigrationcase/save-alien-info/" + entityId);
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        if (event.getSource().equals(saveNextAlien)) {
+            saveNextalienValue = true;
+            updateButtonClicked();
+        }
+        super.onClick(event);
     }
 }
