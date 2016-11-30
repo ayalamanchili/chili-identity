@@ -231,7 +231,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
     }
 
     @GET
-    @Path("h1b-questionnaire/get-details")
+    @Path("h1b-questionnaire/get-details/page-1")
     @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CASE)
     public EmployeeH1BDetailsDto getdetails(@QueryParam("invitationCode") String invitationCode) {
         EmployeeH1BDetailsDto detailsDto = new EmployeeH1BDetailsDto();
