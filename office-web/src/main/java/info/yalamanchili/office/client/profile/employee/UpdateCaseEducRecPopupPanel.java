@@ -157,7 +157,7 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite {
     }
 
     protected String getEducatnRecInfo() {
-        return OfficeWelcome.constants.root_url() + "immigrationcase/h1b-questionnaire/get-details/?invitationCode=" + entityId;
+        return OfficeWelcome.constants.root_url() + "immigrationcase/h1b-questionnaire/get-details/page-1?invitationCode=" + entityId;
     }
 
     @Override
