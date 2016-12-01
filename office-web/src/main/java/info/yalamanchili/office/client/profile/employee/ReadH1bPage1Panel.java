@@ -10,18 +10,12 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
-import info.chili.gwt.fields.DataType;
 import info.chili.gwt.rpc.HttpService;
-import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.widgets.GenericPopup;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.onboarding.MaritalStatus;
-import info.yalamanchili.office.client.profile.contact.Sex;
 import java.util.logging.Logger;
 
 /**
@@ -35,6 +29,12 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler {
     protected static ReadH1bPage1Panel instance;
     protected String invitationCode;
 
+    UpdateEmpPersonalInfoPopupPanel personalInfoPopupPanel;
+    UpdateCaseEducRecPopupPanel usEducRecPanel;
+    UpdateAlienNoPopupPanel alienPopupPanel;
+    UpdateOtherNamesInfoPopupPanel otherNamesPanel;
+    UpdateEducationRecord1PopupPanel eduRecPanel;
+
     protected Button personalInfoEdit = new Button("Click here to Edit");
     protected Button OtherNamesInfoEdit = new Button("Click here to Add");
     protected Button eduInfo2Edit = new Button("Click here to Add");
@@ -44,37 +44,6 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler {
     HTML personalInfoNotes = new HTML("<p style=\"color:#F31212\">Note: <br/> 1. U.S. Social Security Number (Enter Numeric Characters only with out Hyphen) <br/> 2. Individual Tax Number (Enter Numeric Characters only with out Hyphen)</strong></p> \n");
     HTML eduInfo2Notes = new HTML("<p style=\"color:#F31212\">Note: If you have a CAP H-1B U.S. Master's Degree or Higher, provide the following information regarding the master's or higher degree the beneficiary has earned from a U.S. institution as defined in 20 U.S.C. 1001(a).</strong></p> \n");
     HTML otherNamesNotes = new HTML("<p style=\"color:#F31212\">Note: Provide all other names the beneficiary has used. Include nicknames, aliases, maiden name and names from all previous marriages.</strong></p> \n");
-
-    protected static HTML personalInfo = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
-            + "<strong style=\"color:#555555\">Personal Information</strong></p>\n"
-            + "\n"
-            + "<ul>\n"
-            + "</ul>");
-    protected static HTML eduInfo2 = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
-            + "<strong style=\"color:#555555\">Education Details - II - I</strong></p>\n"
-            + "\n"
-            + "<ul>\n"
-            + "</ul>");
-    protected static HTML eduInfo1 = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
-            + "<strong style=\"color:#555555\">Education Details - I</strong></p>\n"
-            + "\n"
-            + "<ul>\n"
-            + "</ul>");
-    protected static HTML alienNoInfo = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
-            + "<strong style=\"color:#555555\">Alien Number</strong></p>\n"
-            + "\n"
-            + "<ul>\n"
-            + "</ul>");
-    protected static HTML otherNamesInfo = new HTML("\n"
-            + "<p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
-            + "<strong style=\"color:#555555\">Other Names Information</strong></p>\n"
-            + "\n"
-            + "<ul>\n"
-            + "</ul>");
 
     public static ReadH1bPage1Panel instance() {
         return instance;
@@ -109,67 +78,11 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        if (entity.containsKey("empPersonalInfo")) {
-            JSONObject personalInfoOBJ = entity.get("empPersonalInfo").isObject();
-            assignFieldValueFromEntity("empLastName", personalInfoOBJ, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("empFirstName", personalInfoOBJ, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("middleInitial", personalInfoOBJ, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("gender", personalInfoOBJ, DataType.ENUM_FIELD);
-            assignFieldValueFromEntity("maritalStatus", personalInfoOBJ, DataType.ENUM_FIELD);
-            assignFieldValueFromEntity("email", personalInfoOBJ, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("workEmail", personalInfoOBJ, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("ssn", personalInfoOBJ, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("dateOfBirth", personalInfoOBJ, DataType.DATE_FIELD);
-        }
-        if (entity.containsKey("otherNamesInfo")) {
-            JSONObject otherNamesInfoOBJ = entity.get("otherNamesInfo").isObject();
-            assignFieldValueFromEntity("firstName", otherNamesInfoOBJ, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("middleName", otherNamesInfoOBJ, DataType.STRING_FIELD);
-            assignFieldValueFromEntity("lastName", otherNamesInfoOBJ, DataType.STRING_FIELD);
-        }
-        if (entity.containsKey("usEducRec")) {
-            JSONObject usEduRecInfoObj = entity.get("usEducRec").isObject();
-            if (usEduRecInfoObj.containsKey("address") && usEduRecInfoObj.get("address").isString().stringValue() != null) {
-                JSONObject address = new JSONObject();
-                String[] adressArr = usEduRecInfoObj.get("address").isString().stringValue().split("-");
-                if (adressArr.length == 5) {
-                    address.put("street1", new JSONString(adressArr[0]));
-                    address.put("street2", new JSONString(""));
-                    address.put("city", new JSONString(adressArr[1]));
-                    address.put("state", new JSONString(adressArr[2]));
-                    address.put("country", new JSONString(adressArr[3]));
-                    address.put("zip", new JSONString(adressArr[4]));
-                } else if (adressArr.length == 6) {
-                    address.put("street1", new JSONString(adressArr[0]));
-                    address.put("street2", new JSONString(adressArr[1]));
-                    address.put("city", new JSONString(adressArr[2]));
-                    address.put("state", new JSONString(adressArr[3]));
-                    address.put("country", new JSONString(adressArr[4]));
-                    address.put("zip", new JSONString(adressArr[5]));
-                }
-                assignFieldValueFromEntity("street1", address, DataType.STRING_FIELD);
-                assignFieldValueFromEntity("street2", address, DataType.STRING_FIELD);
-                assignFieldValueFromEntity("country", address, DataType.STRING_FIELD);
-                assignFieldValueFromEntity("city", address, DataType.STRING_FIELD);
-                assignFieldValueFromEntity("state", address, DataType.STRING_FIELD);
-                assignFieldValueFromEntity("zip", address, DataType.STRING_FIELD);
-                assignFieldValueFromEntity("nameOfSchool", usEduRecInfoObj, DataType.STRING_FIELD);
-                assignFieldValueFromEntity("dateDegreeAwarded", usEduRecInfoObj, DataType.DATE_FIELD);
-                assignFieldValueFromEntity("typeOfUSDegree", usEduRecInfoObj, DataType.STRING_FIELD);
-                assignFieldValueFromEntity("degreeOfStudy", usEduRecInfoObj, DataType.STRING_FIELD);
-            }
-            if (entity.containsKey("alienNumber")) {
-                JSONObject alienNumber = entity.get("alienNumber").isObject();
-                assignFieldValueFromEntity("alienNumber", alienNumber, DataType.STRING_FIELD);
-            }
-            if (entity.containsKey("eduDto")) {
-                JSONObject eduDto = entity.get("eduDto").isObject();
-                assignFieldValueFromEntity("fieldOfStudy", eduDto, DataType.STRING_FIELD);
-                assignFieldValueFromEntity("highestLevelOfEdu", eduDto, DataType.TEXT_AREA_FIELD);
-                assignFieldValueFromEntity("noOfDependents", eduDto, DataType.INTEGER_FIELD);
-
-            }
-        }
+        personalInfoPopupPanel.populateFieldsFromEntity(entity);
+        usEducRecPanel.populateFieldsFromEntity(entity);
+        otherNamesPanel.populateFieldsFromEntity(entity);
+        alienPopupPanel.populateFieldsFromEntity(entity);
+        eduRecPanel.populateFieldsFromEntity(entity);
     }
 
     @Override
@@ -187,45 +100,32 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler {
 
     @Override
     protected void addWidgets() {
-        entityFieldsPanel.add(personalInfo);
+        //personal info
         entityFieldsPanel.add(personalInfoNotes);
         entityFieldsPanel.add(personalInfoEdit);
-        addField("empLastName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("empFirstName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("middleInitial", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("gender", true, true, Sex.names(), Alignment.HORIZONTAL);
-        addEnumField("maritalStatus", true, true, MaritalStatus.names(), Alignment.HORIZONTAL);
-        addField("email", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("workEmail", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("ssn", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("dateOfBirth", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(eduInfo2);
+        personalInfoPopupPanel = new UpdateEmpPersonalInfoPopupPanel(entityId, true);
+        entityFieldsPanel.add(personalInfoPopupPanel);
+
+        //us edu record
         entityFieldsPanel.add(eduInfo2Notes);
         entityFieldsPanel.add(eduInfo2Edit);
-        addField("nameOfSchool", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("street1", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("street2", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("city", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("state", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("country", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("zip", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("dateDegreeAwarded", true, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        addField("typeOfUSDegree", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("degreeOfStudy", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(alienNoInfo);
+        usEducRecPanel = new UpdateCaseEducRecPopupPanel(entityId, true);
+        entityFieldsPanel.add(usEducRecPanel);
+
+        //alien number
         entityFieldsPanel.add(alienNoInfoEdit);
-        addField("alienNumber", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(eduInfo1);
+        alienPopupPanel = new UpdateAlienNoPopupPanel(entityId, true);
+        entityFieldsPanel.add(alienPopupPanel);
+
         entityFieldsPanel.add(eduInfo1Edit);
-        addField("fieldOfStudy", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("highestLevelOfEdu", true, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL);
-        addField("noOfDependents", true, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(otherNamesInfo);
+        eduRecPanel = new UpdateEducationRecord1PopupPanel(entityId, true);
+        entityFieldsPanel.add(eduRecPanel);
+
+        //other names info
         entityFieldsPanel.add(otherNamesNotes);
         entityFieldsPanel.add(OtherNamesInfoEdit);
-        addField("firstName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("middleName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("lastName", true, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        otherNamesPanel = new UpdateOtherNamesInfoPopupPanel(entityId, true);
+        entityFieldsPanel.add(otherNamesPanel);
     }
 
     @Override
@@ -235,19 +135,29 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         if (event.getSource().equals(personalInfoEdit)) {
-            new GenericPopup(new UpdateEmpPersonalInfoPopupPanel(invitationCode), 200, 200).show();
-        }
-        if (event.getSource().equals(OtherNamesInfoEdit)) {
-            new GenericPopup(new UpdateOtherNamesInfoPopupPanel(invitationCode), 200, 1350).show();
-        }
-        if (event.getSource().equals(alienNoInfoEdit)) {
-            new GenericPopup(new UpdateAlienNoPopupPanel(entityId), 200, 1000).show();
+            entityFieldsPanel.remove(entityFieldsPanel.getWidget(entityFieldsPanel.getWidgetIndex(personalInfoPopupPanel)));
+            personalInfoPopupPanel = new UpdateEmpPersonalInfoPopupPanel(entityId, false);
+            entityFieldsPanel.insert(personalInfoPopupPanel, entityFieldsPanel.getWidgetIndex(personalInfoEdit) + 1);
         }
         if (event.getSource().equals(eduInfo2Edit)) {
-            new GenericPopup(new UpdateCaseEducRecPopupPanel(entityId), 200, 650).show();
+            entityFieldsPanel.remove(entityFieldsPanel.getWidget(entityFieldsPanel.getWidgetIndex(usEducRecPanel)));
+            usEducRecPanel = new UpdateCaseEducRecPopupPanel(entityId, false);
+            entityFieldsPanel.insert(usEducRecPanel, entityFieldsPanel.getWidgetIndex(eduInfo2Edit) + 1);
+        }
+        if (event.getSource().equals(alienNoInfoEdit)) {
+            entityFieldsPanel.remove(entityFieldsPanel.getWidget(entityFieldsPanel.getWidgetIndex(alienPopupPanel)));
+            alienPopupPanel = new UpdateAlienNoPopupPanel(entityId, false);
+            entityFieldsPanel.insert(alienPopupPanel, entityFieldsPanel.getWidgetIndex(alienNoInfoEdit) + 1);
+        }
+        if (event.getSource().equals(OtherNamesInfoEdit)) {
+            entityFieldsPanel.remove(entityFieldsPanel.getWidget(entityFieldsPanel.getWidgetIndex(otherNamesPanel)));
+            otherNamesPanel = new UpdateOtherNamesInfoPopupPanel(entityId, false);
+            entityFieldsPanel.insert(otherNamesPanel, entityFieldsPanel.getWidgetIndex(OtherNamesInfoEdit) + 1);
         }
         if (event.getSource().equals(eduInfo1Edit)) {
-            new GenericPopup(new UpdateEducationRecord1PopupPanel(entityId), 200, 900).show();
+            entityFieldsPanel.remove(entityFieldsPanel.getWidget(entityFieldsPanel.getWidgetIndex(eduRecPanel)));
+            eduRecPanel = new UpdateEducationRecord1PopupPanel(entityId, false);
+            entityFieldsPanel.insert(eduRecPanel, entityFieldsPanel.getWidgetIndex(eduInfo1Edit) + 1);
         }
     }
 
