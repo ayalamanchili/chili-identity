@@ -28,8 +28,14 @@ import java.util.logging.Logger;
 public class UpdateOtherNamesInfoPopupPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateOtherNamesInfoPopupPanel.class.getName());
-
+    boolean isReadPanel = false;
+    
     public UpdateOtherNamesInfoPopupPanel(String entityId) {
+        initUpdateComposite(entityId, "OtherNamesInfo", OfficeWelcome.constants);
+    }
+
+    public UpdateOtherNamesInfoPopupPanel(String entityId, boolean isReadPanel) {
+        this.isReadPanel = isReadPanel;
         initUpdateComposite(entityId, "OtherNamesInfo", OfficeWelcome.constants);
     }
 
@@ -84,13 +90,19 @@ public class UpdateOtherNamesInfoPopupPanel extends UpdateComposite {
 
     @Override
     protected void configure() {
+        if(isReadPanel == false){
+            update.setText("Save");
+            update.setVisible(true);
+        }else{
+            update.setVisible(false);
+        }
     }
 
     @Override
     protected void addWidgets() {
-        addField("firstName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("lastName", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("middleName", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("firstName", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("lastName", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("middleName", isReadPanel, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
     }
 
     @Override
@@ -108,7 +120,7 @@ public class UpdateOtherNamesInfoPopupPanel extends UpdateComposite {
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
-                       if (!response.trim().contains("<html>")) {
+                        if (!response.trim().contains("<html>")) {
                             entity = (JSONObject) JSONParser.parseLenient(response);
                             populateFieldsFromEntity(entity);
                         } else {
