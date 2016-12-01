@@ -5,25 +5,28 @@
  */
 package info.yalamanchili.office.client.profile.employee;
 
-import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.data.CanadaStatesFactory;
+import info.chili.gwt.data.CountryFactory;
+import info.chili.gwt.data.IndiaStatesFactory;
+import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
-import info.yalamanchili.office.client.profile.address.CreateAddressPanel;
-import info.yalamanchili.office.client.profile.address.CreateAddressWidget;
-import info.yalamanchili.office.client.profile.address.UpdateAddressPanel;
-import info.yalamanchili.office.client.profile.address.UpdateAddressWidget;
 import info.yalamanchili.office.client.resources.OfficeImages;
 import java.util.logging.Logger;
 
@@ -31,15 +34,19 @@ import java.util.logging.Logger;
  *
  * @author radhika.mukkala
  */
-public class UpdateCaseEducRecPopupPanel extends UpdateComposite {
+public class UpdateCaseEducRecPopupPanel extends UpdateComposite implements ChangeHandler {
 
     private static Logger logger = Logger.getLogger(UpdateCaseEducRecPopupPanel.class.getName());
-    UpdateAddressWidget updateAddressWidget;
-    CreateAddressWidget createAddrWidget;
-    Button saveNextEdu = new Button("Save and Next");
-    boolean saveNextEduValue = false;
+    boolean isReadPanel;
+    EnumField statesF;
+    EnumField countriesF;
 
     public UpdateCaseEducRecPopupPanel(String entityId) {
+        initUpdateComposite(entityId, "EducationRecord", OfficeWelcome.constants);
+    }
+
+    public UpdateCaseEducRecPopupPanel(String entityId, boolean isReadPanel) {
+        this.isReadPanel = isReadPanel;
         initUpdateComposite(entityId, "EducationRecord", OfficeWelcome.constants);
     }
 
@@ -50,19 +57,9 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite {
         assignEntityValueFromField("nameOfSchool", educationRecord);
         assignEntityValueFromField("typeOfUSDegree", educationRecord);
         assignEntityValueFromField("dateDegreeAwarded", educationRecord);
-        if (updateAddressWidget != null) {
-            JSONObject address = updateAddressWidget.populateEntityFromFields();
-            String addressStr = getAddress(address);
-            educationRecord.put("address", new JSONString(addressStr));
-        }
-        if (createAddrWidget != null) {
-            JSONObject address = createAddrWidget.populateEntityFromFields();
-            String addressStr = getAddress(address);
-            educationRecord.put("address", new JSONString(addressStr));
-        }
+        educationRecord.put("address", new JSONString(setAddress()));
         entity.put("usEducRec", educationRecord);
         return entity;
-
     }
 
     @Override
@@ -94,30 +91,6 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite {
         assignFieldValueFromEntity("nameOfSchool", educRec, DataType.STRING_FIELD);
         assignFieldValueFromEntity("typeOfUSDegree", educRec, DataType.STRING_FIELD);
         assignFieldValueFromEntity("dateDegreeAwarded", educRec, DataType.DATE_FIELD);
-        if (educRec.containsKey("address") && educRec.get("address").isString().stringValue() != null) {
-            JSONObject address = new JSONObject();
-            String[] adressArr = educRec.get("address").isString().stringValue().split("-");
-            if (adressArr.length == 5) {
-                address.put("street1", new JSONString(adressArr[0].trim()));
-                address.put("street2", new JSONString(""));
-                address.put("city", new JSONString(adressArr[1].trim()));
-                address.put("state", new JSONString(adressArr[2].trim()));
-                address.put("country", new JSONString(adressArr[3].trim()));
-                address.put("zip", new JSONString(adressArr[4].trim()));
-            } else if (adressArr.length == 6) {
-                address.put("street1", new JSONString(adressArr[0].trim()));
-                address.put("street2", new JSONString(adressArr[1].trim()));
-                address.put("city", new JSONString(adressArr[2].trim()));
-                address.put("state", new JSONString(adressArr[3].trim()));
-                address.put("country", new JSONString(adressArr[4].trim()));
-                address.put("zip", new JSONString(adressArr[5].trim()));
-            }
-            updateAddressWidget = new UpdateAddressWidget(address, UpdateAddressPanel.UpdateAddressPanelType.MIN, false);
-            entityFieldsPanel.add(updateAddressWidget);
-        } else {
-            createAddrWidget = new CreateAddressWidget(CreateAddressPanel.CreateAddressPanelType.MIN);
-            entityFieldsPanel.add(createAddrWidget);
-        }
     }
 
     @Override
@@ -126,29 +99,29 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite {
         RootPanel.get().clear();
         RootPanel.get().add(new Image(OfficeImages.INSTANCE.logo()));
         RootPanel.get().add(new H1bQuestionnaireWidget(entityId));
-        if (saveNextEduValue == true) {
-            new GenericPopup(new UpdateAlienNoPopupPanel(entityId), 200, 200).show();
-        }
         new ResponseStatusWidget().show("Successfully  Updated US Education Record Info");
     }
 
     @Override
     protected void addListeners() {
-        saveNextEdu.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
-        update.setText("Save");
+        if (isReadPanel == false) {
+            update.setText("Save");
+            update.setVisible(true);
+        } else {
+            update.setVisible(false);
+        }
     }
 
     @Override
     protected void addWidgets() {
-        addField("degreeOfStudy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("nameOfSchool", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("typeOfUSDegree", false, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("dateDegreeAwarded", false, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        entityActionsPanel.add(saveNextEdu);
+        addField("degreeOfStudy", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("nameOfSchool", isReadPanel, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("typeOfUSDegree", isReadPanel, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("dateDegreeAwarded", isReadPanel, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         alignFields();
     }
 
@@ -174,6 +147,9 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite {
                         if (!response.trim().contains("<html>")) {
                             entity = (JSONObject) JSONParser.parseLenient(response);
                             populateFieldsFromEntity(entity);
+                            JSONObject educRec = entity.get("usEducRec").isObject();
+                            String address = educRec.get("address").isString().stringValue();
+                            assignAddressFieldsFromEntity(address);
                         } else {
                             entity = new JSONObject();
                         }
@@ -190,20 +166,78 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite {
         return null;
     }
 
-    private String getAddress(JSONObject address) {
-        if (address.containsKey("street2")) {
-            return address.get("street1").isString().stringValue().trim() + "-" + address.get("street2").isString().stringValue().trim() + "-" + address.get("city").isString().stringValue().trim() + "-" + address.get("state").isString().stringValue().trim() + "-" + address.get("country").isString().stringValue().trim() + "-" + address.get("zip").isString().stringValue().trim();
-        } else {
-            return address.get("street1").isString().stringValue().trim() + "-" + address.get("city").isString().stringValue().trim() + "-" + address.get("state").isString().stringValue().trim() + "-" + address.get("country").isString().stringValue().trim() + "-" + address.get("zip").isString().stringValue().trim();
+    private void assignAddressFieldsFromEntity(String address) {
+        JSONObject addressObj = getAddress(address);
+        addField("street1", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("street2", isReadPanel, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("city", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addEnumField("country", isReadPanel, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        JSONValue service = addressObj.get("country");
+        if (isReadPanel == false) {
+            countriesF = (EnumField) fields.get("country");
+            if (countriesF != null) {
+                countriesF.listBox.addChangeHandler(this);
+            }
         }
+        switch (service.isString().stringValue()) {
+            case "USA":
+                addEnumField("state", isReadPanel, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+            case "INDIA":
+                addEnumField("state", isReadPanel, true, IndiaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+            case "CANADA":
+                addEnumField("state", isReadPanel, true, CanadaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+                break;
+        }
+        addField("state", isReadPanel, true, DataType.ENUM_FIELD, Alignment.HORIZONTAL);
+        addField("zip", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        countriesF = (EnumField) fields.get("country");
+        statesF = (EnumField) fields.get("state");
+        assignFieldValueFromEntity("street1", addressObj, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("street2", addressObj, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("zip", addressObj, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("city", addressObj, DataType.STRING_FIELD);
+        assignFieldValueFromEntity("state", addressObj, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("country", addressObj, DataType.ENUM_FIELD);
+    }
+
+    private JSONObject getAddress(String address) {
+        String[] addresses = address.split("-");
+        JSONObject addressObj = new JSONObject();
+        addressObj.put("street1", new JSONString(addresses[0]));
+        addressObj.put("street2", new JSONString(addresses[1]));
+        addressObj.put("city", new JSONString(addresses[2]));
+        addressObj.put("country", new JSONString(addresses[3]));
+        addressObj.put("state", new JSONString(addresses[4]));
+        addressObj.put("zip", new JSONString(addresses[5]));
+        return addressObj;
+    }
+
+    private String setAddress() {
+        String address = "";
+        StringField street1 = (StringField) fields.get("street1");
+        StringField street2 = (StringField) fields.get("street2");
+        StringField city = (StringField) fields.get("city");
+        EnumField country = (EnumField) fields.get("country");
+        EnumField state = (EnumField) fields.get("state");
+        StringField zip = (StringField) fields.get("zip");
+        address = address.concat(street1.getValue().trim()) + "-" + address.concat(street2.getValue().trim()) + "-" + address.concat(city.getValue().trim()) + "-" + address.concat(country.getValue().trim()) + "-" + address.concat(state.getValue().trim()) + "-" + address.concat(zip.getValue().trim());
+        return address;
     }
 
     @Override
-    public void onClick(ClickEvent event) {
-        if (event.getSource().equals(saveNextEdu)) {
-            saveNextEduValue = true;
-            updateButtonClicked();
+    public void onChange(ChangeEvent event) {
+        switch (countriesF.getValue()) {
+            case "USA":
+                statesF.setValues(USAStatesFactory.getStates().toArray(new String[0]));
+                break;
+            case "INDIA":
+                statesF.setValues(IndiaStatesFactory.getStates().toArray(new String[0]));
+                break;
+            case "CANADA":
+                statesF.setValues(CanadaStatesFactory.getStates().toArray(new String[0]));
+                break;
         }
-        super.onClick(event);
     }
 }
