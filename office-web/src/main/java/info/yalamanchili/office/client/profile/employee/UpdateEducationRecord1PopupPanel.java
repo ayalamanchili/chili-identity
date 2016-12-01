@@ -35,10 +35,8 @@ import java.util.logging.Logger;
 public class UpdateEducationRecord1PopupPanel extends UpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateEducationRecord1PopupPanel.class.getName());
-    
-    Button saveNextEdu1 = new Button("Save and Next");
-    boolean saveNextEdu1Value = false;
-    
+    boolean isReadPanel;
+
     HTML eduInfo1Notes = new HTML("<p style=\"color:#F31212\">Beneficiary's Highest Level of Education</strong></p> \n");
     RadioButton levelOfEducation1 = new RadioButton("educationRecord", "NO DIPLOMA");
     RadioButton levelOfEducation2 = new RadioButton("educationRecord", "HIGH SCHOOL GRADUATE - high school DIPLOMA or the equivalent (for example ,GED)");
@@ -52,6 +50,11 @@ public class UpdateEducationRecord1PopupPanel extends UpdateComposite {
     VerticalPanel panel = new VerticalPanel();
 
     public UpdateEducationRecord1PopupPanel(String entityId) {
+        initUpdateComposite(entityId, "EducationDetails", OfficeWelcome.constants);
+    }
+
+    public UpdateEducationRecord1PopupPanel(String entityId, boolean isReadPanel) {
+        this.isReadPanel = isReadPanel;
         initUpdateComposite(entityId, "EducationDetails", OfficeWelcome.constants);
     }
 
@@ -100,27 +103,28 @@ public class UpdateEducationRecord1PopupPanel extends UpdateComposite {
         RootPanel.get().clear();
         RootPanel.get().add(new Image(OfficeImages.INSTANCE.logo()));
         RootPanel.get().add(new H1bQuestionnaireWidget(entityId));
-        if (saveNextEdu1Value == true) {
-            new GenericPopup(new UpdateOtherNamesInfoPopupPanel(entityId), 200, 200).show();
-        }
         new ResponseStatusWidget().show("Successfully  Updated Education Details");
     }
 
     @Override
     protected void addListeners() {
-        saveNextEdu1.addClickHandler(this);
     }
 
     @Override
     protected void configure() {
         panel.setSpacing(5);
-        update.setText("Save");
+        if (isReadPanel == false) {
+            update.setText("Save");
+            update.setVisible(true);
+        } else {
+            update.setVisible(false);
+        }
     }
 
     @Override
     protected void addWidgets() {
-        addField("fieldOfStudy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("noOfDependents", false, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
+        addField("fieldOfStudy", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("noOfDependents", isReadPanel, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
         entityFieldsPanel.add(eduInfo1Notes);
         panel.add(levelOfEducation1);
         panel.add(levelOfEducation2);
@@ -132,7 +136,6 @@ public class UpdateEducationRecord1PopupPanel extends UpdateComposite {
         panel.add(levelOfEducation8);
         panel.add(levelOfEducation9);
         entityFieldsPanel.add(panel);
-        entityActionsPanel.add(saveNextEdu1);
     }
 
     @Override
@@ -146,14 +149,12 @@ public class UpdateEducationRecord1PopupPanel extends UpdateComposite {
 
     @Override
     public void loadEntity(String entityId) {
-        logger.info("load entity uri is ... "+getURI());
         HttpService.HttpServiceAsync.instance().doGet(getURI(), OfficeWelcome.instance().getHeaders(), true,
                 new ALAsyncCallback<String>() {
                     @Override
                     public void onResponse(String response) {
                         if (!response.trim().contains("<html>")) {
                             entity = (JSONObject) JSONParser.parseLenient(response);
-                            logger.info("entity isssssss:"+entity);
                             populateFieldsFromEntity(entity);
                         } else {
                             entity = new JSONObject();
@@ -193,41 +194,32 @@ public class UpdateEducationRecord1PopupPanel extends UpdateComposite {
     private void setEducation(String eduName) {
         switch (eduName) {
             case "NO DIPLOMA":
-                  levelOfEducation1.setValue(true);
-                  break;
+                levelOfEducation1.setValue(true);
+                break;
             case "HIGH SCHOOL GRADUATE - high school DIPLOMA or the equivalent (for example ,GED)":
-                  levelOfEducation2.setValue(true);
-                  break;
+                levelOfEducation2.setValue(true);
+                break;
             case "Some college credit, but less than one year":
-                  levelOfEducation3.setValue(true);
-                  break;
+                levelOfEducation3.setValue(true);
+                break;
             case "One or more years of college, no degree":
-                  levelOfEducation4.setValue(true);
-                  break;
+                levelOfEducation4.setValue(true);
+                break;
             case "Associate's degree (for example: AA, AS)":
-                  levelOfEducation5.setValue(true);
-                  break;
+                levelOfEducation5.setValue(true);
+                break;
             case "Bachelor's degree (for example: BA, AB, BS)":
-                  levelOfEducation6.setValue(true);
-                  break;
+                levelOfEducation6.setValue(true);
+                break;
             case "Master's degree (for example: MA, MS, MEng, MEd, MSW, MBA)":
-                  levelOfEducation7.setValue(true);
-                  break;
+                levelOfEducation7.setValue(true);
+                break;
             case "Professional degree (for example: MD, DDS, DVM, LLB, JD)":
-                  levelOfEducation8.setValue(true);
-                  break;
+                levelOfEducation8.setValue(true);
+                break;
             case "Doctorate degree (for example: PhD, EdD)":
-                  levelOfEducation9.setValue(true);
-                  break;
+                levelOfEducation9.setValue(true);
+                break;
         }
-    }
-    
-    @Override
-    public void onClick(ClickEvent event) {
-        if (event.getSource().equals(saveNextEdu1)) {
-            saveNextEdu1Value = true;
-            updateButtonClicked();
-        }
-        super.onClick(event);
     }
 }
