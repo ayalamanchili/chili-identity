@@ -503,4 +503,119 @@ public class EmployeeFormsService {
                 .build();
 
     }
+
+    public Response printSelfIdentificationForm(Employee emp) {
+            JoiningFormsDto dto = getJoiningForm(emp);
+        EmployeeAdditionalDetails ead = dto.getEmpAddnlDetails();
+        OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
+        PdfDocumentData data = new PdfDocumentData();
+        data.setTemplateUrl("/templates/pdf/sst-voluntary-selfIdentification-template.pdf");
+        data.setKeyStoreName(securityConfiguration.getKeyStoreName());
+        String empMiddleInitial = emp.getMiddleInitial();
+        data.getData().put("firstName", emp.getFirstName());
+        if (empMiddleInitial != null) {
+            data.getData().put("middleName", empMiddleInitial);
+        }
+        data.getData().put("lastName", emp.getLastName());
+        if (emp.getSsn() != null) {
+            data.getData().put("ssn", emp.getSsn());
+        }
+        if (emp.getSex().equals(Sex.MALE)) {
+            data.getData().put("genderMale", "true");
+        } else {
+            data.getData().put("genderFemale", "true");
+        }
+        if (ead != null) {
+            data.getData().put("maritalStatus", ead.getMaritalStatus().name());
+            if (ead.getEthnicity() != null) {
+                Ethnicity ethnicity = ead.getEthnicity();
+                switch (ethnicity) {
+                    case Asian:
+                        data.getData().put("asian", "true");
+                        break;
+                    case Latino_Hispanic:
+                        data.getData().put("hispanicLatino", "true");
+                        break;
+                    case AmericanIndian_AlaskaNative:
+                        data.getData().put("americanIndian", "true");
+                        break;
+                    case Black_AfricanAmerican:
+                        data.getData().put("black", "true");
+                        break;
+                    case NativeHawaiian_OtherPacificIslander:
+                        data.getData().put("hawalian", "true");
+                        break;
+                    case White:
+                        data.getData().put("white", "true");
+                        break;
+                    case Unspecified:
+                        data.getData().put("other", "true");
+                        break;
+                }
+            }
+            data.getData().put("veteranStatus", ead.getMaritalStatus().name());
+            if (ead.getEthnicity() != null) {
+                Ethnicity ethnicity = ead.getEthnicity();
+                switch (ethnicity) {
+                    case Asian:
+                        data.getData().put("oneormore", "true");
+                        break;
+                    case Latino_Hispanic:
+                        data.getData().put("asaveteran", "true");
+                        break;
+                    case AmericanIndian_AlaskaNative:
+                        data.getData().put("notveteran", "true");
+                        break;
+                    case Black_AfricanAmerican:
+                        data.getData().put("selfIdentify", "true");
+                        break;
+                }
+            }
+            data.getData().put("disability", ead.getMaritalStatus().name());
+            if (ead.getEthnicity() != null) {
+                Ethnicity ethnicity = ead.getEthnicity();
+                switch (ethnicity) {
+                    case Asian:
+                        data.getData().put("yes", "true");
+                        break;
+                    case Latino_Hispanic:
+                        data.getData().put("no", "true");
+                        break;
+                    case AmericanIndian_AlaskaNative:
+                        data.getData().put("dontwishselfidentify", "true");
+                        break;
+                }
+            }
+        }
+        EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findByEmployeeId(emp.getId());
+        Date onboardingDate = null;
+        if (onboarding != null) {
+            onboardingDate = onboarding.getStartedDate();
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            data.getData().put("Date", sdf.format(onboardingDate));
+            Signature signature = new Signature(emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "Signature", DateUtils.dateToCalendar(onboardingDate), onboarding.getEmail(), null);
+            data.getSignatures().add(signature);
+        } else {
+            onboardingDate = emp.getStartDate();
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            data.getData().put("Date", sdf.format(onboardingDate));
+            Signature signature = new Signature(emp.getEmployeeId(), emp.getEmployeeId(), securityConfiguration.getKeyStorePassword(), true, "Signature", DateUtils.dateToCalendar(onboardingDate), emp.getPrimaryEmail().getEmail(), null);
+            data.getSignatures().add(signature);
+        }
+
+        String empCompanyLogo = "";
+        if (emp.getCompany() != null) {
+            empCompanyLogo = emp.getCompany().getLogoURL().replace("entityId", emp.getCompany().getId().toString());
+        } else {
+            Company company = CompanyDao.instance().findByCompanyName(Company.SSTECH_LLC);
+            empCompanyLogo = company.getLogoURL().replace("entityId", company.getId().toString());
+        }
+        byte[] pdf = PDFUtils.generatePdf(data, empCompanyLogo);
+
+        return Response.ok(pdf)
+                .header("content-disposition", "filename = Joining-form-fillable.pdf")
+                .header("Content-Length", pdf.length)
+                .build();
+    }
+
 }
