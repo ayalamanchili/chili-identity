@@ -13,13 +13,17 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.composite.BaseField;
+import info.chili.gwt.composite.BaseFieldWithTextBox;
+import info.chili.gwt.crud.TUpdateComposite;
 import info.chili.gwt.data.CanadaStatesFactory;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.IndiaStatesFactory;
 import info.chili.gwt.data.USAStatesFactory;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
@@ -28,13 +32,14 @@ import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.resources.OfficeImages;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
  *
  * @author radhika.mukkala
  */
-public class UpdateCaseEducRecPopupPanel extends UpdateComposite implements ChangeHandler {
+public class UpdateCaseEducRecPopupPanel extends TUpdateComposite implements ChangeHandler {
 
     private static Logger logger = Logger.getLogger(UpdateCaseEducRecPopupPanel.class.getName());
     boolean isReadPanel;
@@ -42,12 +47,12 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite implements Chan
     EnumField countriesF;
 
     public UpdateCaseEducRecPopupPanel(String entityId) {
-        initUpdateComposite(entityId, "EducationRecord", OfficeWelcome.constants);
+        initUpdateComposite(entityId, "EducationRecord", OfficeWelcome.constants2);
     }
 
     public UpdateCaseEducRecPopupPanel(String entityId, boolean isReadPanel) {
         this.isReadPanel = isReadPanel;
-        initUpdateComposite(entityId, "EducationRecord", OfficeWelcome.constants);
+        initUpdateComposite(entityId, "EducationRecord", OfficeWelcome.constants2);
     }
 
     @Override
@@ -114,15 +119,37 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite implements Chan
         } else {
             update.setVisible(false);
         }
+        for (Map.Entry<String, BaseField> e : fields.entrySet()) {
+            if (e.getValue() instanceof BaseFieldWithTextBox) {
+                setVisibleLengthSize(e.getKey(), 25);
+            }
+        }
+        configureLabelNames();
+    }
+
+    protected void configureLabel(Label l) {
+        l.removeStyleName("tfFieldHeader");
+        l.setVisible(true);
+    }
+
+    private void configureLabelNames() {
+        StringField degreeOfStudy = (StringField) fields.get("degreeOfStudy");
+        configureLabel(degreeOfStudy.getLabel());
+        StringField nameOfSchool = (StringField) fields.get("nameOfSchool");
+        configureLabel(nameOfSchool.getLabel());
+        StringField typeOfUSDegree = (StringField) fields.get("typeOfUSDegree");
+        configureLabel(typeOfUSDegree.getLabel());
+        DateField dateDegreeAwarded = (DateField) fields.get("dateDegreeAwarded");
+        configureLabel(dateDegreeAwarded.getLabel());
     }
 
     @Override
     protected void addWidgets() {
-        addField("degreeOfStudy", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("nameOfSchool", isReadPanel, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("typeOfUSDegree", isReadPanel, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("dateDegreeAwarded", isReadPanel, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
-        alignFields();
+        addField("degreeOfStudy", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
+        addField("nameOfSchool", isReadPanel, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
+        addField("typeOfUSDegree", isReadPanel, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 3);
+        addField("dateDegreeAwarded", isReadPanel, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 2, 1);
+        alignFields(200);
     }
 
     @Override
@@ -168,10 +195,10 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite implements Chan
 
     private void assignAddressFieldsFromEntity(String address) {
         JSONObject addressObj = getAddress(address);
-        addField("street1", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("street2", isReadPanel, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("city", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("country", isReadPanel, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL);
+        addField("street1", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 3, 1);
+        addField("street2", isReadPanel, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 3, 2);
+        addField("city", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 3, 3);
+        addEnumField("country", isReadPanel, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL, 4, 1);
         JSONValue service = addressObj.get("country");
         if (isReadPanel == false) {
             countriesF = (EnumField) fields.get("country");
@@ -181,17 +208,17 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite implements Chan
         }
         switch (service.isString().stringValue()) {
             case "USA":
-                addEnumField("state", isReadPanel, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+                addEnumField("state", isReadPanel, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL, 4, 2);
                 break;
             case "INDIA":
-                addEnumField("state", isReadPanel, true, IndiaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+                addEnumField("state", isReadPanel, true, IndiaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL, 4, 2);
                 break;
             case "CANADA":
-                addEnumField("state", isReadPanel, true, CanadaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL);
+                addEnumField("state", isReadPanel, true, CanadaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL, 4, 2);
                 break;
         }
-        addField("state", isReadPanel, true, DataType.ENUM_FIELD, Alignment.HORIZONTAL);
-        addField("zip", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
+        addField("state", isReadPanel, true, DataType.ENUM_FIELD, Alignment.HORIZONTAL, 4, 2);
+        addField("zip", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 4, 3);
         countriesF = (EnumField) fields.get("country");
         statesF = (EnumField) fields.get("state");
         assignFieldValueFromEntity("street1", addressObj, DataType.STRING_FIELD);
@@ -200,6 +227,7 @@ public class UpdateCaseEducRecPopupPanel extends UpdateComposite implements Chan
         assignFieldValueFromEntity("city", addressObj, DataType.STRING_FIELD);
         assignFieldValueFromEntity("state", addressObj, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("country", addressObj, DataType.ENUM_FIELD);
+        alignFields(100);
     }
 
     private JSONObject getAddress(String address) {

@@ -5,34 +5,37 @@
  */
 package info.yalamanchili.office.client.profile.employee;
 
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.composite.BaseField;
+import info.chili.gwt.composite.BaseFieldWithTextBox;
+import info.chili.gwt.crud.TUpdateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.IntegerField;
+import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.resources.OfficeImages;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
  *
  * @author Ramana.Lukalapu
  */
-public class UpdateEducationRecord1PopupPanel extends UpdateComposite {
+public class UpdateEducationRecord1PopupPanel extends TUpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateEducationRecord1PopupPanel.class.getName());
     boolean isReadPanel;
@@ -47,15 +50,14 @@ public class UpdateEducationRecord1PopupPanel extends UpdateComposite {
     RadioButton levelOfEducation7 = new RadioButton("educationRecord", "Master's degree (for example: MA, MS, MEng, MEd, MSW, MBA)");
     RadioButton levelOfEducation8 = new RadioButton("educationRecord", "Professional degree (for example: MD, DDS, DVM, LLB, JD)");
     RadioButton levelOfEducation9 = new RadioButton("educationRecord", "Doctorate degree (for example: PhD, EdD)");
-    VerticalPanel panel = new VerticalPanel();
 
     public UpdateEducationRecord1PopupPanel(String entityId) {
-        initUpdateComposite(entityId, "EducationDetails", OfficeWelcome.constants);
+        initUpdateComposite(entityId, "EducationDetails", OfficeWelcome.constants2);
     }
 
     public UpdateEducationRecord1PopupPanel(String entityId, boolean isReadPanel) {
         this.isReadPanel = isReadPanel;
-        initUpdateComposite(entityId, "EducationDetails", OfficeWelcome.constants);
+        initUpdateComposite(entityId, "EducationDetails", OfficeWelcome.constants2);
     }
 
     @Override
@@ -112,30 +114,47 @@ public class UpdateEducationRecord1PopupPanel extends UpdateComposite {
 
     @Override
     protected void configure() {
-        panel.setSpacing(5);
         if (isReadPanel == false) {
             update.setText("Save");
             update.setVisible(true);
         } else {
             update.setVisible(false);
         }
+        for (Map.Entry<String, BaseField> e : fields.entrySet()) {
+            if (e.getValue() instanceof BaseFieldWithTextBox) {
+                setVisibleLengthSize(e.getKey(), 25);
+            }
+        }
+        configureLabelNames();
+    }
+
+    protected void configureLabel(Label l) {
+        l.removeStyleName("tfFieldHeader");
+        l.setVisible(true);
+    }
+
+    private void configureLabelNames() {
+        StringField fieldOfStudy = (StringField) fields.get("fieldOfStudy");
+        configureLabel(fieldOfStudy.getLabel());
+        IntegerField noOfDependents = (IntegerField) fields.get("noOfDependents");
+        configureLabel(noOfDependents.getLabel());
     }
 
     @Override
     protected void addWidgets() {
-        addField("fieldOfStudy", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("noOfDependents", isReadPanel, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL);
-        entityFieldsPanel.add(eduInfo1Notes);
-        panel.add(levelOfEducation1);
-        panel.add(levelOfEducation2);
-        panel.add(levelOfEducation3);
-        panel.add(levelOfEducation4);
-        panel.add(levelOfEducation5);
-        panel.add(levelOfEducation6);
-        panel.add(levelOfEducation7);
-        panel.add(levelOfEducation8);
-        panel.add(levelOfEducation9);
-        entityFieldsPanel.add(panel);
+        addField("fieldOfStudy", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
+        addField("noOfDependents", isReadPanel, true, DataType.INTEGER_FIELD, Alignment.HORIZONTAL, 1, 2);
+        entityFieldsPanel.setWidget(2, 1, eduInfo1Notes);
+        entityFieldsPanel.setWidget(3, 1, levelOfEducation1);
+        entityFieldsPanel.setWidget(3, 2, levelOfEducation2);
+        entityFieldsPanel.setWidget(4, 1, levelOfEducation3);
+        entityFieldsPanel.setWidget(4, 2, levelOfEducation4);
+        entityFieldsPanel.setWidget(5, 1, levelOfEducation5);
+        entityFieldsPanel.setWidget(5, 2, levelOfEducation6);
+        entityFieldsPanel.setWidget(6, 1, levelOfEducation7);
+        entityFieldsPanel.setWidget(6, 2, levelOfEducation8);
+        entityFieldsPanel.setWidget(7, 1, levelOfEducation9);
+        alignFields(200);
     }
 
     @Override

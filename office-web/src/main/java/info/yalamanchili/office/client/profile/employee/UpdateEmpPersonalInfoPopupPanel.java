@@ -10,10 +10,16 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import info.chili.gwt.callback.ALAsyncCallback;
-import info.chili.gwt.crud.UpdateComposite;
+import info.chili.gwt.composite.BaseField;
+import info.chili.gwt.composite.BaseFieldWithTextBox;
+import info.chili.gwt.crud.TUpdateComposite;
 import info.chili.gwt.fields.DataType;
+import info.chili.gwt.fields.DateField;
+import info.chili.gwt.fields.EnumField;
+import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
 import info.chili.gwt.widgets.GenericPopup;
@@ -22,24 +28,25 @@ import info.yalamanchili.office.client.OfficeWelcome;
 import info.yalamanchili.office.client.onboarding.MaritalStatus;
 import info.yalamanchili.office.client.profile.contact.Sex;
 import info.yalamanchili.office.client.resources.OfficeImages;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
  *
  * @author radhika.mukkala
  */
-public class UpdateEmpPersonalInfoPopupPanel extends UpdateComposite {
+public class UpdateEmpPersonalInfoPopupPanel extends TUpdateComposite {
 
     private static Logger logger = Logger.getLogger(UpdateEmpPersonalInfoPopupPanel.class.getName());
     boolean isReadPanel = false;
 
     public UpdateEmpPersonalInfoPopupPanel(String entityId) {
-        initUpdateComposite(entityId, "PersonalInfo", OfficeWelcome.constants);
+        initUpdateComposite(entityId, "PersonalInfo", OfficeWelcome.constants2);
     }
 
     public UpdateEmpPersonalInfoPopupPanel(String entityId, boolean isReadPanel) {
         this.isReadPanel = isReadPanel;
-        initUpdateComposite(entityId, "PersonalInfo", OfficeWelcome.constants);
+        initUpdateComposite(entityId, "PersonalInfo", OfficeWelcome.constants2);
     }
 
     @Override
@@ -110,19 +117,52 @@ public class UpdateEmpPersonalInfoPopupPanel extends UpdateComposite {
         } else {
             update.setVisible(false);
         }
+        configureLabelNames();
+        for (Map.Entry<String, BaseField> e : fields.entrySet()) {
+            if (e.getValue() instanceof BaseFieldWithTextBox) {
+                setVisibleLengthSize(e.getKey(), 25);
+            }
+        }
+    }
+
+    protected void configureLabel(Label l) {
+        l.removeStyleName("tfFieldHeader");
+        l.setVisible(true);
+    }
+
+    private void configureLabelNames() {
+        StringField empLastName = (StringField) fields.get("empLastName");
+        configureLabel(empLastName.getLabel());
+        StringField empFirstName = (StringField) fields.get("empFirstName");
+        configureLabel(empFirstName.getLabel());
+        StringField middleInitial = (StringField) fields.get("middleInitial");
+        configureLabel(middleInitial.getLabel());
+        StringField email = (StringField) fields.get("email");
+        configureLabel(email.getLabel());
+        DateField dateOfBirth = (DateField) fields.get("dateOfBirth");
+        configureLabel(dateOfBirth.getLabel());
+        EnumField gender = (EnumField) fields.get("gender");
+        configureLabel(gender.getLabel());
+        EnumField maritalStatus = (EnumField) fields.get("maritalStatus");
+        configureLabel(maritalStatus.getLabel());
+        StringField workEmail = (StringField) fields.get("workEmail");
+        configureLabel(workEmail.getLabel());
+        StringField ssn = (StringField) fields.get("ssn");
+        configureLabel(ssn.getLabel());
     }
 
     @Override
     protected void addWidgets() {
-        addField("empLastName", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("empFirstName", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("middleInitial", isReadPanel, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addEnumField("gender", isReadPanel, true, Sex.names(), Alignment.HORIZONTAL);
-        addEnumField("maritalStatus", isReadPanel, true, MaritalStatus.names(), Alignment.HORIZONTAL);
-        addField("email", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("workEmail", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("ssn", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
-        addField("dateOfBirth", isReadPanel, true, DataType.DATE_FIELD, Alignment.HORIZONTAL);
+        addField("empLastName", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
+        addField("empFirstName", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
+        addField("middleInitial", isReadPanel, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 3);
+        addField("email", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 1);
+        addField("workEmail", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 2);
+        addField("ssn", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 3);
+        addEnumField("gender", isReadPanel, true, Sex.names(), Alignment.HORIZONTAL, 3, 1);
+        addEnumField("maritalStatus", isReadPanel, true, MaritalStatus.names(), Alignment.HORIZONTAL, 3, 2);
+        addField("dateOfBirth", isReadPanel, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 3, 3);
+        doAlignFields(200);
     }
 
     @Override
