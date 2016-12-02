@@ -84,7 +84,7 @@ public class ReadEmployeePanel extends ReadComposite {
             assignFieldValueFromEntity("dateOfBirth", entity, DataType.DATE_FIELD);
         }
         assignFieldValueFromEntity("sex", entity, DataType.ENUM_FIELD);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_CONTRACTS_ADMIN)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_CONTRACTS_ADMIN, ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION)) {
             assignFieldValueFromEntity("startDate", entity, DataType.DATE_FIELD);
         }
         assignFieldValueFromEntity("employeeId", entity, DataType.STRING_FIELD);
@@ -157,7 +157,7 @@ public class ReadEmployeePanel extends ReadComposite {
             addField("dateOfBirth", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
         addEnumField("sex", true, false, Sex.names(), Alignment.HORIZONTAL);
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_CONTRACTS_ADMIN)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION, ROLE.ROLE_CONTRACTS_ADMIN, ROLE.ROLE_H1B_IMMIGRATION, ROLE.ROLE_GC_IMMIGRATION)) {
             addField("startDate", true, false, DataType.DATE_FIELD, Alignment.HORIZONTAL);
         }
         addField("jobTitle", true, false, DataType.STRING_FIELD, Alignment.HORIZONTAL);
