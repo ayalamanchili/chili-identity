@@ -189,6 +189,14 @@ public class EmployeeFormsResource extends CRUDResource<BankAccount> {
     }
 
     @GET
+    @Path("/self-Identification-report/{id}")
+    @Produces({"application/pdf"})
+    public Response printSelfIdentificationForm(@PathParam("id") Long employeeId) {
+        Employee emp = EmployeeDao.instance().findById(employeeId);
+        return employeeFormsService.printSelfIdentificationForm(emp);
+    }
+
+    @GET
     @Path("/roles-responsibilities")
     @Produces({"application/pdf"})
     public Response printRolesAndRespForm(@QueryParam("id") Long employeeId) {
