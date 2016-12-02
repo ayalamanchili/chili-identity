@@ -22,6 +22,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.Hibernate;
 import org.hibernate.envers.Audited;
 
 import org.hibernate.search.annotations.Field;
@@ -275,6 +276,7 @@ public class Contact extends AbstractEntity {
     @Transient
     public Email getPrimaryEmail() {
         //TODO use Query for better performance?
+        Hibernate.initialize(this.getEmails());
         for (Email email : this.getEmails()) {
             if (email.getPrimaryEmail()) {
                 return email;
@@ -286,7 +288,7 @@ public class Contact extends AbstractEntity {
     public String details() {
         StringBuilder sb = new StringBuilder();
         sb.append("Name: ").append(this.getFirstName()).append(" ").append(this.getLastName()).append("<br/>");
-         for (Email email : this.getEmails()) {
+        for (Email email : this.getEmails()) {
             sb.append("Email: ").append(email.getEmail());
             sb.append("<br/>");
         }
@@ -297,7 +299,7 @@ public class Contact extends AbstractEntity {
             }
             sb.append("<br/>");
         }
-       
+
         return sb.toString();
     }
     //TODO add helpers for getPrimary ReportsTo
