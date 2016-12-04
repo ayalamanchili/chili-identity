@@ -91,7 +91,6 @@ public class ReadH1bPage2Panel extends ReadComposite implements ClickHandler {
         entityFieldsPanel.add(i94InfoEdit);
         i94Infopanel = new UpdateI94InfoPanel(entityId, true);
         entityFieldsPanel.add(i94Infopanel);
-
     }
 
     @Override
