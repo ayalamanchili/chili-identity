@@ -174,9 +174,15 @@ public class UpdateCaseEducRecPopupPanel extends TUpdateComposite implements Cha
                         if (!response.trim().contains("<html>")) {
                             entity = (JSONObject) JSONParser.parseLenient(response);
                             populateFieldsFromEntity(entity);
-                            JSONObject educRec = entity.get("usEducRec").isObject();
-                            String address = educRec.get("address").isString().stringValue();
-                            assignAddressFieldsFromEntity(address);
+                            if (entity.containsKey("usEducRec")) {
+                                JSONObject educRec = entity.get("usEducRec").isObject();
+                                if (educRec.get("address") != null) {
+                                    String address = educRec.get("address").isString().stringValue();
+                                    assignAddressFieldsFromEntity(address);
+                                }
+                            } else {
+                                addAddress();
+                            }
                         } else {
                             entity = new JSONObject();
                         }
@@ -194,40 +200,46 @@ public class UpdateCaseEducRecPopupPanel extends TUpdateComposite implements Cha
     }
 
     private void assignAddressFieldsFromEntity(String address) {
-        JSONObject addressObj = getAddress(address);
-        addField("street1", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 3, 1);
-        addField("street2", isReadPanel, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 3, 2);
-        addField("city", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 3, 3);
-        addEnumField("country", isReadPanel, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL, 4, 1);
-        JSONValue service = addressObj.get("country");
-        if (isReadPanel == false) {
-            countriesF = (EnumField) fields.get("country");
-            if (countriesF != null) {
-                countriesF.listBox.addChangeHandler(this);
+        if (address != null) {
+            JSONObject addressObj = getAddress(address);
+            addField("street1", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 2);
+            addField("street2", isReadPanel, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 3);
+            addField("city", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 3, 1);
+            addEnumField("country", isReadPanel, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL, 3, 2);
+            JSONValue service = addressObj.get("country");
+            switch (service.isString().stringValue()) {
+                case "USA":
+                    addEnumField("state", isReadPanel, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL, 3, 3);
+                    break;
+                case "INDIA":
+                    addEnumField("state", isReadPanel, true, IndiaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL, 3, 3);
+                    break;
+                case "CANADA":
+                    addEnumField("state", isReadPanel, true, CanadaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL, 3, 3);
+                    break;
             }
+            addField("zip", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 4, 1);
+            doAlignFields(200);
+            assignFieldValueFromEntity("street1", addressObj, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("street2", addressObj, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("zip", addressObj, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("city", addressObj, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("state", addressObj, DataType.ENUM_FIELD);
+            assignFieldValueFromEntity("country", addressObj, DataType.ENUM_FIELD);
+            doConfigureAddress();
+            alignFields();
+        }else{
+            addField("street1", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 2);
+            addField("street2", isReadPanel, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 3);
+            addField("city", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 3, 1);
+            addEnumField("country", isReadPanel, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL, 3, 2);
+            addField("state", isReadPanel, true, DataType.ENUM_FIELD, Alignment.HORIZONTAL, 3, 3);
+            addField("zip", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 4, 1);
+            countriesF = (EnumField) fields.get("country");
+            statesF = (EnumField) fields.get("state");
+            doConfigureAddress();
+            doAlignFields(200);
         }
-        switch (service.isString().stringValue()) {
-            case "USA":
-                addEnumField("state", isReadPanel, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL, 4, 2);
-                break;
-            case "INDIA":
-                addEnumField("state", isReadPanel, true, IndiaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL, 4, 2);
-                break;
-            case "CANADA":
-                addEnumField("state", isReadPanel, true, CanadaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL, 4, 2);
-                break;
-        }
-        addField("state", isReadPanel, true, DataType.ENUM_FIELD, Alignment.HORIZONTAL, 4, 2);
-        addField("zip", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 4, 3);
-        countriesF = (EnumField) fields.get("country");
-        statesF = (EnumField) fields.get("state");
-        assignFieldValueFromEntity("street1", addressObj, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("street2", addressObj, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("zip", addressObj, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("city", addressObj, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("state", addressObj, DataType.ENUM_FIELD);
-        assignFieldValueFromEntity("country", addressObj, DataType.ENUM_FIELD);
-        alignFields(100);
     }
 
     private JSONObject getAddress(String address) {
@@ -252,6 +264,50 @@ public class UpdateCaseEducRecPopupPanel extends TUpdateComposite implements Cha
         StringField zip = (StringField) fields.get("zip");
         address = address.concat(street1.getValue().trim()) + "-" + address.concat(street2.getValue().trim()) + "-" + address.concat(city.getValue().trim()) + "-" + address.concat(country.getValue().trim()) + "-" + address.concat(state.getValue().trim()) + "-" + address.concat(zip.getValue().trim());
         return address;
+    }
+    
+    private void addAddress() {
+        addField("street1", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 2);
+        addField("street2", isReadPanel, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 3);
+        addField("city", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 3, 1);
+        addField("state", isReadPanel, true, DataType.ENUM_FIELD, Alignment.HORIZONTAL, 3, 3);
+        addEnumField("country", isReadPanel, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL, 3, 2);
+        addEnumField("state", isReadPanel, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL, 3, 3);
+        addField("zip", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 4, 1);
+        statesF = (EnumField) fields.get("state");
+        if (isReadPanel == false) {
+            countriesF = (EnumField) fields.get("country");
+            countriesF.listBox.addChangeHandler(this);
+            String service = countriesF.getValue();
+            switch (service) {
+                case "USA":
+                    addEnumField("state", isReadPanel, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL, 3, 3);
+                    break;
+                case "INDIA":
+                    addEnumField("state", isReadPanel, true, IndiaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL, 3, 3);
+                    break;
+                case "CANADA":
+                    addEnumField("state", isReadPanel, true, CanadaStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL, 3, 3);
+                    break;
+            }
+        }
+        doConfigureAddress();
+        doAlignFields(200);
+    }
+    
+    private void doConfigureAddress(){
+        StringField street1 = (StringField) fields.get("street1");
+        configureLabel(street1.getLabel());
+        StringField street2 = (StringField) fields.get("street2");
+        configureLabel(street2.getLabel());
+        StringField city = (StringField) fields.get("city");
+        configureLabel(city.getLabel());
+        EnumField state = (EnumField) fields.get("state");
+        configureLabel(state.getLabel());
+        EnumField country = (EnumField) fields.get("country");
+        configureLabel(country.getLabel());
+        StringField zip = (StringField) fields.get("zip");
+        configureLabel(zip.getLabel());
     }
 
     @Override
