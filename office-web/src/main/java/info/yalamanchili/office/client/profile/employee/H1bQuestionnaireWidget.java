@@ -24,6 +24,7 @@ public class H1bQuestionnaireWidget extends UpdateComposite implements ClickHand
 
     protected String invitationCode;
     private static H1bQuestionnaireWidget instance;
+    private String pageWithNo;
 
     protected Button page1L = new Button("1");
     protected Button page2L = new Button("2");
@@ -34,7 +35,8 @@ public class H1bQuestionnaireWidget extends UpdateComposite implements ClickHand
 
     HorizontalPanel pagesPanel = new HorizontalPanel();
 
-    public H1bQuestionnaireWidget(String inviteCode) {
+    public H1bQuestionnaireWidget(String inviteCode, String pageWithNo) {
+        this.pageWithNo = pageWithNo;
         if (inviteCode.contains("?type")) {
             this.invitationCode = inviteCode.substring(0, inviteCode.indexOf("?"));
         } else {
@@ -79,7 +81,18 @@ public class H1bQuestionnaireWidget extends UpdateComposite implements ClickHand
         page4L.setTitle("Go to Deportation Info, Prev. Visa Info, Visa filing Info");
         page5L.setTitle("Go to Consulate info");
         page6L.setTitle("Go to Applicant and Stay Period Info");
-        entityActionsPanel.add(new ReadH1bPage1Panel(invitationCode));
+        loadPage();
+    }
+    
+    private void loadPage(){
+        switch(pageWithNo){
+            case "page1":
+                entityActionsPanel.add(new ReadH1bPage1Panel(invitationCode));
+                break;
+            case "page2":
+                entityActionsPanel.add(new ReadH1bPage2Panel(invitationCode));
+                break;
+        }
     }
 
     @Override
