@@ -103,7 +103,7 @@ public class UpdateCaseEducRecPopupPanel extends TUpdateComposite implements Cha
         GenericPopup.hideIfOpen();
         RootPanel.get().clear();
         RootPanel.get().add(new Image(OfficeImages.INSTANCE.logo()));
-        RootPanel.get().add(new H1bQuestionnaireWidget(entityId));
+        RootPanel.get().add(new H1bQuestionnaireWidget(entityId, "page1"));
         new ResponseStatusWidget().show("Successfully  Updated US Education Record Info");
     }
 
