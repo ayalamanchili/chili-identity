@@ -17,9 +17,13 @@ import info.chili.jpa.validation.Validate;
 import info.chili.service.jrs.types.Entry;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.immigration.PassportDao;
+import info.yalamanchili.office.entity.immigration.ImmigrationCase;
+import info.yalamanchili.office.entity.immigration.OtherNamesInfo;
 import info.yalamanchili.office.entity.immigration.Passport;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.profile.immigration.EmployeeH1BDetailsDto;
+import info.yalamanchili.office.profile.immigration.ImmigrationCaseService;
 import info.yalamanchili.office.profile.immigration.PassportService;
 import info.yalamanchili.office.security.AccessCheck;
 import java.util.ArrayList;
@@ -115,6 +119,17 @@ public class PassportResource extends CRUDResource<Passport> {
             }
         }
         return result;
+    }
+    
+    @PUT
+    @Path("save-passport-info/{invitationCode}")
+    public EmployeeH1BDetailsDto savePassportInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
+        ImmigrationCase immiCase = ImmigrationCaseService.instance().getCase(invitationCode);
+        Passport passport = dto.getPassport();
+        passport.setTargetEntityId(immiCase.getId());
+        passport.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
+        dto.setPassport(passportService.savePassportForCase(immiCase.getId(), passport));
+        return dto;
     }
 
     @Override
