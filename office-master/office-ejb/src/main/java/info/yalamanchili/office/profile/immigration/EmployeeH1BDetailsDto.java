@@ -14,6 +14,7 @@ import info.yalamanchili.office.entity.immigration.OtherNamesInfo;
 import info.yalamanchili.office.entity.immigration.Passport;
 import info.yalamanchili.office.entity.immigration.USEducationRecord;
 import java.io.Serializable;
+import javax.persistence.Lob;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -38,6 +39,11 @@ public class EmployeeH1BDetailsDto implements Serializable {
     private EducationDto eduDto;
     
     private Passport passport;
+    
+    private String currentOccupation;
+    
+    @Lob
+    private String workExpSummary;
 
     public PersonalInfoDto getEmpPersonalInfo() {
         return empPersonalInfo;
@@ -93,5 +99,21 @@ public class EmployeeH1BDetailsDto implements Serializable {
 
     public void setPassport(Passport passport) {
         this.passport = passport;
+    }
+
+    public String getCurrentOccupation() {
+        return currentOccupation;
+    }
+
+    public void setCurrentOccupation(String currentOccupation) {
+        this.currentOccupation = currentOccupation;
+    }
+
+    public String getWorkExpSummary() {
+        return workExpSummary;
+    }
+
+    public void setWorkExpSummary(String workExpSummary) {
+        this.workExpSummary = workExpSummary;
     }
 }
