@@ -12,10 +12,14 @@ import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.immigration.I94RecordDao;
+import info.yalamanchili.office.entity.immigration.ImmigrationCase;
+import info.yalamanchili.office.entity.immigration.Passport;
 import info.yalamanchili.office.entity.immigration.i94Record;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.profile.immigration.EmployeeH1BDetailsDto;
 import info.yalamanchili.office.profile.immigration.I94RecordService;
+import info.yalamanchili.office.profile.immigration.ImmigrationCaseService;
 import info.yalamanchili.office.security.AccessCheck;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -85,6 +89,17 @@ public class I94RecordResource extends CRUDResource<i94Record> {
             tableObj.setSize(Long.valueOf(0));
         }
         return tableObj;
+    }
+    
+    @PUT
+    @Path("save-i94-info/{invitationCode}")
+    public EmployeeH1BDetailsDto savePassportInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
+        ImmigrationCase immiCase = ImmigrationCaseService.instance().getCase(invitationCode);
+        i94Record i94Rec = dto.getI94Info();
+        i94Rec.setTargetEntityId(immiCase.getId());
+        i94Rec.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
+        dto.setI94Info(i94RecordService.saveI94RecForCase(immiCase.getId(), i94Rec));
+        return dto;
     }
 
     @Override
