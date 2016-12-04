@@ -45,7 +45,7 @@ public class InvitationCodeValidator {
                             if (key.equals("inviteCode")) {
                                 RootPanel.get().add(new EmployeeOnboardingPanel(arg0));
                             } else if (key.equals("h1b-questionnaire")) {
-                                RootPanel.get().add(new H1bQuestionnaireWidget(arg0));
+                                RootPanel.get().add(new H1bQuestionnaireWidget(arg0, "page1"));
                             }
                         }
 
