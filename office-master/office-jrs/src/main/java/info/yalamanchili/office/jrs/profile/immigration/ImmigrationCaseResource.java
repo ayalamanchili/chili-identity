@@ -8,6 +8,9 @@
  */
 package info.yalamanchili.office.jrs.profile.immigration;
 
+import info.yalamanchili.office.profile.immigration.EducationDto;
+import info.yalamanchili.office.profile.immigration.PersonalInfoDto;
+import info.yalamanchili.office.profile.immigration.EmployeeH1BDetailsDto;
 import info.chili.commons.SearchUtils;
 import info.chili.dao.CRUDDao;
 import info.chili.document.dao.SerializedEntityDao;
@@ -50,6 +53,7 @@ import info.yalamanchili.office.jms.MessagingService;
 import info.yalamanchili.office.jrs.CRUDResource;
 import info.yalamanchili.office.profile.immigration.AlienNumberService;
 import info.yalamanchili.office.profile.immigration.ImmigrationCaseAdditionalDetailsService;
+import info.yalamanchili.office.profile.immigration.ImmigrationCaseService;
 import info.yalamanchili.office.profile.immigration.OtherNamesInfoService;
 import info.yalamanchili.office.profile.immigration.USEducationRecordService;
 import info.yalamanchili.office.profile.invite.InviteCodeGeneratorService;
@@ -86,6 +90,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
+    
+    @Autowired
+    protected ImmigrationCaseService caseService;
 
     @Autowired
     protected ImmigrationCaseDao immigrationCaseDao;
@@ -233,86 +240,21 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
     @GET
     @Path("h1b-questionnaire/get-details/page-1")
     @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CASE)
-    public EmployeeH1BDetailsDto getdetails(@QueryParam("invitationCode") String invitationCode) {
-        EmployeeH1BDetailsDto detailsDto = new EmployeeH1BDetailsDto();
-        // employee personal details
-        PersonalInfoDto res = new PersonalInfoDto();
-        Employee emp = getEmployee(invitationCode);
-        if (emp != null) {
-            res.setEmail(emp.getPrimaryEmail().getEmail());
-            for (info.yalamanchili.office.entity.profile.Email emailAddr : emp.getEmails()) {
-                if (emailAddr.getEmailType() != null && emailAddr.getEmailType().getEmailType().equals("Work")) {
-                    res.setWorkEmail(emailAddr.getEmail());
-                }
-            }
-            res.setEmpFirstName(emp.getFirstName());
-            res.setEmpLastName(emp.getLastName());
-            if (emp.getMiddleInitial() != null) {
-                res.setMiddleInitial(emp.getMiddleInitial());
-            }
-            res.setDateOfBirth(emp.getDateOfBirth());
-            res.setSsn(emp.getSsn());
-            EmployeeAdditionalDetails details = EmployeeAdditionalDetailsDao.instance().find(emp);
-            if (details != null && details.getId() != null) {
-                res.setMaritalStatus(details.getMaritalStatus().name());
-            } else {
-                res.setMaritalStatus(MaritalStatus.Unknown.name());
-            }
-            if (emp.getSex() != null) {
-                res.setGender(emp.getSex().name());
-            }
-            detailsDto.setEmpPersonalInfo(res);
-        }else{
-            Contact cnt = getContact(invitationCode);
-            if(cnt != null){
-                res.setEmpFirstName(cnt.getFirstName());
-                res.setEmpLastName(cnt.getLastName());
-                res.setMiddleInitial(cnt.getMiddleInitial());
-                res.setDateOfBirth(cnt.getDateOfBirth());
-                res.setGender(cnt.getSex().name());
-                res.setEmail(cnt.getEmails().get(0).getEmail());
-                res.setMaritalStatus(MaritalStatus.Unknown.name());
-                detailsDto.setEmpPersonalInfo(res);
-            }
-        }
-
-        // other names info
-        ImmigrationCase iCase = getCase(invitationCode);
-        List<OtherNamesInfo> otherNames = OtherNamesInfoDao.instance().findAll(iCase.getId(), ImmigrationCase.class.getCanonicalName());
-        if (otherNames != null && otherNames.size() > 0) {
-            OtherNamesInfo info = new OtherNamesInfo();
-            info.setFirstName(otherNames.get(0).getFirstName());
-            info.setLastName(otherNames.get(0).getLastName());
-            info.setMiddleName(otherNames.get(0).getMiddleName());
-            detailsDto.setOtherNamesInfo(otherNames.get(0));
-        }
-        //alien number
-        List<AlienNumber> alienNumbers = AlienNumberDao.instance().findAll(iCase.getId(), ImmigrationCase.class.getCanonicalName());
-        if (alienNumbers != null && alienNumbers.size() > 0) {
-            AlienNumber alienNo = alienNumbers.get(0);
-            detailsDto.setAlienNumber(alienNo);
-        }
-        EducationDto dto = new EducationDto();
-        List<USEducationRecord> records = UsEducationRecordDao.instance().findAll(iCase.getId(), ImmigrationCase.class.getCanonicalName());
-        if (records != null && records.size() > 0) {
-            USEducationRecord rec = records.get(0);
-            dto.setHighestLevelOfEdu(rec.getHighestLevelOfEdu());
-            dto.setFieldOfStudy(rec.getFieldOfStudy());
-            detailsDto.setUsEducRec(rec);
-        }
-        List<ImmigrationCaseAdditionalDetails> details = ImmigrationCaseAdditionalDetailsDao.instance().findAll(iCase.getId(), ImmigrationCase.class.getCanonicalName());
-        if (details != null && details.size() > 0) {
-            ImmigrationCaseAdditionalDetails addtnDetails = details.get(0);
-            dto.setNoOfDependents(addtnDetails.getNoOfDependents());
-            detailsDto.setEduDto(dto);
-        }
-        return detailsDto;
+    public EmployeeH1BDetailsDto getpage1details(@QueryParam("invitationCode") String invitationCode) {
+        return caseService.loadPage1Details(invitationCode);
+    }
+    
+    @GET
+    @Path("h1b-questionnaire/get-details/page-2")
+    @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CASE)
+    public EmployeeH1BDetailsDto getpage2details(@QueryParam("invitationCode") String invitationCode) {
+        return caseService.loadPage2Details(invitationCode);
     }
 
     @PUT
     @Path("save-personal-info/{invitationCode}")
     public EmployeeH1BDetailsDto savePersonalInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
-        Employee emp = getEmployee(invitationCode);
+        Employee emp = caseService.getEmployee(invitationCode);
         PersonalInfoDto personalInfoDto = dto.getEmpPersonalInfo();
         if (emp != null) {
             emp.setFirstName(personalInfoDto.getEmpFirstName());
@@ -374,8 +316,8 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
             }
             EmployeeDao.instance().getEntityManager().merge(emp);
         } else {
-            ImmigrationCase iCase = getCase(invitationCode);
-            Contact cnt = getContact(invitationCode);
+            ImmigrationCase iCase = caseService.getCase(invitationCode);
+            Contact cnt = caseService.getContact(invitationCode);
             if (cnt == null) {
                 Contact contact = new Contact();
                 contact.setFirstName(personalInfoDto.getEmpFirstName());
@@ -417,7 +359,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
     @PUT
     @Path("save-other-names-info/{invitationCode}")
     public EmployeeH1BDetailsDto saveOtherNamesInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
-        ImmigrationCase immiCase = getCase(invitationCode);
+        ImmigrationCase immiCase = caseService.getCase(invitationCode);
         OtherNamesInfo info = dto.getOtherNamesInfo();
         info.setTargetEntityId(immiCase.getId());
         info.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
@@ -428,7 +370,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
     @PUT
     @Path("save-alien-info/{invitationCode}")
     public EmployeeH1BDetailsDto saveAlienNo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
-        ImmigrationCase immiCase = getCase(invitationCode);
+        ImmigrationCase immiCase = caseService.getCase(invitationCode);
         AlienNumber num = dto.getAlienNumber();
         num.setTargetEntityId(immiCase.getId());
         num.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
@@ -439,7 +381,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
     @PUT
     @Path("save-us-edu-info/{invitationCode}")
     public EmployeeH1BDetailsDto saveUSEducInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
-        ImmigrationCase immiCase = getCase(invitationCode);
+        ImmigrationCase immiCase = caseService.getCase(invitationCode);
         USEducationRecord record = dto.getUsEducRec();
         record.setTargetEntityId(immiCase.getId());
         record.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
@@ -450,7 +392,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
     @PUT
     @Path("save-edu-info/{invitationCode}")
     public EmployeeH1BDetailsDto saveEducInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
-        ImmigrationCase immiCase = getCase(invitationCode);
+        ImmigrationCase immiCase = caseService.getCase(invitationCode);
         EducationDto eduDto = dto.getEduDto();
 
         // save education details
@@ -500,41 +442,6 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
             workEmailType.setEmailType("Work");
             return EmailDao.instance().getEntityManager().merge(workEmailType);
         }
-    }
-
-    public Employee getEmployee(String invitationCode) {
-        ImmigrationCase iCase = getCase(invitationCode);
-        Employee emp;
-        if (iCase != null && iCase.getEmployee() != null) {
-            emp = EmployeeDao.instance().findById(iCase.getEmployee().getId());
-            return emp;
-        }
-        return null;
-    }
-    
-    public Contact getContact(String invitationCode) {
-        ImmigrationCase iCase = getCase(invitationCode);
-        Contact cnt;
-        if (iCase != null) {
-            cnt = ContactDao.instance().findByEmail(iCase.getEmail());
-            return cnt;
-        }
-        return null;
-    }
-
-    public InviteCode getInviteCode(String invitationCode) {
-        String invCde = invitationCode.trim();
-        return InviteCodeDao.instance().find(invCde);
-    }
-
-    public ImmigrationCase getCase(String invitationCode) {
-        InviteCode code = getInviteCode(invitationCode);
-        List<ImmigrationCase> immigrationCases = new ArrayList();
-        immigrationCases = immigrationCaseDao.findByEmail(code.getEmail());
-        if (immigrationCases.size() > 0) {
-            return immigrationCases.get(0);
-        }
-        return null;
     }
 
     @GET
