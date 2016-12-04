@@ -7,7 +7,6 @@ package info.yalamanchili.office.client.profile.employee;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Button;
@@ -159,10 +158,6 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler {
             eduRecPanel = new UpdateEducationRecord1PopupPanel(entityId, false);
             entityFieldsPanel.insert(eduRecPanel, entityFieldsPanel.getWidgetIndex(eduInfo1Edit) + 1);
         }
-    }
-
-    protected String updateImmigrationInfo() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "immigrationcase/save-immigration-info/" + invitationCode);
     }
 
     @Override
