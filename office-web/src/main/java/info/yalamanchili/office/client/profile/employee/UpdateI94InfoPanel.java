@@ -50,10 +50,11 @@ public class UpdateI94InfoPanel extends TUpdateComposite {
     protected JSONObject populateEntityFromFields() {
         JSONObject i94InfoObj = new JSONObject();
         assignEntityValueFromField("i94RecordNumber", i94InfoObj);
-        assignEntityValueFromField("presentNonImmiStatus", i94InfoObj);
-        assignEntityValueFromField("dateOfLastArrival", i94InfoObj);
+        assignEntityValueFromField("dateofEntry", i94InfoObj);
+        assignEntityValueFromField("portOfEntry", i94InfoObj);
         assignEntityValueFromField("i94ValidFromDate", i94InfoObj);
-        assignEntityValueFromField("statusDateExpires", i94InfoObj);
+        assignEntityValueFromField("admitUntilDate", i94InfoObj);
+        assignEntityValueFromField("classOfAdmission", i94InfoObj);
         entity.put("i94Info", i94InfoObj);
         return entity;
     }
@@ -77,12 +78,15 @@ public class UpdateI94InfoPanel extends TUpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        JSONObject i94Info = entity.get("i94Info").isObject();
-        assignFieldValueFromEntity("i94RecordNumber", i94Info, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("presentNonImmiStatus", i94Info, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("dateOfLastArrival", i94Info, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("i94ValidFromDate", i94Info, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("statusDateExpires", i94Info, DataType.DATE_FIELD);
+        if (entity.containsKey("i94Info")) {
+            JSONObject i94Info = entity.get("i94Info").isObject();
+            assignFieldValueFromEntity("i94RecordNumber", i94Info, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("dateofEntry", i94Info, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("portOfEntry", i94Info, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("i94ValidFromDate", i94Info, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("admitUntilDate", i94Info, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("classOfAdmission", i94Info, DataType.STRING_FIELD);
+        }
     }
 
     @Override
@@ -90,7 +94,7 @@ public class UpdateI94InfoPanel extends TUpdateComposite {
         GenericPopup.hideIfOpen();
         RootPanel.get().clear();
         RootPanel.get().add(new Image(OfficeImages.INSTANCE.logo()));
-        RootPanel.get().add(new H1bQuestionnaireWidget(entityId));
+        RootPanel.get().add(new H1bQuestionnaireWidget(entityId, "page2"));
         new ResponseStatusWidget().show("Successfully  Updated I-94 Information");
     }
 
@@ -122,24 +126,26 @@ public class UpdateI94InfoPanel extends TUpdateComposite {
     private void configureLabelNames() {
         StringField i94Number = (StringField) fields.get("i94RecordNumber");
         configureLabel(i94Number.getLabel());
-        DateField dateOfLastArr = (DateField) fields.get("dateOfLastArrival");
-        configureLabel(dateOfLastArr.getLabel());
+        DateField dateofEntry = (DateField) fields.get("dateofEntry");
+        configureLabel(dateofEntry.getLabel());
+        StringField portOfEntry = (StringField) fields.get("portOfEntry");
+        configureLabel(portOfEntry.getLabel());
         DateField i94ValidDate = (DateField) fields.get("i94ValidFromDate");
         configureLabel(i94ValidDate.getLabel());
-        DateField statusDateExp = (DateField) fields.get("statusDateExpires");
-        configureLabel(statusDateExp.getLabel());
-        StringField nonImgStatus = (StringField) fields.get("presentNonImmiStatus");
-        configureLabel(nonImgStatus.getLabel());
-
+        DateField admitUntilDate = (DateField) fields.get("admitUntilDate");
+        configureLabel(admitUntilDate.getLabel());
+        StringField classOfAdmission = (StringField) fields.get("classOfAdmission");
+        configureLabel(classOfAdmission.getLabel());
     }
 
     @Override
     protected void addWidgets() {
         addField("i94RecordNumber", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
-        addField("dateOfLastArrival", isReadPanel, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 1, 2);
-        addField("presentNonImmiStatus", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 3);
+        addField("dateofEntry", isReadPanel, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 1, 2);
+        addField("portOfEntry", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 3);
         addField("i94ValidFromDate", isReadPanel, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 2, 1);
-        addField("statusDateExpires", isReadPanel, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 2, 2);
+        addField("admitUntilDate", isReadPanel, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 2, 2);
+        addField("classOfAdmission", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 3);
         alignFields(200);
     }
 
@@ -169,6 +175,6 @@ public class UpdateI94InfoPanel extends TUpdateComposite {
     }
 
     protected String updateI94Info() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "immigrationcase/save-I94-info/" + entityId);
+        return URL.encode(OfficeWelcome.constants.root_url() + "i94record/save-i94-info/" + entityId);
     }
 }
