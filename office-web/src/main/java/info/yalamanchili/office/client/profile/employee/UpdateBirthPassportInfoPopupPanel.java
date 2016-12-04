@@ -95,23 +95,25 @@ public class UpdateBirthPassportInfoPopupPanel extends TUpdateComposite implemen
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        JSONObject passportInfo = entity.get("passport").isObject();
-        logger.info("passport obj is .... " + passportInfo);
-        assignFieldValueFromEntity("passportNumber", passportInfo, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("passportIssuedDate", passportInfo, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("passportExpiryDate", passportInfo, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("passportCountryOfIssuance", passportInfo, DataType.ENUM_FIELD);
-        if (isReadPanel == true) {
-            assignFieldValueFromEntity("passportStateOfIssuance", passportInfo, DataType.STRING_FIELD);
-        } else {
-            assignFieldValueFromEntity("passportStateOfIssuance", passportInfo, DataType.ENUM_FIELD);
-        }
-        assignFieldValueFromEntity("dateOfBirth", passportInfo, DataType.DATE_FIELD);
-        assignFieldValueFromEntity("countryOfBirth", passportInfo, DataType.ENUM_FIELD);
-        if (isReadPanel == true) {
-            assignFieldValueFromEntity("stateOfBirth", passportInfo, DataType.STRING_FIELD);
-        } else {
-            assignFieldValueFromEntity("stateOfBirth", passportInfo, DataType.ENUM_FIELD);
+        if (entity.containsKey("passport")) {
+            JSONObject passportInfo = entity.get("passport").isObject();
+            logger.info("passport obj is .... " + passportInfo);
+            assignFieldValueFromEntity("passportNumber", passportInfo, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("passportIssuedDate", passportInfo, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("passportExpiryDate", passportInfo, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("passportCountryOfIssuance", passportInfo, DataType.ENUM_FIELD);
+            if (isReadPanel == true) {
+                assignFieldValueFromEntity("passportStateOfIssuance", passportInfo, DataType.STRING_FIELD);
+            } else {
+                assignFieldValueFromEntity("passportStateOfIssuance", passportInfo, DataType.ENUM_FIELD);
+            }
+            assignFieldValueFromEntity("dateOfBirth", passportInfo, DataType.DATE_FIELD);
+            assignFieldValueFromEntity("countryOfBirth", passportInfo, DataType.ENUM_FIELD);
+            if (isReadPanel == true) {
+                assignFieldValueFromEntity("stateOfBirth", passportInfo, DataType.STRING_FIELD);
+            } else {
+                assignFieldValueFromEntity("stateOfBirth", passportInfo, DataType.ENUM_FIELD);
+            }
         }
     }
 
@@ -120,7 +122,7 @@ public class UpdateBirthPassportInfoPopupPanel extends TUpdateComposite implemen
         GenericPopup.hideIfOpen();
         RootPanel.get().clear();
         RootPanel.get().add(new Image(OfficeImages.INSTANCE.logo()));
-        RootPanel.get().add(new H1bQuestionnaireWidget(entityId));
+        RootPanel.get().add(new H1bQuestionnaireWidget(entityId, "page2"));
         new ResponseStatusWidget().show("Successfully  Updated Employee Personal Info");
     }
 
