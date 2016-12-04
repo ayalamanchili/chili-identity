@@ -14,6 +14,7 @@ import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
 import info.yalamanchili.office.dao.profile.immigration.AlienNumberDao;
+import info.yalamanchili.office.dao.profile.immigration.I94RecordDao;
 import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseAdditionalDetailsDao;
 import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseDao;
 import info.yalamanchili.office.dao.profile.immigration.OtherNamesInfoDao;
@@ -25,6 +26,7 @@ import info.yalamanchili.office.entity.immigration.ImmigrationCaseAdditionalDeta
 import info.yalamanchili.office.entity.immigration.OtherNamesInfo;
 import info.yalamanchili.office.entity.immigration.Passport;
 import info.yalamanchili.office.entity.immigration.USEducationRecord;
+import info.yalamanchili.office.entity.immigration.i94Record;
 import info.yalamanchili.office.entity.profile.Contact;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
@@ -139,6 +141,11 @@ public class ImmigrationCaseService {
         if (passportRecs != null && passportRecs.size() > 0) {
             Passport passport = passportRecs.get(0);
             detailsDto.setPassport(passport);
+        }
+        List<i94Record> i94Recs = I94RecordDao.instance().findAll(immiCase.getId(), ImmigrationCase.class.getCanonicalName());
+        if (i94Recs != null && i94Recs.size() > 0) {
+            i94Record i94Record = i94Recs.get(0);
+            detailsDto.setI94Info(i94Record);
         }
         return detailsDto;
     }
