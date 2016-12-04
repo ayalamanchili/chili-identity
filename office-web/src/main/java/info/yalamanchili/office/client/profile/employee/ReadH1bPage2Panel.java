@@ -28,8 +28,10 @@ public class ReadH1bPage2Panel extends ReadComposite implements ClickHandler {
     protected String invitationCode;
 
     UpdateBirthPassportInfoPopupPanel passportInfopanel;
+    UpdateI94InfoPanel i94Infopanel;
 
     protected Button passportInfoEdit = new Button("Click here to Edit");
+    protected Button i94InfoEdit = new Button("Click here to Edit");
 
     public static ReadH1bPage2Panel instance() {
         return instance;
@@ -65,11 +67,13 @@ public class ReadH1bPage2Panel extends ReadComposite implements ClickHandler {
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         passportInfopanel.populateFieldsFromEntity(entity);
+        i94Infopanel.populateFieldsFromEntity(entity);
     }
 
     @Override
     protected void addListeners() {
         passportInfoEdit.addClickHandler(this);
+        i94InfoEdit.addClickHandler(this);
     }
 
     @Override
@@ -82,6 +86,12 @@ public class ReadH1bPage2Panel extends ReadComposite implements ClickHandler {
         entityFieldsPanel.add(passportInfoEdit);
         passportInfopanel = new UpdateBirthPassportInfoPopupPanel(entityId, true);
         entityFieldsPanel.add(passportInfopanel);
+
+        //I94-info
+        entityFieldsPanel.add(i94InfoEdit);
+        i94Infopanel = new UpdateI94InfoPanel(entityId, true);
+        entityFieldsPanel.add(i94Infopanel);
+
     }
 
     @Override
@@ -94,6 +104,11 @@ public class ReadH1bPage2Panel extends ReadComposite implements ClickHandler {
             entityFieldsPanel.remove(entityFieldsPanel.getWidget(entityFieldsPanel.getWidgetIndex(passportInfopanel)));
             passportInfopanel = new UpdateBirthPassportInfoPopupPanel(entityId, false);
             entityFieldsPanel.insert(passportInfopanel, entityFieldsPanel.getWidgetIndex(passportInfoEdit) + 1);
+        }
+        if (event.getSource().equals(i94InfoEdit)) {
+            entityFieldsPanel.remove(entityFieldsPanel.getWidget(entityFieldsPanel.getWidgetIndex(i94Infopanel)));
+            i94Infopanel = new UpdateI94InfoPanel(entityId, false);
+            entityFieldsPanel.insert(i94Infopanel, entityFieldsPanel.getWidgetIndex(i94InfoEdit) + 1);
         }
     }
 

@@ -22,7 +22,6 @@ import info.chili.gwt.data.CanadaStatesFactory;
 import info.chili.gwt.data.CountryFactory;
 import info.chili.gwt.data.IndiaStatesFactory;
 import info.chili.gwt.data.USAStatesFactory;
-import info.chili.gwt.fields.BooleanField;
 import info.chili.gwt.fields.DataType;
 import info.chili.gwt.fields.DateField;
 import info.chili.gwt.fields.EnumField;
@@ -44,7 +43,7 @@ public class UpdateBirthPassportInfoPopupPanel extends TUpdateComposite implemen
 
     private static Logger logger = Logger.getLogger(UpdateBirthPassportInfoPopupPanel.class.getName());
     boolean isReadPanel = false;
-    
+
     protected EnumField countriesF;
     protected EnumField statesF;
 
@@ -63,7 +62,6 @@ public class UpdateBirthPassportInfoPopupPanel extends TUpdateComposite implemen
     @Override
     protected JSONObject populateEntityFromFields() {
         JSONObject passportInfoObj = new JSONObject();
-        assignEntityValueFromField("hasValidPassport", passportInfoObj);
         assignEntityValueFromField("passportNumber", passportInfoObj);
         assignEntityValueFromField("passportIssuedDate", passportInfoObj);
         assignEntityValueFromField("passportExpiryDate", passportInfoObj);
@@ -96,7 +94,6 @@ public class UpdateBirthPassportInfoPopupPanel extends TUpdateComposite implemen
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
         JSONObject passportInfo = entity.get("passportInfo").isObject();
-        assignFieldValueFromEntity("hasValidPassport", passportInfo, DataType.BOOLEAN_FIELD);
         assignFieldValueFromEntity("passportNumber", passportInfo, DataType.STRING_FIELD);
         assignFieldValueFromEntity("passportIssuedDate", passportInfo, DataType.DATE_FIELD);
         assignFieldValueFromEntity("passportExpiryDate", passportInfo, DataType.DATE_FIELD);
@@ -137,7 +134,7 @@ public class UpdateBirthPassportInfoPopupPanel extends TUpdateComposite implemen
         configureLabelNames();
         for (Map.Entry<String, BaseField> e : fields.entrySet()) {
             if (e.getValue() instanceof BaseFieldWithTextBox) {
-                setVisibleLengthSize(e.getKey(), 25);
+                setVisibleLengthSize(e.getKey(), 20);
             }
         }
     }
@@ -168,20 +165,19 @@ public class UpdateBirthPassportInfoPopupPanel extends TUpdateComposite implemen
 
     @Override
     protected void addWidgets() {
-        addField("hasvalidPassport", isReadPanel, true, DataType.BOOLEAN_FIELD, Alignment.HORIZONTAL, 1, 1);
-        addField("passportNumber", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
-        addField("passportIssuedDate", isReadPanel, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 1, 3);
-        addField("passportExpiryDate", isReadPanel, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 2, 1);
-        addEnumField("passportCountryOfIssuance", isReadPanel, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL, 2, 2);
-        addEnumField("passportStateOfIssuance", isReadPanel, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL, 2, 3);
-        addField("dateOfBirth", isReadPanel, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 3, 1);
-        addEnumField("countryOfBirth", isReadPanel, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL, 3, 2);
-        addEnumField("stateOfBirth", isReadPanel, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL, 3, 3);
+        addField("passportNumber", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
+        addEnumField("passportCountryOfIssuance", isReadPanel, true, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL, 1, 2);
+        addEnumField("passportStateOfIssuance", isReadPanel, false, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL, 1, 3);
+        addField("dateOfBirth", isReadPanel, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 2, 1);
+        addEnumField("countryOfBirth", isReadPanel, false, CountryFactory.getCountries().toArray(new String[0]), Alignment.HORIZONTAL, 2, 2);
+        addEnumField("stateOfBirth", isReadPanel, true, USAStatesFactory.getStates().toArray(new String[0]), Alignment.HORIZONTAL, 2, 3);
+        addField("passportIssuedDate", isReadPanel, false, DataType.DATE_FIELD, Alignment.HORIZONTAL, 3, 1);
+        addField("passportExpiryDate", isReadPanel, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 3, 2);
         countriesF = (EnumField) fields.get("passportCountryOfIssuance");
         statesF = (EnumField) fields.get("passportStateOfIssuance");
         countriesS = (EnumField) fields.get("countryOfBirth");
         stateF = (EnumField) fields.get("stateOfBirth");
-        doAlignFields(200);
+        alignFields(200);
     }
 
     @Override
@@ -212,7 +208,7 @@ public class UpdateBirthPassportInfoPopupPanel extends TUpdateComposite implemen
     protected String updatePassportInfo() {
         return URL.encode(OfficeWelcome.constants.root_url() + "immigrationcase/save-passport-info/" + entityId);
     }
-    
+
     @Override
     protected boolean processClientSideValidations(JSONObject entity) {
         DateField passportIssuedDate = (DateField) fields.get("passportIssuedDate");
@@ -223,7 +219,7 @@ public class UpdateBirthPassportInfoPopupPanel extends TUpdateComposite implemen
         }
         return true;
     }
-    
+
     @Override
     public void onChange(ChangeEvent event) {
         if (event.getSource().equals(countriesF.listBox)) {
