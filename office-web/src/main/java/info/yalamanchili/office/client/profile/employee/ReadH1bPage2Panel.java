@@ -29,9 +29,15 @@ public class ReadH1bPage2Panel extends ReadComposite implements ClickHandler {
 
     UpdateBirthPassportInfoPopupPanel passportInfopanel;
     UpdateI94InfoPanel i94Infopanel;
+    UpdateCurrentOccupationPanel currentOccupationPanel;
+    UpdatePriorWorkExperiencePanel workExperiencePanel;
+    UpdateMiscellaneousInfoPanel miscellaneousInfoPanel;
 
     protected Button passportInfoEdit = new Button("Click here to Edit");
     protected Button i94InfoEdit = new Button("Click here to Edit");
+    protected Button misceInfoEdit = new Button("Click here to Edit");
+    protected Button currentJobInfoEdit = new Button("Click here to Edit");
+    protected Button workExpInfoEdit = new Button("Click here to Edit");
 
     public static ReadH1bPage2Panel instance() {
         return instance;
@@ -68,12 +74,18 @@ public class ReadH1bPage2Panel extends ReadComposite implements ClickHandler {
     public void populateFieldsFromEntity(JSONObject entity) {
         passportInfopanel.populateFieldsFromEntity(entity);
         i94Infopanel.populateFieldsFromEntity(entity);
+        miscellaneousInfoPanel.populateFieldsFromEntity(entity);
+        currentOccupationPanel.populateFieldsFromEntity(entity);
+        workExperiencePanel.populateFieldsFromEntity(entity);
     }
 
     @Override
     protected void addListeners() {
         passportInfoEdit.addClickHandler(this);
         i94InfoEdit.addClickHandler(this);
+        misceInfoEdit.addClickHandler(this);
+        currentJobInfoEdit.addClickHandler(this);
+        workExpInfoEdit.addClickHandler(this);
     }
 
     @Override
@@ -91,6 +103,22 @@ public class ReadH1bPage2Panel extends ReadComposite implements ClickHandler {
         entityFieldsPanel.add(i94InfoEdit);
         i94Infopanel = new UpdateI94InfoPanel(entityId, true);
         entityFieldsPanel.add(i94Infopanel);
+
+        //Cuurent Job Info
+        entityFieldsPanel.add(currentJobInfoEdit);
+        currentOccupationPanel = new UpdateCurrentOccupationPanel(entityId, true);
+        entityFieldsPanel.add(currentOccupationPanel);
+
+        //Prior Work Experience
+        entityFieldsPanel.add(workExpInfoEdit);
+        workExperiencePanel = new UpdatePriorWorkExperiencePanel(entityId, true);
+        entityFieldsPanel.add(workExperiencePanel);
+
+        //Miscellaneous Info
+        entityFieldsPanel.add(misceInfoEdit);
+        miscellaneousInfoPanel = new UpdateMiscellaneousInfoPanel(entityId, true);
+        entityFieldsPanel.add(miscellaneousInfoPanel);
+
     }
 
     @Override
@@ -108,6 +136,21 @@ public class ReadH1bPage2Panel extends ReadComposite implements ClickHandler {
             entityFieldsPanel.remove(entityFieldsPanel.getWidget(entityFieldsPanel.getWidgetIndex(i94Infopanel)));
             i94Infopanel = new UpdateI94InfoPanel(entityId, false);
             entityFieldsPanel.insert(i94Infopanel, entityFieldsPanel.getWidgetIndex(i94InfoEdit) + 1);
+        }
+        if (event.getSource().equals(misceInfoEdit)) {
+            entityFieldsPanel.remove(entityFieldsPanel.getWidget(entityFieldsPanel.getWidgetIndex(miscellaneousInfoPanel)));
+            miscellaneousInfoPanel = new UpdateMiscellaneousInfoPanel(entityId, false);
+            entityFieldsPanel.insert(miscellaneousInfoPanel, entityFieldsPanel.getWidgetIndex(misceInfoEdit) + 1);
+        }
+        if (event.getSource().equals(currentJobInfoEdit)) {
+            entityFieldsPanel.remove(entityFieldsPanel.getWidget(entityFieldsPanel.getWidgetIndex(currentOccupationPanel)));
+            currentOccupationPanel = new UpdateCurrentOccupationPanel(entityId, false);
+            entityFieldsPanel.insert(currentOccupationPanel, entityFieldsPanel.getWidgetIndex(currentJobInfoEdit) + 1);
+        }
+        if (event.getSource().equals(workExpInfoEdit)) {
+            entityFieldsPanel.remove(entityFieldsPanel.getWidget(entityFieldsPanel.getWidgetIndex(workExperiencePanel)));
+            workExperiencePanel = new UpdatePriorWorkExperiencePanel(entityId, false);
+            entityFieldsPanel.insert(workExperiencePanel, entityFieldsPanel.getWidgetIndex(workExpInfoEdit) + 1);
         }
     }
 
