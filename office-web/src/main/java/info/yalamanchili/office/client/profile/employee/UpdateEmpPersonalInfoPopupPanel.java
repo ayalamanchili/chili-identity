@@ -154,15 +154,15 @@ public class UpdateEmpPersonalInfoPopupPanel extends TUpdateComposite {
 
     @Override
     protected void addWidgets() {
-        addField("empLastName", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
-        addField("empFirstName", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
-        addField("middleInitial", isReadPanel, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 3);
+        addField("empFirstName", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
+        addField("middleInitial", isReadPanel, false, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
+        addField("empLastName", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 3);
         addField("email", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 1);
         addField("workEmail", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 2);
         addField("ssn", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 3);
-        addEnumField("gender", isReadPanel, true, Sex.names(), Alignment.HORIZONTAL, 3, 1);
-        addEnumField("maritalStatus", isReadPanel, true, MaritalStatus.names(), Alignment.HORIZONTAL, 3, 2);
-        addField("dateOfBirth", isReadPanel, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 3, 3);
+        addField("dateOfBirth", isReadPanel, true, DataType.DATE_FIELD, Alignment.HORIZONTAL, 3, 1);
+        addEnumField("gender", isReadPanel, true, Sex.names(), Alignment.HORIZONTAL, 3, 2);
+        addEnumField("maritalStatus", isReadPanel, true, MaritalStatus.names(), Alignment.HORIZONTAL, 3, 3);
         doAlignFields(200);
     }
 
