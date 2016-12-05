@@ -5,7 +5,6 @@
  */
 package info.yalamanchili.office.client.profile.employee;
 
-import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -47,14 +46,18 @@ public class UpdateCurrentOccupationPanel extends TUpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();
-        assignEntityValueFromField("currentOccupation", entity);
+        JSONObject caseAddtnDetails = new JSONObject();
+        assignEntityValueFromField("currentOccupation", caseAddtnDetails);
+        assignEntityValueFromField("nameOfEmployer", caseAddtnDetails);
+        entity.put("caseAddtnDetails", caseAddtnDetails);
         return entity;
     }
 
     @Override
     protected void updateButtonClicked() {
         JSONObject entity = populateEntityFromFields();
+        logger.info("update uri is ... "+updateCurrentJobInfo());
+        logger.info("updated entity is ... "+entity);
         HttpService.HttpServiceAsync.instance().doPut(updateCurrentJobInfo(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
                     @Override
@@ -71,7 +74,11 @@ public class UpdateCurrentOccupationPanel extends TUpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("currentOccupation", entity, DataType.STRING_FIELD);
+        if (entity.containsKey("caseAddtnDetails")) {
+            JSONObject caseAddtnDetails = entity.get("caseAddtnDetails").isObject();
+            assignFieldValueFromEntity("currentOccupation", caseAddtnDetails, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("nameOfEmployer", caseAddtnDetails, DataType.STRING_FIELD);
+        }
     }
 
     @Override
@@ -80,7 +87,7 @@ public class UpdateCurrentOccupationPanel extends TUpdateComposite {
         RootPanel.get().clear();
         RootPanel.get().add(new Image(OfficeImages.INSTANCE.logo()));
         RootPanel.get().add(new H1bQuestionnaireWidget(entityId, "page2"));
-        new ResponseStatusWidget().show("Successfully  Updated Current Job Information");
+        new ResponseStatusWidget().show("Successfully Updated Current Job Information");
     }
 
     @Override
@@ -111,11 +118,14 @@ public class UpdateCurrentOccupationPanel extends TUpdateComposite {
     private void configureLabelNames() {
         StringField currentJobInfo = (StringField) fields.get("currentOccupation");
         configureLabel(currentJobInfo.getLabel());
+        StringField nameOfEmployer = (StringField) fields.get("nameOfEmployer");
+        configureLabel(nameOfEmployer.getLabel());
     }
 
     @Override
     protected void addWidgets() {
         addField("currentOccupation", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
+        addField("nameOfEmployer", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
         alignFields(200);
     }
 
@@ -145,7 +155,6 @@ public class UpdateCurrentOccupationPanel extends TUpdateComposite {
     }
 
     protected String updateCurrentJobInfo() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "immigrationcase/save-current-job-info/" + entityId);
+        return OfficeWelcome.constants.root_url() + "case-details/save-current-occupation/" + entityId;
     }
 }
-
