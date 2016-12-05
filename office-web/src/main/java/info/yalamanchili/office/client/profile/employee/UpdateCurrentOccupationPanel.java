@@ -56,8 +56,6 @@ public class UpdateCurrentOccupationPanel extends TUpdateComposite {
     @Override
     protected void updateButtonClicked() {
         JSONObject entity = populateEntityFromFields();
-        logger.info("update uri is ... "+updateCurrentJobInfo());
-        logger.info("updated entity is ... "+entity);
         HttpService.HttpServiceAsync.instance().doPut(updateCurrentJobInfo(), entity.toString(),
                 OfficeWelcome.instance().getHeaders(), true, new AsyncCallback<String>() {
                     @Override

@@ -97,7 +97,6 @@ public class UpdateBirthPassportInfoPopupPanel extends TUpdateComposite implemen
     public void populateFieldsFromEntity(JSONObject entity) {
         if (entity.containsKey("passport")) {
             JSONObject passportInfo = entity.get("passport").isObject();
-            logger.info("passport obj is .... " + passportInfo);
             assignFieldValueFromEntity("passportNumber", passportInfo, DataType.STRING_FIELD);
             assignFieldValueFromEntity("passportIssuedDate", passportInfo, DataType.DATE_FIELD);
             assignFieldValueFromEntity("passportExpiryDate", passportInfo, DataType.DATE_FIELD);
