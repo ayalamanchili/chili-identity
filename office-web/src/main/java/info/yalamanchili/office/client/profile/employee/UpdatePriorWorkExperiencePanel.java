@@ -72,8 +72,10 @@ public class UpdatePriorWorkExperiencePanel extends TUpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        JSONObject workExpSummary = entity.get("expSummary").isObject();
-        assignFieldValueFromEntity("summary", workExpSummary, DataType.TEXT_AREA_FIELD);
+        if (entity.containsKey("expSummary")) {
+            JSONObject workExpSummary = entity.get("expSummary").isObject();
+            assignFieldValueFromEntity("summary", workExpSummary, DataType.TEXT_AREA_FIELD);
+        }
     }
 
     @Override

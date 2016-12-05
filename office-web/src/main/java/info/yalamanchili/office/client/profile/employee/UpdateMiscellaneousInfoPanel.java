@@ -73,9 +73,11 @@ public class UpdateMiscellaneousInfoPanel extends TUpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        JSONObject miscellaneousInfo = entity.get("misceInfo").isObject();
-        assignFieldValueFromEntity("sevisNumber", miscellaneousInfo, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("eadNumber", miscellaneousInfo, DataType.STRING_FIELD);
+        if (entity.containsKey("misceInfo")) {
+            JSONObject miscellaneousInfo = entity.get("misceInfo").isObject();
+            assignFieldValueFromEntity("sevisNumber", miscellaneousInfo, DataType.STRING_FIELD);
+            assignFieldValueFromEntity("eadNumber", miscellaneousInfo, DataType.STRING_FIELD);
+        }
     }
 
     @Override
