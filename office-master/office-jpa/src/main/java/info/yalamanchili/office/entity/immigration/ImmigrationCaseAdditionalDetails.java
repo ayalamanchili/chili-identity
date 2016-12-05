@@ -27,9 +27,6 @@ public class ImmigrationCaseAdditionalDetails extends AbstractHandleEntity {
 
     protected String currentOccupation;
     
-    @Lob
-    protected String workExpSummary;
-
     protected Integer noOfDependents;
 
     public String getCurrentOccupation() {
@@ -48,14 +45,6 @@ public class ImmigrationCaseAdditionalDetails extends AbstractHandleEntity {
         this.noOfDependents = noOfDependents;
     }
 
-    public String getWorkExpSummary() {
-        return workExpSummary;
-    }
-
-    public void setWorkExpSummary(String workExpSummary) {
-        this.workExpSummary = workExpSummary;
-    }
-    
     @Override
     public String toString() {
         return "ImmigrationCaseAdditionalDetails{" + "currentOccupation=" + currentOccupation + ", noOfDependents=" + noOfDependents + '}';
