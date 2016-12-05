@@ -10,6 +10,8 @@ package info.yalamanchili.office.profile.immigration;
 
 import info.yalamanchili.office.entity.immigration.AlienNumber;
 import info.yalamanchili.office.entity.immigration.EducationRecord;
+import info.yalamanchili.office.entity.immigration.ExperienceSummary;
+import info.yalamanchili.office.entity.immigration.MiscellaneousInfo;
 import info.yalamanchili.office.entity.immigration.OtherNamesInfo;
 import info.yalamanchili.office.entity.immigration.Passport;
 import info.yalamanchili.office.entity.immigration.USEducationRecord;
@@ -43,6 +45,10 @@ public class EmployeeH1BDetailsDto implements Serializable {
     private String currentOccupation;
     
     private i94Record i94Info;
+    
+    private MiscellaneousInfo misceInfo;
+
+    private ExperienceSummary expSummary;
     
     public PersonalInfoDto getEmpPersonalInfo() {
         return empPersonalInfo;
@@ -114,5 +120,21 @@ public class EmployeeH1BDetailsDto implements Serializable {
 
     public void setI94Info(i94Record i94Info) {
         this.i94Info = i94Info;
+    }
+
+    public MiscellaneousInfo getMisceInfo() {
+        return misceInfo;
+    }
+
+    public void setMisceInfo(MiscellaneousInfo misceInfo) {
+        this.misceInfo = misceInfo;
+    }
+
+    public ExperienceSummary getExpSummary() {
+        return expSummary;
+    }
+
+    public void setExpSummary(ExperienceSummary expSummary) {
+        this.expSummary = expSummary;
     }
 }

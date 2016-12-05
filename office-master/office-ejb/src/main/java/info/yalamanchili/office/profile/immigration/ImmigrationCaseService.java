@@ -14,15 +14,19 @@ import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
 import info.yalamanchili.office.dao.profile.immigration.AlienNumberDao;
+import info.yalamanchili.office.dao.profile.immigration.ExperienceSummaryDao;
 import info.yalamanchili.office.dao.profile.immigration.I94RecordDao;
 import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseAdditionalDetailsDao;
 import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseDao;
+import info.yalamanchili.office.dao.profile.immigration.MiscellaneousInfoDao;
 import info.yalamanchili.office.dao.profile.immigration.OtherNamesInfoDao;
 import info.yalamanchili.office.dao.profile.immigration.PassportDao;
 import info.yalamanchili.office.dao.profile.immigration.UsEducationRecordDao;
 import info.yalamanchili.office.entity.immigration.AlienNumber;
+import info.yalamanchili.office.entity.immigration.ExperienceSummary;
 import info.yalamanchili.office.entity.immigration.ImmigrationCase;
 import info.yalamanchili.office.entity.immigration.ImmigrationCaseAdditionalDetails;
+import info.yalamanchili.office.entity.immigration.MiscellaneousInfo;
 import info.yalamanchili.office.entity.immigration.OtherNamesInfo;
 import info.yalamanchili.office.entity.immigration.Passport;
 import info.yalamanchili.office.entity.immigration.USEducationRecord;
@@ -147,6 +151,19 @@ public class ImmigrationCaseService {
             i94Record i94Record = i94Recs.get(0);
             detailsDto.setI94Info(i94Record);
         }
+        //MiscellaneousInfo
+        List<MiscellaneousInfo> misceInfos = MiscellaneousInfoDao.instance().findAll(immiCase.getId(), ImmigrationCase.class.getCanonicalName());
+        if (misceInfos != null && misceInfos.size() > 0) {
+            MiscellaneousInfo misceInfo = misceInfos.get(0);
+            detailsDto.setMisceInfo(misceInfo);
+        }
+        //Experience Summary
+        List<ExperienceSummary> expSummarys = ExperienceSummaryDao.instance().findAll(immiCase.getId(), ImmigrationCase.class.getCanonicalName());
+        if (expSummarys != null && expSummarys.size() > 0) {
+            ExperienceSummary expSum = expSummarys.get(0);
+            detailsDto.setExpSummary(expSum);
+        }
+        
         return detailsDto;
     }
 
