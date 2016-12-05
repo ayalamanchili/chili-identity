@@ -11,10 +11,10 @@ package info.yalamanchili.office.client.onboarding;
  */
 public enum VeteranStatus {
  
-    I_identify_as_one_or_more_of_the_classifications_of_protected_veteran,
-    I_identify_as_a_veteran_but_not_a_protected_veteran,
-    I_am_not_a_veteran,
-    I_do_not_wish_to_self_identify;
+    One_or_more_of_the_classifications,
+    Veteran_but_not_a_protected_veteran,
+    Not_a_veteran,
+    Do_not_wish;
     
     public static String[] names() {
         VeteranStatus[] values = values();
