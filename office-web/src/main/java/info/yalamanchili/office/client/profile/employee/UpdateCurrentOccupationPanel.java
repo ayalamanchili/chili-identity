@@ -79,7 +79,7 @@ public class UpdateCurrentOccupationPanel extends TUpdateComposite {
         GenericPopup.hideIfOpen();
         RootPanel.get().clear();
         RootPanel.get().add(new Image(OfficeImages.INSTANCE.logo()));
-        RootPanel.get().add(new H1bQuestionnaireWidget(entityId));
+        RootPanel.get().add(new H1bQuestionnaireWidget(entityId, "page2"));
         new ResponseStatusWidget().show("Successfully  Updated Current Job Information");
     }
 
