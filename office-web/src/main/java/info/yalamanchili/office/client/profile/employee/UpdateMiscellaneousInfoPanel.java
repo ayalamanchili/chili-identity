@@ -50,7 +50,7 @@ public class UpdateMiscellaneousInfoPanel extends TUpdateComposite {
         JSONObject miscellaneousInfoObj = new JSONObject();
         assignEntityValueFromField("sevisNumber", miscellaneousInfoObj);
         assignEntityValueFromField("eadNumber", miscellaneousInfoObj);
-        entity.put("miscellaneousInfo", miscellaneousInfoObj);
+        entity.put("misceInfo", miscellaneousInfoObj);
         return entity;
     }
 
@@ -73,7 +73,7 @@ public class UpdateMiscellaneousInfoPanel extends TUpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        JSONObject miscellaneousInfo = entity.get("miscellaneousInfo").isObject();
+        JSONObject miscellaneousInfo = entity.get("misceInfo").isObject();
         assignFieldValueFromEntity("sevisNumber", miscellaneousInfo, DataType.STRING_FIELD);
         assignFieldValueFromEntity("eadNumber", miscellaneousInfo, DataType.STRING_FIELD);
     }
@@ -153,6 +153,6 @@ public class UpdateMiscellaneousInfoPanel extends TUpdateComposite {
     }
 
     protected String updateMisceInfo() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "immigrationcase/save-miscellaneous-info/" + entityId);
+        return URL.encode(OfficeWelcome.constants.root_url() + "miscellaneous-info/save-miscellaneous-info/" + entityId);
     }
 }

@@ -17,7 +17,6 @@ import info.chili.gwt.composite.BaseField;
 import info.chili.gwt.composite.BaseFieldWithTextBox;
 import info.chili.gwt.crud.TUpdateComposite;
 import info.chili.gwt.fields.DataType;
-import info.chili.gwt.fields.RichTextField;
 import info.chili.gwt.fields.TextAreaField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
@@ -48,8 +47,9 @@ public class UpdatePriorWorkExperiencePanel extends TUpdateComposite {
 
     @Override
     protected JSONObject populateEntityFromFields() {
-        JSONObject entity = new JSONObject();
-        assignEntityValueFromField("workExpSummary", entity);
+        JSONObject workExpSummary = new JSONObject();
+        assignEntityValueFromField("summary", workExpSummary);
+        entity.put("expSummary", workExpSummary);
         return entity;
     }
 
@@ -72,7 +72,8 @@ public class UpdatePriorWorkExperiencePanel extends TUpdateComposite {
 
     @Override
     public void populateFieldsFromEntity(JSONObject entity) {
-        assignFieldValueFromEntity("workExpSummary", entity, DataType.TEXT_AREA_FIELD);
+        JSONObject workExpSummary = entity.get("expSummary").isObject();
+        assignFieldValueFromEntity("summary", workExpSummary, DataType.TEXT_AREA_FIELD);
     }
 
     @Override
@@ -110,13 +111,13 @@ public class UpdatePriorWorkExperiencePanel extends TUpdateComposite {
     }
 
     private void configureLabelNames() {
-        TextAreaField workSummary = (TextAreaField) fields.get("workExpSummary");
+        TextAreaField workSummary = (TextAreaField) fields.get("summary");
         configureLabel(workSummary.getLabel());
     }
 
     @Override
     protected void addWidgets() {
-        addField("workExpSummary", isReadPanel, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL, 1, 1);
+        addField("summary", isReadPanel, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL, 1, 1);
         alignFields(300);
     }
 
@@ -146,6 +147,6 @@ public class UpdatePriorWorkExperiencePanel extends TUpdateComposite {
     }
 
     protected String updateWorkExpInfo() {
-        return URL.encode(OfficeWelcome.constants.root_url() + "immigrationcase/save-work-exp-info/" + entityId);
+        return URL.encode(OfficeWelcome.constants.root_url() + "exp-summury-info/save-exp-info/" + entityId);
     }
 }
