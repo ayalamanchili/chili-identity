@@ -56,12 +56,12 @@ public class ProfileReportsService {
             if (emp.getPhones().size() > 0) {
                 dto.setPhoneNumber(emp.getPhones().get(0).getPhoneNumber());
             }
-            if (emp.getCompany()!=null){
+            if (emp.getCompany() != null) {
                 dto.setCompany(emp.getCompany().getName());
             }
             res.add(dto);
         }
-        String[] columnOrder = new String[]{"firstName", "lastName", "startDate", "dateOfBirth", "type", "branchName", "phoneNumber", "jobTitle", "email","company"};
+        String[] columnOrder = new String[]{"firstName", "lastName", "startDate", "dateOfBirth", "type", "branchName", "phoneNumber", "jobTitle", "email", "company"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(res, "Employee-Basic-Info-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), email);
     }
 
@@ -241,8 +241,7 @@ public class ProfileReportsService {
     @Transactional
     public void generateEmployeCompanyContactsReport(String email) {
         List<EmployeeBasicInfoReportDto> report = new ArrayList<>();
-
-        for (Employee emp : EmployeeDao.instance().getEmployeesByType(EmployeeType.CORPORATE_EMPLOYEE)) {
+        for (Employee emp : EmployeeDao.instance().getEmployeesByType(EmployeeType.CORPORATE_EMPLOYEE, EmployeeType.EMPLOYEE, EmployeeType.SUBCONTRACTOR, EmployeeType.INTERN_SEASONAL_EMPLOYEE, EmployeeType.W2_CONTRACTOR, EmployeeType._1099_CONTRACTOR)) {
             for (CompanyContact contact : CompanyContactDao.instance().getEmployeeCompanyContacts(emp.getId())) {
                 EmployeeBasicInfoReportDto dto = new EmployeeBasicInfoReportDto();
                 dto.setFirstName(emp.getFirstName());
