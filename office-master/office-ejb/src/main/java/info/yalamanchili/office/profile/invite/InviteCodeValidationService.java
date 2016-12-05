@@ -35,18 +35,10 @@ public class InviteCodeValidationService {
         if (inviteCode == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.invitationcode", "Invalid Invitation Code");
         }
-        if (inviteCode.getInviteType() != null) {
-            Date todayDate = new Date();
-            if ((todayDate.compareTo(inviteCode.getValidFromDate()) >= 0)
-                    && (todayDate.compareTo(inviteCode.getExpiryDate()) <= 0)) {
-                return code + "?type=" +inviteCode.getInviteType().getInvitationType().name();
-            }
-        }else{
-            Date todayDate = new Date();
-            if ((todayDate.compareTo(inviteCode.getValidFromDate()) >= 0)
-                    && (todayDate.compareTo(inviteCode.getExpiryDate()) <= 0)) {
-                return code;
-            }
+        Date todayDate = new Date();
+        if ((todayDate.compareTo(inviteCode.getValidFromDate()) >= 0)
+                && (todayDate.compareTo(inviteCode.getExpiryDate()) <= 0)) {
+            return code;
         }
         throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "invalid.invitationcode", "Invalid Invitation Code");
     }
