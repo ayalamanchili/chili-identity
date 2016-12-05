@@ -133,7 +133,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
     public EmployeeOnboardingPanel(String inviteCode) {
         this.invitationCode = inviteCode;
         instance = this;
-        initUpdateComposite(invitationCode, "Employee", OfficeWelcome.constants);
+        initUpdateComposite(invitationCode, "Employee", OfficeWelcome.constants2);
         fileUploadPanel.appendUploadUrl("?public=true&token=" + inviteCode);
     }
 
@@ -222,6 +222,8 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         assignEntityValueFromField("referredBy", employeeAdditionalDetails);
         assignEntityValueFromField("maritalStatus", employeeAdditionalDetails);
         assignEntityValueFromField("ethnicity", employeeAdditionalDetails);
+        assignEntityValueFromField("veteranStatus", employeeAdditionalDetails);
+        assignEntityValueFromField("disability", employeeAdditionalDetails);        
         employeeAdditionalDetails.put("targetEntityName", new JSONString("targetEntityName"));
         employeeAdditionalDetails.put("targetEntityId", new JSONString("0"));
         employee.put("employeeAdditionalDetails", employeeAdditionalDetails);
@@ -262,7 +264,7 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         formsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         depsInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         emerInfo.setAutoHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-        update.setText("Submit");
+        update.setText("Sign & Submit");
     }
 
     StringField firstNameF;
@@ -303,6 +305,8 @@ public class EmployeeOnboardingPanel extends UpdateComposite implements ClickHan
         addField("referredBy", false, true, DataType.STRING_FIELD, Alignment.HORIZONTAL);
         addEnumField("maritalStatus", false, true, MaritalStatus.names(), Alignment.HORIZONTAL);
         addEnumField("ethnicity", false, false, Ethnicity.names(), Alignment.HORIZONTAL);
+        addEnumField("veteranStatus", false, false, VeteranStatus.names(), Alignment.HORIZONTAL);
+        addEnumField("disability", false, false, Disability.names(), Alignment.HORIZONTAL);        
         entityFieldsPanel.add(formsInfo);
         entityFieldsPanel.add(fileUploadPanel);
         entityFieldsPanel.add(fileUploadNotes1);
