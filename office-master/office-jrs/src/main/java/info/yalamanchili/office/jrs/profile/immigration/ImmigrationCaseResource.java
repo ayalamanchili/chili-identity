@@ -26,11 +26,7 @@ import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmailDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
-import info.yalamanchili.office.dao.profile.immigration.AlienNumberDao;
-import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseAdditionalDetailsDao;
 import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseDao;
-import info.yalamanchili.office.dao.profile.immigration.OtherNamesInfoDao;
-import info.yalamanchili.office.dao.profile.immigration.UsEducationRecordDao;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.email.EmailService;
 import info.yalamanchili.office.entity.Company;
@@ -414,7 +410,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         dto.setEduDto(eduDto);
         return dto;
     }
-
+    
     private MaritalStatus setMaritalStatus(String maritalStatus) {
         MaritalStatus status = null;
         switch (maritalStatus) {
