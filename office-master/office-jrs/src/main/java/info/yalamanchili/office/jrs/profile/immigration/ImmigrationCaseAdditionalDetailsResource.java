@@ -11,10 +11,14 @@ package info.yalamanchili.office.jrs.profile.immigration;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseAdditionalDetailsDao;
+import info.yalamanchili.office.entity.immigration.ImmigrationCase;
 import info.yalamanchili.office.entity.immigration.ImmigrationCaseAdditionalDetails;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.profile.immigration.EmployeeH1BDetailsDto;
 import info.yalamanchili.office.profile.immigration.ImmigrationCaseAdditionalDetailsService;
+import info.yalamanchili.office.profile.immigration.ImmigrationCaseService;
 import info.yalamanchili.office.security.AccessCheck;
+import java.util.List;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -53,8 +57,15 @@ public class ImmigrationCaseAdditionalDetailsResource extends CRUDResource<Immig
     @Validate
     public ImmigrationCaseAdditionalDetails update(ImmigrationCaseAdditionalDetails caseDetails) {
         ImmigrationCaseAdditionalDetails caseAdditionalDetails = caseDetailsDao.findById(caseDetails.getId());
-        caseAdditionalDetails.setCurrentOccupation(caseDetails.getCurrentOccupation());
-        caseAdditionalDetails.setNoOfDependents(caseDetails.getNoOfDependents());
+        if (caseDetails.getCurrentOccupation() != null) {
+            caseAdditionalDetails.setCurrentOccupation(caseDetails.getCurrentOccupation());
+        }
+        if (caseDetails.getNoOfDependents() != null) {
+            caseAdditionalDetails.setNoOfDependents(caseDetails.getNoOfDependents());
+        }
+        if (caseDetails.getNameOfEmployer() != null) {
+            caseAdditionalDetails.setNameOfEmployer(caseDetails.getNameOfEmployer());
+        }
         return caseAdditionalDetails;
     }
 
@@ -69,9 +80,26 @@ public class ImmigrationCaseAdditionalDetailsResource extends CRUDResource<Immig
         }
     }
 
+    @PUT
+    @Path("/save-current-occupation/{invitationCode}")
+    public void saveCurrentOccupation(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
+        ImmigrationCase immiCase = ImmigrationCaseService.instance().getCase(invitationCode);
+        ImmigrationCaseAdditionalDetails caseDetails = dto.getCaseAddtnDetails();
+        List<ImmigrationCaseAdditionalDetails> details = ImmigrationCaseAdditionalDetailsDao.instance().findAll(immiCase.getId(), ImmigrationCase.class.getCanonicalName());
+        if (details != null && details.size() > 0) {
+            ImmigrationCaseAdditionalDetails caseAddnDetails = details.get(0);
+            caseAddnDetails.setCurrentOccupation(caseDetails.getCurrentOccupation());
+            caseAddnDetails.setNameOfEmployer(caseDetails.getNameOfEmployer());
+            caseAddnDetails.setTargetEntityId(immiCase.getId());
+            caseAddnDetails.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
+            caseDetailsDao.getEntityManager().merge(caseAddnDetails);
+        } else {
+            caseDetailsService.addCaseDetails(immiCase.getId(), caseDetails);
+        }
+    }
+
     @Override
     public CRUDDao getDao() {
         return null;
     }
-
 }
