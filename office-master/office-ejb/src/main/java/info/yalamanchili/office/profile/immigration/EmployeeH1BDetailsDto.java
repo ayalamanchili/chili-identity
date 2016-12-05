@@ -11,6 +11,7 @@ package info.yalamanchili.office.profile.immigration;
 import info.yalamanchili.office.entity.immigration.AlienNumber;
 import info.yalamanchili.office.entity.immigration.EducationRecord;
 import info.yalamanchili.office.entity.immigration.ExperienceSummary;
+import info.yalamanchili.office.entity.immigration.ImmigrationCaseAdditionalDetails;
 import info.yalamanchili.office.entity.immigration.MiscellaneousInfo;
 import info.yalamanchili.office.entity.immigration.OtherNamesInfo;
 import info.yalamanchili.office.entity.immigration.Passport;
@@ -49,6 +50,8 @@ public class EmployeeH1BDetailsDto implements Serializable {
     private MiscellaneousInfo misceInfo;
 
     private ExperienceSummary expSummary;
+    
+    private ImmigrationCaseAdditionalDetails caseAddtnDetails;
     
     public PersonalInfoDto getEmpPersonalInfo() {
         return empPersonalInfo;
@@ -136,5 +139,13 @@ public class EmployeeH1BDetailsDto implements Serializable {
 
     public void setExpSummary(ExperienceSummary expSummary) {
         this.expSummary = expSummary;
+    }
+
+    public ImmigrationCaseAdditionalDetails getCaseAddtnDetails() {
+        return caseAddtnDetails;
+    }
+
+    public void setCaseAddtnDetails(ImmigrationCaseAdditionalDetails caseAddtnDetails) {
+        this.caseAddtnDetails = caseAddtnDetails;
     }
 }
