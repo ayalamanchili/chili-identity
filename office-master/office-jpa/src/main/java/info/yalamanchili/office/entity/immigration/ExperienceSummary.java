@@ -23,9 +23,10 @@ import org.hibernate.search.annotations.Indexed;
 @XmlRootElement
 @Entity
 @Audited
-public class ExperienceSummary extends AbstractHandleEntity{
+public class ExperienceSummary extends AbstractHandleEntity {
+
     @Lob
-    protected String summary; 
+    protected String summary;
 
     public String getSummary() {
         return summary;
@@ -34,10 +35,9 @@ public class ExperienceSummary extends AbstractHandleEntity{
     public void setSummary(String summary) {
         this.summary = summary;
     }
-    
-    
-     @Override
+
+    @Override
     public String toString() {
-        return "ExperienceSummary{" + "summary=" + summary + '}'; 
+        return "ExperienceSummary{" + "summary=" + summary + '}';
     }
-  }
+}
