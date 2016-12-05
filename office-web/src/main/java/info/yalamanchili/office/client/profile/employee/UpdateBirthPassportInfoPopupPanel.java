@@ -53,12 +53,12 @@ public class UpdateBirthPassportInfoPopupPanel extends TUpdateComposite implemen
     protected EnumField stateF;
 
     public UpdateBirthPassportInfoPopupPanel(String entityId) {
-        initUpdateComposite(entityId, "PersonalInfo", OfficeWelcome.constants2);
+        initUpdateComposite(entityId, "Passport", OfficeWelcome.constants2);
     }
 
     public UpdateBirthPassportInfoPopupPanel(String entityId, boolean isReadPanel) {
         this.isReadPanel = isReadPanel;
-        initUpdateComposite(entityId, "PersonalInfo", OfficeWelcome.constants2);
+        initUpdateComposite(entityId, "Passport", OfficeWelcome.constants2);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class UpdateBirthPassportInfoPopupPanel extends TUpdateComposite implemen
         RootPanel.get().clear();
         RootPanel.get().add(new Image(OfficeImages.INSTANCE.logo()));
         RootPanel.get().add(new H1bQuestionnaireWidget(entityId, "page2"));
-        new ResponseStatusWidget().show("Successfully  Updated Employee Personal Info");
+        new ResponseStatusWidget().show("Successfully  Updated PassPort Information");
     }
 
     @Override

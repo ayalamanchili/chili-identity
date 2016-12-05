@@ -117,7 +117,7 @@ public class UpdatePriorWorkExperiencePanel extends TUpdateComposite {
     @Override
     protected void addWidgets() {
         addField("workExpSummary", isReadPanel, true, DataType.TEXT_AREA_FIELD, Alignment.HORIZONTAL, 1, 1);
-        alignFields(200);
+        alignFields(300);
     }
 
     @Override

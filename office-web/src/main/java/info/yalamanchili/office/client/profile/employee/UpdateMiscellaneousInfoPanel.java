@@ -123,8 +123,8 @@ public class UpdateMiscellaneousInfoPanel extends TUpdateComposite {
     @Override
     protected void addWidgets() {
         addField("sevisNumber", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 1);
-        addField("eadNumber", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 1, 2);
-        alignFields(200);
+        addField("eadNumber", isReadPanel, true, DataType.STRING_FIELD, Alignment.HORIZONTAL, 2, 1);
+        alignFields(500);
     }
 
     @Override

@@ -38,12 +38,12 @@ public class UpdateI94InfoPanel extends TUpdateComposite {
     boolean isReadPanel = false;
 
     public UpdateI94InfoPanel(String entityId) {
-        initUpdateComposite(entityId, "I94Info", OfficeWelcome.constants2);
+        initUpdateComposite(entityId, "i94Record", OfficeWelcome.constants2);
     }
 
     public UpdateI94InfoPanel(String entityId, boolean isReadPanel) {
         this.isReadPanel = isReadPanel;
-        initUpdateComposite(entityId, "I94Info", OfficeWelcome.constants2);
+        initUpdateComposite(entityId, "i94Record", OfficeWelcome.constants2);
     }
 
     @Override
