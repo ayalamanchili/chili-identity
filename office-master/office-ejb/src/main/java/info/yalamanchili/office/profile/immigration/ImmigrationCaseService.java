@@ -143,25 +143,26 @@ public class ImmigrationCaseService {
         ImmigrationCase immiCase = getCase(invitationCode);
         List<Passport> passportRecs = PassportDao.instance().findAll(immiCase.getId(), ImmigrationCase.class.getCanonicalName());
         if (passportRecs != null && passportRecs.size() > 0) {
-            Passport passport = passportRecs.get(0);
-            detailsDto.setPassport(passport);
+            detailsDto.setPassport(passportRecs.get(0));
         }
         List<i94Record> i94Recs = I94RecordDao.instance().findAll(immiCase.getId(), ImmigrationCase.class.getCanonicalName());
         if (i94Recs != null && i94Recs.size() > 0) {
-            i94Record i94Record = i94Recs.get(0);
-            detailsDto.setI94Info(i94Record);
+            detailsDto.setI94Info(i94Recs.get(0));
         }
         //MiscellaneousInfo
         List<MiscellaneousInfo> misceInfos = MiscellaneousInfoDao.instance().findAll(immiCase.getId(), ImmigrationCase.class.getCanonicalName());
         if (misceInfos != null && misceInfos.size() > 0) {
-            MiscellaneousInfo misceInfo = misceInfos.get(0);
-            detailsDto.setMisceInfo(misceInfo);
+            detailsDto.setMisceInfo(misceInfos.get(0));
         }
         //Experience Summary
         List<ExperienceSummary> expSummarys = ExperienceSummaryDao.instance().findAll(immiCase.getId(), ImmigrationCase.class.getCanonicalName());
         if (expSummarys != null && expSummarys.size() > 0) {
-            ExperienceSummary expSum = expSummarys.get(0);
-            detailsDto.setExpSummary(expSum);
+            detailsDto.setExpSummary(expSummarys.get(0));
+        }
+        
+        List<ImmigrationCaseAdditionalDetails> details = ImmigrationCaseAdditionalDetailsDao.instance().findAll(immiCase.getId(), ImmigrationCase.class.getCanonicalName());
+        if (details != null && details.size() > 0) {
+            detailsDto.setCaseAddtnDetails(details.get(0));
         }
         
         return detailsDto;
