@@ -11,9 +11,9 @@ package info.yalamanchili.office.client.onboarding;
  */
 public enum Disability {
 
-    Yes_I_Have_A_Disability,
-    No_I_Dont_Have_Disability,
-    I_do_not_wish_to_self_identify;
+    Have_A_Disability,
+    Dont_Have_Disability,
+    Do_not_wish;
     
     public static String[] names() {
         Disability[] values = values();
