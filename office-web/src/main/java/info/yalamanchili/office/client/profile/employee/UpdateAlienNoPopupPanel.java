@@ -43,6 +43,7 @@ public class UpdateAlienNoPopupPanel extends TUpdateComposite {
     public UpdateAlienNoPopupPanel(String entityId, boolean isReadPanel) {
         this.isReadPanel = isReadPanel;
         initUpdateComposite(entityId, "AlienNo", OfficeWelcome.constants2);
+        entityCaptionPanel.setCaptionHTML("Alien Number");
     }
 
     @Override

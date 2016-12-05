@@ -42,6 +42,7 @@ public class UpdateCurrentOccupationPanel extends TUpdateComposite {
     public UpdateCurrentOccupationPanel(String entityId, boolean isReadPanel) {
         this.isReadPanel = isReadPanel;
         initUpdateComposite(entityId, "CurrentJobInformation", OfficeWelcome.constants2);
+        entityCaptionPanel.setCaptionHTML("Present Job Information");
     }
 
     @Override

@@ -47,6 +47,7 @@ public class UpdateEmpPersonalInfoPopupPanel extends TUpdateComposite {
     public UpdateEmpPersonalInfoPopupPanel(String entityId, boolean isReadPanel) {
         this.isReadPanel = isReadPanel;
         initUpdateComposite(entityId, "PersonalInfo", OfficeWelcome.constants2);
+        entityCaptionPanel.setCaptionHTML("Personal Information");
     }
 
     @Override

@@ -58,6 +58,7 @@ public class UpdateEducationRecord1PopupPanel extends TUpdateComposite {
     public UpdateEducationRecord1PopupPanel(String entityId, boolean isReadPanel) {
         this.isReadPanel = isReadPanel;
         initUpdateComposite(entityId, "EducationDetails", OfficeWelcome.constants2);
+        entityCaptionPanel.setCaptionHTML("Education Details");
     }
 
     @Override

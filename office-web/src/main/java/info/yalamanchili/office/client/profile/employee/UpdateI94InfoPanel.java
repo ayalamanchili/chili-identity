@@ -44,6 +44,7 @@ public class UpdateI94InfoPanel extends TUpdateComposite {
     public UpdateI94InfoPanel(String entityId, boolean isReadPanel) {
         this.isReadPanel = isReadPanel;
         initUpdateComposite(entityId, "i94Record", OfficeWelcome.constants2);
+        entityCaptionPanel.setCaptionHTML("I94 Information");
     }
 
     @Override

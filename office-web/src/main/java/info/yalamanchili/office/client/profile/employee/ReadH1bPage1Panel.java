@@ -10,7 +10,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.callback.ALAsyncCallback;
 import info.chili.gwt.crud.ReadComposite;
 import info.chili.gwt.rpc.HttpService;
@@ -39,10 +38,6 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler {
     protected Button eduInfo2Edit = new Button("Click here to Add");
     protected Button alienNoInfoEdit = new Button("Click here to Edit");
     protected Button eduInfo1Edit = new Button("Click here to Edit");
-
-    HTML personalInfoNotes = new HTML("<p style=\"color:#F31212\">Note: <br/> 1. U.S. Social Security Number (Enter Numeric Characters only with out Hyphen) <br/> 2. Individual Tax Number (Enter Numeric Characters only with out Hyphen)</strong></p> \n");
-    HTML eduInfo2Notes = new HTML("<p style=\"color:#F31212\">Note: If you have a CAP H-1B U.S. Master's Degree or Higher, provide the following information regarding the master's or higher degree the beneficiary has earned from a U.S. institution as defined in 20 U.S.C. 1001(a).</strong></p> \n");
-    HTML otherNamesNotes = new HTML("<p style=\"color:#F31212\">Note: Provide all other names the beneficiary has used. Include nicknames, aliases, maiden name and names from all previous marriages.</strong></p> \n");
 
     public static ReadH1bPage1Panel instance() {
         return instance;
@@ -100,13 +95,11 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler {
     @Override
     protected void addWidgets() {
         //personal info
-        entityFieldsPanel.add(personalInfoNotes);
         entityFieldsPanel.add(personalInfoEdit);
         personalInfoPopupPanel = new UpdateEmpPersonalInfoPopupPanel(entityId, true);
         entityFieldsPanel.add(personalInfoPopupPanel);
 
         //us edu record
-        entityFieldsPanel.add(eduInfo2Notes);
         entityFieldsPanel.add(eduInfo2Edit);
         usEducRecPanel = new UpdateCaseEducRecPopupPanel(entityId, true);
         entityFieldsPanel.add(usEducRecPanel);
@@ -121,7 +114,6 @@ public class ReadH1bPage1Panel extends ReadComposite implements ClickHandler {
         entityFieldsPanel.add(eduRecPanel);
 
         //other names info
-        entityFieldsPanel.add(otherNamesNotes);
         entityFieldsPanel.add(OtherNamesInfoEdit);
         otherNamesPanel = new UpdateOtherNamesInfoPopupPanel(entityId, true);
         entityFieldsPanel.add(otherNamesPanel);

@@ -43,6 +43,7 @@ public class UpdatePriorWorkExperiencePanel extends TUpdateComposite {
     public UpdatePriorWorkExperiencePanel(String entityId, boolean isReadPanel) {
         this.isReadPanel = isReadPanel;
         initUpdateComposite(entityId, "PriorWorkExperience", OfficeWelcome.constants2);
+        entityCaptionPanel.setCaptionHTML("Prior Work Experience");
     }
 
     @Override

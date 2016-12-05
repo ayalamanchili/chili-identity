@@ -43,6 +43,7 @@ public class UpdateMiscellaneousInfoPanel extends TUpdateComposite {
     public UpdateMiscellaneousInfoPanel(String entityId, boolean isReadPanel) {
         this.isReadPanel = isReadPanel;
         initUpdateComposite(entityId, "MiscellaneousInfo", OfficeWelcome.constants2);
+        entityCaptionPanel.setCaptionHTML("Miscellaneous Information");
     }
 
     @Override

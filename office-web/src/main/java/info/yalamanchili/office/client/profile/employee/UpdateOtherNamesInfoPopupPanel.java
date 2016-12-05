@@ -42,6 +42,7 @@ public class UpdateOtherNamesInfoPopupPanel extends TUpdateComposite {
     public UpdateOtherNamesInfoPopupPanel(String entityId, boolean isReadPanel) {
         this.isReadPanel = isReadPanel;
         initUpdateComposite(entityId, "OtherNamesInfo", OfficeWelcome.constants2);
+        entityCaptionPanel.setCaptionHTML("Other Names Information");
     }
 
     @Override

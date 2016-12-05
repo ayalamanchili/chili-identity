@@ -53,6 +53,7 @@ public class UpdateCaseEducRecPopupPanel extends TUpdateComposite implements Cha
     public UpdateCaseEducRecPopupPanel(String entityId, boolean isReadPanel) {
         this.isReadPanel = isReadPanel;
         initUpdateComposite(entityId, "EducationRecord", OfficeWelcome.constants2);
+        entityCaptionPanel.setCaptionHTML("US Education Details");
     }
 
     @Override

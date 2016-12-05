@@ -44,6 +44,7 @@ public class H1bQuestionnaireWidget extends UpdateComposite implements ClickHand
         }
         instance = this;
         initUpdateComposite(inviteCode, "H1BQuestionnaire", OfficeWelcome.constants2);
+        entityCaptionPanel.setCaptionHTML("H1B Questionnaire");
     }
 
     @Override

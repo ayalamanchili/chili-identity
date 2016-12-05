@@ -59,6 +59,7 @@ public class UpdateBirthPassportInfoPopupPanel extends TUpdateComposite implemen
     public UpdateBirthPassportInfoPopupPanel(String entityId, boolean isReadPanel) {
         this.isReadPanel = isReadPanel;
         initUpdateComposite(entityId, "Passport", OfficeWelcome.constants2);
+        entityCaptionPanel.setCaptionHTML("Birth And PassPort Information");
     }
 
     @Override
