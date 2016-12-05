@@ -37,11 +37,15 @@ public class ImmigrationCaseAdditionalDetailsService {
         List<ImmigrationCaseAdditionalDetails> details = ImmigrationCaseAdditionalDetailsDao.instance().findAll(targetId, ImmigrationCase.class.getCanonicalName());
         if (details != null && details.size() > 0) {
             ImmigrationCaseAdditionalDetails additionalDetails = details.get(0);
-            additionalDetails.setNoOfDependents(caseDetails.getNoOfDependents());
+            if (caseDetails.getNoOfDependents() > 0) {
+                additionalDetails.setNoOfDependents(caseDetails.getNoOfDependents());
+            }
             additionalDetails.setTargetEntityId(targetId);
             additionalDetails.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
             return caseDetailsDao.getEntityManager().merge(additionalDetails);
         } else {
+            caseDetails.setTargetEntityId(targetId);
+            caseDetails.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
             ImmigrationCaseAdditionalDetails save = caseDetailsDao.save(caseDetails);
             return save;
         }
