@@ -401,6 +401,17 @@ public class OfficeStartup {
         rule.setAttributeData(gson.toJson(rule.getAttributes()));
         em.merge(rule);
 
+        BPMTaskDelegateRule ruleperf = new BPMTaskDelegateRule();
+        ruleperf.setBpmProcessId("assoc_emp_perf_eval_process");
+        ruleperf.setBpmTaskId("hrReviewTask");
+        ruleperf.setRuleName("alphabetRangeRuleEvaluator");
+        ruleperf.addAttribute(new Entry("range1Start", "a"));
+        ruleperf.addAttribute(new Entry("range1End", "z"));
+        ruleperf.addAttribute(new Entry("range1Assignee", "sadhikari"));
+        Gson gsonperf = new Gson();
+        ruleperf.setAttributeData(gsonperf.toJson(ruleperf.getAttributes()));
+        em.merge(ruleperf);
+
         BPMTaskDelegateRule rule1 = new BPMTaskDelegateRule();
         rule1.setBpmProcessId("travel_authorization_process");
         rule1.setBpmTaskId("travelAuthorizationManagerApprovalTask");
