@@ -38,7 +38,7 @@ public class ReportsMenu extends CMenuBar {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_INVOICE_MANAGER)) {
             addMenuItem("Invoices", "Invoices", invoicereportsMaintainenceCmd);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP,ROLE.ROLE_HR_ADMINSTRATION)) {
             addMenuItem("Profile Reports", "Profile Reports", profileReportsMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
