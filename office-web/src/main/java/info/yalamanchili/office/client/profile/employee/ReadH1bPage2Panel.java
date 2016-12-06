@@ -32,12 +32,14 @@ public class ReadH1bPage2Panel extends ReadComposite implements ClickHandler {
     UpdateCurrentOccupationPanel currentOccupationPanel;
     UpdatePriorWorkExperiencePanel workExperiencePanel;
     UpdateMiscellaneousInfoPanel miscellaneousInfoPanel;
+    UpdateCitizenshipPanel citizenshipPanel;
 
     protected Button passportInfoEdit = new Button("Click here to Edit");
     protected Button i94InfoEdit = new Button("Click here to Edit");
     protected Button misceInfoEdit = new Button("Click here to Edit");
     protected Button currentJobInfoEdit = new Button("Click here to Edit");
     protected Button workExpInfoEdit = new Button("Click here to Edit");
+    protected Button citizenshipEdit = new Button("Click here to Edit");
 
     public static ReadH1bPage2Panel instance() {
         return instance;
@@ -77,6 +79,7 @@ public class ReadH1bPage2Panel extends ReadComposite implements ClickHandler {
         miscellaneousInfoPanel.populateFieldsFromEntity(entity);
         currentOccupationPanel.populateFieldsFromEntity(entity);
         workExperiencePanel.populateFieldsFromEntity(entity);
+        citizenshipPanel.populateFieldsFromEntity(entity);
     }
 
     @Override
@@ -86,6 +89,7 @@ public class ReadH1bPage2Panel extends ReadComposite implements ClickHandler {
         misceInfoEdit.addClickHandler(this);
         currentJobInfoEdit.addClickHandler(this);
         workExpInfoEdit.addClickHandler(this);
+        citizenshipEdit.addClickHandler(this);
     }
 
     @Override
@@ -108,6 +112,11 @@ public class ReadH1bPage2Panel extends ReadComposite implements ClickHandler {
         entityFieldsPanel.add(currentJobInfoEdit);
         currentOccupationPanel = new UpdateCurrentOccupationPanel(entityId, true);
         entityFieldsPanel.add(currentOccupationPanel);
+        
+        //country of citizenship
+        entityFieldsPanel.add(citizenshipEdit);
+        citizenshipPanel = new UpdateCitizenshipPanel(entityId, true);
+        entityFieldsPanel.add(citizenshipPanel);
 
         //Prior Work Experience
         entityFieldsPanel.add(workExpInfoEdit);
@@ -151,6 +160,11 @@ public class ReadH1bPage2Panel extends ReadComposite implements ClickHandler {
             entityFieldsPanel.remove(entityFieldsPanel.getWidget(entityFieldsPanel.getWidgetIndex(workExperiencePanel)));
             workExperiencePanel = new UpdatePriorWorkExperiencePanel(entityId, false);
             entityFieldsPanel.insert(workExperiencePanel, entityFieldsPanel.getWidgetIndex(workExpInfoEdit) + 1);
+        }
+        if (event.getSource().equals(citizenshipEdit)) {
+            entityFieldsPanel.remove(entityFieldsPanel.getWidget(entityFieldsPanel.getWidgetIndex(citizenshipPanel)));
+            citizenshipPanel = new UpdateCitizenshipPanel(entityId, false);
+            entityFieldsPanel.insert(citizenshipPanel, entityFieldsPanel.getWidgetIndex(citizenshipEdit) + 1);
         }
     }
 
