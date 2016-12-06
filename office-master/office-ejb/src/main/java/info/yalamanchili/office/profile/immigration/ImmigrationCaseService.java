@@ -32,8 +32,6 @@ import info.yalamanchili.office.entity.immigration.Passport;
 import info.yalamanchili.office.entity.immigration.USEducationRecord;
 import info.yalamanchili.office.entity.immigration.i94Record;
 import info.yalamanchili.office.entity.profile.Contact;
-import info.yalamanchili.office.entity.profile.Email;
-import info.yalamanchili.office.entity.profile.EmailType;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import info.yalamanchili.office.entity.profile.ext.MaritalStatus;
