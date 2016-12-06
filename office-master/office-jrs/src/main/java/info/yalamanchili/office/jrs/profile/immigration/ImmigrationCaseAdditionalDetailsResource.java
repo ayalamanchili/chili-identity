@@ -81,15 +81,22 @@ public class ImmigrationCaseAdditionalDetailsResource extends CRUDResource<Immig
     }
 
     @PUT
-    @Path("/save-current-occupation/{invitationCode}")
-    public void saveCurrentOccupation(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
+    @Path("/save-addtn-details/{invitationCode}")
+    public void saveAddtnDetails(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
         ImmigrationCase immiCase = ImmigrationCaseService.instance().getCase(invitationCode);
         ImmigrationCaseAdditionalDetails caseDetails = dto.getCaseAddtnDetails();
         List<ImmigrationCaseAdditionalDetails> details = ImmigrationCaseAdditionalDetailsDao.instance().findAll(immiCase.getId(), ImmigrationCase.class.getCanonicalName());
         if (details != null && details.size() > 0) {
             ImmigrationCaseAdditionalDetails caseAddnDetails = details.get(0);
-            caseAddnDetails.setCurrentOccupation(caseDetails.getCurrentOccupation());
-            caseAddnDetails.setNameOfEmployer(caseDetails.getNameOfEmployer());
+            if (caseDetails.getCurrentOccupation() != null) {
+                caseAddnDetails.setCurrentOccupation(caseDetails.getCurrentOccupation());
+            }
+            if (caseDetails.getNameOfEmployer() != null) {
+                caseAddnDetails.setNameOfEmployer(caseDetails.getNameOfEmployer());
+            }
+            if(caseDetails.getCountryOfCitizenship()!=null){
+                caseAddnDetails.setCountryOfCitizenship(caseDetails.getCountryOfCitizenship());
+            }
             caseAddnDetails.setTargetEntityId(immiCase.getId());
             caseAddnDetails.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
             caseDetailsDao.getEntityManager().merge(caseAddnDetails);
