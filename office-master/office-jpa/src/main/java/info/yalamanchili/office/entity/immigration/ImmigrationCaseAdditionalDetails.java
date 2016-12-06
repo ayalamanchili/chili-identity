@@ -29,6 +29,8 @@ public class ImmigrationCaseAdditionalDetails extends AbstractHandleEntity {
     protected String nameOfEmployer;
     
     protected Integer noOfDependents;
+    
+    protected String countryOfCitizenship;
 
     public String getCurrentOccupation() {
         return currentOccupation;
@@ -54,8 +56,16 @@ public class ImmigrationCaseAdditionalDetails extends AbstractHandleEntity {
         this.nameOfEmployer = nameOfEmployer;
     }
 
+    public String getCountryOfCitizenship() {
+        return countryOfCitizenship;
+    }
+
+    public void setCountryOfCitizenship(String countryOfCitizenship) {
+        this.countryOfCitizenship = countryOfCitizenship;
+    }
+
     @Override
     public String toString() {
-        return "ImmigrationCaseAdditionalDetails{" + "currentOccupation=" + currentOccupation + ", nameOfEmployer=" + nameOfEmployer + ", noOfDependents=" + noOfDependents + '}';
+        return "ImmigrationCaseAdditionalDetails{" + "currentOccupation=" + currentOccupation + ", nameOfEmployer=" + nameOfEmployer + ", noOfDependents=" + noOfDependents + ", countryOfCitizenship=" + countryOfCitizenship + '}';
     }
 }
