@@ -32,6 +32,8 @@ import info.yalamanchili.office.entity.immigration.Passport;
 import info.yalamanchili.office.entity.immigration.USEducationRecord;
 import info.yalamanchili.office.entity.immigration.i94Record;
 import info.yalamanchili.office.entity.profile.Contact;
+import info.yalamanchili.office.entity.profile.Email;
+import info.yalamanchili.office.entity.profile.EmailType;
 import info.yalamanchili.office.entity.profile.Employee;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import info.yalamanchili.office.entity.profile.ext.MaritalStatus;
@@ -67,6 +69,7 @@ public class ImmigrationCaseService {
         // employee personal details
         PersonalInfoDto res = new PersonalInfoDto();
         Employee emp = getEmployee(invitationCode);
+        ImmigrationCase iCase = getCase(invitationCode);
         if (emp != null) {
             res.setEmail(emp.getPrimaryEmail().getEmail());
             for (info.yalamanchili.office.entity.profile.Email emailAddr : emp.getEmails()) {
@@ -100,26 +103,20 @@ public class ImmigrationCaseService {
                 res.setDateOfBirth(cnt.getDateOfBirth());
                 res.setGender(cnt.getSex().name());
                 res.setEmail(cnt.getEmails().get(0).getEmail());
-                res.setMaritalStatus(MaritalStatus.Unknown.name());
+                res.setMaritalStatus(getMaritalStatus(iCase.getId(), ImmigrationCase.class.getCanonicalName()));
                 detailsDto.setEmpPersonalInfo(res);
             }
         }
 
         // other names info
-        ImmigrationCase iCase = getCase(invitationCode);
         List<OtherNamesInfo> otherNames = OtherNamesInfoDao.instance().findAll(iCase.getId(), ImmigrationCase.class.getCanonicalName());
         if (otherNames != null && otherNames.size() > 0) {
-            OtherNamesInfo info = new OtherNamesInfo();
-            info.setFirstName(otherNames.get(0).getFirstName());
-            info.setLastName(otherNames.get(0).getLastName());
-            info.setMiddleName(otherNames.get(0).getMiddleName());
             detailsDto.setOtherNamesInfo(otherNames.get(0));
         }
         //alien number
         List<AlienNumber> alienNumbers = AlienNumberDao.instance().findAll(iCase.getId(), ImmigrationCase.class.getCanonicalName());
         if (alienNumbers != null && alienNumbers.size() > 0) {
-            AlienNumber alienNo = alienNumbers.get(0);
-            detailsDto.setAlienNumber(alienNo);
+            detailsDto.setAlienNumber(alienNumbers.get(0));
         }
         EducationDto dto = new EducationDto();
         List<USEducationRecord> records = UsEducationRecordDao.instance().findAll(iCase.getId(), ImmigrationCase.class.getCanonicalName());
@@ -159,12 +156,11 @@ public class ImmigrationCaseService {
         if (expSummarys != null && expSummarys.size() > 0) {
             detailsDto.setExpSummary(expSummarys.get(0));
         }
-        
+
         List<ImmigrationCaseAdditionalDetails> details = ImmigrationCaseAdditionalDetailsDao.instance().findAll(immiCase.getId(), ImmigrationCase.class.getCanonicalName());
         if (details != null && details.size() > 0) {
             detailsDto.setCaseAddtnDetails(details.get(0));
         }
-        
         return detailsDto;
     }
 
@@ -203,4 +199,13 @@ public class ImmigrationCaseService {
         return null;
     }
 
+    private String getMaritalStatus(Long targetId, String targetName) {
+        List<EmployeeAdditionalDetails> listDetails = EmployeeAdditionalDetailsDao.instance().findAll(targetId, targetName);
+        if (listDetails != null && listDetails.size() > 0) {
+            EmployeeAdditionalDetails details = listDetails.get(0);
+            MaritalStatus maritalStatus = details.getMaritalStatus();
+            return maritalStatus.name();
+        }
+        return null;
+    }
 }
