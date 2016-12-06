@@ -86,7 +86,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Scope("request")
 public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
-    
+
     @Autowired
     protected ImmigrationCaseService caseService;
 
@@ -101,7 +101,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
 
     @Autowired
     protected USEducationRecordService usEducService;
-    
+
     @Autowired
     protected ImmigrationCaseAdditionalDetailsService additionalService;
 
@@ -239,7 +239,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
     public EmployeeH1BDetailsDto getpage1details(@QueryParam("invitationCode") String invitationCode) {
         return caseService.loadPage1Details(invitationCode);
     }
-    
+
     @GET
     @Path("h1b-questionnaire/get-details/page-2")
     @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CASE)
@@ -260,7 +260,7 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
                 emp.setMiddleInitial(personalInfoDto.getMiddleInitial());
             }
             emp.setSsn(personalInfoDto.getSsn());
-            
+
             //Personal Email
             info.yalamanchili.office.entity.profile.Email emailAdd = new info.yalamanchili.office.entity.profile.Email();
             if (EmailService.instance().findEmail(personalInfoDto.getEmail()) == null) {
@@ -331,7 +331,8 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
                 Contact save = ContactDao.instance().save(contact);
                 email.setContact(save);
                 EmailDao.instance().save(email);
-            }else{
+                saveMaritalStatus(iCase.getId(), ImmigrationCase.class.getCanonicalName(), personalInfoDto.getMaritalStatus());
+            } else {
                 cnt.setFirstName(personalInfoDto.getEmpFirstName());
                 cnt.setLastName(personalInfoDto.getEmpLastName());
                 cnt.setMiddleInitial(personalInfoDto.getMiddleInitial());
@@ -341,12 +342,14 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
                 } else {
                     cnt.setSex(Sex.FEMALE);
                 }
+                //personal email
                 info.yalamanchili.office.entity.profile.Email email = new info.yalamanchili.office.entity.profile.Email();
                 email.setEmail(iCase.getEmail());
                 email.setPrimaryEmail(Boolean.TRUE);
                 Contact save = ContactDao.instance().getEntityManager().merge(cnt);
                 email.setContact(save);
                 EmailDao.instance().save(email);
+                saveMaritalStatus(iCase.getId(), ImmigrationCase.class.getCanonicalName(), personalInfoDto.getMaritalStatus());
             }
         }
         return dto;
@@ -410,7 +413,24 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
         dto.setEduDto(eduDto);
         return dto;
     }
-    
+
+    private void saveMaritalStatus(Long targetId, String targetName, String maritalStatus) {
+        List<EmployeeAdditionalDetails> listDetails = EmployeeAdditionalDetailsDao.instance().findAll(targetId, targetName);
+        if (listDetails != null && listDetails.size() > 0) {
+            EmployeeAdditionalDetails details = listDetails.get(0);
+            details.setMaritalStatus(setMaritalStatus(maritalStatus));
+            EmployeeAdditionalDetailsDao.instance().getEntityManager().merge(details);
+        } else {
+            EmployeeAdditionalDetails details = new EmployeeAdditionalDetails();
+            details.setTargetEntityId(targetId);
+            details.setTargetEntityName(targetName);
+            details.setMaritalStatus(setMaritalStatus(maritalStatus));
+            details.setEthnicity(Ethnicity.Unspecified);
+            details.setReferredBy("Unknown");
+            EmployeeAdditionalDetailsDao.instance().save(details);
+        }
+    }
+
     private MaritalStatus setMaritalStatus(String maritalStatus) {
         MaritalStatus status = null;
         switch (maritalStatus) {
