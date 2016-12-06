@@ -154,6 +154,6 @@ public class UpdateCurrentOccupationPanel extends TUpdateComposite {
     }
 
     protected String updateCurrentJobInfo() {
-        return OfficeWelcome.constants.root_url() + "case-details/save-current-occupation/" + entityId;
+        return OfficeWelcome.constants.root_url() + "case-details/save-addtn-details/" + entityId;
     }
 }
