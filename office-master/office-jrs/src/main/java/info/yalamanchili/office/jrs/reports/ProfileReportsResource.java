@@ -37,20 +37,21 @@ public class ProfileReportsResource {
 
     @GET
     @Path("/employee-basic-info-report")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR_ADMINSTRATION')")
     public void basicEmployeeInfoReport() {
         profileReportsService.generateEmployeBasicInfoReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
 
     @GET
     @Path("/employee-advance-info-report")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR_ADMINSTRATION')")
     public void generateProfileInformationReport() {
         profileReportsService.generateProfileReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
     
     @GET
     @Path("/employee-company-contacts-report")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_HR_ADMINSTRATION')")
     public void generateCompanyContactsReport() {
         profileReportsService.generateEmployeCompanyContactsReport(OfficeSecurityService.instance().getCurrentUser().getPrimaryEmail().getEmail());
     }
