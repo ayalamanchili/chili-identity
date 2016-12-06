@@ -16,8 +16,7 @@
         <!-- Manager approval task-->
         <sequenceFlow  sourceRef="start" targetRef="hrReviewTask" />
         <userTask id="hrReviewTask" 
-                  name="HR Performance Evaluation Review Task for ${currentEmployee.firstName} ${currentEmployee.lastName}"
-                  activiti:candidateGroups="ROLE_H1B_IMMIGRATION,ROLE_GC_IMMIGRATION">
+                  name="HR Performance Evaluation Review Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
             <documentation>
                 Performance Evaluation Review Task
                 Employee Name              : #{currentEmployee.firstName} #{currentEmployee.lastName}
