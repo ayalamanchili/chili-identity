@@ -84,14 +84,17 @@ public class H1bQuestionnaireWidget extends UpdateComposite implements ClickHand
         page6L.setTitle("Go to Applicant and Stay Period Info");
         loadPage();
     }
-    
-    private void loadPage(){
-        switch(pageWithNo){
+
+    private void loadPage() {
+        switch (pageWithNo) {
             case "page1":
                 entityActionsPanel.add(new ReadH1bPage1Panel(invitationCode));
                 break;
             case "page2":
                 entityActionsPanel.add(new ReadH1bPage2Panel(invitationCode));
+                break;
+            case "page5":
+                entityActionsPanel.add(new ReadH1bPage5Panel(invitationCode));
                 break;
         }
     }
@@ -128,6 +131,11 @@ public class H1bQuestionnaireWidget extends UpdateComposite implements ClickHand
             entityActionsPanel.clear();
             entityFieldsPanel.add(pagesPanel);
             entityActionsPanel.add(new ReadH1bPage2Panel(invitationCode));
+        }
+        if (event.getSource().equals(page5L)) {
+            entityActionsPanel.clear();
+            entityFieldsPanel.add(pagesPanel);
+            entityActionsPanel.add(new ReadH1bPage5Panel(invitationCode));
         }
     }
 
