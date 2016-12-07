@@ -37,7 +37,7 @@ public class StayPeriodInfo extends AbstractHandleEntity {
     @Temporal(TemporalType.DATE)
     private Date toDate;
 
-    protected String immigrationStatus;
+    protected String immigrantStatus;
 
     protected String purpose;
 
@@ -72,12 +72,12 @@ public class StayPeriodInfo extends AbstractHandleEntity {
         this.toDate = toDate;
     }
 
-    public String getImmigrationStatus() {
-        return immigrationStatus;
+    public String getImmigrantStatus() {
+        return immigrantStatus;
     }
 
-    public void setImmigrationStatus(String immigrationStatus) {
-        this.immigrationStatus = immigrationStatus;
+    public void setImmigrantStatus(String immigrantStatus) {
+        this.immigrantStatus = immigrantStatus;
     }
 
     public String getPurpose() {
@@ -106,6 +106,6 @@ public class StayPeriodInfo extends AbstractHandleEntity {
 
     @Override
     public String toString() {
-        return "StayPeriodInfo{" + "name=" + name + ", fromDate=" + fromDate + ", toDate=" + toDate + ", immigrationStatus=" + immigrationStatus + ", purpose=" + purpose + ", otherCitizenship=" + otherCitizenship + ", country=" + country + '}';
+        return "StayPeriodInfo{" + "name=" + name + ", fromDate=" + fromDate + ", toDate=" + toDate + ", immigrantStatus=" + immigrantStatus + ", purpose=" + purpose + ", otherCitizenship=" + otherCitizenship + ", country=" + country + '}';
     }
 }
