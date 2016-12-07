@@ -85,7 +85,7 @@ public class TreeEmpFormsPanel extends TreePanelComposite {
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ON_BOARDING_MGR, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS)) {
             addFirstChildLink("ACH Form", ACH_FORM);
         }
-        addFirstChildLink("Joining Form", JOINING_FORM);
+        addFirstChildLink("Joining Forms", JOINING_FORM);
         addFirstChildLink("Roles & Responsibilities", ROLESRESPONSIBILITES);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ON_BOARDING_MGR, Auth.ROLE.ROLE_BACKGROUND_SCREENING_MGR, Auth.ROLE.ROLE_E_VERIFY_MGR, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS)) {
             addFirstChildLink("Documents", DOCUMENTS_NODE);
@@ -97,17 +97,17 @@ public class TreeEmpFormsPanel extends TreePanelComposite {
     public void treeNodeSelected(String entityNodeKey) {
         if (ACH_FORM.equals(entityNodeKey)) {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllBankAcctWidget(employeeId));
             TabPanel.instance().getMyOfficePanel().entityPanel.add(printACHL);
             TabPanel.instance().getMyOfficePanel().entityPanel.add(generalInfo);
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(printselfIdFormL);
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(printselfIdFormL);            
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllBankAcctWidget(employeeId));
         }
         if (JOINING_FORM.equals(entityNodeKey)) {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadJoiningFormPanel(employeeId));
             TabPanel.instance().getMyOfficePanel().entityPanel.add(printJoiningFormL);
             TabPanel.instance().getMyOfficePanel().entityPanel.add(generalInfo);
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(printselfIdFormL);
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(printselfIdFormL);            
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadJoiningFormPanel(employeeId));
 
         }
         if (ROLESRESPONSIBILITES.equals(entityNodeKey)) {
