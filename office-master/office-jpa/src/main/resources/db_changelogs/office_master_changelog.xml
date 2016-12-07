@@ -152,6 +152,15 @@
     <include file="db_changelogs/11-09-2016_changelog.xml"/>
     <include file="db_changelogs/11-09-2016-1_changelog.xml"/>
     <include file="db_changelogs/11-10-2016_changelog.xml"/>
-    <include file="db_changelogs/12-01-2016_changelog.xml"/>    
+    <include file="db_changelogs/12-01-2016_changelog.xml"/>
+    <include file="db_changelogs/12-07-2016_1_changelog.xml"/>
+    <include file="db_changelogs/12-07-2016_2_changelog.xml"/>
+    <include file="db_changelogs/12-07-2016_3_changelog.xml"/>
+    <include file="db_changelogs/12-07-2016_4_changelog.xml"/>
+    <include file="db_changelogs/12-07-2016_5_changelog.xml"/>
+    <include file="db_changelogs/12-07-2016_6_changelog.xml"/>
+    <include file="db_changelogs/12-07-2016_7_changelog.xml"/>
+    <include file="db_changelogs/12-07-2016_8_changelog.xml"/>
+    <include file="db_changelogs/12-07-2016_9_changelog.xml"/>
 
 </databaseChangeLog>
