@@ -47,6 +47,12 @@ public class TreeEmpFormsPanel extends TreePanelComposite {
             + "\n"
             + "<ul>\n"
             + "</ul>");
+    protected static HTML generalInfoJoin = new HTML("\n"
+            + "<center><p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
+            + "<strong style=\"color:#555555\"> Joining Form </strong></p></center>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");    
 
     public TreeEmpFormsPanel(JSONObject emp) {
         this.employeeId = JSONUtils.toString(emp, "id");
@@ -98,12 +104,11 @@ public class TreeEmpFormsPanel extends TreePanelComposite {
         if (ACH_FORM.equals(entityNodeKey)) {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(printACHL);
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(generalInfo);
-            TabPanel.instance().getMyOfficePanel().entityPanel.add(printselfIdFormL);            
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllBankAcctWidget(employeeId));
         }
         if (JOINING_FORM.equals(entityNodeKey)) {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(generalInfoJoin);            
             TabPanel.instance().getMyOfficePanel().entityPanel.add(printJoiningFormL);
             TabPanel.instance().getMyOfficePanel().entityPanel.add(generalInfo);
             TabPanel.instance().getMyOfficePanel().entityPanel.add(printselfIdFormL);            
