@@ -14,6 +14,7 @@ import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
 import info.yalamanchili.office.dao.profile.immigration.AlienNumberDao;
+import info.yalamanchili.office.dao.profile.immigration.ConsulateInfoDao;
 import info.yalamanchili.office.dao.profile.immigration.ExperienceSummaryDao;
 import info.yalamanchili.office.dao.profile.immigration.I94RecordDao;
 import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseAdditionalDetailsDao;
@@ -21,14 +22,17 @@ import info.yalamanchili.office.dao.profile.immigration.ImmigrationCaseDao;
 import info.yalamanchili.office.dao.profile.immigration.MiscellaneousInfoDao;
 import info.yalamanchili.office.dao.profile.immigration.OtherNamesInfoDao;
 import info.yalamanchili.office.dao.profile.immigration.PassportDao;
+import info.yalamanchili.office.dao.profile.immigration.StayPeriodInfoDao;
 import info.yalamanchili.office.dao.profile.immigration.UsEducationRecordDao;
 import info.yalamanchili.office.entity.immigration.AlienNumber;
+import info.yalamanchili.office.entity.immigration.ConsulateInfo;
 import info.yalamanchili.office.entity.immigration.ExperienceSummary;
 import info.yalamanchili.office.entity.immigration.ImmigrationCase;
 import info.yalamanchili.office.entity.immigration.ImmigrationCaseAdditionalDetails;
 import info.yalamanchili.office.entity.immigration.MiscellaneousInfo;
 import info.yalamanchili.office.entity.immigration.OtherNamesInfo;
 import info.yalamanchili.office.entity.immigration.Passport;
+import info.yalamanchili.office.entity.immigration.StayPeriodInfo;
 import info.yalamanchili.office.entity.immigration.USEducationRecord;
 import info.yalamanchili.office.entity.immigration.i94Record;
 import info.yalamanchili.office.entity.profile.Contact;
@@ -158,6 +162,20 @@ public class ImmigrationCaseService {
         List<ImmigrationCaseAdditionalDetails> details = ImmigrationCaseAdditionalDetailsDao.instance().findAll(immiCase.getId(), ImmigrationCase.class.getCanonicalName());
         if (details != null && details.size() > 0) {
             detailsDto.setCaseAddtnDetails(details.get(0));
+        }
+        return detailsDto;
+    }
+
+    public EmployeeH1BDetailsDto loadPage5Details(String invitationCode) {
+        EmployeeH1BDetailsDto detailsDto = new EmployeeH1BDetailsDto();
+        ImmigrationCase immiCase = getCase(invitationCode);
+        List<ConsulateInfo> consulateInfoRecs = ConsulateInfoDao.instance().findAll(immiCase.getId(), ImmigrationCase.class.getCanonicalName());
+        if (consulateInfoRecs != null && consulateInfoRecs.size() > 0) {
+            detailsDto.setConsulateInfo(consulateInfoRecs.get(0));
+        }
+        List<StayPeriodInfo> stayPeriodRecs = StayPeriodInfoDao.instance().findAll(immiCase.getId(), ImmigrationCase.class.getCanonicalName());
+        if (stayPeriodRecs != null && stayPeriodRecs.size() > 0) {
+            detailsDto.setStayPeriodInfo(stayPeriodRecs.get(0));
         }
         return detailsDto;
     }

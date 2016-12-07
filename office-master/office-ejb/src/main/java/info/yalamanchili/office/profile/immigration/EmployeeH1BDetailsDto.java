@@ -9,12 +9,14 @@
 package info.yalamanchili.office.profile.immigration;
 
 import info.yalamanchili.office.entity.immigration.AlienNumber;
+import info.yalamanchili.office.entity.immigration.ConsulateInfo;
 import info.yalamanchili.office.entity.immigration.EducationRecord;
 import info.yalamanchili.office.entity.immigration.ExperienceSummary;
 import info.yalamanchili.office.entity.immigration.ImmigrationCaseAdditionalDetails;
 import info.yalamanchili.office.entity.immigration.MiscellaneousInfo;
 import info.yalamanchili.office.entity.immigration.OtherNamesInfo;
 import info.yalamanchili.office.entity.immigration.Passport;
+import info.yalamanchili.office.entity.immigration.StayPeriodInfo;
 import info.yalamanchili.office.entity.immigration.USEducationRecord;
 import info.yalamanchili.office.entity.immigration.i94Record;
 import java.io.Serializable;
@@ -36,23 +38,27 @@ public class EmployeeH1BDetailsDto implements Serializable {
     private OtherNamesInfo otherNamesInfo;
 
     private AlienNumber alienNumber;
-    
+
     private USEducationRecord usEducRec;
-    
+
     private EducationDto eduDto;
-    
+
     private Passport passport;
-    
+
     private String currentOccupation;
-    
+
     private i94Record i94Info;
-    
+
     private MiscellaneousInfo misceInfo;
 
     private ExperienceSummary expSummary;
-    
+
     private ImmigrationCaseAdditionalDetails caseAddtnDetails;
-    
+
+    private ConsulateInfo consulateInfo;
+
+    private StayPeriodInfo stayPeriodInfo;
+
     public PersonalInfoDto getEmpPersonalInfo() {
         return empPersonalInfo;
     }
@@ -147,5 +153,21 @@ public class EmployeeH1BDetailsDto implements Serializable {
 
     public void setCaseAddtnDetails(ImmigrationCaseAdditionalDetails caseAddtnDetails) {
         this.caseAddtnDetails = caseAddtnDetails;
+    }
+
+    public ConsulateInfo getConsulateInfo() {
+        return consulateInfo;
+    }
+
+    public void setConsulateInfo(ConsulateInfo consulateInfo) {
+        this.consulateInfo = consulateInfo;
+    }
+
+    public StayPeriodInfo getStayPeriodInfo() {
+        return stayPeriodInfo;
+    }
+
+    public void setStayPeriodInfo(StayPeriodInfo stayPeriodInfo) {
+        this.stayPeriodInfo = stayPeriodInfo;
     }
 }
