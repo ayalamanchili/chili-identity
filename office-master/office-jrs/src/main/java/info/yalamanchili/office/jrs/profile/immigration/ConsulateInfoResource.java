@@ -10,12 +10,13 @@ package info.yalamanchili.office.jrs.profile.immigration;
 
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
-import info.yalamanchili.office.dao.profile.immigration.AlienNumberDao;
 import info.yalamanchili.office.dao.profile.immigration.ConsulateInfoDao;
-import info.yalamanchili.office.entity.immigration.AlienNumber;
 import info.yalamanchili.office.entity.immigration.ConsulateInfo;
 import info.yalamanchili.office.entity.immigration.ImmigrationCase;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.profile.immigration.ConsulateInfoService;
+import info.yalamanchili.office.profile.immigration.EmployeeH1BDetailsDto;
+import info.yalamanchili.office.profile.immigration.ImmigrationCaseService;
 import info.yalamanchili.office.security.AccessCheck;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -37,6 +38,9 @@ public class ConsulateInfoResource extends CRUDResource<ConsulateInfo> {
 
     @Autowired
     protected ConsulateInfoDao consulateInfoDao;
+
+    @Autowired
+    protected ConsulateInfoService consulateInfoService;
 
     @Override
     public CRUDDao getDao() {
@@ -76,5 +80,16 @@ public class ConsulateInfoResource extends CRUDResource<ConsulateInfo> {
         if (info.getId() != null) {
             consulateInfoDao.delete(id);
         }
+    }
+
+    @PUT
+    @Path("save-consulate-info/{invitationCode}")
+    public EmployeeH1BDetailsDto saveConsulateInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
+        ImmigrationCase immiCase = ImmigrationCaseService.instance().getCase(invitationCode);
+        ConsulateInfo consulateInfo = dto.getConsulateInfo();
+        consulateInfo.setTargetEntityId(immiCase.getId());
+        consulateInfo.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
+        dto.setConsulateInfo(consulateInfoService.saveConsulateInfoForCase(immiCase.getId(), consulateInfo));
+        return dto;
     }
 }

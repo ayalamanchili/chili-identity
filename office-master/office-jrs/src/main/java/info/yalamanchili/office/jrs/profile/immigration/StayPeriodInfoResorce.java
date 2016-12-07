@@ -11,8 +11,11 @@ package info.yalamanchili.office.jrs.profile.immigration;
 import info.chili.dao.CRUDDao;
 import info.chili.jpa.validation.Validate;
 import info.yalamanchili.office.dao.profile.immigration.StayPeriodInfoDao;
+import info.yalamanchili.office.entity.immigration.ImmigrationCase;
 import info.yalamanchili.office.entity.immigration.StayPeriodInfo;
 import info.yalamanchili.office.jrs.CRUDResource;
+import info.yalamanchili.office.profile.immigration.EmployeeH1BDetailsDto;
+import info.yalamanchili.office.profile.immigration.ImmigrationCaseService;
 import info.yalamanchili.office.profile.immigration.StayPeriodInfoService;
 import info.yalamanchili.office.security.AccessCheck;
 import javax.ws.rs.PUT;
@@ -55,7 +58,7 @@ public class StayPeriodInfoResorce extends CRUDResource<StayPeriodInfo> {
         stayPeriodDetails.setName(stayPeriodInfo.getName());
         stayPeriodDetails.setFromDate(stayPeriodInfo.getFromDate());
         stayPeriodDetails.setToDate(stayPeriodInfo.getToDate());
-        stayPeriodDetails.setImmigrationStatus(stayPeriodInfo.getImmigrationStatus());
+        stayPeriodDetails.setImmigrantStatus(stayPeriodInfo.getImmigrantStatus());
         stayPeriodDetails.setPurpose(stayPeriodInfo.getPurpose());
         return stayPeriodDetails;
     }
@@ -69,6 +72,17 @@ public class StayPeriodInfoResorce extends CRUDResource<StayPeriodInfo> {
         if (periodInfo.getId() != null) {
             stayPeriodDetailsDao.delete(id);
         }
+    }
+
+    @PUT
+    @Path("save-stayperiod-info/{invitationCode}")
+    public EmployeeH1BDetailsDto saveStayPeriodInfo(@PathParam("invitationCode") String invitationCode, EmployeeH1BDetailsDto dto) {
+        ImmigrationCase immiCase = ImmigrationCaseService.instance().getCase(invitationCode);
+        StayPeriodInfo stayInfo = dto.getStayPeriodInfo();
+        stayInfo.setTargetEntityId(immiCase.getId());
+        stayInfo.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
+        dto.setStayPeriodInfo(stayPeriodDetailsService.saveStayPeriodInfoForCase(immiCase.getId(), stayInfo));
+        return dto;
     }
 
     @Override
