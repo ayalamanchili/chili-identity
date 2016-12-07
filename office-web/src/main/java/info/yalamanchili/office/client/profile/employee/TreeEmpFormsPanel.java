@@ -13,6 +13,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTML;
 import info.chili.gwt.config.ChiliClientConfig;
 import info.chili.gwt.utils.JSONUtils;
 import info.yalamanchili.office.client.Auth;
@@ -39,7 +40,13 @@ public class TreeEmpFormsPanel extends TreePanelComposite {
     protected Anchor printACHL = new Anchor("Print Ach Form");
     protected Anchor printJoiningFormL = new Anchor("Print Joining Form");
     protected Anchor printselfIdFormL = new Anchor("Print Self Identification Form");
-    protected Anchor printRolesResIdFormL = new Anchor("Print Roles And ");
+    protected Anchor printRolesResIdFormL = new Anchor("Print Roles And Responsibilities");
+    protected static HTML generalInfo = new HTML("\n"
+            + "<center><p style=\"border: 1px solid rgb(191, 191, 191); padding: 0px 10px; background: rgb(222, 222, 222);\">"
+            + "<strong style=\"color:#555555\"> Self Identification Form </strong></p></center>\n"
+            + "\n"
+            + "<ul>\n"
+            + "</ul>");
 
     public TreeEmpFormsPanel(JSONObject emp) {
         this.employeeId = JSONUtils.toString(emp, "id");
@@ -82,6 +89,7 @@ public class TreeEmpFormsPanel extends TreePanelComposite {
         addFirstChildLink("Roles & Responsibilities", ROLESRESPONSIBILITES);
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_ON_BOARDING_MGR, Auth.ROLE.ROLE_BACKGROUND_SCREENING_MGR, Auth.ROLE.ROLE_E_VERIFY_MGR, Auth.ROLE.ROLE_PAYROLL_AND_BENIFITS)) {
             addFirstChildLink("Documents", DOCUMENTS_NODE);
+
         }
     }
 
@@ -91,13 +99,16 @@ public class TreeEmpFormsPanel extends TreePanelComposite {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadAllBankAcctWidget(employeeId));
             TabPanel.instance().getMyOfficePanel().entityPanel.add(printACHL);
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(generalInfo);
             TabPanel.instance().getMyOfficePanel().entityPanel.add(printselfIdFormL);
         }
         if (JOINING_FORM.equals(entityNodeKey)) {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
             TabPanel.instance().getMyOfficePanel().entityPanel.add(new ReadJoiningFormPanel(employeeId));
             TabPanel.instance().getMyOfficePanel().entityPanel.add(printJoiningFormL);
+            TabPanel.instance().getMyOfficePanel().entityPanel.add(generalInfo);
             TabPanel.instance().getMyOfficePanel().entityPanel.add(printselfIdFormL);
+
         }
         if (ROLESRESPONSIBILITES.equals(entityNodeKey)) {
             TabPanel.instance().getMyOfficePanel().entityPanel.clear();
