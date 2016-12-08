@@ -54,14 +54,14 @@ public class EmployeeAdditionalDetails extends AbstractHandleEntity {
      */
     @Enumerated(EnumType.STRING)
     @Field
-    protected Ethnicity veteranStatus;
+    protected VeteranStatus veteranStatus;
     
     /**
      *
      */
     @Enumerated(EnumType.STRING)
     @Field
-    protected Ethnicity disability;
+    protected Disability disability;
     
     @Lob
     protected String rolesAndResponsibilities;
@@ -89,19 +89,19 @@ public class EmployeeAdditionalDetails extends AbstractHandleEntity {
     public void setEthnicity(Ethnicity ethnicity) {
         this.ethnicity = ethnicity;
     }
-    public Ethnicity getVeteranStatus() {
+    public VeteranStatus getVeteranStatus() {
         return veteranStatus;
     }
 
-    public void setVeteranStatus(Ethnicity veteranStatus) {
+    public void setVeteranStatus(VeteranStatus veteranStatus) {
         this.veteranStatus = veteranStatus;
     }
 
-    public Ethnicity getDisability() {
+    public Disability getDisability() {
         return disability;
     }
 
-    public void setDisability(Ethnicity disability) {
+    public void setDisability(Disability disability) {
         this.disability = disability;
     }
     
