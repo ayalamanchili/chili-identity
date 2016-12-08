@@ -39,8 +39,10 @@ import info.yalamanchili.office.entity.profile.Sex;
 import info.yalamanchili.office.entity.profile.ext.Dependent;
 import info.yalamanchili.office.entity.profile.ext.EmployeeAdditionalDetails;
 import info.yalamanchili.office.entity.profile.ext.Ethnicity;
+import info.yalamanchili.office.entity.profile.ext.Disability;
 import info.yalamanchili.office.entity.profile.ext.MaritalStatus;
 import info.yalamanchili.office.entity.profile.ext.Relationship;
+import info.yalamanchili.office.entity.profile.ext.VeteranStatus;
 import info.yalamanchili.office.entity.profile.onboarding.EmployeeOnBoarding;
 import info.yalamanchili.office.template.TemplateService;
 import java.io.ByteArrayOutputStream;
@@ -555,33 +557,33 @@ public class EmployeeFormsService {
             }
             data.getData().put("veteranStatus", ead.getMaritalStatus().name());
             if (ead.getEthnicity() != null) {
-                Ethnicity ethnicity = ead.getEthnicity();
-                switch (ethnicity) {
-                    case Asian:
+                VeteranStatus veteranStatus = ead.getVeteranStatus();
+                switch (veteranStatus) {
+                    case One_or_more_of_the_classifications:
                         data.getData().put("oneormore", "true");
                         break;
-                    case Latino_Hispanic:
+                    case Veteran_but_not_a_protected_veteran:
                         data.getData().put("asaveteran", "true");
                         break;
-                    case AmericanIndian_AlaskaNative:
+                    case Not_a_veteran:
                         data.getData().put("notveteran", "true");
                         break;
-                    case Black_AfricanAmerican:
+                    case Do_not_wish:
                         data.getData().put("selfIdentify", "true");
                         break;
                 }
             }
             data.getData().put("disability", ead.getMaritalStatus().name());
-            if (ead.getEthnicity() != null) {
-                Ethnicity ethnicity = ead.getEthnicity();
-                switch (ethnicity) {
-                    case Asian:
+            if (ead.getDisability() != null) {
+                Disability disability = ead.getDisability();
+                switch (disability) {
+                    case Have_A_Disability:
                         data.getData().put("yes", "true");
                         break;
-                    case Latino_Hispanic:
+                    case Dont_Have_Disability:
                         data.getData().put("no", "true");
                         break;
-                    case AmericanIndian_AlaskaNative:
+                    case Do_not_wish:
                         data.getData().put("dontwishselfidentify", "true");
                         break;
                 }
