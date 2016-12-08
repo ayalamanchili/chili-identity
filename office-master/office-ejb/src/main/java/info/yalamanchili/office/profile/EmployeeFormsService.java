@@ -507,7 +507,7 @@ public class EmployeeFormsService {
     }
 
     public Response printSelfIdentificationForm(Employee emp) {
-            JoiningFormsDto dto = getJoiningForm(emp);
+        JoiningFormsDto dto = getJoiningForm(emp);
         EmployeeAdditionalDetails ead = dto.getEmpAddnlDetails();
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
         PdfDocumentData data = new PdfDocumentData();
@@ -528,7 +528,6 @@ public class EmployeeFormsService {
             data.getData().put("genderFemale", "true");
         }
         if (ead != null) {
-            data.getData().put("maritalStatus", ead.getMaritalStatus().name());
             if (ead.getEthnicity() != null) {
                 Ethnicity ethnicity = ead.getEthnicity();
                 switch (ethnicity) {
@@ -555,8 +554,7 @@ public class EmployeeFormsService {
                         break;
                 }
             }
-            data.getData().put("veteranStatus", ead.getMaritalStatus().name());
-            if (ead.getEthnicity() != null) {
+            if (ead.getVeteranStatus() != null) {
                 VeteranStatus veteranStatus = ead.getVeteranStatus();
                 switch (veteranStatus) {
                     case One_or_more_of_the_classifications:
@@ -573,7 +571,6 @@ public class EmployeeFormsService {
                         break;
                 }
             }
-            data.getData().put("disability", ead.getMaritalStatus().name());
             if (ead.getDisability() != null) {
                 Disability disability = ead.getDisability();
                 switch (disability) {
