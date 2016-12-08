@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author ayalamanchili
  */
-@RestController("/identity/user/")
+@RestController("/identity-client/user/")
 public class IdentityClientResource {
 
     protected IdentityClient identityClient;

@@ -5,7 +5,6 @@
  */
 package info.chili.identity.client;
 
-import info.chili.identity.jpa.CUser;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
