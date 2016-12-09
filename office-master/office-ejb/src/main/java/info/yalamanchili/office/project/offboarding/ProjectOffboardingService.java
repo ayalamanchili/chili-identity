@@ -53,7 +53,7 @@ public class ProjectOffboardingService {
         vars.put("projectOffboardingEntity", ped);
         vars.put("currentEmployee", OfficeSecurityService.instance().getCurrentUser());
         vars.put("clientInfoLink", getClientInfoLink(ci.getId()));
-        OfficeBPMService.instance().startProcess("associate_project_offboarding_process", vars);
+        OfficeBPMService.instance().startProcess("associate_project_offboarding_process_v2", vars);
 
     }
 
