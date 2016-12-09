@@ -1,13 +1,12 @@
-# Discovery Server Access
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:1111/eureka/
-      
 # Configuration Server Access
 spring:
   cloud:
     config:
       uri: http://localhost:4444      
       
+# Discovery Server Access
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1111/eureka/
       
