@@ -510,10 +510,9 @@ public class EmployeeFormsService {
     public Response printSelfIdentificationForm(Employee emp) {
         JoiningFormsDto dto = getJoiningForm(emp);
         EmployeeAdditionalDetails ead = dto.getEmpAddnlDetails();
-        if (ead.getVeteranStatus() == null || ead.getDisability() == null) {
+        if (ead != null && ead.getVeteranStatus() == null || ead.getDisability() == null) {
             throw new ServiceException(ServiceException.StatusCode.INVALID_REQUEST, "SYSTEM", "self.identification.not.submitted", "Self Identification form not submittted");
         }
-
         OfficeSecurityConfiguration securityConfiguration = OfficeSecurityConfiguration.instance();
         PdfDocumentData data = new PdfDocumentData();
         data.setTemplateUrl("/templates/pdf/sst-voluntary-selfIdentification-template.pdf");
@@ -575,7 +574,7 @@ public class EmployeeFormsService {
                         data.getData().put("selfIdentify", "true");
                         break;
                 }
-            } 
+            }
             if (ead.getDisability() != null) {
                 Disability disability = ead.getDisability();
                 switch (disability) {
@@ -589,7 +588,7 @@ public class EmployeeFormsService {
                         data.getData().put("dontwishselfidentify", "true");
                         break;
                 }
-            } 
+            }
         }
         EmployeeOnBoarding onboarding = EmployeeOnBoardingDao.instance().findByEmployeeId(emp.getId());
         Date onboardingDate = null;
