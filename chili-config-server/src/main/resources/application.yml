@@ -10,7 +10,7 @@ spring:
       server:
         git:
           uri: https://github.com/ayalamanchili/chili-ms
-          search-paths: config 
+          search-paths: chili-configuration,chili-configuration/default,chili-configuration/registration,chili-configuration/identity 
 
 server:
   port: 4444
