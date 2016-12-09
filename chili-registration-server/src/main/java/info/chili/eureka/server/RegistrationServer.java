@@ -3,25 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.chili.identity;
+package info.chili.eureka.server;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.context.annotation.Import;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 /**
  *
  * @author ayalamanchili
  */
-@EnableAutoConfiguration
-@EnableDiscoveryClient
-@Import(IdentityConfiguration.class)
 @SpringBootApplication
-public class IdentityServer {
-
+@EnableEurekaServer
+public class RegistrationServer {
+ 
     public static void main(String[] args) {
-        SpringApplication.run(IdentityServer.class, args);
+        SpringApplication.run(RegistrationServer.class, args);
     }
 }

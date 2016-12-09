@@ -58,6 +58,14 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter</artifactId>
         </dependency>
+        
+        
+        <dependency>
+            <!--Spring Cloud config-->
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+        
         <dependency>
             <!-- Eureka service registration -->
             <groupId>org.springframework.cloud</groupId>
