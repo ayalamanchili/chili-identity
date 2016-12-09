@@ -18,9 +18,14 @@ import info.chili.bpm.types.FormProperty;
 import info.chili.bpm.types.HistoricTask;
 import info.chili.bpm.types.Task;
 import info.chili.bpm.types.Task.TaskTable;
+import info.chili.reporting.ReportGenerator;
 import info.chili.security.SecurityUtils;
+import info.yalamanchili.office.bpm.TaskDto;
+import info.yalamanchili.office.config.OfficeServiceConfiguration;
 import info.yalamanchili.office.dao.security.OfficeSecurityService;
 import info.yalamanchili.office.entity.profile.Employee;
+import info.yalamanchili.office.jms.MessagingService;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +36,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -53,6 +59,8 @@ public class BPMResource {
     protected OfficeBPMTaskService officeBPMTaskService;
     @Autowired
     protected OfficeBPMFormService officeBPMFormService;
+    @Autowired
+    protected Mapper mapper;
 
     @GET
     @Path("/claimtask/{taskId}")
@@ -130,6 +138,23 @@ public class BPMResource {
     @Path("/history/tasks/{start}/{limit}")
     public HistoricTask.HistoricTaskTable getHistoryTasks(@PathParam("start") int start, @PathParam("limit") int limit) {
         return officeBPMTaskService.getHistoricalTasks(start, limit);
+    }
+
+    @GET
+    @Path("/alltasks-reports")
+    public List<TaskDto> getMyAllTasks() {
+        Employee emp = OfficeSecurityService.instance().getCurrentUser();
+        TaskTable allTasksForUser = officeBPMTaskService.getAllTasks(0, 10000);
+        List<Task> tasks = allTasksForUser.getEntities();
+        List<TaskDto> dto = new ArrayList();
+        for (Task task : tasks) {
+            TaskDto taskDto = mapper.map(task, TaskDto.class);
+            taskDto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
+            dto.add(taskDto);
+        }
+        String[] columnOrder = new String[]{"employee", "name", "owner", "assignee", "createTime", "dueDate"};
+        MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(dto, "Tasks-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), emp.getPrimaryEmail().getEmail());
+        return dto;
     }
 
     @GET

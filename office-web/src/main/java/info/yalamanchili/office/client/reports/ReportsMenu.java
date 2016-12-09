@@ -19,6 +19,7 @@ import info.yalamanchili.office.client.contracts.ContractsSidePanel;
 import info.yalamanchili.office.client.contracts.ReadAllContractsPanel;
 import info.yalamanchili.office.client.employee.prbprdeval.ProbatioPeriodPerfEvaluationReportsSidePanel;
 import info.yalamanchili.office.client.employee.prefeval.PerfEvaluationReportsSidePanel;
+import info.yalamanchili.office.client.home.tasks.TasksReportsSidePanel;
 
 import info.yalamanchili.office.client.profile.reports.ProfileReportsSidePanel;
 import info.yalamanchili.office.client.profile.reports.RetirementPlanOptInSidePanal;
@@ -38,7 +39,7 @@ public class ReportsMenu extends CMenuBar {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_ADMIN, ROLE.ROLE_INVOICE_MANAGER)) {
             addMenuItem("Invoices", "Invoices", invoicereportsMaintainenceCmd);
         }
-        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP,ROLE.ROLE_HR_ADMINSTRATION)) {
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR, ROLE.ROLE_RELATIONSHIP, ROLE.ROLE_HR_ADMINSTRATION)) {
             addMenuItem("Profile Reports", "Profile Reports", profileReportsMaintainenceCmd);
         }
         if (Auth.hasAnyOfRoles(Auth.ROLE.ROLE_HR_ADMINSTRATION)) {
@@ -65,6 +66,9 @@ public class ReportsMenu extends CMenuBar {
         if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
             addMenuItem("PayRate Reports", "PayRate Reports", payRateCmd);
         }
+        if (Auth.hasAnyOfRoles(ROLE.ROLE_HR_ADMINSTRATION)) {
+            addMenuItem("Tasks", "Tasks", taasksReportsCmd);
+        }
     }
     public static Command contractingMaintainenceCmd = new Command() {
         @Override
@@ -82,6 +86,14 @@ public class ReportsMenu extends CMenuBar {
             TabPanel.instance().getReportingPanel().sidePanelTop.clear();
             TabPanel.instance().getReportingPanel().entityPanel.add(new ReadAllInvoicePanel(true));
             TabPanel.instance().getReportingPanel().sidePanelTop.add(new InvoiceSidePanel());
+        }
+    };
+    public static Command taasksReportsCmd = new Command() {
+        @Override
+        public void execute() {
+            TabPanel.instance().getReportingPanel().entityPanel.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.clear();
+            TabPanel.instance().getReportingPanel().sidePanelTop.add(new TasksReportsSidePanel());
         }
     };
 
