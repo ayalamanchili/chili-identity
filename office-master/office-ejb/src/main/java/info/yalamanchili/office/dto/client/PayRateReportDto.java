@@ -43,15 +43,17 @@ public class PayRateReportDto {
         this.endDate = endDate;
         this.employeeType = employeeType;
         this.company = company.name();
-         if(payRate == null){
-           Float f = (payRatePercentage*billingRate.floatValue())/100;
-           this.payRate = new BigDecimal(f) ;
+        if (payRate == null) {
+            if (payRatePercentage != null && billingRate != null) {
+                Float f = (payRatePercentage * billingRate.floatValue()) / 100;
+                this.payRate = new BigDecimal(f);
+            }
+        } else {
+            this.payRate = payRate;
         }
-         else this.payRate = payRate;
-        if(payRatePercentage == null ){
-            
+        if (payRatePercentage != null) {
+            this.payRatePercentage = payRatePercentage.toString();
         }
-        else this.payRatePercentage = payRatePercentage.toString();
 
     }
 
