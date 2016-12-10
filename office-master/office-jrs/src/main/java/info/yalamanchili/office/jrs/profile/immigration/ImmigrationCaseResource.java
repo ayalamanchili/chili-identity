@@ -246,6 +246,13 @@ public class ImmigrationCaseResource extends CRUDResource<ImmigrationCase> {
     public EmployeeH1BDetailsDto getpage2details(@QueryParam("invitationCode") String invitationCode) {
         return caseService.loadPage2Details(invitationCode);
     }
+    
+    @GET
+    @Path("h1b-questionnaire/get-details/page-3")
+    @CacheEvict(value = OfficeCacheKeys.IMMIGRATION_CASE)
+    public EmployeeH1BDetailsDto getpage3details(@QueryParam("invitationCode") String invitationCode) {
+        return caseService.loadPage3Details(invitationCode);
+    }
 
     @GET
     @Path("h1b-questionnaire/get-details/page-5")
