@@ -31,7 +31,6 @@ public class H1bQuestionnaireWidget extends UpdateComposite implements ClickHand
     protected Button page3L = new Button("3");
     protected Button page4L = new Button("4");
     protected Button page5L = new Button("5");
-    protected Button page6L = new Button("6");
 
     HorizontalPanel pagesPanel = new HorizontalPanel();
 
@@ -62,7 +61,6 @@ public class H1bQuestionnaireWidget extends UpdateComposite implements ClickHand
         page3L.addClickHandler(this);
         page4L.addClickHandler(this);
         page5L.addClickHandler(this);
-        page6L.addClickHandler(this);
     }
 
     @Override
@@ -80,8 +78,7 @@ public class H1bQuestionnaireWidget extends UpdateComposite implements ClickHand
                 + "Prior work Exp., Miscellaneous Info");
         page3L.setTitle("Go to Current U.S. Address, Foreign Address");
         page4L.setTitle("Go to Deportation Info, Prev. Visa Info, Visa filing Info");
-        page5L.setTitle("Go to Consulate info");
-        page6L.setTitle("Go to Applicant and Stay Period Info");
+        page5L.setTitle("Go to Consulate info, Relatives Stay Period Info");
         loadPage();
     }
 
@@ -92,6 +89,9 @@ public class H1bQuestionnaireWidget extends UpdateComposite implements ClickHand
                 break;
             case "page2":
                 entityActionsPanel.add(new ReadH1bPage2Panel(invitationCode));
+                break;
+            case "page3":
+                entityActionsPanel.add(new ReadH1bPage3Panel(invitationCode));
                 break;
             case "page5":
                 entityActionsPanel.add(new ReadH1bPage5Panel(invitationCode));
@@ -106,7 +106,6 @@ public class H1bQuestionnaireWidget extends UpdateComposite implements ClickHand
         pagesPanel.add(page3L);
         pagesPanel.add(page4L);
         pagesPanel.add(page5L);
-        pagesPanel.add(page6L);
         entityFieldsPanel.add(pagesPanel);
         alignFields();
     }
@@ -131,6 +130,11 @@ public class H1bQuestionnaireWidget extends UpdateComposite implements ClickHand
             entityActionsPanel.clear();
             entityFieldsPanel.add(pagesPanel);
             entityActionsPanel.add(new ReadH1bPage2Panel(invitationCode));
+        }
+        if (event.getSource().equals(page3L)) {
+            entityActionsPanel.clear();
+            entityFieldsPanel.add(pagesPanel);
+            entityActionsPanel.add(new ReadH1bPage3Panel(invitationCode));
         }
         if (event.getSource().equals(page5L)) {
             entityActionsPanel.clear();
