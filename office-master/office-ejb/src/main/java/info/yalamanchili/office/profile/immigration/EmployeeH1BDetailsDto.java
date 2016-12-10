@@ -8,6 +8,7 @@
  */
 package info.yalamanchili.office.profile.immigration;
 
+import info.yalamanchili.office.entity.immigration.AddressHandleEntity;
 import info.yalamanchili.office.entity.immigration.AlienNumber;
 import info.yalamanchili.office.entity.immigration.ConsulateInfo;
 import info.yalamanchili.office.entity.immigration.EducationRecord;
@@ -20,6 +21,8 @@ import info.yalamanchili.office.entity.immigration.StayPeriodInfo;
 import info.yalamanchili.office.entity.immigration.USEducationRecord;
 import info.yalamanchili.office.entity.immigration.i94Record;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -58,6 +61,8 @@ public class EmployeeH1BDetailsDto implements Serializable {
     private ConsulateInfo consulateInfo;
 
     private StayPeriodInfo stayPeriodInfo;
+
+    private List<AddressHandleEntity> usForeignAddrInfo;
 
     public PersonalInfoDto getEmpPersonalInfo() {
         return empPersonalInfo;
@@ -169,5 +174,23 @@ public class EmployeeH1BDetailsDto implements Serializable {
 
     public void setStayPeriodInfo(StayPeriodInfo stayPeriodInfo) {
         this.stayPeriodInfo = stayPeriodInfo;
+    }
+
+    public List<AddressHandleEntity> getUsForeignAddrInfo() {
+        if (this.usForeignAddrInfo == null) {
+            this.usForeignAddrInfo = new ArrayList<AddressHandleEntity>();
+        }
+        return this.usForeignAddrInfo;
+    }
+
+    public void setUsForeignAddrInfo(List<AddressHandleEntity> usForeignAddrInfo) {
+        this.usForeignAddrInfo = usForeignAddrInfo;
+    }
+    
+    public void addUsForeignAddrInfo(AddressHandleEntity entity) {
+        if (entity == null) {
+            return;
+        }
+        getUsForeignAddrInfo().add(entity);
     }
 }
