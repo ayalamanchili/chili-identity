@@ -13,6 +13,7 @@ import info.yalamanchili.office.dao.invite.InviteCodeDao;
 import info.yalamanchili.office.dao.profile.ContactDao;
 import info.yalamanchili.office.dao.profile.EmployeeDao;
 import info.yalamanchili.office.dao.profile.ext.EmployeeAdditionalDetailsDao;
+import info.yalamanchili.office.dao.profile.immigration.AddressHandleEntityDao;
 import info.yalamanchili.office.dao.profile.immigration.AlienNumberDao;
 import info.yalamanchili.office.dao.profile.immigration.ConsulateInfoDao;
 import info.yalamanchili.office.dao.profile.immigration.ExperienceSummaryDao;
@@ -24,6 +25,7 @@ import info.yalamanchili.office.dao.profile.immigration.OtherNamesInfoDao;
 import info.yalamanchili.office.dao.profile.immigration.PassportDao;
 import info.yalamanchili.office.dao.profile.immigration.StayPeriodInfoDao;
 import info.yalamanchili.office.dao.profile.immigration.UsEducationRecordDao;
+import info.yalamanchili.office.entity.immigration.AddressHandleEntity;
 import info.yalamanchili.office.entity.immigration.AlienNumber;
 import info.yalamanchili.office.entity.immigration.ConsulateInfo;
 import info.yalamanchili.office.entity.immigration.ExperienceSummary;
@@ -162,6 +164,16 @@ public class ImmigrationCaseService {
         List<ImmigrationCaseAdditionalDetails> details = ImmigrationCaseAdditionalDetailsDao.instance().findAll(immiCase.getId(), ImmigrationCase.class.getCanonicalName());
         if (details != null && details.size() > 0) {
             detailsDto.setCaseAddtnDetails(details.get(0));
+        }
+        return detailsDto;
+    }
+
+    public EmployeeH1BDetailsDto loadPage3Details(String invitationCode) {
+        EmployeeH1BDetailsDto detailsDto = new EmployeeH1BDetailsDto();
+        ImmigrationCase immiCase = getCase(invitationCode);
+        List<AddressHandleEntity> addresses = AddressHandleEntityDao.instance().findAll(immiCase.getId(), ImmigrationCase.class.getCanonicalName());
+        if (addresses != null && addresses.size() > 0) {
+            detailsDto.setUsForeignAddrInfo(addresses);
         }
         return detailsDto;
     }
