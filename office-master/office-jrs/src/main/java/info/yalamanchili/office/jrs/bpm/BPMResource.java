@@ -149,10 +149,10 @@ public class BPMResource {
         List<TaskDto> dto = new ArrayList();
         for (Task task : tasks) {
             TaskDto taskDto = mapper.map(task, TaskDto.class);
-            taskDto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
+//            taskDto.setEmployee(emp.getFirstName() + " " + emp.getLastName());
             dto.add(taskDto);
         }
-        String[] columnOrder = new String[]{"employee", "name", "owner", "assignee", "createTime", "dueDate"};
+        String[] columnOrder = new String[]{"name", "owner", "assignee", "createTime", "dueDate"};
         MessagingService.instance().emailReport(ReportGenerator.generateExcelOrderedReport(dto, "Tasks-Report", OfficeServiceConfiguration.instance().getContentManagementLocationRoot(), columnOrder), emp.getPrimaryEmail().getEmail());
         return dto;
     }
