@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="listArray">
+        <item>Prod</item>
+        <item>Test</item>
+        <item>Local</item>
+    </string-array>
+    <string-array name="listValues">
+        <item>https://apps.sstech.us</item>
+        <item>http://yalamanchili.info:8080</item>
+        <item>http://10.0.2.2:8080</item>
+    </string-array>
+
+</resources>

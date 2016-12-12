@@ -1,0 +1,32 @@
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+ 
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${email.host}" />
+        <property name="port" value="${email.port}" />
+        <property name="username" value="${email.username}" />
+        <property name="password" value="${email.password}" />
+ 
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.from">${email.from}</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.smtp.ssl.checkserveridentity">false</prop>
+                <prop key="mail.smtp.ssl.trust">*</prop>
+                <prop key="mail.debug">${email.debug}</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="emailService" class="info.yalamanchili.office.email.EmailService">
+        <property name="mailSender" ref="mailSender" />
+    </bean>
+   
+</beans>

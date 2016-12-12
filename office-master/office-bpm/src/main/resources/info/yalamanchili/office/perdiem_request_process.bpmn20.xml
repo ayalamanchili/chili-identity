@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="perdiem_request_process">
+        <startEvent id="perDiemRequestStart"/>
+        
+        <!-- Payroll approval task-->
+        <sequenceFlow  sourceRef="perDiemRequestStart" targetRef="perDiemPayrollApprovalTask" />
+        <userTask id="perDiemPayrollApprovalTask" 
+                  name="PerDiem Payroll Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}"
+                  activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
+            <documentation>
+                Employee PerDiem Requisition Payroll Approval Task
+                Employee Name       :#{currentEmployee.firstName} #{currentEmployee.lastName}
+                Live 50 Miles Away  : #{entity.live50MilesAway}
+                Start Date          : #{entity.perDiemStartDate}
+                End Date            : #{entity.perDiemEndDate}
+                Amount              : #{entity.amount}
+                Percentage          : #{entity.percentage}
+                
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/expense/PerdiemProcess.html
+              
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.perdiem.PerDiemProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.perdiem.PerDiemProcess" />
+                
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="perDiemPayrollApprovalTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="perDiemPayrollApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="perDiemPayrollApprovalTaskEscalationTimer" 
+                      targetRef="perDiemPayrollApprovalTaskEscalation" />
+        <serviceTask id="perDiemPayrollApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <endEvent id="perDiemProcessEnd" />
+    </process>
+</definitions>

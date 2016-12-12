@@ -1,0 +1,187 @@
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<project xmlns="http://maven.apache.org/DECORATION/1.3.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/DECORATION/1.3.0 http://maven.apache.org/xsd/decoration-1.3.0.xsd"
+         name="System Soft Portal">
+ 
+    <bannerLeft>
+        <name>Project Name</name>
+        <!-- <src>https://yalamanchili.googlecode.com/files/sstlogo.png</src>-->
+        <src>/images/sstlogo.png</src>
+        <href>https://apps.sstech.us/portal</href>
+    </bannerLeft>
+    <bannerRight>
+        <name>Project Documentation</name>
+        <src>/images/doc-logo.png</src>
+    </bannerRight>
+    <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-fluido-skin</artifactId>
+        <version>1.2.1</version>
+    </skin>
+    <custom>
+        <fluidoSkin>
+            <sideBarEnabled>true</sideBarEnabled>
+            <!--            <googleSearch>
+                <sitesearch/>
+            </googleSearch>            -->
+        </fluidoSkin>
+    </custom>   
+    <body>
+        <head>
+            <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW"></META>
+        </head>
+        <menu name="Overview">
+            <item name="Introduction" href="/office/index.html"/>
+            <item name="Social" href="/office/social.html"/>
+            <item name="Manage Employees" href="/office/manage-employees/create-deactivate-employee.html" collapse="true">
+                <item name="Create/Delete/Deactivate Employee" href="/office/manage-employees/create-deactivate-employee.html"/>
+                <item name="Internal Company Transfer" href="/office/manage-employees/internal-company-transfer.html"/>
+                <item name="Department Transfer" href="/office/manage-employees/department-transfer.html"/>
+                <item name="Employee Documents" href="/office/manage-employees/manage-employee-documents.html"/>
+                <item name="Employee Information" href="/office/manage-employees/update-employee-info.html"/>
+                <item name="Company Contacts" href="/office/manage-employees/manage-company-contacts.html"/>
+            </item>
+            <item name="Billing and Contracts" href="/office/bpm/new-client-info-process.html" collapse="true">
+                <item name="Employee Project Onboarding" href="/office/bpm/new-client-info-process.html" collapse="true">
+                    <item name="Update Billrate" href="/office/updatebillingrate.html"/>
+                    <item name="Client information Reports" href="/office/contracts-reports.html"/>
+                    <item name="Submit Project End Details" href="/office/project-offboarding.html"/>
+                </item>
+                <item name="Invoice" href="/office/invoice/create-invoice.html" collapse="true">
+                    <item name="Update Invoice" href="/office/invoice/update-invoice.html" collapse="true"/>
+                    <item name="Search Invoice" href="/office/invoice/search-invoice.html" collapse="true"/>
+                    <item name="Submit Invoice" href="/office/invoice/submit-invoice.html" collapse="true"/>
+                </item>
+                <item name="Employee Project Offboarding" href="office/offboarding/project_offboarding.html"/>
+            </item>
+            <item name="Prospects" href="/office/prospects/prospects.html" collapse="true">
+                <item name="Prospect Reports" href="/office/prospects/prospect-reports.html"/>
+                <item name="Prospect Graphs" href="/office/prospects/prospect-graphs.html"/>
+                <item name="Prospect Onboarding" href="/office/prospects/prospect_onboarding.html"/>
+            </item>
+            <item name="Employee OnBoarding" href="/office/onboarding/employee-onboarding.html" collapse="true">
+                <item name="Onboarding Search" href="/office/onboarding/onboarding-search.html"/>
+                <item name="Onboarding Reports" href="/office/onboarding/onboarding-reports.html"/>
+                <item name="Verify Employee Forms And Data" href="/office/onboarding/forms-docs-verification.html"/>
+                <item name="How To Fill Onboarding Form" href="/office/onboarding/submit-onboarding-details.html"/>
+                <item name="ACH Form" href="/office/onboarding/ach-form.html"/>
+                <item name="Joining Form" href="/office/onboarding/joining-form.html"/>
+                <item name="How to Update Roles and Resposibilities" href="/office/onboarding/roles-and-responsibilities.html"/>
+            </item>
+            <item name="Profile" href="office/profile/profile.html" collapse="true">
+                <item name="Change Password" href="office/profile/change_password.html"/>
+                <item name="Update Profile Picture" href="office/profile/update_profile_picture.html"/>
+                <item name="Addresses" href="office/profile/manage-address.html"/>
+                <item name="Phones" href="office/profile/phones.html"/>
+                <item name="Emails" href="office/profile/emails.html"/>
+                <item name="Emergency Contacts" href="office/profile/emergency_contacts.html"/>
+                <item name="Dependents" href="office/profile/dependents.html"/>
+                <item name="SkillSet" href="office/profile/skillset.html" />
+                <item name="Benefits" href="office/profile/benefits.html" collapse="true">
+                    <item name="Health Insurance" href="office/profile/health-insurance.html" collapse="true"/>
+                    <item name="Reports" href="office/profile/health-reports.html" collapse="true"/>
+                </item>   
+                <item name="Preferences" href="office/profile/preferences.html"/>
+                <item name="Privacy" href="office/profile/privacy.html"/>
+            </item>
+
+            <item name="Drive" href="/office/drive.html"/>
+            <item name="Recruiting" href="/office/recruiting/find-candidates.html" collapse="true">
+                <item name="Manage Practice" href="/office/recruiting/practice.html"/>
+                <item name="Manage Technology Groups" href="/office/recruiting/technology-groups.html"/>
+                <item name="Manage Skills" href="/office/recruiting/skills.html"/>
+                <item name="Manage Certifications" href="/office/recruiting/certifications.html"/> 
+                <item name="Manage Skill Set Tags" href="/office/recruiting/skillset-tags.html"/>
+                <item name="Find Candidates" href="/office/recruiting/find-candidates.html"/>   
+            </item>
+            <item name="Adminstration" href="/office/admin.html" collapse="true">
+                <item name="Manage Client" href="/office/admin/manage_client.html"/>
+                <item name="Manage Vendor" href="/office/admin/manage_vendor.html" collapse="true">
+                    <item name="Vendor Reports" href="/office/admin/vendor_reports.html"/>
+                </item>   
+                <item name="Bulkupload" href="/office/admin/bulkimport.html"/>
+                <item name="Vendor Invoice Schedules" href="/office/admin/vendor-invoice-schedules.html"/>
+            </item>
+            <item name="Time" href="/office/timesheets/submit-leave-request.html" collapse="true">
+                <item name="Remote Work Request Process" href="/office/timesheets/OutOfOffice/out-of-office-process.html" collapse="true">
+                    <item name="Submit Remote Work Request" href="/office/timesheets/OutOfOffice/submit-out-of-office-request.html"/>
+                    <item name="Update Remote Work Request" href="/office/timesheets/OutOfOffice/update-outofoffice-request.html"/>
+                </item>
+                <item name="Submit Leave Request" href="/office/timesheets/submit-leave-request.html"/>
+                <item name="Update-Cancel Leave Request" href="/office/timesheets/update-cancel-leave-request.html"/>
+                <item name="Approving Time Sheets" href="/office/timesheets/approving-timesheets.html"/>
+                <item name="Timesheet Process" href="/office/timesheets/corp-timesheet-process.html"/>
+                <item name="Timesheet Maintainence" href="/office/timesheets/corp-timesheet-maintainence.html"/>
+                <item name="Leave Accumulation" href="/office/timesheets/leaves-accumulation.html"/>
+                <item name="Reports" href="/office/timesheets/corp-emp-reports.html"/>
+                <item name="Leaves for Employees" href="/office/timesheets/employee-leave-request.html"/>
+                <item name="Time Data Import" href="/office/timesheets/import-external-time-data.html"/>
+                <item name="Attendance Process" href="/office/timesheets/attendence.html"/>
+                <item name="Leaves Policy" href="/office/timesheets/paid-time-off-leaves.html"/>
+            </item>
+            <item name="Portal Processes" href="/office/bpm/address-updated-process.html" collapse="true">
+                <item name="Address Change Approval Process" href="/office/bpm/address-updated-process.html"/>
+                
+            </item>
+            <item name="Portal Roles" href="/office/roles.html"/>
+            <item name="Email Notifications" href="/office/eamilnotifications.html"/>
+            <item name="Employee Search/Reports" href="/office/employeesearch.html"/>           
+            <item name="Self Service" href="/office/selfservice/open-ticket.html" collapse="true">
+                <item name="Open Ticket" href="/office/selfservice/open-ticket.html"/>
+                <item name="Manage Tickets" href="/office/selfservice/manage-tickets.html"/>
+                <item name="Overview" href="/office/selfservice/overview.html"/>
+            </item>
+            <item name="Status Reports" href="/office/statusreport/statusreport.html"  collapse="true">
+                <item name="Submit Status Report" href="/office/statusreport/statusreport.html" />
+                <item name="Status Report Approval Process" href="/office/statusreport/statusreportprocess.html"/>
+                <item name="Corporate Status Reports" href="/office/statusreport/weeklystatusreports.html"/>
+                <item name="Submit Weekly Status Report" href="/office/statusreport/weekly-statusreport.html" />
+            </item>
+            <item name="Performance Evaluations" href="/office/perf-eval/assoc-submit-review.html"  collapse="true">
+                <item name="Submit Associate Review" href="/office/perf-eval/assoc-submit-review.html" />
+                <item name="Associate Review Process" href="/office/perf-eval/assoc-approval-process.html"/>
+                <item name="Submit Self Review" href="/office/perf-eval/corp-submit-review.html"/>
+                <item name="Corporate Review Process" href="/office/perf-eval/corp-approval-process.html"/>
+                <item name="Probation Period Evaluation Process" href="/office/perf-eval/probation-period-evaluation-process.html"/>
+            </item>
+            <item name="Reports"  href="/office/reports/payrate_report.html" collapse="true">
+                <item name="PayRate Reports" href="/office/reports/payrate_report.html"/>
+            </item>
+            <item name="Email Addresses Reports" href="/office/reports/emailreports.html" collapse="true">
+                <item name="Import email Contacts" href="/office/reports/import-email-contacts-to-outlook.html"/>
+            </item>  
+            <item name="Expense" href="/office/expense/advance.html" collapse="true">
+                <item name="Submit Advance Requisition" href="/office/expense/advance.html"/>
+                <item name="Advance Requisition Process" href="/office/expense/advancerequestprocess.html"/>
+                <item name="Check Requisition Process" href="/office/expense/checkrequisitionprocess.html"/>
+                <item name="Check Requisition Void Process" href="/office/expense/checkrequisitionvoidprocess.html"/>
+                <item name="Create Travel Authorization" href="/office/expense/travelauthorization.html"/>
+                <item name="Travel Authorization Process" href="/office/expense/travelauthorizationprocess.html">
+                </item>
+                <item name="Create Expense Report" href="/office/expense/submitexpensereport.html">
+                </item>
+                <item name="Expense Report Process" href="/office/expense/expensereportprocess.html">
+                </item> 
+                <item name="Create PerDiem Request" href="/office/expense/Perdiem.html">
+                </item>  
+                <item name="PerDiem Process" href="/office/expense/PerdiemProcess.html">
+                </item>  
+                              
+            </item>
+            <item name="Immigration" href="/office/immigration/lca.html" collapse="true">
+                <item name="LCA" href="/office/immigration/lca.html"/>
+            </item>
+            <item name="Trouble Accessing Portal" href="/office/accountresettask.html" collapse="true">
+                <item name="Account Reset" href="/office/accountresettask.html"/>
+                <item name="Forgot Password" href="/office/forgot-password.html"/>
+            </item>
+            <item name="Resource Bundle" href="/office/chilliadmin/resourcebundle.html"collapse="true"/>
+        </menu>
+        <footer>COPYRIGHT © 2012-2015 sstech.us - All Rights Reserved</footer>
+    </body>
+</project>

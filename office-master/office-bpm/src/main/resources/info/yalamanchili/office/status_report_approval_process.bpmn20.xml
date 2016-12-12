@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="status_report_approval_process">
+        <startEvent id="statusReportStart">
+        </startEvent>
+        <sequenceFlow id="flow1" sourceRef="statusReportStart" targetRef="statusReportHRApprovalTask" />
+        <userTask id="statusReportHRApprovalTask" 
+                  name="Status Report HR Review Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
+                  activiti:candidateGroups="ROLE_H1B_IMMIGRATION">
+            <documentation>
+                Project Status Report Submitted For HR Approval
+                Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Report Start Date   : #{entity.reportStartDate}
+                Report End Date     : #{entity.reportEndDate} 
+                Status              : #{entity.status} 
+                Please follow the instructions below to review and complete the approval.
+                https://apps.sstech.us/site/office/statusreport/statusreportprocess.html
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.statusreport.StatusReportProcess" />
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 7 days-->
+        <boundaryEvent id="emailHRTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="statusReportHRApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT168H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailHRTaskEscalationTimer" 
+                      targetRef="hrTaskEmailEscalation" />
+        <serviceTask
+            id="hrTaskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask> 
+        <!--desision-->
+        <sequenceFlow sourceRef="statusReportHRApprovalTask" 
+                      targetRef="approvalGateway" />
+        <exclusiveGateway id="approvalGateway" />
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="statusReportEEMApprovalTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="statusReportEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        <userTask id="statusReportEEMApprovalTask" 
+                  name="Status Report Engagement Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
+            <documentation>
+                Project Status Report Submitted For Engegement Manager Approval
+                Employee Name       : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Report Start Date   : #{entity.reportStartDate}
+                Report End Date     : #{entity.reportEndDate} 
+                Status              : #{entity.status} 
+                Please follow the instructions below to review and complete the approval.
+                https://apps.sstech.us/site/office/statusreport/statusreportprocess.html                
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.statusreport.StatusReportProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.statusreport.StatusReportProcess" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 7 days-->
+        <boundaryEvent id="emailEEMTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="statusReportEEMApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT168H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEEMTaskEscalationTimer" 
+                      targetRef="eemTaskEmailEscalation" />
+        <serviceTask
+            id="eemTaskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        <sequenceFlow id="flow4" sourceRef="statusReportEEMApprovalTask" targetRef="statusReportEnd" />
+        <!-- end-->
+        <endEvent id="statusReportEnd" />
+    </process>
+</definitions>

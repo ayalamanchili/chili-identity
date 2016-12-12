@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="new_corp_employee_process">
+ 
+        <startEvent id="newCorporateEmployeeStart" />
+        <sequenceFlow id="flow1" sourceRef="newCorporateEmployeeStart" targetRef="newCorporateEmployeeHRTask" />
+        <!--Create New Corporate Employee Created Task for HR Admin Role-->
+        <userTask id="newCorporateEmployeeHRTask" 
+                  name="New Corporate Employee ${employee.firstName} ${employee.lastName} is created" 
+                  activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
+            <documentation>
+                New Employee Created.
+                Please Add "Reports To" Company Contact who will be resposible for approving leave requests and other approvals.
+                Instructions: https://apps.sstech.us/site/office/manage-employees/manage-company-contacts.html
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+            </extensionElements> 
+        </userTask>
+        <sequenceFlow sourceRef="newCorporateEmployeeHRTask" targetRef="newCorporateEmployeeEnd" />
+        <!-- Task escalation email after 7 days-->
+        <boundaryEvent id="emailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="newCorporateEmployeeHRTask">
+            <timerEventDefinition> 
+                <timeDuration>PT168H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer" 
+                      targetRef="taskEmailEscalation" />
+        <serviceTask
+            id="taskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        <!-- process end-->
+        <endEvent id="newCorporateEmployeeEnd" />
+    </process>
+ 
+</definitions>

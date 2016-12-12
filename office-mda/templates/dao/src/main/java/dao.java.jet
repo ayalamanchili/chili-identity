@@ -1,0 +1,77 @@
+
+<java:format>
+<f:bundle basename="templates/resources/messages">
+<f:message>copyright</f:message>
+package ${$groupID}.dao.${lower-case($package/@name)};
+
+import info.yalamanchili.dao.AbstractDao;
+import ${$groupID}.entity.${lower-case($package/@name)}.${$class/@name};
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.ejb.Stateless;
+<c:if test="$enableHibernateSearch = 'true'">
+import org.apache.lucene.util.Version;
+import info.yalamanchili.commons.DataType;
+import info.yalamanchili.commons.ReflectionUtils;
+import info.yalamanchili.commons.SearchUtils;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.hibernate.search.FullTextQuery;
+</c:if>	
+
+
+<f:message>generated.class.comment</f:message>
+
+@Stateless
+public class ${$class/@name}DAO  implements AbstractDao<${$class/@name}> {
+
+	
+	protected EntityManager em;
+
+	//@Override
+	public ${$class/@name} findById(Long id) {
+		return em.find( ${$class/@name}.class, id);
+	}
+	
+	//@Override
+	public void save(${$class/@name} entity) {
+		em.merge(entity);
+	}
+	
+	//@Override
+	public void delete(long id) {
+		em.remove(id);
+	}
+
+	//@Override
+	public List<${$class/@name}> query(int start, int limit) {
+		String query = "from " + ${$class/@name}.class.getCanonicalName();
+		Query getEntitites = em.createQuery(query);
+		getEntitites.setFirstResult(start);
+		// TODO externalize the max results value
+		getEntitites.setMaxResults(limit);
+		return getEntitites.getResultList();
+	}
+
+
+	//@Override
+	public Long size() {
+		String query = "select count(entity) from "
+				+ ${$class/@name}.class.getCanonicalName() + " entity";
+		Query getEntitiesSize = em.createQuery(query);
+		return (Long) getEntitiesSize.getSingleResult();
+	}
+
+	public List<String> getSuggestionsForName(String name, ${$class/@name} entity) {
+	//TODO add GWTServlet Utils
+		Query query = em.createQuery("");
+		return query.getResultList();
+	}
+
+}
+</f:bundle>
+</java:format>

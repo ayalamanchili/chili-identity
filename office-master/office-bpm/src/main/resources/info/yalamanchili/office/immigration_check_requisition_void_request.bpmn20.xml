@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi -->
+<definitions xmlns:activiti="http://activiti.org/bpmn" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             targetNamespace="http://www.bpmnwithactiviti.org" 
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL">
+    <process id="immigration_check_requisition_void_request">
+        <startEvent id="immigrationCheckRequestVoidProcessStart" />
+        <sequenceFlow targetRef="immigrationCheckRequestVoidTask" sourceRef="immigrationCheckRequestVoidProcessStart"/>
+        <userTask id="immigrationCheckRequestVoidTask" name="Check Requisition Void Request For ${currentEmployee.firstName} ${currentEmployee.lastName}" activiti:candidateGroups="ROLE_ACCOUNTS_PAYABLE">
+            <documentation>
+                Immigration Check Request Void Task has been created. 
+                Please collect the check from immigration department and process the void request to complete the task.
+                Check Requisition Detail:
+                Submitted By    : #{entity.submittedBy}
+                Amount          : #{entity.amount}
+                Purpose         : #{entity.purpose}
+                Needed By Date  : #{entity.neededByDate}
+                Requested Date  : #{entity.requestedDate}
+                MailingAddress  : #{entity.mailingAddress}
+                caseType        : #{entity.caseType}
+                attorney        : #{entity.attorneyName}
+                status          : #{entity.status}
+                 Follow instructions from below:
+                https://apps.sstech.us/site/office/expense/checkrequisitionvoidprocess.html
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener class="info.yalamanchili.office.bpm.immigration.ImmigrationCheckRequisitionVoidProcess" event="create"/>
+                <activiti:taskListener class="info.yalamanchili.office.bpm.immigration.ImmigrationCheckRequisitionVoidProcess" event="complete"/>
+                <activiti:formProperty id="status" type="enum" required="true" name="Approved">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" type="string" required="false" name="Notes"/>
+            </extensionElements>
+        </userTask>
+        
+        <boundaryEvent id="emailEscalationTimer" attachedToRef="immigrationCheckRequestVoidTask" cancelActivity="false">
+            <timerEventDefinition>
+                <timeDuration>PT48H</timeDuration>
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow targetRef="taskEmailEscalation" sourceRef="emailEscalationTimer"/>
+        <serviceTask id="taskEmailEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!-- end-->
+        <endEvent id="immigrationCheckRequestVoidProcessEnd"/>
+    </process>
+</definitions>

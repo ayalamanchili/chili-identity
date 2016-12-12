@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="ayalamanchili" id="addSourceToComment">
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="comment">
+            <column name="sourceEntityId" type="bigint"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="comment">
+            <column name="sourceEntityName" type="varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="comment_aud">
+            <column name="sourceEntityId" type="bigint"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="comment_aud">
+            <column name="sourceEntityName" type="varchar(255)"/>
+        </addColumn>
+        <createIndex catalogName="office"
+                     indexName="SRC_ENTY_NM"
+                     schemaName="public"
+                     tableName="comment"
+                     unique="true">
+            <column name="sourceEntityName" type="varchar(255)"/>
+        </createIndex>
+        <createIndex catalogName="office"
+                     indexName="SRC_ENTY_ID"
+                     schemaName="public"
+                     tableName="comment"
+                     unique="true">
+            <column name="sourceEntityId" type="bigint"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="ayalamanchili" id="addSourceToCheck">
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="OCheck">
+            <column name="sourceEntityId" type="bigint"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="OCheck">
+            <column name="sourceEntityName" type="varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="OCheck_aud">
+            <column name="sourceEntityId" type="bigint"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="OCheck_aud">
+            <column name="sourceEntityName" type="varchar(255)"/>
+        </addColumn>
+        <createIndex catalogName="office"
+                     indexName="SRC_ENTY_NM"
+                     schemaName="public"
+                     tableName="OCheck"
+                     unique="true">
+            <column name="sourceEntityName" type="varchar(255)"/>
+        </createIndex>
+        <createIndex catalogName="office"
+                     indexName="SRC_ENTY_ID"
+                     schemaName="public"
+                     tableName="OCheck"
+                     unique="true">
+            <column name="sourceEntityId" type="bigint"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="ayalamanchili" id="addSourceToBankAccount">
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="bankaccount">
+            <column name="sourceEntityId" type="bigint"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="bankaccount">
+            <column name="sourceEntityName" type="varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                           schemaName="public"
+                           tableName="bankaccount_aud">
+            <column name="sourceEntityId" type="bigint"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="bankaccount_aud">
+            <column name="sourceEntityName" type="varchar(255)"/>
+        </addColumn>
+        <createIndex catalogName="office"
+                     indexName="SRC_ENTY_NM"
+                     schemaName="public"
+                     tableName="bankaccount"
+                     unique="true">
+            <column name="sourceEntityName" type="varchar(255)"/>
+        </createIndex>
+        <createIndex catalogName="office"
+                     indexName="SRC_ENTY_ID"
+                     schemaName="public"
+                     tableName="bankaccount"
+                     unique="true">
+            <column name="sourceEntityId" type="bigint"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

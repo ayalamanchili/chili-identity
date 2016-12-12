@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<definitions  
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn" >
+    <process id="add_new_practice_request">
+        <startEvent id="addNewPracticeStart">
+            <extensionElements>
+                <activiti:formProperty id="practiceName" 
+                                       name="Practice Name"
+                                       required="true"
+                                       type="string">
+                </activiti:formProperty>
+                <activiti:formProperty id="practiceDescription" 
+                                       name="Practice Description"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements>
+        </startEvent>
+        <sequenceFlow id="flow1" sourceRef="addNewPracticeStart" targetRef="addNewPracticeTask" />
+        <userTask id="addNewPracticeTask" 
+                  name="Add New Practice Request" 
+                  activiti:candidateGroups="ROLE_RECRUITER">
+            <documentation>
+                Add Practice Information:
+                Practice Name: ${practiceName} 
+                Practice Description: ${practiceDescription}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <sequenceFlow id="flow3" sourceRef="addNewPracticeTask" targetRef="addPracticeEnd" />
+        <!-- Task escalation email after 7 days-->
+        <boundaryEvent id="emailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="addNewPracticeTask">
+            <timerEventDefinition> 
+                <timeDuration>PT168H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer" 
+                      targetRef="taskEmailEscalation" />
+        <serviceTask
+            id="taskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        <!-- end-->
+        <endEvent id="addPracticeEnd" />
+    </process>   
+</definitions>

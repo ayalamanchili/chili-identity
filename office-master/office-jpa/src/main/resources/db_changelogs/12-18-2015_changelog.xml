@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    
+    <changeSet author="mbadiginchala" id="billinghistory-add">
+        <preConditions onFail="WARN"> 
+        </preConditions>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="billingrate">
+            <column name="billingInvoiceFrequency" type="varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="billingrate_aud">
+            <column name="billingInvoiceFrequency" type="varchar(255)"/>
+        </addColumn>
+        
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="billingrate">
+            <column name="subContractorInvoiceFrequency" type="varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="billingrate_aud">
+            <column name="subContractorInvoiceFrequency" type="varchar(255)"/>
+        </addColumn>
+        
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="billingrate">
+            <column name="subContractorPayRate" type="decimal(19,2)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="billingrate_aud">
+            <column name="subContractorPayRate" type="decimal(19,2)"/>
+        </addColumn>
+
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="billingrate">
+            <column name="subContractorOverTimePayRate" type="decimal(19,2)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="billingrate_aud">
+            <column name="subContractorOverTimePayRate" type="decimal(19,2)"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>
+
+

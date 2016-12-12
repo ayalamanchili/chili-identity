@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="Portal" >
+        <ListPreference
+            android:defaultValue="http://10.0.2.2:9080"
+            android:entries="@array/listArray"
+            android:entryValues="@array/listValues"
+            android:key="endpoint"
+            android:summary="Select the server to communicate"
+            android:title="Server" />
+    </PreferenceCategory>
+
+    <EditTextPreference
+        android:name="context path"
+        android:defaultValue="/office/resources/"
+        android:key="contextPath"
+        android:summary="root context for rest services"
+        android:title="Context Path" />
+
+</PreferenceScreen>

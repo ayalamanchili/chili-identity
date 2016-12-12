@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="update_client_notification_process">
+        <startEvent id="updateClientStart">
+        </startEvent>
+        <sequenceFlow id="flow1" sourceRef="updateClientStart" targetRef="updateClientApprovalTask" />
+        <userTask id="updateClientApprovalTask" 
+                  name="Update Client Notification" 
+                  activiti:candidateGroups="ROLE_CONTRACTS_ADMIN">
+            <documentation>
+                Update Client Notification.
+                
+                Below Client has been updated in portal. 
+                
+                Client Name: ${client.name} 
+                
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.client.UpdateClientNotificationProcess" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 7 days-->
+        <boundaryEvent id="emailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="updateClientApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT168H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer" 
+                      targetRef="taskEmailEscalation" />
+        <serviceTask
+            id="taskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        <sequenceFlow id="flow4" sourceRef="updateClientApprovalTask" targetRef="updateClientEnd" />
+        <!-- end-->
+        <endEvent id="updateClientEnd" />
+    </process>
+</definitions>

@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="on_boarding_employee_process">
+        
+        <startEvent id="onBoardingEmployeeProcessStart" />
+       
+        <sequenceFlow sourceRef="onBoardingEmployeeProcessStart" targetRef="sendEmployeeOnBoardingProcessStartEmail" />
+        
+        <serviceTask id="sendEmployeeOnBoardingProcessStartEmail" 
+                     name="Send Email to Employee Task" 
+                     activiti:expression="#{onBoardingEmployeeProcessBean.sendEmployeeOnBoardingProcessStartEmail(employee)}" />  
+        
+        <sequenceFlow sourceRef="sendEmployeeOnBoardingProcessStartEmail" 
+                      targetRef="fork3">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${employee.employeeType.name == 'Corporate Employee'}
+            </conditionExpression>
+        </sequenceFlow>
+        
+        <sequenceFlow sourceRef="sendEmployeeOnBoardingProcessStartEmail" 
+                      targetRef="fork4">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${employee.employeeType.name != 'Corporate Employee'}
+            </conditionExpression>
+        </sequenceFlow>
+        
+        <parallelGateway id="fork3" />
+        <parallelGateway id="fork4" />
+        
+        <sequenceFlow sourceRef="fork4" 
+                      targetRef="onBoardingFormsAndDataValidationTask">
+        </sequenceFlow>
+        <sequenceFlow sourceRef="fork4" 
+                      targetRef="eVerifyTask">
+        </sequenceFlow>
+        
+        <sequenceFlow sourceRef="fork3" 
+                      targetRef="onBoardingFormsAndDataValidationTask">
+        </sequenceFlow>
+        <sequenceFlow sourceRef="fork3" 
+                      targetRef="eVerifyTask">
+        </sequenceFlow>
+        <sequenceFlow sourceRef="fork3" 
+                      targetRef="backGroundScreeningTestTask">
+        </sequenceFlow>
+        <sequenceFlow sourceRef="fork3" 
+                      targetRef="drugScreeningTestTask">
+        </sequenceFlow>            
+        <sequenceFlow sourceRef="fork3" 
+                      targetRef="SetupManagerTask">
+        </sequenceFlow>
+                
+        <!-- On Boarding Form and Data Validation task : OnBoarding_Manager-->
+        <userTask id="onBoardingFormsAndDataValidationTask" 
+                  name="On Boarding Forms and Data Validation task for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_ON_BOARDING_MGR">
+            <documentation>
+                Please complete On Boarding Forms and Data Validation Task for new employee #{employee.firstName} #{employee.lastName} as part of On Boarding Process
+                Please login and verify onboarding details and documents submitted by #{employee.firstName} #{employee.lastName} 
+                Myoffice--Employee Search--Forms Docs--Documents
+                Please write Comments for any missing information or for any additional information by following below path in portal.
+                My Office--Onboarding--View Icon for Employee--Add Comment
+                
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
+                
+                Please follow below instructions 
+                http://apps.sstech.us/site/office/forms-docs-verification.html  
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!--          On Boarding Form and Data Validation task : Task escalation email after 48 hours-->
+        <boundaryEvent id="onBoardingFormsAndDataValidationTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="onBoardingFormsAndDataValidationTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="onBoardingFormsAndDataValidationTaskEscalationTimer" 
+                      targetRef="onBoardingFormsAndDataValidationTaskEscalation" />
+        <serviceTask id="onBoardingFormsAndDataValidationTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!--          On Boarding Form and Data Validation task : Decision -->
+        <sequenceFlow sourceRef="onBoardingFormsAndDataValidationTask" 
+                      targetRef="join3">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and employee.employeeType.name == 'Corporate Employee'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="onBoardingFormsAndDataValidationTask" 
+                      targetRef="join4">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and employee.employeeType.name != 'Corporate Employee'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="onBoardingFormsAndDataValidationTask" 
+                      targetRef="deactivationGateway">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        
+        <!--         E Verify Manager task : E_Verify_Manager-->
+        <userTask id="eVerifyTask" 
+                  name="E Verify Task for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_E_VERIFY_MGR">
+            <documentation>
+                Please complete E Verify Task for new employee #{employee.firstName} #{employee.lastName} as part of On Boarding process
+                Please write Comments for any missing information or for any additional information by following below path in portal.
+                My Office--Onboarding--View Icon for Employee--Add Comment     
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!--          E Verify Manager task : Task escalation email after 48 hours-->
+        <boundaryEvent id="eVerifyTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="eVerifyTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="eVerifyTaskEscalationTimer" 
+                      targetRef="eVerifyTaskEscalation" />
+        <serviceTask id="eVerifyTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!--          E Verify Manager task : Decision -->
+        <sequenceFlow sourceRef="eVerifyTask" targetRef="join3">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'and employee.employeeType.name == 'Corporate Employee'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="eVerifyTask" 
+                      targetRef="join4">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and employee.employeeType.name != 'Corporate Employee'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="eVerifyTask" 
+                      targetRef="deactivationGateway">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        
+        <!--         BackGround creening Test Task : ROLE_BACKGROUND_SCREENING_MGR-->
+        <userTask id="backGroundScreeningTestTask" 
+                  name="BackGround Screening Test Task  for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_BACKGROUND_SCREENING_MGR">
+            <documentation>
+                Please complete BackGround Screening Task for new employee #{employee.firstName} #{employee.lastName} as part of On Boarding process
+                Please conduct BackGround Verification for #{employee.firstName} #{employee.lastName}.
+                Please write Comments for any missing information or for any additional information in performing this task by following below path in portal.
+                My Office--Onboarding--View Icon for Employee--Add Comment
+                
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!--          BackGround Screening Test Task : Task escalation email after 48 hours-->
+        <boundaryEvent id="backGroundScreeningTestTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="backGroundScreeningTestTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="backGroundScreeningTestTaskEscalationTimer" 
+                      targetRef="backGroundScreeningTestTaskEscalation" />
+        <serviceTask id="backGroundScreeningTestTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!--          BackGround Screening Test Task : Decision -->
+        <sequenceFlow sourceRef="backGroundScreeningTestTask" targetRef="join3">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="backGroundScreeningTestTask" 
+                      targetRef="deactivationGateway">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        
+        <!-- Drug Screening Test Task : ROLE_BACKGROUND_SCREENING_MGR-->
+        <userTask id="drugScreeningTestTask" 
+                  name="Drug Screening Test Task  for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_BACKGROUND_SCREENING_MGR">
+            <documentation>
+                Please complete Drug Screening Task for new employee #{employee.firstName} #{employee.lastName} as part of On Boarding process
+                Please conduct Drug Screening for #{employee.firstName} #{employee.lastName}.
+                Please write Comments for any missing information or for any additional information in performing this task by following below path in portal.
+                My Office--Onboarding--View Icon for Employee--Add Comment
+                
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!--          Drug Screening Test Task : Task escalation email after 48 hours-->
+        <boundaryEvent id="drugScreeningTestTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="drugScreeningTestTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="drugScreeningTestTaskEscalationTimer" 
+                      targetRef="drugScreeningTestTaskEscalation" />
+        <serviceTask id="drugScreeningTestTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!--          Drug Screening Test Task : Decision -->
+        <sequenceFlow sourceRef="drugScreeningTestTask" targetRef="join3">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="drugScreeningTestTask" 
+                      targetRef="deactivationGateway">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        
+        <!-- Setup Manager Task To HR Admin-->
+        <userTask id="SetupManagerTask" 
+                  name="Setup Manager Task for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
+            <documentation>
+                Please complete Setup Manager Task for new employee #{employee.firstName} #{employee.lastName} as part of On Boarding process
+                Please Add Reporting Manager(Reports To) for #{employee.firstName} #{employee.lastName} who will be supervising his/her activities.
+                
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
+                
+                Notes: 
+                ------ 
+                Please add a employeeId of the manager who the employee will be reporting to and complete the task. 
+                Example: if new employee reports to Linda Johnson please enter ljohnson
+                
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:formProperty id="reportsToManager" 
+                                       name="Reports To Manager (please provide reporting manager id)"
+                                       required="true" 
+                                       type="string" />
+                
+            </extensionElements> 
+        </userTask>
+        <boundaryEvent id="SetupManagerTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="SetupManagerTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="SetupManagerTaskEscalationTimer" 
+                      targetRef="SetupManagerTaskEscalation" />
+        <serviceTask id="SetupManagerTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow sourceRef="SetupManagerTask" targetRef="NewEmployeeManagerTask" />
+        
+        <!-- Create Manager Task For Reports To To give requiremnts to network department  -->
+        <userTask id="NewEmployeeManagerTask" 
+                  name="New Employee Manager Task for ${employee.firstName} ${employee.lastName}">
+            <documentation>
+                Please complete New Employee Manager Task for new employee #{employee.firstName} #{employee.lastName} 
+                #{employee.firstName} #{employee.lastName} will be reporting to you and is being on boarded. 
+                Please assign roles and responsibilities to the employee in the allocated fields in the task.
+                Please enter the requirements from a network perspective so the necessary will be arranged by the networking team. 
+                Eg: Developer Laptop, MS word, Team Viewer, Access to IT Projects folder etc...
+              
+                Please update employee Roles and Responsibilities by navigating to 
+                My Office --> Employees --> Search --> View --> Forms and Docs --> Roles and Responsibilities 
+                and then complete the task.
+
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />                
+                <!--  remove roles and responsibilities form element -->
+                <activiti:formProperty id="requirements" 
+                                       name="Requirements"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <boundaryEvent id="NewEmployeeManagerTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="NewEmployeeManagerTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="NewEmployeeManagerTaskEscalationTimer" 
+                      targetRef="NewEmployeeManagerTaskEscalation" />
+        <serviceTask id="NewEmployeeManagerTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow sourceRef="NewEmployeeManagerTask" targetRef="ServiceTicketTaskforNetworkDept" />
+        
+        <!-- Create Service Ticket For Network Department  -->
+        <userTask id="ServiceTicketTaskforNetworkDept" 
+                  name="Network Department Task for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_SYSTEM_AND_NETWORK_ADMIN">
+            <documentation>
+                Please complete Network Department Task for new employee #{employee.firstName} #{employee.lastName} as part of On Boarding process.
+                Please provide network related support to fulfill all the given network requirements for #{employee.firstName} #{employee.lastName} 
+                Please write Comments for any missing information or for any additional information in performing this task by following below path in portal.
+                My Office--Onboarding--View Icon for Employee--Add Comment  
+                
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
+                Requirements        : #{requirements}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <boundaryEvent id="ServiceTicketTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="ServiceTicketTaskforNetworkDept">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="ServiceTicketTaskEscalationTimer" 
+                      targetRef="ServiceTicketTaskEscalation" />
+        <serviceTask id="ServiceTicketTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow sourceRef="ServiceTicketTaskforNetworkDept" targetRef="join3" />
+        
+        <parallelGateway id="join3" />
+        <sequenceFlow sourceRef="join3" targetRef="onboardingFinalValidationTask" />
+        
+        <parallelGateway id="join4" />
+        <sequenceFlow sourceRef="join4" targetRef="onboardingFinalValidationTask" />
+        
+        <!-- Final Validation Task -->
+        <userTask id="onboardingFinalValidationTask" 
+                  name="Final Validation Task for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
+            <documentation>
+                Please complete Final Validation Task For new employee #{employee.firstName} #{employee.lastName} as part of On Boarding process
+                Please review all the comments and  make sure all the prior tasks are completed and approve the final validation.
+                Please write Comments for any missing information or for any additional information in performing this task by following below path in portal.
+                My Office--Onboarding--View Icon for Employee--Add Comment
+                
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <boundaryEvent id="FinalValidationTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="onboardingFinalValidationTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="FinalValidationTaskEscalationTimer" 
+                      targetRef="FinalValidationTaskEscalation" />
+        <serviceTask id="FinalValidationTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow sourceRef="onboardingFinalValidationTask" targetRef="payrollRegistrationTask"/>
+        
+        <!--         Payroll Registration Task :  Payroll Department -->
+        <userTask id="payrollRegistrationTask" 
+                  name="Payroll Registration Task for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
+            <documentation>
+                Please complete Payroll Registration Task for new employee #{employee.firstName} #{employee.lastName} as part of On Boarding process
+                Please initiate payroll for #{employee.firstName} #{employee.lastName} and complete the task.
+                Please write Comments for any missing information or for any additional information in performing this task by following below path in portal.
+                My Office--Onboarding--View Icon for Employee--Add Comment
+                
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!--          Payroll Registration Task :  Task escalation email after 48 hours-->
+        <boundaryEvent id="payrollRegistrationTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="payrollRegistrationTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="payrollRegistrationTaskEscalationTimer" 
+                      targetRef="payrollRegistrationTaskEscalation" />
+        <serviceTask id="payrollRegistrationTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow sourceRef="payrollRegistrationTask" 
+                      targetRef="employeeOrientationTask"/>
+        
+        <!-- Employee Orientation Task -->
+        <userTask id="employeeOrientationTask" 
+                  name="Employee Orientation Task for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_ON_BOARDING_MGR">
+            <documentation>
+                Please complete Employee Orientation Task For new employee #{employee.firstName} #{employee.lastName} as part of On Boarding process
+                Please inform company standards, policies and his/her work related activities to the employee and complete this task.
+                
+                Employee Name       : #{employee.firstName} #{employee.lastName}
+                Employee Type       : #{employee.employeeType.name}
+                Gender              : #{employee.sex}
+                Date Of Birth       : #{employee.getDateOfBirth()}
+                Email               : #{employee.getEmails().get(0).getEmail()}
+                Start Date          : #{employee.startDate}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.onboarding.OnBoardingEmployeeProcess" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <boundaryEvent id="EmployeeOrientationTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="employeeOrientationTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="EmployeeOrientationTaskEscalationTimer" 
+                      targetRef="EmployeeOrientationTaskEscalation" />
+        <serviceTask id="EmployeeOrientationTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow sourceRef="employeeOrientationTask" targetRef="sendEmployeeOnBoardingProcessCompleteEmail" />
+        <serviceTask id="sendEmployeeOnBoardingProcessCompleteEmail" 
+                     name="Send On Boarding Complete Email to Employee Task" 
+                     activiti:expression="#{onBoardingEmployeeProcessBean.sendEmployeeOnBoardingProcessCompleteEmail(employee)}" />  
+        
+        <sequenceFlow sourceRef="sendEmployeeOnBoardingProcessCompleteEmail" targetRef="onBoardingEmployeeProcessEnd" />      
+        <exclusiveGateway id="deactivationGateway"/>
+        <sequenceFlow sourceRef="deactivationGateway" 
+                      targetRef="deleteEmployee">
+        </sequenceFlow>
+        <serviceTask id="deleteEmployee" 
+                     name="Delete Employee" 
+                     activiti:expression="#{onBoardingEmployeeProcessBean.deleteEmployee(employee)}" />  
+        <sequenceFlow sourceRef="deleteEmployee" 
+                      targetRef="onBoardingEmployeeProcessEnd"/>
+        <endEvent id="onBoardingEmployeeProcessEnd" />
+    </process>
+</definitions>
