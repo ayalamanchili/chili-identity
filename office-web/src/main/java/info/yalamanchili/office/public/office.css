@@ -1,0 +1,1382 @@
+/**
+ * System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+ */
+/* defining main colors in the applciation */
+@def orange_light #f09974;  
+
+@def orange_semilight #ef5322;   
+
+@def orange_hover #d05b37;
+@def lineSeparator #dedede;
+@def input_border #c3c3c3;
+@def table_sub_color #e4e4e4;
+
+@def legend_color #349B49;
+
+@def orange_dark #E16802;
+
+@def blue_light #f9f9f9;
+
+@def blue_mid #dae6fe;
+
+@def blue_dark #c3d7ff;
+
+@def blue_font #054c78;
+
+@def white #FFFFFF;
+
+@def grey_light #F7F7F7;
+
+
+
+
+
+
+/* an individual tab*/
+/* Footer */
+
+
+.footerPanel {
+    border-top-style: solid;
+    border-top-color: #c8c8cb;
+    border-top-width: 1px;
+    width:100%;
+}
+.footerLabel{
+    font-size:8pt;
+    text-align: center;
+}
+.copyRightLabel{
+    font-size:8pt;
+    text-align: right;
+    width:50%
+}
+.feedbackAnchor{
+    font-size:8pt;
+    color: #0000ff;
+}
+
+.feedbackAnchor:hover{
+    pointer:hand;
+}      
+.loginCenterPanel{
+    display: block;
+    margin: auto;
+}
+.backgroundTextStyle {
+    color: gray;
+    display: block;
+    font-size: small;   
+    padding-top: 3px;
+    position: relative;
+    text-indent: 5px;
+}
+
+/*   margin-left: 105px;*/
+
+
+/* TabLayout Panel */
+.gwt-TabLayoutPanel .gwt-TabLayoutPanelTab {
+    height: 33px;
+    overflow: hidden;
+    height: auto;
+    width: 106px;
+    text-align: center;
+    margin-left: 3px;
+    margin-right:2px;
+    padding-top:0px !important;
+    font-size: 14px;
+    font-family: 'Open Sans', sans-serif;
+    text-transform: none !important;
+    color:#fff !important;
+}
+.gwt-TabLayoutPanelTabs {
+    height:3em !important;
+    position: static !important;   
+    background-color: #3f3f3f;
+    background-image: -webkit-linear-gradient(top, #696969 0%,#3f3f3f 100%);
+    background-image: -moz-linear-gradient(top, #696969 0%,#3f3f3f 100%);
+    background-image: -ms-linear-gradient(top, #696969 0%,#3f3f3f 100%);
+    background-image: -o-linear-gradient(top, #696969 0%,#3f3f3f 100%);
+
+}
+/*.gwt-TabLayoutPanel:nth-child(3) div {
+    height:2.5em !important ;
+}*/
+.gwt-TabLayoutPanelContentContainer {
+    margin-top:14px !important;
+}
+
+.tabPanel {
+    height: 100%;
+}
+.y-gwt-AbstractStatusPanel-LogoLink {
+    width: 100%;
+    padding-bottom: 10px;
+    padding-top:0px !important;
+    padding-left: 8px;
+}
+.profileHome{
+    width: 100%;
+    background-color: #f9f9f9;
+
+}
+.createMonthlyTimeSheetDP{
+    border: 1px;
+    border-color: black;
+}
+.gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected {
+    margin-left:-2px !important;
+    margin-right: 0px;    
+    font-size:15px;
+    font-weight:bold !important;
+    background: #DEDEDE;
+    color:#585555 !important;
+    gwt-image:"tabButtonClick";
+    height:auto;
+    /*    text-shadow: 0px 1px 2px #4d4d4d;*/
+}
+
+/* an element nested in each tab (useful for styling)*/
+.gwt-TabLayoutPanel .gwt-TabLayoutPanelTabInner {
+    margin-bottom: 0px;
+    border-right: 1px solid #333333;
+    height:33px !important;
+    padding-top:6px !important;
+}
+.gwt-DisclosurePanel .header {
+    color: orange_light;
+    /*    background-color: #F7F7F7;*/
+}
+.gwt-DisclosurePanel a {
+    color: blue_font;
+}
+.gwt-StackPanel .gwt-StackPanelItem {
+    height: 33px;
+    overflow: hidden;
+    background: #DCDCDC   !important;
+    border: 1px solid #C1C1C1;
+    margin-top: 7px;
+    /* background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAhCAYAAAAYucG/AAAAaklE…RfFYScSjORcLaoHjCDIywPw5hd4oltsEmrIPVzLEsF54lmW75iYbh5gAAAABJRU5ErkJggg==") -0px -0px repeat-x; */
+    font-weight: normal;
+    font-size: 12pt;
+    width: 100%;
+    text-align: center;
+}
+
+@sprite .gwt-StackPanel .gwt-StackPanelItem-selected { 
+    gwt-image:"tabButton";
+    width: 200px;
+    background: #E0E0E0!important;
+}
+.createTODOL{
+    font-size: 10pt;
+    /*    gwt-image:"tabButton";*/
+}
+
+.y-gwt-PagingBar {   
+    overflow: hidden;
+    font-weight: bold;
+    background: -webkit-linear-gradient(top, rgb(224, 223, 223) 0%,rgb(236, 236, 236) 41%,rgb(206, 206, 206) 41%,rgb(232, 232, 232) 42%,rgb(214, 214, 214) 68%,rgb(220, 220, 220) 100%) !important;
+    background: -moz-linear-gradient(top, rgb(224, 223, 223) 0%,rgb(236, 236, 236) 41%,rgb(206, 206, 206) 41%,rgb(232, 232, 232) 42%,rgb(214, 214, 214) 68%,rgb(220, 220, 220) 100%) !important;
+    background: -ms-linear-gradient(top, rgb(224, 223, 223) 0%,rgb(236, 236, 236) 41%,rgb(206, 206, 206) 41%,rgb(232, 232, 232) 42%,rgb(214, 214, 214) 68%,rgb(220, 220, 220) 100%) !important;
+    background: -o-linear-gradient(top, rgb(224, 223, 223) 0%,rgb(236, 236, 236) 41%,rgb(206, 206, 206) 41%,rgb(232, 232, 232) 42%,rgb(214, 214, 214) 68%,rgb(220, 220, 220) 100%) !important;
+    border: 1px solid #D4D4D4 !important;    
+    margin-bottom:0px !important;
+    font-size: 10pt;
+    padding-top:1px !important;
+    color: #525252;
+    width: 100%;
+    height:25px;
+}
+
+.y-gwt-TableHeader {
+    background-color: #EAEAEA !important;
+    font-weight: bold;
+    font-size: 13px !important;
+    color: #545454 !important;
+    text-align: left;
+    height: 30px;
+}
+
+.y-gwt-Table {
+    font-size: 10pt;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f9f9f9;
+    width: 100%;
+    text-align: left;
+    border: 1px solid #CFCDCD;
+    padding:0px !important;
+    margin: 0px;
+}
+
+
+.y-gwt-ReadAllComposite-Row
+{
+    border-bottom-width: 2px;
+    border-bottom-style: dotted;
+}
+
+
+
+.y-gwt-ReadAllComposite-Row:hover 
+{
+    background:#ececec;
+    color:#000;
+    -webkit-transition-property: background-color;  
+    -webkit-transition-duration: 0.30s;  
+    -webkit-transition-timing-function: linear, ease-in; 
+    -moz-transition-property: background-color;  
+    -moz-transition-duration: 0.30s;  
+    -moz-transition-timing-function: linear, ease-in; 
+}
+.y-gwt-ReadAllComposite-OddRow{
+    background-color: #FFFFFF;
+
+}
+
+
+
+.gwt-TextBox-readonly {
+    background: #e3e3e3 !important;
+}
+
+select[disabled]
+{ background-color:#e3e3e3 !important; }
+
+.y-gwt-ReadAllComposite-OddRow table:first-child tr td, .y-gwt-ReadAllComposite-EvenRow table:first-child tr td {
+    border:none !important;
+    padding-left: 0px !important;
+}
+
+.y-gwt-ReadAllComposite-OddRow table tr td {
+    border-right: none;
+}
+.y-gwt-ReadAllComposite-Row table tr td {
+    border-right: none;
+}
+
+
+
+
+
+
+.y-gwt-ReadAllComposite-EvenRow{
+    background-color: #F1F1F1;
+}
+
+.y-gwt-ReadAllComposite-DeactiveRow{
+    background-color: #f3beb5;
+
+}
+
+/*Text insiise the tabel START*/
+.readAllCompositeCaptionPanel {
+    border: 1px solid #CFCDCD !important;
+    padding: 0 1.4em 15px 1.4em !important;
+    margin: 0 0 1em 7px !important;
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px 0px #000;
+    width: 95%;
+    border-radius: 3px;
+}
+.readAllCompositeCaptionPanel legend, .crudCompositeCaptionPanel legend
+{
+    font-size: 14px !important;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: left !important;
+    margin-bottom: 10px;
+    width: auto;
+    height: 19px;
+    padding: 1px 3px;
+    border-bottom: none;
+    color:legend_color;
+    border-radius: 3px;
+}
+
+/*Text insiise the tabel END*/
+.readAllCompositeCaptionPanel legend {
+    font-weight: bold;
+    color:#48A65B !important;
+    font-size: medium;
+    font-style:normal !important;
+}
+
+.crudCompositeCaptionPanel legend{
+    font-weight: bold;
+    color:#48A65B !important;
+    font-size: medium;
+    font-style: normal !important; 
+}
+legend {
+    color:#48A65B !important;
+    font-weight: bold !important;
+    font-size: 13px;
+    text-transform: uppercase;
+
+}
+
+.y-gwt-ReadAllPanel {
+    width: 100%;
+    color:Green;
+}
+
+.y-gwt-TablePanel {
+    width: 100%;
+    color:#000000;
+    align:center;
+
+}
+
+
+.treeItemLabel{
+    padding: 5px;
+    color: #000;
+}
+
+.treeItemLabel:hover{
+
+    background-color: #f9f9f9;
+    color: #ef5322;
+    font-weight: 600;
+    -webkit-transition-property: background-color;  
+    -webkit-transition-duration: 0.1s;  
+    -webkit-transition-timing-function: linear, ease-in;
+}
+
+.gwt-TreeItem:hover{
+
+
+    background-color: blue_mid;
+
+    -webkit-transition-property: background-color;  
+    -webkit-transition-duration: 0.1s;  
+    -webkit-transition-timing-function: linear, ease-in;  
+}
+
+.gwt-Tree .gwt-TreeItem-selected {
+    font-weight: bold;
+    color: #fb743a !important;
+
+
+
+}
+@sprite .entityMenuBar {
+    width: 100%;
+    border: 1px;
+    border-color: #3e3e3e;
+    gwt-image : "menuBarBG";
+
+    /*background-color: #ededed;*/
+}
+.gwt-MenuItem {
+    cursor: pointer;
+    padding: 0px;
+    line-height: 9px;
+    color: #666;
+    width: 140px;
+    text-align: center;
+
+}
+
+/*    .gwt-MenuBar-horizontal .gwt-MenuItem {
+        background-color: none;
+        color: #666666;
+    }*/
+
+.gwt-MenuItem-selectedMI:hover{
+    background-color: blue_mid;
+    font-color:#666666;
+    -webkit-transition-property: background-color;  
+    -webkit-transition-duration: 0.1s;  
+    -webkit-transition-timing-function: linear, ease-in;  
+} 
+.y-gwt-entityActionsPanel{
+    padding-top: 6px;
+}
+.y-gwt-entityActionsPanel .y-gwt-ClickableLink
+{
+    color:#ef5322;
+}
+
+.baseFieldHorizontal {
+    padding: 2px;
+}
+/*.y-gwt-ReadEntityDisplayWidget .baseFieldHorizontal, .y-gwt-ReadEntityDisplayWidget .baseFieldVertical {
+    padding:0px !important;
+}*/
+
+.baseFieldVertical {
+    padding: 2px; 
+}
+.y-gwt-MenuItem{
+    padding-top:6px;
+    padding-left: 20px;
+    font-size:14px;
+    cursor:pointer;
+    text-align: center;
+    color: #000000;
+}
+.y-gwt-MenuItem-selectedMI {
+    padding-top:6px;
+    padding-left: 20px;
+    font-size:15px; 
+    font-weight: bold;
+    /*    color:#1087D0 !important;*/
+    color:#000000 !important;
+    cursor:pointer;
+    text-align: center;
+}    
+.gwt-MenuBar.gwt-MenuBar-horizontal.entityMenuBar{
+    padding-top: 10px;
+}
+.tfFieldHeader{
+    font-family: 'Open Sans', sans-serif;
+    font-size: large;
+}
+
+.tfRequired{
+    color : orange_dark;
+}
+
+.y-gwt-CreateBasePanel{
+    vertical-align: middle;
+}
+
+.genericPopup{
+    background-color: #ededed;
+    border: 1px solid #919191;
+    padding: 1px;
+}
+
+.genericPopup .popupContent {
+    width: auto !important;
+}
+
+.messageSubjectLabel{
+    font-weight: bold;
+}
+.postImage{
+    padding: 3px;
+}
+.postFile{
+    padding:3px;
+}
+.socialSidePanel{
+    /*    background-color: #ededed;*/
+    border-color: #919191;
+    border-width:1px;
+
+}
+/*post css start*/
+.readRepliesPanel{
+    /*    border: 1px solid #3e3e3e;*/
+    width: 100%;
+    background-color: grey_light;
+
+}
+.replyPostWidget{
+    width:100%;
+    font-family: 'Open Sans', sans-serif;
+}
+.postRichTextBox{
+    width: 100%;
+    /*    border-color: #919191;*/
+    border-width: 0px;
+    background-color: grey_light;
+    font-family: 'Open Sans', sans-serif;
+}
+.readPostImagePanel{
+    float:left;
+    width: 4%;
+    /*    border: 1px;
+        border-radius: 5px;
+        border-color: #919191;*/
+
+}
+.postStatusPanel{
+    width:100%;
+    font-size: 12px;
+    background-color: grey_light;
+    color: #b2b2b2;
+}
+.postMainPanel{
+    float:right;
+    width: 96%;
+    background-color: grey_light; 
+    font-family: Tahoma;
+}
+.createPostTextArea{
+    width: 100%;
+    height: 20%;
+    font-family: 'Open Sans', sans-serif;
+    background-color: white; 
+}
+.postAttachmentsPanel{
+    border: 1px solid black;
+}
+.showMoreL{
+    width: 100%;
+    background-color: #fafbfe;
+    font-weight: bold;
+    font-style: italic;
+}
+/*post css end*/
+/*image field css start*/
+@sprite .imageField-Image{
+    gwt-image: "homeButton";
+}
+.horizontalAignment{
+    float: left;
+    padding : 2px;
+}
+/*image field css end*/
+.y-gwt-treePanelComposite-Node
+{
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11pt;
+    font-weight: 100;
+
+}
+
+* {
+    font-family: 'Open Sans', sans-serif !important;
+}
+.y-gwt-treePanelComposite-RootNode
+{
+    cursor: default;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13pt;
+    font-weight: 300;
+    padding: 3px;
+}
+
+body{
+    font-family:Tahoma;
+    font-size: 11pt;
+    cursor: default;
+    background: #f9f9f9 !important;
+}
+/*.GIKIG2NBLI{
+  border-color: #919191;  
+}*/
+/*Start For search textbox */
+@sprite .searchComposite{
+    /*background-color:grey_light;*/
+    gwt-image: "searchBG";
+    border: 0px;
+}
+/*End For search textbox */
+/*//TODO move back to chili-gwt*/
+/*chili-gwt start*/
+.info-yalamanchili-office-client-EntityLayout_EntityLayoutUiBinderImpl_GenCss_style-sidePanelTop .y-gwt-ClickableLink {
+    color:#545454 !important ;
+    cursor: pointer;
+    text-shadow:0px 0px 0 #FFFFFF !important;   
+    font-size: 15px !important;
+    font-weight:600 !important; 
+    border-bottom: 1px solid #C5C5C5;
+    padding: 4px 0px 0px 5px !important;
+    line-height: 28px;
+    padding-left:15px !important;
+    padding-bottom: 5px !important;
+}
+
+.info-yalamanchili-office-client-EntityLayout_EntityLayoutUiBinderImpl_GenCss_style-sidePanelTop .y-gwt-ClickableLink:after
+{
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left:6px solid #5F5D5D;
+    position: absolute;
+    content: "";
+    left: 2px;
+    margin-top:7px;
+
+}
+
+
+
+/*.y-gwt-ClickableLink:last-child {
+     border-bottom:none !important;
+}*/
+
+.y-gwt-ClickableLink:hover{
+    color: #FB743A  !important ;
+    cursor: pointer;
+}
+
+
+tr.y-gwt-TableHeader td:first-child {
+    width: 125px !important;
+
+}
+
+
+
+.y-gwt-ClickableLink:last-child
+{
+    margin-bottom: 12px;
+}
+
+
+/*.y-gwt-ClickableLink:hover {
+    color:orange_dark;
+        font-weight: 300;
+
+}
+.gwt-TabLayoutPanelTabInner {
+    margin-top: 28px !important;
+}
+.gwt-TabLayoutPanel div:first-child{
+height:5ex;
+}*/
+
+
+.GIKSFQCDFJ {
+    border: 1px solid #cfcdcd !important;
+    margin-left: 3px;
+    margin-top: 11px !important;
+    border-radius: 3px !important;
+    height: 92%;   
+    color: #545454 !important;
+    line-height: 27px !important;
+    padding: 10px;
+    background-color: #f9f9f9 !important;
+}
+
+.GIKSFQCDFJ .y-gwt-ClickableLink
+{
+    font-weight: bold !important;
+    padding-left: 12px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #d0d0d0;
+    width: 89% !important;
+
+}
+
+.GIKSFQCDFJ .y-gwt-ClickableLink:nth-child(2) {
+    min-height: 2em !important;
+}
+
+.GIKSFQCDFJ .y-gwt-ClickableLink:last-child {
+    border-bottom: none !important;
+}
+
+.GIKSFQCDFJ .y-gwt-ClickableLink:after
+{
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left:6px solid #5F5D5D;
+    position: absolute;
+    content: "";
+    left:1px;
+    margin-top:6px;
+
+}
+
+
+
+
+.y-gwt-AbstracttatusPanel {
+    width:100%;
+}
+
+/* Logo Image*/
+.y-gwt-AbstractStatusPanel-LogoImage {
+    margin-top: 10px !important;
+
+}
+.y-gwt-ResponseStatusBar {
+    background-color: #FFA54F;
+}
+
+
+
+.y-gwt-LoginPanel {
+    background-color: #88ACE0;
+}
+.userLink{
+    width: 180px;
+}
+.y-gwt-ErrorMessage {
+    font-size: 8pt;
+    color: red;
+}
+
+.gwt-Button {
+
+    background: linear-gradient(to bottom, #0ca975 0%,#0c966c 49%,#0ca975 100%);   
+    border: 1px solid #0d9c6e;
+    border-radius: 3px;
+    margin-top: 5px;
+    margin-right:5px !important;
+    font-size:14px !important;
+    color: #fff;
+    line-height: 21px !important;
+    padding:3px 7px !important;
+    cursor: pointer;
+    margin-bottom: 4px !important;
+}
+.gwt-Button:hover {
+    box-shadow: 0px 0px 5px #54B999;
+}
+
+.gwt-SuggestBox {
+    border:1px solid #BDBDBD !important;
+    text-align: left;
+}
+
+.gwt-SuggestBoxPopup {
+    text-align: left;
+    cursor: pointer;
+    cursor: hand;
+    border: 1px solid #666;
+    border-top: 0;
+    background-color: #E8E8E8;
+    width: 149px;
+
+}
+
+.gwt-SuggestBoxPopup .item {
+    /*    border: 1px dotted #aaa;*/
+    text-decoration-style:dotted;
+}
+
+.gwt-SuggestBoxPopup .item-selected {
+    font-weight: bold;
+    text-decoration:underline;
+}
+
+.y-gwt-SideBarComposite {
+    border: 2px solid #88ACE0;
+    width: 240px;
+}
+
+.y-gwt-OptionsComposite {
+    border: 2px solid #88ACE0;
+}
+
+.y-gwt-SearchDisclosurePanel {
+    border: 1px solid #88ACE0;
+    background-color: #E5E5E5;
+    width: 100%;
+}
+
+
+.y-gwt-Spacing{
+    padding: 4px;
+}
+.y-gwt-FindWidget-Panel{
+
+}
+.y-gwt-FindWidget-TextBox {
+
+}
+.y-gwt-FindWidget-Button {
+
+}
+
+.entityTitlePanel {
+    border-bottom-color: #bc033d;
+    border-bottom-width: 1px;
+    background-color:lineSeparator;
+    height: 35px;
+    box-shadow: 0px 0px 6px #333 !important;
+    /*    background: url("../images/menubar_bg.png");*/
+
+
+}
+.readPostOptionsPanel
+{
+    background-color: #919191;
+}
+
+.gwt-DisclosurePanel-open .header TD {
+    color: #FB743A !important;
+
+}pleSelectWidget-availabelLabel{
+    font-we
+
+.loginB{
+    color:#fff;
+}
+
+
+/* Multiselect box */
+.y-gwt-multiight: bold;
+    font-size: 10pt;
+}
+.y-gwt-multipleSelectWidget-selectedLabel{
+    font-weight: bold;
+    font-size: 10pt;
+}
+/*gwt date picker example*/
+.gwt-DatePicker {
+    border: 1px solid #f1f1f1;
+    border-bottom: 2px solid #f1f1f1;
+    color: #6b6b6b;
+    cursor: default;
+    width: 7em;
+}
+
+.datePickerDay,.datePickerWeekdayLabel,.datePickerWeekendLabel {
+    font-family: Arial;
+    font-size: 65%;
+    padding: 2px;
+    text-align: center;
+    padding: 2px;
+    outline: none;
+    cursor: default;
+}
+
+.gwt-DatePicker td,.datePickerMonthSelector  td :focus {
+    outline: none
+}
+
+.gwt-DateBox input {
+    width: 8em;
+}
+
+/* 
+* Calendar styles 
+*/
+.datePickerDays {
+    background-color: white;
+    width: 100%;
+}
+
+.datePickerWeekdayLabel {
+    background: #dbe6de;
+}
+
+.datePickerWeekendLabel {
+    background: #dbe7ef;
+}
+
+.datePickerDay {
+    padding: 1px;
+    cursor: hand;
+    width: 1em;
+}
+
+.datePickerDayIsToday {
+    border: 1px solid black;
+    padding: 0px;
+    font-weight:bolder;
+
+
+}
+
+.datePickerDayIsWeekend {
+    background: #f1f1f1;
+}
+
+.datePickerDayIsFiller {
+    color: #bfbfbf;
+    padding: 1px;
+    cursor: hand;
+}
+
+.datePickerDayIsSelected {
+    background: #aaccee;
+}
+
+.datePickerDayIsDisabled {
+    color: graytext;
+}
+
+.datePickerDayIsHighlighted {
+    border: 1px solid #c6c6c6;
+    padding: 0px;
+}
+
+.datePickerDayIsSelectedAndHighlighted {
+    background: grey_light;
+}
+
+
+/* 
+* Month selector styles 
+*/
+.datePickerMonthSelector {
+    background: #dbe6de;
+    width: 100%;
+    text-align: center;
+}
+
+.datePickerMonth {
+    text-align: center;
+    vertical-align: center;
+    white-space: nowrap;
+    font-weight: bold;
+    font-size: 70%;
+}
+
+.datePickerPreviousButton {
+    text-align: left;
+}
+
+.datePickerNextButton {
+    text-align: right; 
+}
+/* gwt date picker end*/
+
+/* Drive Styling Start */
+
+.folderLabel{
+    /*    border-style: solid;
+        border-width: 1px;
+        border-color: #000000;*/
+    width: 100%;
+    padding:5px;
+
+    /*   background-color: blue_mid;  */
+}
+
+.folderLabel:hover{
+
+    text-spacing: 2px;
+    background-color: blue_mid;
+    font-color:#666666;
+    -webkit-transition-property: background-color;  
+    -webkit-transition-duration: 0.2s;  
+    -webkit-transition-timing-function: linear, ease-in;
+}
+
+/*.gwt-PopupPanel driveMenu{
+    border-color:#f9f9f9 !important;
+    background-color: #f9f9f9 !important;
+}
+
+.gwt-PopupPanel driveMenu:hover{
+    border-color:#f9f9f9 !important;
+    background-color: #f9f9f9 !important;
+}*/
+
+.popupContent{
+
+    background-color: grey_light;
+    margin:2px;
+    /*    padding:10px;*/
+    /*    border-style: solid;*/
+    border-width: 1px;
+    border-color:none !important;
+
+
+}
+.popupContent img{
+    border: none !important;
+    border-width: 0px !important;
+}
+.popupContent .gwt-Label {
+    border:1px solid #f9f9f9 !important;
+}
+.popupContent .gwt-Image {
+    border:1px solid #f9f9f9 !important;
+}
+
+folderMenuLabel{
+    padding:5px;
+    width: 130px;
+    text-align: left;
+    /*    margin-left: 10px;*/
+    /*    background-color: #000000;*/
+
+}
+
+.folderMenuLabel:hover{
+    text-spacing: 2px;
+    background-color: blue_mid;
+    font-color:#666666;
+    -webkit-transition-property: background-color;  
+    -webkit-transition-duration: 0.1s;  
+    -webkit-transition-timing-function: linear, ease-in;
+}
+/* Drive Styling End */
+
+/*serf service*/
+.readTicketComment{
+    background-color: #cccccc;
+}
+.multiSelectSuggestBoxSelectedValuesPanel{
+    display: inline-block; 
+}
+.multiSelectSuggestBoxSelectedValue{
+    border: 2px solid #a1a1a1;
+    background: #dddddd;
+    display: inline-block; 
+    border-radius: 25px;
+}
+.multiSelectSuggestBoxDeleteIcon{
+    float: none;
+}
+
+.contractActive{
+    background: #BFE0BC;
+}
+.contractEnded{
+    background: #E6BABA;
+}
+.contractNotStarted{
+    background: #E6E383;
+}
+.contractNotReady{
+    background: #A3AADE;
+}
+
+.info-yalamanchili-office-client-EntityLayout_EntityLayoutUiBinderImpl_GenCss_style-sidePanelTop {
+
+    border: 1px solid #DADADA;
+    padding: 6px;
+    background: #f9f9f9;
+}
+.info-yalamanchili-office-client-EntityLayout_EntityLayoutUiBinderImpl_GenCss_style-sidePanel {
+    background: #f9f9f9 !important;
+    height: 95% !important;
+}
+
+fieldset {
+
+    border-radius: 3px;
+    margin-top:1px !important;
+    border: 1px solid #cfcdcd;
+}
+fieldset.lineSeperator legend
+{
+    border: 1px solid rgb(191, 191, 191);
+    padding: 0px 20px;
+    background:lineSeparator;      
+    color: #545454 !important;
+    text-transform: none;
+    width:96%;
+    text-align: center !important;
+    margin-top: 4px;
+    margin-bottom: 0px;
+    float: left;
+
+}
+
+input {
+    background: #fff;
+    border: 1px solid input_border;   
+    padding:2px 6px !important;
+    border-radius: 0px;
+    font-size: 14px;
+    color:#1D1D1D !important;
+}
+select {
+    background: #fff;
+    border: 1px solid input_border;   
+    padding:1px 3px !important;
+    border-radius: 0px;
+    font-size: 14px;
+    color: #1d1d1d;
+    /*    width:172px !important;*/
+}
+
+
+.y-gwt-CreateEntityDisplayWidget select {
+    height:27px !important;
+}
+.tfFieldHeader {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px !important;
+    color: #000000;
+    text-align: left;
+    min-width:280px !important;
+    max-width:280px !important;
+    padding-bottom:2px;
+    padding-top: 3px;
+    /* font-size: large; */
+}
+.tfErrorMessage{
+    color:#cf4337 !important;
+    font-size:12px;
+    margin-top:2px !important;
+    margin-left: -14px;
+}
+.gwt-Image y-gwt-ClickableImage {
+    padding-left: 5px;
+
+}
+tr.y-gwt-ReadAllComposite-Row td {
+    border-right: 1px solid #DEDEDE;
+    text-align: left; 
+    padding-left: 10px;
+}
+tr.y-gwt-TableHeader td {
+    text-align: left;
+    border: 1px solid #dedede;
+    padding-left: 10px !important;
+}
+.y-gwt-PagingBar .gwt-Label {
+    text-align:left;
+}
+div .gwt-TabLayoutPanelTabs {
+    height: 39px !important;
+    box-shadow:0 0 10px #333 !important;
+} 
+
+.searchComposite {
+    height: 22px;
+    width: 150px;
+    border: 1px solid #C5C2C2 !important;
+    overflow: hidden;
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAAAWCAYAAAAisWU6AAACYUlE…0msViLkcqlRJ924HF+kvs93tRfvJ7fuedOSmWVEn+ZamQL78idfaFf3jKAAAAAElFTkSuQmCC") -0px -0px no-repeat;
+    border: 0;
+}
+.tabPanel div:nth-child(2){
+    min-height:2.5em !important;
+
+}
+.gwt-TabLayoutPanelTabInner:hover{
+    color:#32C74E !important;
+    cursor: pointer;
+
+}
+button#gwt-debug-loginB {
+    margin-top: 1px;
+}
+.y-gwt-ReadAllPanel .y-gwt-PagingBar .gwt-ListBox {
+    width: 71px !important;
+    height: 23px !important;
+}
+.gwt-HTML li, .gwt-HTML li a {
+    list-style-type:none;
+    font-size: 14px;
+    color:#EF5322 !important;
+    text-decoration: blink;
+    line-height: 29px;
+}
+a.gwt-Anchor {
+    list-style-type:none;
+    font-size: 14px;
+    color:orange_semilight !important;
+    text-decoration: blink;
+    line-height: 29px; 
+    padding: 3px;
+}
+a.gwt-Anchor:hover{
+    color:orange_hover !important;
+    font-weight:bold !important;
+}
+
+.gwt-HTML li a:hover{
+    color:orange_hover !important;
+    font-weight:bold !important;
+
+}
+
+.gwt-DisclosurePanel .header {
+    color: #EF5322!important;
+    text-decoration: none !important;
+}  
+.gwt-DisclosurePanel .header:hover{
+    color:#D05B37 !important;
+    font-weight:bold !important;
+}   
+
+
+.gwt-HTML h4 {
+    color:#171717 !important;
+    padding-left: 10px !important;
+}
+
+
+
+.gwt-DisclosurePanel a {
+    color: #204CC7;
+    font-size: 14px;
+}
+.y-gwt-MenuItem:hover {
+    color:#000000 !important;
+}
+.y-gwt-Table .y-gwt-TableHeader {
+    background: table_sub_color !important;
+}
+
+#gwt-debug-Status ReportsCL {
+    min-height: 2em  !important;
+}
+#gwt-debug-welcomeL {
+    width:250px !important; 
+    color: #555555;
+    font-weight: bold;
+    font-size: 15px;
+    margin-right: 14px;
+}
+div#gwt-debug-logoutCL {
+    margin-bottom: 4px;
+    color: #CE0E0E !important;
+    margin-top: -5px;
+    margin-right: 15px;
+    font-size: 16px !important;
+    font-weight: bold;
+    cursor: pointer;
+}
+div#gwt-debug-logoutCL:first-letter {
+    text-transform: uppercase;
+}
+div#gwt-debug-logoutCL:hover {
+    color:#fb743a !important
+}
+
+/*--Date Picker- */
+
+.blue-date-picker {
+    background-color: #C3D9FF;
+    color: #112ABB;
+    width:208px !important;
+}
+.blue-date-picker .popupContent {
+    background-color: #F7F7F7;
+    margin: 2px;
+    border-width: 1px;
+    border-color: #E7E7E7 !important;
+    width:202px !important;
+}
+
+.popupContent:first-letter {
+    text-transform: uppercase !important;
+}
+table.blue-month-line .gwt-Label:first-letter {
+    text-transform: uppercase;   
+}
+.blue-month-line {
+    width: 198px !important;
+    color:#2D2D2D !important;
+    font-size: 12px !important;
+} 
+.blue-week-line {
+    width:198px !important;
+
+}
+.blue-day-grid {
+    width:203px !important;
+    border: none !important;
+    border-top: 2px solid #B8DDEC !important;
+}
+.gwt-StackPanel td div {
+    color: #3C3A3A;
+    font-size: 14px;
+    font-weight: bold;
+    width: 205px !important;
+    overflow: hidden;
+    cursor: pointer;
+}
+select[multiple]{
+    min-height:65px;
+}
+
+/*textArea {
+    max-width:245px !important;
+
+}
+textarea.gwt-TextArea {
+    max-width: 650px !important;
+}*/
+
+.printLink {
+    width: 13px;
+    height: 14px;
+    margin-top:6px !important;
+}
+
+img.cancelLink {
+    width: 15px;
+    height: 15px;
+    margin-top: 2px;
+}
+
+
+.y-gwt-CreateEntityDisplayWidget fieldset.lineSeperator {
+    border: none;
+}
+
+
+.y-gwt-loadingimage {
+    background: none !important;
+    border-color:#f9f9f9 !important; 
+}
+
+img{
+    border-width: 0px !important;
+    border:none !important;
+
+}
+
+.gwt-Image  {
+    margin-top: 3px;
+}
+
+.lineSeperator {
+    border-bottom: 0;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0 !important;
+} 
+
+.GIKSFQCDHJ .gwt-Label.y-gwt-ClickableLink {
+    color: #545454 !important 
+
+}
+
+
+.GIKSFQCDHJ .gwt-Label.y-gwt-ClickableLink:hover {
+    color: #ef5322  !important 
+
+}
+.gwt-Label.y-gwt-ClickableLink {
+    color: #ef5322 !important;
+}
+
+.gwt-Label.userLink {
+    width: 250px !important;
+    color: #555;
+    font-weight: bold;
+    font-size: 15px;
+    margin-right: 14px;
+}
+td.y-gwt-AbstractStatusPanel-LoginLink {
+    margin-bottom: 4px;
+    color: #ce0e0e !important;
+    margin-top: -5px;
+    margin-right: 15px;
+    font-size: 16px !important;
+    font-weight: bold;
+    cursor: pointer;
+}
+.GIKSFQCDEJ .gwt-HTML li {    
+    color: #333;
+}
+.GIKSFQCDEJ .y-gwt-ClickableLink:nth-child(2){
+    min-height:0em  !important; 
+}
+
+.GIKSFQCDEJ .y-gwt-ClickableLink{
+    padding-left: 22px;
+    padding-top: 9px;
+    padding-bottom: 3px;
+}
+
+.GIKSFQCDEJ .y-gwt-ClickableLink:hover{
+    color:#fb743a;
+    font-weight: bold;
+}
+.mainPanel {
+    bottom:20px !important; line-height: 20px !important;
+
+}
+.info-yalamanchili-office-client-resources-OfficeCss-footerPanel a.gwt-Anchor {
+    line-height: 20px !important;
+    cursor: pointer;
+}
+.horizontalAlignment {
+    display: inherit;
+}

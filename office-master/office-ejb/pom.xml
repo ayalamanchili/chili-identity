@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>info.yalamanchili.office</groupId>
+        <artifactId>office-master</artifactId>
+        <version>1.2-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>office-ejb</artifactId>
+    <packaging>jar</packaging>
+    <name>office-ejb</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>info.yalamanchili.office</groupId>
+            <artifactId>office-dao</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>info.yalamanchili.office</groupId>
+            <artifactId>office-bpm</artifactId>
+            <version>${project.version}</version>
+        </dependency>        
+    </dependencies>
+</project>

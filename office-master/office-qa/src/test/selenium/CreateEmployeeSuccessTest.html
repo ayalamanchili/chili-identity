@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:9090/" />
+<title>CreateEmployeeSuccessTest</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">CreateEmployeeSuccessTest</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/office-web/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=gwt-debug-usernameTb</td>
+	<td>adminadmin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=gwt-debug-passwordTb</td>
+	<td>adminadmin</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=gwt-debug-loginB</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>id=gwt-debug-Create EmployeeCL</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=gwt-debug-Create EmployeeCL</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Corporate Employee</td>
+	<td>Loading...</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=gwt-debug-EmployeeType_employeeType_LB</td>
+	<td>label=Corporate Employee</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>xpath=(//input[@id='gwt-debug-Employee_firstName_TB'])[2]</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>xpath=(//input[@id='gwt-debug-Employee_lastName_TB'])[2]</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=gwt-debug-Employee_email_TB</td>
+	<td>test@gmail.com</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//input[@type='text'])[10]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=gwt-debug-Employee_dateOfBirth_TB</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//tr[3]/td/table/tbody/tr/td[4]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=gwt-debug-Employee_sex_LB</td>
+	<td>label=MALE</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//input[@type='text'])[11]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=gwt-debug-Employee_dateOfBirth_TB</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=gwt-debug-Employee_passwordHash_PTB</td>
+	<td>testtest</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=gwt-debug-Employee_jobTitle_TB</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>xpath=(//button[@type='button'])[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=gwt-debug-Employee_ssn_TB</td>
+	<td>999999999</td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td></td>
+	<td>Successfully Created Employee</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//button[@type='button'])[3]</td>
+	<td></td>
+</tr>
+<!-- search for created employee-->
+<tr>
+	<td>type</td>
+	<td>css=input.gwt-SuggestBox.searchComposite</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=button.gwt-Button</td>
+	<td></td>
+</tr>
+<!-- delete the employee created-->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>class=gwt-Image y-gwt-ClickableImage deleteLink</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>class=gwt-Image y-gwt-ClickableImage deleteLink</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>Are you sure? you want to Delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>Are you sure? All Employee details will be deleted</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td></td>
+	<td>Successfully Deleted Employee Information</td>
+</tr>
+</tbody></table>
+</body>
+</html>

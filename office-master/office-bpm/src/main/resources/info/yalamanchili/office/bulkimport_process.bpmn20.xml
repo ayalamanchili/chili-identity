@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="bulkimport_process">
+        <startEvent id="bulkImportStart"/>
+        <sequenceFlow id="bulkImportStartToUserSubmit" sourceRef="bulkImportStart" targetRef="bulkImportSubmitUserTask" />
+        <!--submit User task-->
+        <userTask id="bulkImportSubmitUserTask" 
+                  name="Bulk Import Submit Task for ${bulkImport.name}: ${bulkImport.adapter}" 
+                  activiti:candidateGroups="ROLE_BULK_IMPORT">
+            <documentation>
+                Bulk Import Submit Task
+                Bulk Import Name        : #{bulkImport.name}
+                Bulk Import Adapter     : #{bulkImport.adapter}
+                Bulk Import Description : #{bulkImport.description}
+                Bulk Import Date        : #{bulkImport.importTimeStamp}
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/admin/bulkimport.html
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+            </extensionElements> 
+        </userTask>
+        <sequenceFlow id="bulkImportSubmitToServiceSubmit" sourceRef="bulkImportSubmitUserTask" targetRef="bulkImportSubmitServiceTask" />
+        <!--correct and resubmit task-->
+        <userTask id="bulkImportCorrectionUserTask" 
+                  name="Bulk Import Correct and Resubmit Task for ${bulkImport.name}: ${bulkImport.adapter}" 
+                  activiti:candidateGroups="ROLE_BULK_IMPORT">
+            <documentation>
+                Bulk Import Correction and Resubmit Task:
+                There was a error processing the Bulk Import please correct the problem and Resubmit it.
+                Bulk Import Name        : #{bulkImport.name}
+                Bulk Import Adapter     : #{bulkImport.adapter}
+                Bulk Import Description : #{bulkImport.description}
+                Bulk Import Date        : #{bulkImport.importTimeStamp}
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/admin/bulkimport.html
+                Bulk Import Error       : #{bulkImportError}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+            </extensionElements> 
+        </userTask>        
+        <sequenceFlow id="bulkImportCorrectionTaskToSubmitServiceTask" sourceRef="bulkImportCorrectionUserTask" targetRef="bulkImportSubmitServiceTask" />
+        <!--BulkImport Submit Service Task -->
+        <serviceTask
+            id="bulkImportSubmitServiceTask"
+            name="BulkImport Process Submit"
+            activiti:class="info.yalamanchili.office.bulkimport.BulkImportSubmit"
+            activiti:async="true">
+        </serviceTask>
+        <sequenceFlow id="bulkImportServiceSubmitToSubmitCompleteGateway" sourceRef="bulkImportSubmitServiceTask" targetRef="submitCompleteGateway"/>
+        <exclusiveGateway id="submitCompleteGateway" />
+        <sequenceFlow sourceRef="submitCompleteGateway" 
+                      targetRef="bulkImportReviewTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${bulkImport.status.name() == 'SUBMITTED'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="submitCompleteGateway" 
+                      targetRef="bulkImportCorrectionUserTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${bulkImport.status.name() == 'ERROR'}
+            </conditionExpression>
+        </sequenceFlow>         
+        <userTask id="bulkImportReviewTask" 
+                  name="BulkImport Review Task for ${bulkImport.name}: ${bulkImport.adapter}" 
+                  activiti:candidateGroups="ROLE_BULK_IMPORT">
+            <documentation>
+                Bulk Import Submit Task
+                Bulk Import Name        : #{bulkImport.name}
+                Bulk Import Adapter     : #{bulkImport.adapter}
+                Bulk Import Description : #{bulkImport.description}
+                Bulk Import Date        : #{bulkImport.importTimeStamp}
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/admin/bulkimport.html
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <sequenceFlow id="bulkImportReviewToApprovalGateway" sourceRef="bulkImportReviewTask" targetRef="approvalGateway"/>
+        <exclusiveGateway id="approvalGateway" />
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="bulkImportCommit">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="bulkImportRevert">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow> 
+        <!--BulkImport Commit Service Task-->
+        <serviceTask
+            id="bulkImportCommit"
+            name="BulkImport Process Commit"
+            activiti:class="info.yalamanchili.office.bulkimport.BulkImportCommit">
+        </serviceTask>
+        <!--BulkImport Revert Service Task-->
+        <serviceTask
+            id="bulkImportRevert"
+            name="BulkImport Process Revert"
+            activiti:class="info.yalamanchili.office.bulkimport.BulkImportRevert">
+        </serviceTask>
+        <sequenceFlow id="bulkImportApprovalGatewayToEnd" sourceRef="approvalGateway" targetRef="bulkImportEnd"/> 
+        <!-- end-->
+        <endEvent id="bulkImportEnd" />
+    </process>
+</definitions>

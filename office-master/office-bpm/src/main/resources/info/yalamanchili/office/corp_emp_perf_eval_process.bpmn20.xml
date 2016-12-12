@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="corp_emp_perf_eval_process">
+        <startEvent id="start"/>
+        
+        <!-- Manager approval task-->
+        <sequenceFlow  sourceRef="start" targetRef="managerReviewTask" />
+        <userTask id="managerReviewTask" 
+                  name="Manager Performance Evaluation Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
+            <documentation>
+                Manager Performance Evaluation Task
+                Employee has completed his self review please complete Manager Peformance Review by following the steps below.
+                1) Naviate to My Office--> Search Employee--> View --> Reports--> Performance Evaluations-->Create Manager Review.
+                2) Once Review is completed come back to My Tasks and Complete this task. A Task/Email is sent to employee for final acceptance.
+                
+                Employee Name              : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Evaluation Fiscal Year     : #{entity.evaluationFYYear}
+                Key Accomplishments        : #{entity.getKeyAccomplishments()}
+                Manager Comments           : #{entity.getManagerComments()}        
+                Employee Comments          : #{entity.getEmployeeComments()}
+                HR Comments                : #{entity.getHrComments()}
+
+                Detailed instructions below:
+                https://apps.sstech.us/site/office/perf-eval/corp-approval-process.html
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.perfeval.CorporatePerfEvalProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.perfeval.CorporatePerfEvalProcess" />
+                <activiti:formProperty id="managerNotes" 
+                                       name="Comments"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="managerReviewTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="managerReviewTask">
+            <timerEventDefinition> 
+                <timeDuration>PT168H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="managerReviewTaskEscalationTimer" 
+                      targetRef="managerTaskEscalation" />
+        <serviceTask id="managerTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!--desision-->
+        <sequenceFlow sourceRef="managerReviewTask" 
+                      targetRef="employeeAcceptTask" />
+        <userTask id="employeeAcceptTask" 
+                  name="Performance Evaluation Accept with comments Task"
+                  activiti:assignee="${currentEmployee.employeeId}" >
+            <documentation>
+                Your manager has completed your performance review and its ready for your comments and acceptance.
+                1) Please review your evaluation under Home--> My Reports--> Performance Evaluations
+                2) Once review is complete please go to My Tasks--> to add your comment and complete it.
+                Evaluation Fiscal Year     : #{entity.evaluationFYYear}
+                Rating                     : #{entity.rating}   
+                Detailed instructions below:
+                https://apps.sstech.us/site/office/perf-eval/corp-submit-review.html                             
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.perfeval.CorporatePerfEvalProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.perfeval.CorporatePerfEvalProcess" />
+                <activiti:formProperty id="accepted" 
+                                       name="Accept?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="accept" name="Acknowledge"/>
+                </activiti:formProperty>                
+                <activiti:formProperty id="employeeNotes" 
+                                       name="Comments"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="employeeAcceptTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="employeeAcceptTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="employeeAcceptTaskEscalationTimer" 
+                      targetRef="employeeAcceptTaskEscalation" />
+        <serviceTask id="employeeAcceptTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow  sourceRef="employeeAcceptTask" targetRef="hrFinalApprovalTask" />
+        <userTask id="hrFinalApprovalTask" 
+                  name="Performance Evaluation Final HR Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}" 
+                  activiti:candidateGroups="ROLE_HR_ADMINSTRATION">
+            <documentation>
+                Performance Evaluation Final HR Approval Task
+                Employee has accepted the performance review.
+                Please add comments to task (My Tasks) to complete review.
+                Employee Name              : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Evaluation Fiscal Year     : #{entity.evaluationFYYear}
+                Rating                     : #{entity.rating}
+                
+                Detailed instructions below:
+                https://apps.sstech.us/site/office/perf-eval/corp-approval-process.html
+                                
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.perfeval.CorporatePerfEvalProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.perfeval.CorporatePerfEvalProcess" />
+                <activiti:formProperty id="hrNotes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="finalHRApprovalTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="hrFinalApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="finalHRApprovalTaskEscalationTimer" 
+                      targetRef="finalHRApprovalTaskEscalation" />
+        <serviceTask id="finalHRApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <sequenceFlow  sourceRef="hrFinalApprovalTask" targetRef="end" />
+        <endEvent id="end" />        
+    </process>
+</definitions>

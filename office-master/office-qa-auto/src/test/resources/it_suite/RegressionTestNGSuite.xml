@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!--
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+-->
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="info.yalamanchili.office_office-qa-auto_jar_1.2-SNAPSHOT">
+    <test name="All tests for info.yalamanchili.office_office-qa-auto_jar_1.2-SNAPSHOT">
+        <packages>
+            <package name="info.yalamanchili.office.qa">
+                <classes>
+                    <class name="info.yalamanchili.office.qa.StaticContentsTest"/>
+                    <class name="info.yalamanchili.office.qa.LoginTest"/>
+                </classes>
+            </package>
+            <package name="info.yalamanchili.office.qa.recruiting">
+                <classes>
+                    <class name="info.yalamanchili.office.qa.recruiting.Skills"/>
+                    <class name="info.yalamanchili.office.qa.recruiting.Certifications"/>
+                    <class name="info.yalamanchili.office.qa.recruiting.Practice"/>
+                    <class name="info.yalamanchili.office.qa.recruiting.TechnologyGroup"/>
+                    <class name="info.yalamanchili.office.qa.recruiting.SkillSetTags"/>
+                </classes>
+            </package>
+            <package name="info.yalamanchili.office.qa.admin">
+                <classes>
+                    <class name="info.yalamanchili.office.qa.admin.Clients"/>
+                    <class name="info.yalamanchili.office.qa.admin.Vendors"/>
+                    <class name="info.yalamanchili.office.qa.admin.Subcontractors"/>
+                    <class name="info.yalamanchili.office.qa.admin.Notificationgroups"/>
+                    <class name="info.yalamanchili.office.qa.admin.Question"/>
+                    <class name="info.yalamanchili.office.qa.admin.Externalrefs"/>
+                    <class name="info.yalamanchili.office.qa.admin.Company"/>
+                </classes>
+            </package>
+            <package name="info.yalamanchili.office.qa.profile">
+                <classes>
+                    <class name="info.yalamanchili.office.qa.profile.Profile"/>
+                    <class name="info.yalamanchili.office.qa.profile.Addresses"/>
+                    <class name="info.yalamanchili.office.qa.profile.Phones"/>
+                    <class name="info.yalamanchili.office.qa.profile.Emails"/>
+                    <class name="info.yalamanchili.office.qa.profile.EmergencyContacts"/>
+                    <class name="info.yalamanchili.office.qa.profile.Dependents"/>
+                    <class name="info.yalamanchili.office.qa.profile.BankAccount"/>
+                </classes>
+            </package>
+            <package name="info.yalamanchili.office.qa.myoffice">
+                <classes>
+                    <class name="info.yalamanchili.office.qa.myoffice.Employees"/>
+                    <class name="info.yalamanchili.office.qa.myoffice.OnBoarding"/>
+                    <class name="info.yalamanchili.office.qa.myoffice.Prospects"/>
+                    <class name="info.yalamanchili.office.qa.myoffice.PhoneType"/>
+                    <class name="info.yalamanchili.office.qa.myoffice.AddressType"/>
+                    <class name="info.yalamanchili.office.qa.myoffice.EmailType"/>
+                    <class name="info.yalamanchili.office.qa.myoffice.ContactType"/>
+                </classes>
+            </package>
+            <package name="info.yalamanchili.office.qa.expense">
+                <classes>
+                    <class name="info.yalamanchili.office.qa.expense.AdvanceRequisition"/>
+                    <class name="info.yalamanchili.office.qa.expense.ExpenseCategories"/>
+                    <class name="info.yalamanchili.office.qa.expense.CheckRequisition"/>
+                    <class name="info.yalamanchili.office.qa.expense.ExpenseReports"/>
+                    <class name="info.yalamanchili.office.qa.expense.TravelAuthorization"/>
+                </classes>
+            </package>
+            <package name="info.yalamanchili.office.qa.time">
+                <classes>
+                    <class name="info.yalamanchili.office.qa.time.Summary"/>
+                    <class name="info.yalamanchili.office.qa.time.CorporateTime"/>
+                    <class name="info.yalamanchili.office.qa.time.EmployeeTime"/>
+                    <class name="info.yalamanchili.office.qa.time.OutOfOffice"/>
+                </classes>
+            </package>
+            <package name="info.yalamanchili.office.qa.home">
+                <classes>
+                    <class name="info.yalamanchili.office.qa.home.MyReports"/>
+                    <class name="info.yalamanchili.office.qa.home.Tasks"/>
+                </classes>
+            </package>
+        </packages>
+    </test>
+</suite>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="fault_event_process">
+        <startEvent id="start"/>
+        <sequenceFlow id="flow1" sourceRef="start" targetRef="retryFaultEventTask" />
+        <userTask id="retryFaultEventTask" 
+                  name="Fault Event Retry Task" 
+                  activiti:candidateGroups="ROLE_ADMIN">
+            <documentation>
+                A fault occoured when processing this task.
+                Please investigate the root cause based on the information.
+                Once ready please complete to retry this task.
+                Details: #{entity.payload.toString()}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.fault.FaultEventProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.fault.FaultEventProcess" />
+            </extensionElements> 
+        </userTask>
+        <sequenceFlow id="flow2" sourceRef="retryFaultEventTask" targetRef="end" />
+        <!-- end-->
+        <endEvent id="end" />
+    </process>
+</definitions>

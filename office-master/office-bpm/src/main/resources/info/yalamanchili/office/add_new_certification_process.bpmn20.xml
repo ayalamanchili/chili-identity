@@ -1,0 +1,93 @@
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="add_new_certification_request">
+        <startEvent id="addNewCertificationStart">
+            <extensionElements>
+                <activiti:formProperty id="certificationName" 
+                                       name="Certification Name"
+                                       required="true"
+                                       type="string">
+                </activiti:formProperty>
+                <activiti:formProperty id="certificationDescription" 
+                                       name="Certification Description"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements>
+        </startEvent>
+        <sequenceFlow id="flow1" sourceRef="addNewCertificationStart" targetRef="addNewCertificationTask" />
+        <userTask id="addNewCertificationTask" 
+                  name="Add New Certification Request" 
+                  activiti:candidateGroups="ROLE_RECRUITER,ROLE_ADMIN">
+            <documentation>
+                Add Certification Information:
+                Certification Name: ${certificationName} 
+                Certification Description: ${certificationDescription}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <sequenceFlow id="flow3" sourceRef="addNewCertificationTask" targetRef="addNewCertWithDesc">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and certificationDescription != 'null'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="flow4" sourceRef="addNewCertificationTask" targetRef="addNewCert">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and certificationDescription == 'null'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="flow5" sourceRef="addNewCertificationTask" targetRef="addCertificationEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        <serviceTask
+            id="addNewCertWithDesc"
+            name="New Certification to Add After Approval"
+            activiti:expression="#{addNewCertification.addCertWithDesc(certificationName, certificationDescription)}" />
+        
+        <serviceTask
+            id="addNewCert"
+            name="New Certification to Add After Approval"
+            activiti:expression="#{addNewCertification.addCertWithDesc(certificationName)}" />
+        <!-- Task escalation email after 7 days-->
+        <boundaryEvent id="emailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="addNewCertificationTask">
+            <timerEventDefinition> 
+                <timeDuration>PT168H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer" 
+                      targetRef="taskEmailEscalation" />
+        <serviceTask
+            id="taskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        <!-- end-->
+        <endEvent id="addCertificationEnd" />
+    </process>
+</definitions>

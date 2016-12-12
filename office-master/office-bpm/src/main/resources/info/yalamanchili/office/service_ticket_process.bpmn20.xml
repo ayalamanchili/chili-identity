@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="service_ticket_process">
+ 
+        <startEvent id="serviceTicketCreated" />
+        
+        <sequenceFlow sourceRef="serviceTicketCreated" targetRef="serviceTicketTask" />
+        
+        <!--Service ticket task created-->
+        <userTask id="serviceTicketTask" 
+                  name="Service Ticket For: ${ticket.subject} By : ${ticket.employee.firstName} ${ticket.employee.lastName}"
+                  activiti:candidateGroups="${ticket.departmentAssigned.rolename}">
+            <documentation> 
+                Ticket Details 
+                Created By  : #{ticket.employee.firstName} #{ticket.employee.lastName} 
+                Number      : #{ticket.id}          
+                Subject     : #{ticket.subject}
+                Notes       : #{ticket.descriptionToText()}
+                Type        : #{ticket.type}
+                Created     : #{ticket.createdTimeStamp}
+                Please go to Home--> Self Service --> My Tickets --> View to resolve the ticket.
+                Instructions : https://apps.sstech.us/site/office/selfservice/manage-tickets.html
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.selfserv.ServiceTaskCompleteListener" />
+            </extensionElements>             
+        </userTask>
+        <sequenceFlow sourceRef="serviceTicketTask" targetRef="serviceTicketEnd" />
+        <!-- Task not claimed escalation email after 4 hours-->
+        <boundaryEvent id="taskNotClaimedEmailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="serviceTicketTask">
+            <timerEventDefinition> 
+                <timeDuration>PT4H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="taskNotClaimedEmailEscalationTimer" 
+                      targetRef="taskNotClaimedEmailEscalation" />
+        <serviceTask
+            id="taskNotClaimedEmailEscalation"
+            name="Task not claimed email escalation"
+            activiti:class="info.yalamanchili.office.bpm.TaskNotClaimedEmailEscalation">
+        </serviceTask>
+        <!-- Task escalation email after 7 days-->
+        <boundaryEvent id="emailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="serviceTicketTask">
+            <timerEventDefinition> 
+                 <timeDuration>PT168H</timeDuration>  
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer" 
+                      targetRef="taskEmailEscalation" />
+        <serviceTask
+            id="taskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        <!-- process end-->
+        <endEvent id="serviceTicketEnd" />
+ 
+    </process>
+ 
+</definitions>

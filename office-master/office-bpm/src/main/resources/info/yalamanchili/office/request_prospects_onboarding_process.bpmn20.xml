@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="request_prospect_onboarding_process">
+        <startEvent id="initateOnboardingStart">
+        </startEvent>
+        <sequenceFlow id="flow1" sourceRef="initateOnboardingStart" targetRef="initiateOnboardingApprovalTask" >
+        </sequenceFlow>
+        <userTask id="initiateOnboardingApprovalTask" 
+                  name="Prospect onboarding request from immigration team" 
+                  activiti:candidateGroups="ROLE_ON_BOARDING_MGR,ROLE_HR_ADMINSTRATION">
+            <documentation>
+                Immigration team has completed the necessary process for this prospect .Prospect need to onboard.
+                Please start onboarding process for below prospect
+                
+                Name                        : #{prospect.contact.firstName} #{prospect.contact.lastName} 
+                Case Manager                : #{caseManagerName}
+                Company                     : #{prospect.company}
+                Start Date                  : #{prospect.dateOfJoining}
+                
+                Plese click on this URL to view the prospect: #{prospectLink}
+                
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.prospect.RequestProspectOnboardingProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.prospect.RequestProspectOnboardingProcess" />
+                <activiti:formProperty id="prospectInitiateStatus" 
+                                       name="prospectInitiateStatus"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="Approved"/>
+                    <activiti:value id="rejected" name="Rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 7 days-->
+        <boundaryEvent id="emailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="initiateOnboardingApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT168H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer" 
+                      targetRef="taskEmailEscalation" />
+        <serviceTask
+            id="taskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        <sequenceFlow id="flow4" sourceRef="initiateOnboardingApprovalTask" targetRef="initiateOnboardingEnd" />
+        <!-- end-->
+        <endEvent id="initiateOnboardingEnd" />
+    </process>
+</definitions>

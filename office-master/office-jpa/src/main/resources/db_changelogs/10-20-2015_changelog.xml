@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    
+    <changeSet author="mbadiginchala" id="clientinformation-add">
+        <preConditions onFail="WARN"> 
+        </preConditions>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="clientinformation">
+            <column name="clientProject_id" type="bigint"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="clientinformation_aud">
+            <column name="clientProject_id" type="bigint"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="clientinformation">
+            <column name="vendorRecruiter_id" type="bigint"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="clientinformation_aud">
+            <column name="vendorRecruiter_id" type="bigint"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="clientinformation">
+            <column name="middleVendor_id" type="bigint"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="clientinformation_aud">
+            <column name="middleVendor_id" type="bigint"/>
+        </addColumn>
+        
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="clientinformation">
+            <column name="isCPDFilled" type="bit"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="clientinformation_aud">
+            <column name="isCPDFilled" type="bit"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="clientinformation">
+            <column name="timeSheetRequirement" type="varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="clientinformation_aud">
+            <column name="timeSheetRequirement" type="varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="clientinformation">
+            <column name="vacationDetails" type="varchar(255)"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="clientinformation_aud">
+            <column name="vacationDetails" type="varchar(255)"/>
+        </addColumn>
+        <addForeignKeyConstraint baseColumnNames="clientProject_id"
+                                 baseTableName="clientinformation"
+                                 constraintName="FK_ClientProject_ClientInformations"
+                                 referencedColumnNames="id"
+                                 referencedTableName="project"/>
+        <addForeignKeyConstraint baseColumnNames="vendorRecruiter_id"
+                                 baseTableName="clientinformation"
+                                 constraintName="FK_VendorRecruiter_ClientInformations"
+                                 referencedColumnNames="id"
+                                 referencedTableName="contact"/>
+        <addForeignKeyConstraint baseColumnNames="middleVendor_id"
+                                 baseTableName="clientinformation"
+                                 constraintName="FK_MiddleVendor_ClientInformations"
+                                 referencedColumnNames="id"
+                                 referencedTableName="vendor"/>
+    </changeSet>
+</databaseChangeLog>

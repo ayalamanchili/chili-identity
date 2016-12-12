@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="add_new_vendor_request_1">
+        <startEvent id="addNewVendorStart">
+            <extensionElements>
+                <activiti:formProperty id="vendorName" 
+                                       name="Vendor Name"
+                                       required="true"
+                                       type="string">
+                </activiti:formProperty>
+                <activiti:formProperty id="vendorContactName" 
+                                       name="Vendor Contact Name"
+                                       required="false" 
+                                       type="string" />
+                <activiti:formProperty id="vendorContactNumber" 
+                                       name="Vendor Contact Number"
+                                       required="false"
+                                       type="string">
+                </activiti:formProperty>
+                <activiti:formProperty id="vendorContactEmail" 
+                                       name="Vendor Contact Email"
+                                       required="false"
+                                       type="string">
+                </activiti:formProperty>
+                <activiti:formProperty id="vendorAddress" 
+                                       name="Vendor Address"
+                                       required="false"
+                                       type="string">
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+                
+            </extensionElements>
+        </startEvent>
+        <sequenceFlow id="flow1" sourceRef="addNewVendorStart" targetRef="addNewVendorTask" />
+        <userTask id="addNewVendorTask" 
+                  name="Add New Vendor Request" 
+                  activiti:candidateGroups="ROLE_ADMIN">
+            <documentation>
+                Add Vendor Information:
+                Vendor Name: ${vendorName} 
+                Vendor Contact Name: ${vendorContactName}
+                Vendor Contact Number : ${vendorContactNumber} 
+                Vendor Contact Email : ${vendorContactEmail} 
+                Vendor Address : ${vendorAddress} 
+                Notes : ${notes}
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.email.GenericTaskCreateNotification" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.email.GenericTaskCompleteNotification" />
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <sequenceFlow id="flow3" sourceRef="addNewVendorTask" targetRef="addVendorEnd" />
+        <!-- Task escalation email after 7 days-->
+        <boundaryEvent id="emailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="addNewVendorTask">
+            <timerEventDefinition> 
+                <timeDuration>PT168H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer" 
+                      targetRef="taskEmailEscalation" />
+        <serviceTask
+            id="taskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        <!-- end-->
+        <endEvent id="addVendorEnd" />
+    </process>
+</definitions>

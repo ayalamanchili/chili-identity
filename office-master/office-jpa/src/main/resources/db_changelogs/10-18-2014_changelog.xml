@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    
+    <changeSet author="ayalamanchili" id="statusrptchanges-add2">
+        <preConditions onFail="WARN"> 
+        </preConditions>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="statusreport">
+            <column name="employee_id" type="bigint"/>
+        </addColumn>
+        <addColumn catalogName="office"
+                   schemaName="public"
+                   tableName="statusreport_aud">
+            <column name="employee_id" type="bigint"/>
+        </addColumn>
+        <addForeignKeyConstraint baseColumnNames="employee_id"
+                                 baseTableName="statusreport"
+                                 constraintName="FK_EMP_STS_RPTS"
+                                 referencedColumnNames="id"
+                                 referencedTableName="contact"/>
+        <createIndex catalogName="office"
+                     indexName="RPT_START_DT_IDX"
+                     schemaName="public"
+                     tableName="statusreport"
+                     unique="false">
+            <column name="reportStartDate" type="date"/>
+        </createIndex>
+        <createIndex catalogName="office"
+                     indexName="RPT_END_DT_IDX"
+                     schemaName="public"
+                     tableName="statusreport"
+                     unique="false">
+            <column name="reportEndDate" type="date"/>
+        </createIndex>        
+    </changeSet>
+    <changeSet author="ayalamanchili" id="statusrptchanges-remove1">       
+        <preConditions onFail="WARN"> 
+        </preConditions>
+        <dropColumn catalogName="office"
+                    columnName="reportUrl"
+                    schemaName="public"
+                    tableName="statusReport"/>
+        <dropColumn catalogName="office"
+                    columnName="reportUrl"
+                    schemaName="public"
+                    tableName="statusReport_aud"/>        
+    </changeSet>
+    <changeSet author="ayalamanchili" id="statusrptchanges-remove2"> 
+        <preConditions onFail="WARN"> 
+        </preConditions>
+        <dropForeignKeyConstraint
+            baseTableName="statusReport"
+            constraintName="FK_CLNT_INFO_SRV_TKTS"/>  
+        <dropForeignKeyConstraint
+            baseTableName="statusReport"
+            constraintName="FK_PROJECT_STATUS_RPTS"/> 
+        <dropIndex catalogName="office"
+                   indexName="FK_CLNT_INFO_SRV_TKTS"
+                   schemaName="public"
+                   tableName="statusReport"/>
+        <dropIndex catalogName="office"
+                   indexName="FK_PROJECT_STATUS_RPTS"
+                   schemaName="public"
+                   tableName="statusReport"/>    
+        <dropColumn catalogName="office"
+                    columnName="clientinformation_id"
+                    schemaName="public"
+                    tableName="statusReport"/>
+        <dropColumn catalogName="office"
+                    columnName="clientinformation_id"
+                    schemaName="public"
+                    tableName="statusReport_aud"/>   
+        <dropColumn catalogName="office"
+                    columnName="project_id"
+                    schemaName="public"
+                    tableName="statusReport"/>
+        <dropColumn catalogName="office"
+                    columnName="project_id"
+                    schemaName="public"
+                    tableName="statusReport_aud"/>       
+    </changeSet>    
+</databaseChangeLog>

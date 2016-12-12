@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+    <action>
+        <actionName>CUSTOM-maven clean install</actionName>
+        <displayName>maven clean install</displayName>
+        <goals>
+            <goal>clean</goal>
+            <goal>install</goal>
+        </goals>
+    </action>
+    <action>
+        <actionName>CUSTOM-mvn clean install -DskipTests</actionName>
+        <displayName>mvn clean install -DskipTests</displayName>
+        <goals>
+            <goal>clean</goal>
+            <goal>install</goal>
+        </goals>
+        <properties>
+            <skipTests>true</skipTests>
+        </properties>
+    </action>
+    <action>
+        <actionName>CUSTOM-mvn clean install -DskipTests -Pprod</actionName>
+        <displayName>mvn clean install -DskipTests -Pprod</displayName>
+        <goals>
+            <goal>clean</goal>
+            <goal>install</goal>
+        </goals>
+        <properties>
+            <skipTests>true</skipTests>
+        </properties>
+        <activatedProfiles>
+            <activatedProfile>prod</activatedProfile>
+        </activatedProfiles>
+    </action>
+    <action>
+        <actionName>CUSTOM-mvn findbugs:gui</actionName>
+        <displayName>Static Code Analysis</displayName>
+        <goals>
+            <goal>clean</goal>            
+            <goal>install</goal>            
+            <goal>site</goal>
+            <goal>findbugs:gui</goal>            
+        </goals>
+        <activatedProfiles>
+            <activatedProfile>static-analysis</activatedProfile>
+        </activatedProfiles>        
+    </action>            
+</actions>

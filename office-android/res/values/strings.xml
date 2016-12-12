@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">System Soft</string>
+    <string name="page_size">10</string>
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
+    <string name="login_loginB">Login</string>
+    <!--preferecnes-->
+    <string name="preference_menu_item_text">Preferences</string>
+    <string name="preference_menu_about_text">About</string>
+</resources>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+    <persistence-unit name="office" transaction-type="RESOURCE_LOCAL">
+        <class>info.yalamanchili.office.entity.Company</class>
+        <!--Profile-->
+        <class>info.yalamanchili.office.entity.profile.Address</class>
+        <class>info.yalamanchili.office.entity.profile.AddressType</class>
+        <class>info.yalamanchili.office.entity.profile.Contact</class>
+        <class>info.yalamanchili.office.entity.profile.Email</class>
+        <class>info.yalamanchili.office.entity.profile.EmailType</class>
+        <class>info.yalamanchili.office.entity.profile.Employee</class>
+        <class>info.yalamanchili.office.entity.profile.EmployeeType</class>
+        <class>info.yalamanchili.office.entity.profile.Phone</class>
+        <class>info.yalamanchili.office.entity.profile.PhoneType</class>
+        <class>info.yalamanchili.office.entity.profile.Sex</class>
+        <class>info.yalamanchili.office.entity.profile.EmergencyContact</class>
+        <class>info.yalamanchili.office.entity.profile.ClientInformation</class>
+        <class>info.yalamanchili.office.entity.profile.SkillSet</class>
+        <class>info.yalamanchili.office.entity.profile.Preferences</class>
+        <class>info.yalamanchili.office.entity.profile.Skill</class>
+        <class>info.yalamanchili.office.entity.profile.Certification</class>
+        <!-- TODO-->
+        <class>info.yalamanchili.office.entity.profile.Todo</class>
+        <!-- Message-->
+        <class>info.yalamanchili.office.entity.message.Message</class>
+        <!-- Drive-->
+        <class>info.yalamanchili.office.entity.drive.Folder</class>
+        <class>info.yalamanchili.office.entity.drive.File</class>
+        <!-- Social-->
+        <class>info.yalamanchili.office.entity.social.Post</class>
+        <!--Time-->
+        <class>info.yalamanchili.office.entity.time.TimeSheet</class>
+        <class>info.yalamanchili.office.entity.time.TimeSheetPeriod</class>
+        <!--Client-->
+        <class>info.yalamanchili.office.entity.client.Client</class>
+        <class>info.yalamanchili.office.entity.client.Subcontractor</class>
+        <class>info.yalamanchili.office.entity.client.Project</class>
+        <class>info.yalamanchili.office.entity.client.StatementOfWork</class>
+        <class>info.chili.hibernate.envers.AuditRevisionEntity</class>
+        <!--BulkImport-->
+        <class>info.yalamanchili.office.entity.bulkimport.BulkImport</class>
+        <class>info.yalamanchili.office.entity.bulkimport.BulkImportMessage</class>
+        <class>info.yalamanchili.office.entity.bulkimport.BulkImportEntity</class>
+        <!--Feedback-->
+        <class>info.yalamanchili.office.entity.Feedback.Feedback</class>
+        <!--Security-->
+        <class>info.chili.security.domain.CRole</class>
+        <class>info.chili.security.domain.CUser</class>
+        <class>info.chili.security.domain.CIPAddress</class>
+        <class>info.chili.security.domain.CUserIPAddress</class>
+        <!--Security ACL-->
+        <class>info.chili.security.domain.acl.AclSid</class>
+        <class>info.chili.security.domain.acl.AclClass</class>
+        <class>info.chili.security.domain.acl.AclObjectIdentity</class>
+        <class>info.chili.security.domain.acl.AclEntry</class>
+        
+        <class>info.yalamanchili.office.entity.bulkimport.BulkImportMessage</class>
+        <class>info.yalamanchili.office.entity.privacy.PrivacySetting</class>
+        <!-- i18n-->
+        <class>info.chili.i18n.domain.Ci18nResourceBundle</class>
+        <class>info.chili.i18n.domain.Ci18nResource</class>
+        <class>info.chili.bpm.domain.BPMTaskDelegateRule</class>
+        <class>info.chili.email.domain.EmailPreferenceRule</class>
+        <class>info.chili.email.domain.UserEmailPreferenceRule</class>
+        <properties>
+            <property name="hibernate.show_sql" value="${db.show.sql}"/>
+            <property name="hibernate.format_sql" value="${db.format.sql}"/>
+            <property name="hibernate.connection.driver_class" value="${db.driver.name}"/>
+            <property name="hibernate.connection.url" value="${db.url}"/>
+            <property name="hibernate.connection.username" value="${db.username}"/>
+            <property name="hibernate.connection.password" value="${db.password}"/>
+            <property name="connection.provider_class" value="org.hibernate.connection.C3P0Connection"/>
+            <property name="hibernate.c3p0.min_size" value="5"/>
+            <property name="hibernate.c3p0.max_size" value="100"/>
+            <property name="hibernate.c3p0.timeout" value="360"/>
+            <property name="hibernate.c3p0.max_statements" value="50"/>
+            <property name="hibernate.c3p0.idle_test_period" value="180"/>
+            <property name="hibernate.dialect" value="${db.dialect}"/>
+            <property name="hibernate.hbm2ddl.auto" value="${db.hbm2ddl}"/>
+            <!-- Hibernate Search -->
+            <property name="hibernate.search.default.directory_provider" value="org.hibernate.search.store.FSDirectoryProvider"/>
+            <property name="hibernate.search.default.indexBase" value="${hibernate.search.default.indexBase}"/>
+            <!-- Hibernate Envers-->
+            <property name="hibernate.ejb.event.post-insert" value="org.hibernate.ejb.event.EJB3PostInsertEventListener,org.hibernate.envers.event.AuditEventListener"/>
+            <property name="hibernate.ejb.event.post-update" value="org.hibernate.ejb.event.EJB3PostUpdateEventListener,org.hibernate.envers.event.AuditEventListener"/>
+            <property name="hibernate.ejb.event.post-delete" value="org.hibernate.ejb.event.EJB3PostDeleteEventListener,org.hibernate.envers.event.AuditEventListener"/>
+            <property name="hibernate.ejb.event.pre-collection-update" value="org.hibernate.envers.event.AuditEventListener"/>
+            <property name="hibernate.ejb.event.pre-collection-remove" value="org.hibernate.envers.event.AuditEventListener"/>
+            <property name="hibernate.ejb.event.post-collection-recreate" value="org.hibernate.envers.event.AuditEventListener"/>
+            <!--monitoring-->
+            <property name="hibernate.jdbc.factory_class" value="net.bull.javamelody.HibernateBatcherFactory"/>
+            
+        </properties>
+    </persistence-unit>
+</persistence>

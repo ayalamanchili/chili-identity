@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="overtime_hours_adjustment_process">
+ 
+        <startEvent id="overTimeHoursAdjustmentHoursStart">
+            <extensionElements>
+                <activiti:formProperty id="requestHours" 
+                                       name="Hours"
+                                       required="true"
+                                       type="string">
+                </activiti:formProperty>
+                <activiti:formProperty id="requestReason" 
+                                       name="Reason"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements>
+        </startEvent>
+        <sequenceFlow id="overTimeHoursAdjustmentHoursFlow1" sourceRef="overTimeHoursAdjustmentHoursStart" targetRef="overtimePayRequestEmailNotification" />
+        
+        <!--overtime request submit eamil notification-->
+        <serviceTask
+            id="overtimePayRequestEmailNotification"
+            name="Overtime Pay Request Submited Notification"
+            activiti:expression="${timeNotificationService.sendOvertimeRequestSubmitedNotification(currentEmployee)}">
+        </serviceTask>
+        <sequenceFlow id="overTimeHoursAdjustmentHoursFlow2" sourceRef="overtimePayRequestEmailNotification" targetRef="overTimeHoursAdjustmentHoursApprovalTask" />
+        
+        <userTask id="overTimeHoursAdjustmentHoursApprovalTask" 
+                  name="Overtime Pay Rquest by: ${currentEmployee.firstName} ${currentEmployee.lastName} For: ${requestHours} Hours" 
+                  activiti:candidateGroups="ROLE_ADMIN">
+            <documentation>
+                Overtime Hours Pay Request by Employee
+            </documentation>
+            <extensionElements>
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="reason" 
+                                       name="Reason"
+                                       required="true" 
+                                       type="string" />
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <sequenceFlow id="overTimeHoursAdjustmentHoursFlow3" sourceRef="overTimeHoursAdjustmentHoursApprovalTask" targetRef="approvalGateway" />
+        <!-- Task escalation email after 7 days-->
+        <boundaryEvent id="emailEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="overTimeHoursAdjustmentHoursApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT168H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="emailEscalationTimer" 
+                      targetRef="taskEmailEscalation" />
+        <serviceTask
+            id="taskEmailEscalation"
+            name="Task Email Escalation"
+            activiti:class="info.yalamanchili.office.bpm.EmailEscalation">
+        </serviceTask>
+        <!--desision-->
+        <exclusiveGateway id="approvalGateway" />
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="overtimePayRequestApprovedNotification">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="approvalGateway" 
+                      targetRef="overtimePayRequestDeniedNotification">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        <!-- request approved email-->
+        <serviceTask
+            id="overtimePayRequestApprovedNotification"
+            name="Overtime Pay Request Approved Notification"
+            activiti:expression="${timeNotificationService.sendOvertimeRequestApprovedNotification(currentEmployee,reason)}">
+        </serviceTask>
+        <!-- request denied email-->
+        <serviceTask
+            id="overtimePayRequestDeniedNotification"
+            name="Overtime Pay Request Denied Notification"
+            activiti:expression="${timeNotificationService.sendOvertimeRequestDeniedNotification(currentEmployee,reason)}">
+        </serviceTask>
+        <sequenceFlow id="overTimeHoursAdjustmentHoursFlow4" sourceRef="approvalGateway" targetRef="overTimeHoursAdjustmentHoursEnd" />
+        <!-- end-->
+        <endEvent id="overTimeHoursAdjustmentHoursEnd" />
+
+    </process>
+</definitions>

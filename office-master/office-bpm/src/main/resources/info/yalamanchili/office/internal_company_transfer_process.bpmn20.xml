@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+​
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+​
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="internal_company_transfer_process">
+        <startEvent id="internalCompanyTransferProcessStart"/>
+        <sequenceFlow sourceRef="internalCompanyTransferProcessStart" targetRef="employeeCompanyChangePayrollTask" />
+        <!--         Intimating Payroll Department Task :  Payroll Department -->
+        <userTask id="employeeCompanyChangePayrollTask" 
+                  name="Employee Company Change Payroll Task for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_PAYROLL_AND_BENIFITS">
+            <documentation>
+                Employee Company Change Payroll Task for #{employee.firstName} #{employee.lastName}.
+                
+                Effective on #{transferDate}, #{employee.firstName} #{employee.lastName} is trasnferred from #{previousCompany} to #{transferCompany}.
+                Please make the necessary payroll system changes to reflect the transfer.
+            </documentation>
+        </userTask>
+        <sequenceFlow sourceRef="employeeCompanyChangePayrollTask" targetRef="workStatusGateway" />
+        <exclusiveGateway id="workStatusGateway" />
+        <sequenceFlow sourceRef="workStatusGateway" targetRef="employeeCompanyChangeImmigrationTask" >
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[${workStatus=="H1B"}]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="workStatusGateway" targetRef="internalCompanyTransferProcessEnd" >
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[${workStatus!="H1B"}]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="workStatusGateway" targetRef="employeeCompanyChangeImmigrationTask" />
+        <userTask id="employeeCompanyChangeImmigrationTask" 
+                  name="Employee Company Change Immigration Task for ${employee.firstName} ${employee.lastName}" 
+                  activiti:candidateGroups="ROLE_H1B_IMMIGRATION">
+            <documentation>
+                Employee Company Change Immigration Task for #{employee.firstName} #{employee.lastName}.
+                
+                Effective on #{transferDate}, #{employee.firstName} #{employee.lastName} is trasnferred from #{previousCompany} to #{transferCompany}.
+                Please initiate the necessary immigration changes as needed to reflect the transfer. 
+            </documentation>
+        </userTask>
+        <endEvent id="internalCompanyTransferProcessEnd"/>
+    </process>
+</definitions>

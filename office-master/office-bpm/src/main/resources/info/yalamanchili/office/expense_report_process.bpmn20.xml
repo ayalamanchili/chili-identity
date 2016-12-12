@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<definitions
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    targetNamespace="http://www.bpmnwithactiviti.org"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:activiti="http://activiti.org/bpmn">
+ 
+    <process id="expense_report_process">
+        <startEvent id="expenseReportStart"/>
+        
+        <!-- Manager approval task-->
+        <sequenceFlow  sourceRef="expenseReportStart" targetRef="expenseReportMgrApprovalTask" />
+        <userTask id="expenseReportMgrApprovalTask" 
+                  name="Expense Report Manager Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
+            <documentation>
+                Employee Expense Report Manager Approval Task
+                Employee Name          : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Expense Form Type    : #{expenseType}
+                Purpose                        : #{entity.location}
+                Start Date                     : #{startDate}
+                End Date                       : #{endDate}
+                Total Amount               : #{totalExpenses}
+                
+                Navigate to view Expense Report:
+                Expense > Expense Reports > Search > Click View > Table Action column > Click View Icon (or)
+                Expense > Expense Reports > Table Action column > Click View Icon
+                
+                Detailed instructions below:
+                https://apps.sstech.us/site/office/expense/expensereportprocess.html
+                
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.expensereport.ExpenseReportProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.expensereport.ExpenseReportProcess" />
+                
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="expenseReportApprovalTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="expenseReportMgrApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="expenseReportApprovalTaskEscalationTimer" 
+                      targetRef="expenseReportApprovalTaskEscalation" />
+        <serviceTask id="expenseReportApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!--desision-->
+        <sequenceFlow sourceRef="expenseReportMgrApprovalTask" 
+                      targetRef="mgrApprovalGateway" />
+        <exclusiveGateway id="mgrApprovalGateway" />
+        <sequenceFlow sourceRef="mgrApprovalGateway" 
+                      targetRef="expenseReportFinalApprovalTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and entity.totalExpenses &gt; 1000.00}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="mgrApprovalGateway" 
+                      targetRef="expenseReportAccountsPayableTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved' and entity.totalExpenses &lt;= 1000.00}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="mgrApprovalGateway" 
+                      targetRef="expenseReportEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        <!-- CEO approval task-->
+        <userTask id="expenseReportFinalApprovalTask" 
+                  name="Expense Report Final Approval Task for ${currentEmployee.firstName} ${currentEmployee.lastName}">
+            <documentation>
+                Employee Expense Report Final Approval Task
+                Employee Name          : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Expense Form Type    : #{expenseType}
+                Purpose                        : #{entity.location}
+                Start Date                     : #{startDate}
+                End Date                       : #{endDate}
+                Total Amount               : #{totalExpenses}
+                
+                Navigate to view Expense Report:
+                Expense > Expense Reports > Search > Click View > Table Action column > Click View Icon (or)
+                Expense > Expense Reports > Table Action column > Click View Icon
+                
+                Detailed instructions below:
+                https://apps.sstech.us/site/office/expense/expensereportprocess.html
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.expensereport.ExpenseReportProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.expensereport.ExpenseReportProcess" />
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="false" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="expenseReportFinalApprovalTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="expenseReportFinalApprovalTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow sourceRef="expenseReportFinalApprovalTaskEscalationTimer" 
+                      targetRef="expenseReportFinalApprovalTaskEscalation" />
+        <serviceTask id="expenseReportFinalApprovalTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!--desision-->
+        <sequenceFlow sourceRef="expenseReportFinalApprovalTask" 
+                      targetRef="finalApprovalTaskGateway" />
+        <exclusiveGateway id="finalApprovalTaskGateway" />
+        <sequenceFlow sourceRef="finalApprovalTaskGateway" 
+                      targetRef="expenseReportAccountsPayableTask">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="finalApprovalTaskGateway" 
+                      targetRef="expenseReportEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        <!-- Accounts Payable approval task-->
+        <userTask id="expenseReportAccountsPayableTask" 
+                  name="Expense Report Accounts Payable Payment Dispatch Task for ${currentEmployee.firstName} ${currentEmployee.lastName}"
+                  activiti:candidateGroups="ROLE_ACCOUNTS_PAYABLE">
+            <documentation>
+                Employee Expense Report Accounts Payable Payment Dispatch Task.
+                Employee Name          : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Expense Form Type    : #{expenseType}
+                Purpose                        : #{entity.location}
+                Start Date                     : #{startDate}
+                End Date                       : #{endDate}
+                Total Amount               : #{totalExpenses}
+                
+                Navigate to view Expense Report:
+                Expense > Expense Reports > Search > Click View > Table Action column > Click View Icon (or)
+                Expense > Expense Reports > Table Action column > Click View Icon
+                
+                Detailed instructions below:
+                https://apps.sstech.us/site/office/expense/expensereportprocess.html
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener event="create" class="info.yalamanchili.office.bpm.expensereport.ExpenseReportProcess" />
+                <activiti:taskListener event="complete" class="info.yalamanchili.office.bpm.expensereport.ExpenseReportProcess" />
+                
+                <activiti:formProperty id="status" 
+                                       name="Approved?"
+                                       required="true"
+                                       type="enum">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" 
+                                       name="Notes"
+                                       required="true" 
+                                       type="string" />
+            </extensionElements> 
+        </userTask>
+        <!-- Task escalation email after 48 hours-->
+        <boundaryEvent id="expenseReportAccountsPayableTaskEscalationTimer"
+                       cancelActivity="false" 
+                       attachedToRef="expenseReportAccountsPayableTask">
+            <timerEventDefinition> 
+                <timeDuration>PT48H</timeDuration> 
+            </timerEventDefinition>
+        </boundaryEvent>
+        <serviceTask id="expenseReportAccountsPayableTaskEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!--desision-->
+        <sequenceFlow sourceRef="expenseReportAccountsPayableTask" 
+                      targetRef="finalApprovalGateway" />
+        <exclusiveGateway id="finalApprovalGateway" />
+        <sequenceFlow sourceRef="finalApprovalGateway" 
+                      targetRef="expenseReportEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'approved'}
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow sourceRef="finalApprovalGateway" 
+                      targetRef="expenseReportEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                ${status == 'rejected'}
+            </conditionExpression>
+        </sequenceFlow>
+        <endEvent id="expenseReportEnd" />
+    </process>
+</definitions>

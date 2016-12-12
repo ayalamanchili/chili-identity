@@ -1,0 +1,27 @@
+<!--
+
+    System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+ 
+    <!-- THYMELEAF: Template Resolver for email and other templates --> 
+    <bean id="emailTemplateResolver" class="org.thymeleaf.templateresolver.ClassLoaderTemplateResolver"> 
+        <property name="prefix" value="templates/" /> 
+        <property name="templateMode" value="HTML5" /> 
+        <property name="characterEncoding" value="UTF-8" /> 
+        <property name="order" value="1" /> 
+    </bean> 
+    
+    <!-- THYMELEAF: Template Engine (Spring3-specific version) --> 
+    <bean id="templateEngine" class="org.thymeleaf.spring3.SpringTemplateEngine"> 
+        <property name="templateResolvers"> 
+            <set> 
+                <ref bean="emailTemplateResolver" /> 
+            </set> 
+        </property> 
+    </bean> 
+</beans>

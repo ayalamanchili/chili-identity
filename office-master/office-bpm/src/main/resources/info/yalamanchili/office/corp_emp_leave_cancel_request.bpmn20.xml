@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- System Soft Technologies Copyright (C) 2013 ayalamanchili@sstech.mobi -->
+<definitions xmlns:activiti="http://activiti.org/bpmn" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             targetNamespace="http://www.bpmnwithactiviti.org" 
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL">
+    <process id="corp_emp_leave_cancel_request">
+        <startEvent id="corpEmpLeaveRequestCancelStart" />
+        <sequenceFlow targetRef="corpEmpLeaveRequestCancelTask" sourceRef="corpEmpLeaveRequestCancelStart"/>
+        <userTask id="corpEmpLeaveRequestCancelTask" name="Cancel Leave Request For ${currentEmployee.firstName} ${currentEmployee.lastName}">
+            <documentation>
+                A Leave cancel request has been created. 
+                Reason:       : #{cancelReason}
+                please review and approve or reject as needed
+                if approved the hours will hours will be released and are availble for later.
+                Request Details:
+                Employee Name : #{currentEmployee.firstName} #{currentEmployee.lastName}
+                Start Date    : #{entity.startDate}
+                End Date      : #{entity.endDate} 
+                Category      : #{entity.category} 
+                Hours         : #{entity.hours} 
+                Notes         : #{entity.notes}
+                PTO Available when request submitted : #{summary.availablePTOHours}
+                Follow instructions from below:
+                https://apps.sstech.us/site/office/timesheets/submit-leave-request.html
+            </documentation>
+            <extensionElements>
+                <activiti:taskListener class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestCancelProcess" event="create"/>
+                <activiti:taskListener class="info.yalamanchili.office.bpm.time.CorpEmpLeaveRequestCancelProcess" event="complete"/>
+                <activiti:formProperty id="status" type="enum" required="true" name="Approved">
+                    <activiti:value id="approved" name="approved"/>
+                    <activiti:value id="rejected" name="rejected"/>
+                </activiti:formProperty>
+                <activiti:formProperty id="notes" type="string" required="false" name="Notes"/>
+            </extensionElements>
+        </userTask>
+        <sequenceFlow targetRef="corpEmpLeaveRequestCancelEnd" sourceRef="corpEmpLeaveRequestCancelTask"/>
+        <!-- Task escalation email after 2 days-->
+        <boundaryEvent id="emailEscalationTimer" attachedToRef="corpEmpLeaveRequestCancelTask" cancelActivity="false">
+            <timerEventDefinition>
+                <timeDuration>PT48H</timeDuration>
+            </timerEventDefinition>
+        </boundaryEvent>
+        <sequenceFlow targetRef="taskEmailEscalation" sourceRef="emailEscalationTimer"/>
+        <serviceTask id="taskEmailEscalation" name="Task Email Escalation" activiti:class="info.yalamanchili.office.bpm.EmailEscalation"> </serviceTask>
+        <!-- end-->
+        <endEvent id="corpEmpLeaveRequestCancelEnd"/>
+    </process>
+</definitions>
