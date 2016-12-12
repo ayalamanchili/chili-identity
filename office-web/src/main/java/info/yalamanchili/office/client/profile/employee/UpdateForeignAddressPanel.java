@@ -28,7 +28,6 @@ import info.chili.gwt.fields.EnumField;
 import info.chili.gwt.fields.StringField;
 import info.chili.gwt.rpc.HttpService;
 import info.chili.gwt.utils.Alignment;
-import info.chili.gwt.utils.JSONUtils;
 import info.chili.gwt.widgets.GenericPopup;
 import info.chili.gwt.widgets.ResponseStatusWidget;
 import info.yalamanchili.office.client.OfficeWelcome;
@@ -114,8 +113,8 @@ public class UpdateForeignAddressPanel extends TUpdateComposite implements Chang
         assignFieldValueFromEntity("street2", address, DataType.STRING_FIELD);
         assignFieldValueFromEntity("zip", address, DataType.STRING_FIELD);
         assignFieldValueFromEntity("city", address, DataType.STRING_FIELD);
-        assignFieldValueFromEntity("country", address, DataType.ENUM_FIELD);
         assignFieldValueFromEntity("state", address, DataType.ENUM_FIELD);
+        assignFieldValueFromEntity("country", address, DataType.ENUM_FIELD);
     }
 
     @Override
