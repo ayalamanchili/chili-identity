@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: office_mda
-Bundle-SymbolicName: office_mda;singleton:=true
-Bundle-Version: 1.0.0
-Require-Bundle: org.eclipse.jet
-Bundle-ClassPath: .,bin/
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
