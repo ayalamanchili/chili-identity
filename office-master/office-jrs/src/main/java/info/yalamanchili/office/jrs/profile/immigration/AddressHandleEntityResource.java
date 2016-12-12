@@ -75,13 +75,13 @@ public class AddressHandleEntityResource extends CRUDResource<AddressHandleEntit
         EmployeeH1BDetailsDto detailsDto = new EmployeeH1BDetailsDto();
         List<AddressHandleEntity> addresses = dto.getUsForeignAddrInfo();
         for (AddressHandleEntity addr : addresses) {
-            if (addr.getIsHomeAddress() == true) {
-                AddressHandleEntity usAddress = AddressHandleEntityService.instance().saveHomeAddr(immiCase.getId(), addr);
-                detailsDto.getUsForeignAddrInfo().add(usAddress);
-            } else {
+//            if (addr.getIsHomeAddress() == true) {
+//                AddressHandleEntity usAddress = AddressHandleEntityService.instance().saveHomeAddr(immiCase.getId(), addr);
+//                detailsDto.getUsForeignAddrInfo().add(usAddress);
+//            } else {
                 AddressHandleEntity usAddress = AddressHandleEntityService.instance().saveUSAddr(immiCase.getId(), addr);
                 detailsDto.getUsForeignAddrInfo().add(usAddress);
-            }
+//            }
         }
         return detailsDto;
     }
