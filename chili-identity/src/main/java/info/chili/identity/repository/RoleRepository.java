@@ -5,12 +5,13 @@
  */
 package info.chili.identity.repository;
 
-import info.chili.identity.jpa.CUser;
-import org.springframework.data.jpa.repository.JpaRepository;
+import info.chili.identity.jpa.CRole;
+import org.springframework.data.repository.CrudRepository;
 
 /**
  *
  * @author ayalamanchili
  */
-public interface UserRepository extends JpaRepository<CUser, Long> {
+public interface RoleRepository extends CrudRepository<CRole, Long> {
+    
 }

@@ -29,6 +29,10 @@ public class CRole implements Serializable {
     private String rolename;
     private Set<CRole> groups;
 
+    public CRole(String rolename) {
+        this.rolename = rolename;
+    }
+
     @Id
     @GeneratedValue
     public Long getRoleId() {
