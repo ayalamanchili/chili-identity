@@ -41,13 +41,10 @@ public class AddressHandleEntityService {
         List<AddressHandleEntity> findAll = addressDao.findAll(caseId, ImmigrationCase.class.getCanonicalName());
         AddressHandleEntity savedAddr = new AddressHandleEntity();
         if (findAll != null && findAll.size() > 0) {
-            for (AddressHandleEntity addr : findAll) {
-                AddressType addrType = AddressTypeDao.instance().findById(addr.getAddressType().getId());
-                if (addrType != null && addrType.getAddressType().equals("Foreign")) {
-                    savedAddr = update(address, addr, "Foreign");
-                } else {
-                    savedAddr = save(caseId, address, "Foreign");
-                }
+            if (find(findAll, "Foreign") != null) {
+                savedAddr = update(address, find(findAll, "Foreign"), "Foreign");
+            } else {
+                savedAddr = save(caseId, address, "Foreign");
             }
         } else {
             savedAddr = save(caseId, address, "Foreign");
@@ -60,13 +57,10 @@ public class AddressHandleEntityService {
         List<AddressHandleEntity> findAll = addressDao.findAll(caseId, ImmigrationCase.class.getCanonicalName());
         AddressHandleEntity savedAddr = new AddressHandleEntity();
         if (findAll != null && findAll.size() > 0) {
-            for (AddressHandleEntity addr : findAll) {
-                AddressType addrType = AddressTypeDao.instance().findById(addr.getAddressType().getId());
-                if (addrType != null && addrType.getAddressType().equals("US")) {
-                    savedAddr = update(address, addr, "US");
-                } else {
-                    savedAddr = save(caseId, address, "US");
-                }
+            if (find(findAll, "US") != null) {
+                savedAddr = update(address, find(findAll, "US"), "US");
+            } else {
+                savedAddr = save(caseId, address, "US");
             }
         } else {
             savedAddr = save(caseId, address, "US");
@@ -74,30 +68,45 @@ public class AddressHandleEntityService {
         return savedAddr;
     }
 
-    @Transactional
-    public AddressHandleEntity saveHomeAddr(Long caseId, AddressHandleEntity address) {
-        List<AddressHandleEntity> findAll = addressDao.findAll(caseId, ImmigrationCase.class.getCanonicalName());
-        AddressHandleEntity savedAddr = new AddressHandleEntity();
-        if (findAll != null && findAll.size() > 0) {
-            for (AddressHandleEntity addr : findAll) {
-                AddressType addrType = getAddressType(addr.getAddressType().getId());
-                if (addrType != null && addrType.getAddressType().equals("Home")) {
-                    savedAddr = update(address, addr, "Home");
-                } else {
-                    savedAddr = save(caseId, address, "Home");
+//    @Transactional
+//    public AddressHandleEntity saveHomeAddr(Long caseId, AddressHandleEntity address) {
+//        List<AddressHandleEntity> findAll = addressDao.findAll(caseId, ImmigrationCase.class.getCanonicalName());
+//        AddressHandleEntity savedAddr = new AddressHandleEntity();
+//        if (findAll != null && findAll.size() > 0) {
+//            if (find(findAll, "Home") != null) {
+//                savedAddr = update(address, find(findAll, "Home"), "Home");
+//            } else {
+//                savedAddr = save(caseId, address, "Home");
+//            }
+//        } else {
+//            savedAddr = save(caseId, address, "Home");
+//        }
+//        return savedAddr;
+//    }
+
+    private AddressHandleEntity find(List<AddressHandleEntity> addresses, String type) {
+        int count = 0;
+        for (AddressHandleEntity entity : addresses) {
+            AddressType addrType = getAddressType(entity.getAddressType().getId());
+            if (type.equalsIgnoreCase(addrType.getAddressType())) {
+                count++;
+                if (count == 1) {
+                    return entity;
                 }
             }
-        } else {
-            savedAddr = save(caseId, address, "Home");
         }
-        return savedAddr;
+        return null;
     }
 
     private AddressHandleEntity save(Long caseId, AddressHandleEntity address, String type) {
         address.setTargetEntityId(caseId);
         address.setTargetEntityName(ImmigrationCase.class.getCanonicalName());
         address.setAddressType(AddressTypeDao.instance().getAddressType(type));
-        address.setIsHomeAddress(Boolean.TRUE);
+        if ("US".equalsIgnoreCase(type) || "Foreign".equalsIgnoreCase(type)) {
+            address.setIsHomeAddress(Boolean.FALSE);
+        } else {
+            address.setIsHomeAddress(Boolean.TRUE);
+        }
         return addressDao.save(address);
     }
 
@@ -111,6 +120,9 @@ public class AddressHandleEntityService {
         if (source.getCity() != null) {
             dest.setCity(source.getCity());
         }
+        if(source.getCountry()!=null){
+            dest.setCountry(source.getCountry());
+        }
         if (source.getState() != null) {
             dest.setState(source.getState());
         }
@@ -120,8 +132,10 @@ public class AddressHandleEntityService {
         if (source.getAddressType() != null) {
             dest.setAddressType(source.getAddressType());
         }
-        if (source.getIsHomeAddress() != null) {
-            dest.setIsHomeAddress(source.getIsHomeAddress());
+        if ("US".equalsIgnoreCase(type) || "Foreign".equalsIgnoreCase(type)) {
+            dest.setIsHomeAddress(Boolean.FALSE);
+        } else {
+            dest.setIsHomeAddress(Boolean.TRUE);
         }
         if (source.getPhoneNumber() != null) {
             dest.setPhoneNumber(source.getPhoneNumber());
