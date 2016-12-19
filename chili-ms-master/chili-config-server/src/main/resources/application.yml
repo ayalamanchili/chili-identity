@@ -1,0 +1,18 @@
+info:
+  component: Chili Config Server
+spring:
+  application:
+    name: chili-config-server
+  jmx:
+    default_domain: cloud.config.server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/ayalamanchili/chili-ms
+          search-paths: chili-configuration,chili-configuration/default,chili-configuration/registration,chili-configuration/api,chili-configuration/identity 
+
+server:
+  port: 4444
+management:
+  context_path: /admin
