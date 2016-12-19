@@ -5,15 +5,23 @@
     <artifactId>chili-ms-master</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-	<parent>
+    <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
         <version>Brixton.RELEASE</version>
     </parent>
     <modules>
-        <module>../chili-config-server</module>
+        <module>chili-config-server</module>
+        <module>chili-registration-server</module>
+        <module>chili-identity</module>
+		<module>chili-api-gateway</module>
     </modules>
-	<dependencies>
+    <dependencies>
+        <dependency>
+            <!-- Setup Spring Boot -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -23,12 +31,27 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
+            <!-- Spring Cloud starter -->
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter</artifactId>
+        </dependency>
+        <dependency>
+            <!--Spring Cloud config-->
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>    
+        <dependency>
+            <!-- Eureka for service registration -->
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka-server</artifactId>
+        </dependency>    
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>	
-	<dependencyManagement>
+    <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
