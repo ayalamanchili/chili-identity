@@ -16,6 +16,7 @@
         <module>chili-identity</module>
         <module>chili-api-gateway</module>
         <module>chili-admin-server</module>
+        <module>chili-admin-dashboard</module>
     </modules>
     <dependencies>
         <dependency>
