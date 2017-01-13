@@ -14,7 +14,8 @@
         <module>chili-config-server</module>
         <module>chili-registration-server</module>
         <module>chili-identity</module>
-		<module>chili-api-gateway</module>
+        <module>chili-api-gateway</module>
+        <module>chili-admin-server</module>
     </modules>
     <dependencies>
         <dependency>
