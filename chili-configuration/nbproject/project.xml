@@ -5,6 +5,7 @@
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>chili-configuration</name>
             <source-roots>
+                <root id="src.admin-dashboard.dir"/>
                 <root id="src.admin-server.dir"/>
                 <root id="src.api.dir"/>
                 <root id="src.default.dir"/>
