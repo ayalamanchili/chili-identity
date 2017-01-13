@@ -35,7 +35,7 @@ public class IdentityResource {
         return userRepository.save(user);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<CUser> getUsers() {
         return userRepository.findAll();
