@@ -1,0 +1,12 @@
+# Configure this Admin Server
+eureka:
+  instance:
+    hostname: localhost
+ 
+server:
+  port: 8888   # HTTP (Tomcat) port
+ 
+# Discovery Server Dashboard uses FreeMarker.  Don't want Thymeleaf templates
+spring:
+  thymeleaf:
+    enabled: false     # Disable Thymeleaf
