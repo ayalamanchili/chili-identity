@@ -9,3 +9,7 @@ zuul:
       serviceId: chili-identity-service
     static:
       path: /static/**
+      
+spring:
+  application:
+     name: api-gateway  # Service registers under this name
