@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+    <body>
+
+    <th:block layout:fragment="content">
+        <div class="hero-unit">
+            <h1>Identity</h1>
+        </div>
+        <table border="1" style="width:300px">
+            <tr>
+                <td>Test Name</td>
+            </tr>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.get('username').getAsString()}">
+                </td>
+            </tr>
+        </table>
+    </th:block>
+</body>
+</html>
