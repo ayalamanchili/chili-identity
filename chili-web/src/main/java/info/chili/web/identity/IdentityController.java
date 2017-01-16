@@ -29,4 +29,5 @@ public class IdentityController {
         model.addAttribute("users", users);
         return "identity";
     }
+
 }

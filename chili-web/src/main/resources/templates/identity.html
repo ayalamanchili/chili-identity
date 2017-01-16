@@ -11,10 +11,12 @@
         </div>
         <table border="1" style="width:300px">
             <tr>
-                <td>Test Name</td>
+                <td>User Name</td>
+                <td>Active</td>
             </tr>
             <tr th:each="user : ${users}">
                 <td th:text="${user.get('username').getAsString()}">
+                <td th:text="${user.get('enabled').getAsString()}">
                 </td>
             </tr>
         </table>
