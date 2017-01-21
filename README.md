@@ -15,3 +15,7 @@ This project is aimed at exposing chili framework via micro services.
 * chili-api-gateway
  - zuul proxy server
  - support for api gateway filters
+* chili-web
+ - web interface for chili services
+ - thymeleaf templates
+ 
