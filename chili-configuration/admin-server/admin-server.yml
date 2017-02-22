@@ -1,9 +1,0 @@
-# Configure this Admin Server
-server:
-  port: 8888   # HTTP (Tomcat) port
- 
-info:
-  component: Chili Admin Server
-spring:
-  application:
-    name: chili-admin-server
