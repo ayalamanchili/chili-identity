@@ -34,10 +34,14 @@ public class TokenAuthenticationService {
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
         response.addHeader(headerString, tokenPrefix + " " + JWT);
-        response.addHeader("Access-Control-Allow-Origin", "**");
         addUser(response, user);
     }
 
+    /**
+     *
+     * @param response
+     * @param user user and access related info
+     */
     protected void addUser(HttpServletResponse response, Authentication user) {
         try {
             response.getWriter().print(new ObjectMapper().writeValueAsString(user));
@@ -50,6 +54,10 @@ public class TokenAuthenticationService {
         String token = request.getHeader(headerString);
         if (token != null) {
             // parse the token.
+            System.out.println("dddddd:"+token);
+            if(token.contains(tokenPrefix)){
+                token=token.substring(token.indexOf(" "));
+            }
             String username = Jwts.parser()
                     .setSigningKey(secret)
                     .parseClaimsJws(token)
