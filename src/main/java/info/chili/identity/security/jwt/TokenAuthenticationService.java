@@ -6,6 +6,9 @@
 package info.chili.identity.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import info.chili.identity.SpringContext;
+import info.chili.identity.dao.UserRepository;
+import info.chili.identity.domain.CUser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.io.IOException;
@@ -20,12 +23,12 @@ import java.util.Date;
  * @author phani.y
  */
 public class TokenAuthenticationService {
-
+    
     private long EXPIRATIONTIME = 1000 * 60 * 60 * 24 * 10; // 10 days
     private String secret = "ThisIsASecret";
     private String tokenPrefix = "Bearer";
     private String headerString = "Authorization";
-
+    
     public void addAuthentication(HttpServletResponse response, Authentication user) {
         // We generate a token now.
         String JWT = Jwts.builder()
@@ -44,19 +47,22 @@ public class TokenAuthenticationService {
      */
     protected void addUser(HttpServletResponse response, Authentication user) {
         try {
-            response.getWriter().print(new ObjectMapper().writeValueAsString(user));
+            UserRepository userRepository = (UserRepository) SpringContext.getBean("userRepository");
+            CUser cuser = userRepository.findByUsername(user.getName());
+            cuser.setRoles(null);
+            response.getWriter().print(new ObjectMapper().writeValueAsString(cuser));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
     }
-
+    
     public Authentication getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(headerString);
         if (token != null) {
             // parse the token.
-            System.out.println("dddddd:"+token);
-            if(token.contains(tokenPrefix)){
-                token=token.substring(token.indexOf(" "));
+            System.out.println("dddddd:" + token);
+            if (token.contains(tokenPrefix)) {
+                token = token.substring(token.indexOf(" "));
             }
             String username = Jwts.parser()
                     .setSigningKey(secret)

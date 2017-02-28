@@ -1,4 +1,4 @@
-package com.example;
+package info.chili.identity;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

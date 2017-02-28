@@ -7,6 +7,8 @@ package info.chili.identity.config;
 
 import info.chili.identity.security.jwt.JWTAuthenticationFilter;
 import info.chili.identity.security.jwt.JWTLoginFilter;
+import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,6 +24,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    protected DataSource dataSource;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -42,9 +47,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // Create a default account
-        auth.inMemoryAuthentication().withUser("admin")
-                .password("password")
-                .roles("ADMIN");
+        auth.jdbcAuthentication().dataSource(dataSource)
+                .usersByUsernameQuery("select username, password_hash, enabled from CUser where username=?")
+                .authoritiesByUsernameQuery("select user.username, role.rolename from cuser user, crole role, user_roles userroles where user.user_Id = userroles.user_Id and userroles.role_Id= role.role_Id and user.username =?");
     }
 }

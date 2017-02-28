@@ -3,16 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.chili.identity.jrs;
+package info.chili.identity.dao;
 
-import org.springframework.web.bind.annotation.RestController;
+import info.chili.identity.domain.CRole;
+import org.springframework.data.repository.CrudRepository;
 
 /**
  *
  * @author phani.y
  */
-@RestController
-public class IdentityResource {
-
+public interface RoleRepository extends CrudRepository<CRole, Long> {
     
 }
