@@ -20,8 +20,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -97,7 +95,8 @@ public class ExpenseReport extends AbstractEntity {
     @ForeignKey(name = "FK_EMP_COMPANY_EXP_RPTS")
     private Company company;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
+    @ForeignKey(name = "FK_Other_Emps_Exp_Rprt")
     protected Set<Employee> otherEmployees;
 
     private String approvedByManager;
@@ -409,7 +408,7 @@ public class ExpenseReport extends AbstractEntity {
     public void setExpenseReceipts(Set<ExpenseReceipt> expenseReceipts) {
         this.expenseReceipts = expenseReceipts;
     }
-    
+
     public String getExpenseReportNumber() {
         if (getId() != null) {
             return "ERN-" + String.format("%04d", getId());
